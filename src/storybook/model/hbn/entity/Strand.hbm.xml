@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="storybook.model.hbn.entity.Strand" table="STRAND">
+    <id column="ID" name="id" type="java.lang.Long" unsaved-value="null">
+      <generator class="increment">
+        <!--  
+                  To add non XDoclet generator parameters, create a file named 
+                  hibernate-generator-params-Strand.xml 
+                  containing the additional parameters and place it in your merge dir. 
+              -->
+      </generator>
+    </id>
+    <property column="abbreviation" insert="true" length="256" name="abbreviation" type="java.lang.String" update="true"/>
+    <property column="name" insert="true" length="256" name="name" type="java.lang.String" update="true"/>
+    <property column="color" insert="true" name="color" type="java.lang.Integer" update="true"/>
+    <property column="sort" insert="true" name="sort" type="java.lang.Integer" update="true"/>
+    <property column="notes" insert="true" length="32768" name="notes" type="java.lang.String" update="true"/>
+  </class>
+</hibernate-mapping>

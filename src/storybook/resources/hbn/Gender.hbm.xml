@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+>
+    <class
+        name="ch.intertec.storybook.model.hbn.entity.Gender"
+        table="GENDER"
+    >
+
+        <id
+            name="id"
+            column="ID"
+            type="java.lang.Long"
+            unsaved-value="null"
+        >
+            <generator class="increment">
+              <!--  
+                  To add non XDoclet generator parameters, create a file named 
+                  hibernate-generator-params-Gender.xml 
+                  containing the additional parameters and place it in your merge dir. 
+              --> 
+            </generator>
+        </id>
+
+        <property
+            name="name"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="name"
+            length="256"
+        />
+
+        <property
+            name="childhood"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            column="childhood"
+            not-null="true"
+        />
+
+        <property
+            name="adolescence"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            column="adolescence"
+            not-null="true"
+        />
+
+        <property
+            name="adulthood"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            column="adulthood"
+            not-null="true"
+        />
+
+        <property
+            name="retirement"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            column="retirement"
+            not-null="true"
+        />
+
+    </class>
+
+</hibernate-mapping>

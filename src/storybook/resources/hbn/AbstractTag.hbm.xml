@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+>
+    <class
+        name="ch.intertec.storybook.model.hbn.entity.AbstractTag"
+        table="TAG"
+        discriminator-value="-1"
+    >
+
+        <id
+            name="id"
+            column="ID"
+            type="java.lang.Long"
+            unsaved-value="null"
+        >
+            <generator class="increment">
+              <!--  
+                  To add non XDoclet generator parameters, create a file named 
+                  hibernate-generator-params-AbstractTag.xml 
+                  containing the additional parameters and place it in your merge dir. 
+              --> 
+            </generator>
+        </id>
+
+        <discriminator
+            column="type"
+            type="integer"
+        />
+
+        <property
+            name="type"
+            type="java.lang.Integer"
+            update="false"
+            insert="false"
+            column="type"
+        />
+
+        <property
+            name="category"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="category"
+        />
+
+        <property
+            name="name"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="name"
+        />
+
+        <property
+            name="description"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="description"
+        />
+
+        <property
+            name="notes"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="notes"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-AbstractTag.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+        <subclass
+            name="ch.intertec.storybook.model.hbn.entity.Tag"
+            discriminator-value="0"
+        >
+	    <!--
+            	To add non XDoclet property mappings, create a file named
+                hibernate-properties-Tag.xml
+		containing the additional properties and place it in your merge dir.
+	    -->
+
+        </subclass>
+        <subclass
+            name="ch.intertec.storybook.model.hbn.entity.Item"
+            discriminator-value="1"
+        >
+	    <!--
+            	To add non XDoclet property mappings, create a file named
+                hibernate-properties-Item.xml
+		containing the additional properties and place it in your merge dir.
+	    -->
+
+        </subclass>
+
+    </class>
+
+</hibernate-mapping>

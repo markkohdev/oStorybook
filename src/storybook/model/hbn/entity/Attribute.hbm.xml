@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="storybook.model.hbn.entity.Attribute" table="ATTRIBUTE">
+    <id column="ID" name="id" type="java.lang.Long" unsaved-value="null">
+      <generator class="increment">
+            </generator>
+    </id>
+    <property column="key" insert="true" length="256" name="key" type="java.lang.String" update="true"/>
+    <property column="value" insert="true" length="2048" name="value" type="java.lang.String" update="true"/>
+  </class>
+</hibernate-mapping>
