@@ -8,6 +8,8 @@ import java.util.HashSet;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import storybook.toolkit.I18N;
 
 import storybook.view.MainFrame;
 
@@ -36,13 +38,20 @@ public class BookExporter extends JDialog {
 		this.mainFrame = null;
 	}
 	public boolean setExportForOpenOffice(boolean b){
+		JOptionPane.showMessageDialog(null,
+			this.getClass().getName()+"\n\n"+I18N.getMsg("msg.common.not.available"),
+			this.getClass().getName(), JOptionPane.ERROR_MESSAGE);
 		return(false);
 	}
 	public void exportToFile(){
-
+		JOptionPane.showMessageDialog(null,
+			this.getClass().getName()+"\n\n"+I18N.getMsg("msg.common.not.available"),
+			this.getClass().getName(), JOptionPane.ERROR_MESSAGE);
 	}
 	public void exportToClipboard(){
-
+		JOptionPane.showMessageDialog(null,
+			this.getClass().getName()+"\n\n"+I18N.getMsg("msg.common.not.available"),
+			this.getClass().getName(), JOptionPane.ERROR_MESSAGE);
 	}
 	public void setExportOnlyCurrentPart(boolean z) {
 
