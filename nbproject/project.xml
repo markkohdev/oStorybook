@@ -5,8 +5,10 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Sb5</name>
             <source-roots>
-                <root id="src.dicts.dir"/>
                 <root id="src.dir"/>
+                <root id="src.dicts.dir"/>
+                <root id="src.resource.dir"/>
+                <root id="src.rules.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

@@ -62,7 +62,7 @@ import storybook.toolkit.swing.splash.HourglassSplash;
 import storybook.view.MainFrame;
 import storybook.view.dialog.ExceptionDialog;
 import storybook.view.dialog.FirstStartDialog;
-import storybook.view.dialog.PostModelUpdateDialog;
+//import storybook.view.dialog.PostModelUpdateDialog;
 import storybook.view.dialog.file.NewFileDialog;
 
 /**
@@ -137,7 +137,6 @@ public class StorybookApp extends Component {
 			timer.start();
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			ExceptionDialog dlg = new ExceptionDialog(e);
 			SwingUtil.showModalDialog(dlg, null);
 		}
@@ -221,7 +220,6 @@ public class StorybookApp extends Component {
 
 			setDefaultCursor();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -248,7 +246,6 @@ public class StorybookApp extends Component {
 			timer2.setRepeats(false);
 			timer2.start();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -333,12 +330,10 @@ public class StorybookApp extends Component {
 						}
 						*/
 					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return true;
 	}
@@ -584,6 +579,7 @@ public class StorybookApp extends Component {
 			final FileLock fileLock = randomAccessFile.getChannel().tryLock();
 			if (fileLock != null) {
 				Runtime.getRuntime().addShutdownHook(new Thread() {
+					@Override
 					public void run() {
 						try {
 							fileLock.release();
@@ -592,7 +588,6 @@ public class StorybookApp extends Component {
 						} catch (Exception e) {
 							System.err.println("Unable to remove lock file: "
 									+ lockFile);
-							e.printStackTrace();
 						}
 					}
 				});
@@ -601,7 +596,6 @@ public class StorybookApp extends Component {
 		} catch (Exception e) {
 			System.err
 					.println("Unable to create and/or lock file: " + lockFile);
-			e.printStackTrace();
 		}
 		return false;
 	}
