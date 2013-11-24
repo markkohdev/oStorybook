@@ -553,7 +553,7 @@ public final class LangToolMain implements ActionListener {
 					+ Tools.makeTexti18n(messages, "startChecking",
 							new Object[] { langName }) + HTML_FONT_END;
 			resultArea.setText(startCheckText);
-			resultArea.repaint(); // FIXME: why doesn't this work?
+			resultArea.repaint();
 			sb.append(startCheckText);
 			sb.append("...<br>\n");
 			int matches = 0;

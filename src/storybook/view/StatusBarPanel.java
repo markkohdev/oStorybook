@@ -71,7 +71,7 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 
 		if (DocumentController.CommonProps.REFRESH.check(propName)) {
 			refresh();
-			return;
+//			return;
 		}
 	}
 

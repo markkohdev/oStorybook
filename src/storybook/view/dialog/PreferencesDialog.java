@@ -117,7 +117,7 @@ public class PreferencesDialog extends AbstractDialog implements
 		panel.add(createInternetPanel(), "growx");
 		tabbedPane = new JTabbedPane();
 		tabbedPane.addTab(I18N.getMsg("msg.dlg.preference.global"), panel);
-		/* TODO suppress Pro
+		/* SB5 suppress Pro
 		tabbedPane.addTab("Storybook Pro", createProPanel());
 		*/
 		tabbedPane.addTab("Translators", createTranslatorsPanel());
@@ -420,11 +420,11 @@ public class PreferencesDialog extends AbstractDialog implements
 			return;
 		}
 
+		/* SB5 suppress Pro
 		if (CN_PW_FORGOTTEN.equals(cn)) {
 			NetUtil.openBrowser(SbConstants.URL.PW_FORGOTTEN.toString());
 			return;
 		}
-		/* SB5 suppress Pro
 		if (CN_GO_PRO.equals(cn)) {
 			if (I18N.isGerman()) {
 				NetUtil.openBrowser(SbConstants.URL.GO_PRO_DE.toString());

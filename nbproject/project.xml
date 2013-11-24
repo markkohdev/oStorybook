@@ -7,8 +7,7 @@
             <source-roots>
                 <root id="src.dir"/>
                 <root id="src.dicts.dir"/>
-                <root id="src.resource.dir"/>
-                <root id="src.rules.dir"/>
+                <root id="src.languagetool.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

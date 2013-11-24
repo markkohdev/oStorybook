@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package storybook.toolkit.swing.panel;
 
+/* SB5 suppress Pro
 import java.awt.Color;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
@@ -34,11 +35,13 @@ import storybook.view.MainFrame;
 import storybook.view.net.BrowserPanel;
 
 import net.miginfocom.swing.MigLayout;
+*/
 
 /**
  * @author martin
  *
  */
+/* SB5 suppress Pro
 @SuppressWarnings("serial")
 public class ProOnlyPanel extends AbstractPanel {
 
@@ -78,3 +81,4 @@ public class ProOnlyPanel extends AbstractPanel {
 	public void modelPropertyChange(PropertyChangeEvent evt) {
 	}
 }
+*/

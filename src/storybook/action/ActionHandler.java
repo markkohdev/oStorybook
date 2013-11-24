@@ -114,10 +114,7 @@ public class ActionHandler {
 					InternalKey.EXPORT_DIRECTORY,
 					EnvUtil.getDefaultExportDir(mainFrame));
 			Desktop.getDesktop().open(new File(internal.getStringValue()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		} catch (Error e2) {
-			e2.printStackTrace();
+		} catch (Exception | Error e) {
 		}
 	}
 
@@ -437,7 +434,6 @@ public class ActionHandler {
 
 //			DockingWindowUtil.setDefaultLayout(mainFrame);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -536,7 +532,6 @@ public class ActionHandler {
 		try {
 			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
 		}
 		DbFile dbFile = new DbFile(file);
 		OpenFileAction act = new OpenFileAction("", dbFile);
@@ -685,35 +680,25 @@ public class ActionHandler {
 	*/
 
 	public void handleReportBug() {
-		NetUtil.openBrowser(SbConstants.URL.REPORT_BUG.toString());
+		NetUtil.openBrowser(SbConstants.URL.REPORTBUG.toString());
 	}
 
 	public void handleDoc() {
-		if (I18N.isGerman()) {
-			NetUtil.openBrowser(SbConstants.URL.DOC_DE.toString());
-			return;
-		}
-		NetUtil.openBrowser(SbConstants.URL.DOC_EN.toString());
+		NetUtil.openBrowser(SbConstants.URL.DOC.toString());
 	}
 
 	public void handleFAQ() {
-		if (I18N.isGerman()) {
-			NetUtil.openBrowser(SbConstants.URL.FAQ_DE.toString());
-			return;
-		}
-		NetUtil.openBrowser(SbConstants.URL.FAQ_EN.toString());
+		NetUtil.openBrowser(SbConstants.URL.FAQ.toString());
 	}
 
 	public void handleHomepage() {
-		if (I18N.isGerman()) {
-			NetUtil.openBrowser(SbConstants.URL.HOMEPAGE_DE.toString());
-			return;
-		}
-		NetUtil.openBrowser(SbConstants.URL.HOMEPAGE_EN.toString());
+		NetUtil.openBrowser(SbConstants.URL.HOMEPAGE.toString());
 	}
 
 	public void handleFacebook() {
+		/* SB5 never more FACEBOOK
 		NetUtil.openBrowser(SbConstants.URL.FACEBOOK.toString());
+		*/
 	}
 
 	public void handleAbout() {

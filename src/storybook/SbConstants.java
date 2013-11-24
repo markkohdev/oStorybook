@@ -27,10 +27,11 @@ import net.infonode.docking.View;
 
 /**
  * @author martin
+ * @update favdb
  *
  */
 public class SbConstants {
-
+	/* default values */
 	public final static String DEFAULT_LANG = "en_US";
 	public final static String DEFAULT_FONT_NAME = "Dialog";
 	public final static int DEFAULT_FONT_SIZE = 12;
@@ -69,35 +70,41 @@ public class SbConstants {
 
 	public enum Storybook {
 		PRODUCT_NAME("Storybook"),
-		PRODUCT_VERSION("4.0.0"),
+		PRODUCT_VERSION("4.9.9"),
 		PRODUCT_FULL_NAME(PRODUCT_NAME + " " + PRODUCT_VERSION),
-		PRODUCT_RELEASE_DATE("2012-06-12"),
+		PRODUCT_RELEASE_DATE("2013-11-30"),
 		/* SB5 suppress pro
 		PRODUCT_PRO_NAME("Storybook Pro"),
 		PRODUCT_PRO_FULL_NAME(PRODUCT_PRO_NAME + " " + PRODUCT_VERSION),
 		PRODUCT_PRO_RELEASE_DATE("2012-06-12"),
 		*/
-		COPYRIGHT_YEAR("2012"),
-		COPYRIGHT_COMPANY("Intertec - The Storybook Team"),
+		COPYRIGHT_YEAR("2012-2013"),
+		COPYRIGHT_COMPANY("The Storybook Team"),
 		PREFERENCE_DB_NAME("preference"),
 		DB_VERSION("4.0"),
 		DB_FILE_EXT(".h2.db"),
 		DB_CONFIG_EXT(".cfg.xml"),
+		/* SB5 suppress Pro
 		IS_PRO_VERSION("true"),
+		*/
 		IS_BETA_VERSION("false");
 		final private String text;
 		private Storybook(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 	}
 
 	public enum URL {
+		/* SB5 update new URL
 		HOMEPAGE_EN("http://www.novelist.ch"),
 		HOMEPAGE_DE("http://www.novelist.ch/joomla/index.php/de"),
+		*/
 		/* SB5 suppress Pro
 		GO_PRO_EN("http://www.novelist.ch/joomla/index.php/en/go-pro"),
 		GO_PRO_DE("http://www.novelist.ch/joomla/index.php/de/go-pro"),
 		PRO_ONLY_EN("http://www.novelist.ch/joomla/index.php/en/go-pro"),
 		*/
+		/* SB5 update new URL
 		DOC_EN("http://www.novelist.ch/joomla/index.php/en/documentations"),
 		DOC_DE("http://www.novelist.ch/joomla/index.php/de/dokumentation"),
 		FAQ_EN("http://www.novelist.ch/joomla/index.php/en/faq"),
@@ -106,9 +113,15 @@ public class SbConstants {
 		FACEBOOK("http://www.facebook.com/StorybookSoftware"),
 		TEASER_URL("http://www.novelist.ch/gopro/4_0/teaser"),
 		BANNER_URL("http://www.novelist.ch/gopro/4_0/banner"),
-		PW_FORGOTTEN("http://shop.novelist.ch/zencart/index.php?main_page=password_forgotten");
+		PW_FORGOTTEN("http://shop.novelist.ch/zencart/index.php?main_page=password_forgotten")*/
+		HOMEPAGE	("http://sourceforge.net/projects/ostorybook/"),
+		DOC			(HOMEPAGE+"wiki/home"),
+		FAQ			(HOMEPAGE+"wiki/faq"),
+		REPORTBUG	(HOMEPAGE+"tickets"),
+		;
 		final private String text;
 		private URL(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 	}
 
@@ -120,6 +133,7 @@ public class SbConstants {
 		USER_DICTS("dicts");
 		final private String text;
 		private Directory(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 	}
 
@@ -241,6 +255,7 @@ public class SbConstants {
 		INFO("Info");
 		final private String text;
 		private ViewName(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean compare(View view){ return text.equals(view.getName()); }
 	}
@@ -250,6 +265,7 @@ public class SbConstants {
 		DISABLED("Disabled");
 		final private String text;
 		private ComponentState(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 	}
 
@@ -278,6 +294,7 @@ public class SbConstants {
 		COMBO_SCENE_STATES("ComboSceneStates");
 		final private String text;
 		private ComponentName(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -286,6 +303,7 @@ public class SbConstants {
 		CATEGORY("Category");
 		final private String text;
 		private ActionKey(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 	}
 
@@ -296,6 +314,7 @@ public class SbConstants {
 		DELETE("Delete");
 		final private String text;
 		private ActionCommand(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -310,6 +329,7 @@ public class SbConstants {
 		MAIN_FRAME("MainFrame");
 		final private String text;
 		private ClientPropertyName(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -340,6 +360,7 @@ public class SbConstants {
 		PASSWORD("Password");
 		final private String text;
 		private PreferenceKey(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 	}
 
@@ -375,6 +396,7 @@ public class SbConstants {
 		LAST_USED_LAYOUT("_internal_last_used_layout_");
 		final private String text;
 		private InternalKey(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 	}
 
@@ -385,6 +407,7 @@ public class SbConstants {
 		LARGE(new Dimension(32, 32));
 		final private Dimension dim;
 		private IconSize(Dimension text) { this.dim = text; }
+		@Override
 		public String toString() { return dim.toString(); }
 		public Dimension getDimension() { return dim; }
 	}

@@ -281,7 +281,7 @@ public class PersistenceManager {
     }
 	*/
 
-	/* SB5 checkin old version before 4.0
+	/* SB5 check old version before 4.0
 	private void alterFrom1_5to4_0() throws Exception {
 		// dlg.append("Updating file version from 1.4 to 1.5 ...");
 
@@ -416,7 +416,7 @@ public class PersistenceManager {
 	}
 	*/
 
-	/* SB5 checkin old version before 4.0
+	/* SB5 check old version before 4.0
 	private void executeSQLStatement(String sql, Statement stmt) {
 		try {
 			log.debug(sql);

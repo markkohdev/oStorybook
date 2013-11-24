@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package storybook.view.dialog;
 
+/* SB5 suppress Pro
 import java.awt.Color;
 
 import javax.swing.JPanel;
@@ -27,11 +28,12 @@ import storybook.toolkit.swing.panel.ProOnlyPanel;
 import storybook.view.MainFrame;
 
 import net.miginfocom.swing.MigLayout;
-
+*/
 /**
  * @author martin
  *
  */
+/* SB5 suppress Pro
 @SuppressWarnings("serial")
 public class ProOnlyDialog extends AbstractDialog {
 
@@ -57,3 +59,4 @@ public class ProOnlyDialog extends AbstractDialog {
 		add(getCloseButton(), "right,sg");
 	}
 }
+*/

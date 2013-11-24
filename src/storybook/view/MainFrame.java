@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package storybook.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,7 +32,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.MalformedURLException;
+//import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Locale;
@@ -43,11 +43,11 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+//import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
-import javax.swing.ScrollPaneConstants;
+//import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
@@ -97,7 +97,7 @@ import storybook.toolkit.swing.FontUtil;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.view.edit.EntityEditor;
 import storybook.view.interfaces.IPaintable;
-import storybook.view.net.BrowserPanel;
+//import storybook.view.net.BrowserPanel;
 
 /**
  * @author martin
@@ -163,7 +163,6 @@ public class MainFrame extends JFrame implements IPaintable {
 
 			addWindowListener(new MainFrameWindowAdaptor());
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -245,7 +244,6 @@ public class MainFrame extends JFrame implements IPaintable {
 			}
 			sbActionManager.getActionHandler().handleChangePart(part);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		//		documentController.attachView(this);
@@ -288,11 +286,13 @@ public class MainFrame extends JFrame implements IPaintable {
 		StringViewMap viewMap = viewFactory.getViewMap();
 		MixedViewHandler handler = new MixedViewHandler(viewMap,
 				new ViewSerializer() {
+					@Override
 					public void writeView(View view, ObjectOutputStream out)
 							throws IOException {
 						out.writeInt(((DynamicView) view).getId());
 					}
 
+					@Override
 					public View readView(ObjectInputStream in)
 							throws IOException {
 						return getDynamicView(in.readInt());
@@ -461,6 +461,7 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	public JScrollPane createTeaser() {
+		/* SB5 never more use Teaser
 		final int w = 600;
 		final int h = 160;
 		BrowserPanel teaser;
@@ -478,6 +479,8 @@ public class MainFrame extends JFrame implements IPaintable {
 			e.printStackTrace();
 		}
 		return new JScrollPane();
+		*/
+		return(null);
 	}
 
 	public SbView getView(String viewName) {
@@ -663,7 +666,7 @@ public class MainFrame extends JFrame implements IPaintable {
 		StorybookApp app = StorybookApp.getInstance();
 		app.removeMainFrame(this);
 		dispose();
-		if (app.getMainFrames().size() == 0) {
+		if (app.getMainFrames().isEmpty()) {
 			app.exit();
 		}
 	}
@@ -678,9 +681,9 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	private static JComponent createDummyViewComponent(String text) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int j = 0; j < 100; j++){
-			sb.append(text + ". This is line " + j + "\n");
+			sb.append(text).append(". This is line ").append(j).append("\n");
 		}
 		return new JScrollPane(new JTextArea(sb.toString()));
 	}
@@ -699,6 +702,7 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	private class MainFrameWindowAdaptor extends WindowAdapter {
+		@Override
 		public void windowClosing(WindowEvent evt) {
 			close();
 		}
@@ -749,7 +753,6 @@ public class MainFrame extends JFrame implements IPaintable {
 			documentModel.commit();
 			return currentPart;
 		} catch (NullPointerException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}
