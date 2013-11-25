@@ -33,8 +33,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
+//import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -48,7 +47,6 @@ import storybook.SbConstants.LookAndFeel;
 import storybook.SbConstants.PreferenceKey;
 import storybook.SbConstants.Spelling;
 import storybook.model.hbn.entity.Preference;
-import storybook.pro.guardian.Guardian;
 import storybook.toolkit.I18N;
 import storybook.toolkit.PrefUtil;
 import storybook.toolkit.SpellCheckerUtil;
@@ -385,6 +383,7 @@ public class PreferencesDialog extends AbstractDialog implements
 	public AbstractAction getFontChooserAction() {
 		if (fontChooserAction == null) {
 			fontChooserAction = new AbstractAction() {
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					Font newFont = FontChooserDialog.showDialog(null, null,
 							font);
@@ -417,7 +416,7 @@ public class PreferencesDialog extends AbstractDialog implements
 			}
 			*/
 			SwingUtil.setDefaultCursor(this);
-			return;
+			//return;
 		}
 
 		/* SB5 suppress Pro

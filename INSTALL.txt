@@ -1,2 +1,15 @@
 
-http://www.novelist.ch/joomla/index.php/en/installation 
+How to install?
+
+Linux
+In the directory Storybook in your home.
+Change file acces for the files Sb5.jar and storybook.sh to allow execute.
+Start Storybook with storybook.sh
+
+Windows
+In youy program directory create th Storybook directory. Unzip the
+storybook.zip.
+Start Storybook with storybook.bat
+
+NOTE : this package is only for english and french users. If your language is
+other you have to install language tool for it. Ask me if it is not to download.

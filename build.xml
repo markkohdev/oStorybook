@@ -75,11 +75,10 @@
 			<mkdir dir="${dist.dir}/dicts" />
 			<mkdir dir="${dist.dir}/lib/languagetool" />
 			<copy todir="${dist.dir}/dicts" flatten="false">
-				<fileset dir="lib/languagetool/resource" />
-				<fileset dir="lib/languagetool/rules" />
+				<fileset dir="dicts" />
 			</copy>
 			<copy todir="${dist.dir}/lib/languagetool" flatten="false">
-				<fileset dir="lib/languagetool" />
+				<fileset dir="languagetool" />
 			</copy>
 			<copy file="actions.xml" todir="${dist.dir}" />
 			<copy file="INSTALL.txt" todir="${dist.dir}" />
@@ -93,6 +92,6 @@
 			<copy file="storybook.sh" todir="${dist.dir}" />
         </target>
 		<target name="distrib">
-			<zip destfile="storybook5.zip" basedir="${basedir}/dist" />
+			<zip destfile="storybook499.zip" basedir="${basedir}/dist" />
 		</target>
 </project>
