@@ -94,4 +94,13 @@
 		<target name="distrib">
 			<zip destfile="storybook499.zip" basedir="${basedir}/dist" />
 		</target>
+		<target name="distrib_lang">
+			<property name="langue" value="es" />
+			<zip destfile="language_all.zip">
+				<zipfileset dir="dicts.others" includes="*.ortho" />
+				<zipfileset dir="languagetool.others/" includes="resource/**" />
+				<zipfileset dir="languagetool.others/" includes="rules/**" />
+				<zipfileset dir="." includes="INSTALL_LANG.txt" />
+			</zip>
+		</target>
 </project>
