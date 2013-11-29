@@ -33,6 +33,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -66,6 +67,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -127,17 +129,28 @@ public class SwingUtil {
 			}
 			PrefUtil.set(PreferenceKey.LAF, lookAndFeel.name());
 			UIManager.setLookAndFeel(lafClassName);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 		}
 	}
 
 	public static JComboBox createSpellingCombo() {
 		DefaultComboBoxModel model = new DefaultComboBoxModel();
 		for (Spelling spelling : Spelling.values()) {
-			model.addElement(spelling.getI18N());
+			if (isLanguageOK(spelling.name())) {
+				model.addElement(spelling.getI18N());
+			}
 		}
 		return new JComboBox(model);
+	}
+
+	private static boolean isLanguageOK(String x) {
+		boolean rc=false;
+		if (x.contentEquals("none")) {return(true);}
+		File f=new File(/*File.separator+*/"languagetool"+File.separator+"rules"+File.separator+x.substring(0,x.indexOf("_")));
+		if (f.isDirectory()) {
+			rc=true;
+		}
+		return(rc);
 	}
 
 	public static JComboBox createLanguageCombo() {
@@ -180,8 +193,9 @@ public class SwingUtil {
 
 	public static String getHumanReadableByteCount(long bytes, boolean si) {
 		int unit = si ? 1000 : 1024;
-		if (bytes < unit)
+		if (bytes < unit) {
 			return bytes + " B";
+		}
 		int exp = (int) (Math.log(bytes) / Math.log(unit));
 		String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1)
 				+ (si ? "" : "i");
@@ -335,7 +349,7 @@ public class SwingUtil {
 
 	public static HashMap<Object, Action> createActionTable(
 			JTextComponent textComponent) {
-		HashMap<Object, Action> actions = new HashMap<Object, Action>();
+		HashMap<Object, Action> actions = new HashMap<>();
 		Action[] actionsArray = textComponent.getActions();
 		for (int i = 0; i < actionsArray.length; i++) {
 			Action a = actionsArray[i];
@@ -558,7 +572,7 @@ public class SwingUtil {
 		if (font == null) {
 			return "";
 		}
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(font.getName());
 		buf.append(", ");
 		switch (font.getStyle()) {
@@ -822,12 +836,12 @@ public class SwingUtil {
 	}
 
 	public static String formateComponentInfosToPrint(Component comp) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(comp.getClass().getSimpleName());
 		buf.append(" [");
 		buf.append(comp.getName());
 		if (comp instanceof JLabel) {
-			buf.append(",\"" + ((JLabel) comp).getText() + "\"");
+			buf.append(",\"").append(((JLabel) comp).getText()).append("\"");
 		}
 		buf.append(",");
 		buf.append(comp.getClass().getName());
@@ -853,7 +867,7 @@ public class SwingUtil {
 	public static Frame getFrame(String frameName) {
 		Frame[] frames = Frame.getFrames();
 		for (Frame frame : frames) {
-			if (frame.getName() == frameName) {
+			if (frame.getName().equals(frameName)) {
 				return frame;
 			}
 		}

@@ -154,9 +154,13 @@ public class PreferencesDialog extends AbstractDialog implements
 		I18N.initResourceBundles(locale);
 
 		// spell checker
-		i = spellingCombo.getSelectedIndex();
-		Spelling spelling = Spelling.values()[i];
-		PrefUtil.set(PreferenceKey.SPELLING, spelling.name());
+		String ix = (String) spellingCombo.getSelectedItem();
+		//Spelling spelling = Spelling.values()[i];
+		for (Spelling spelling : Spelling.values()) {
+			if (spelling.getI18N().equals(ix)) {
+				PrefUtil.set(PreferenceKey.SPELLING, spelling.name());
+			}
+		}
 		SpellCheckerUtil.registerDictionaries();
 
 		// look and feel
@@ -209,7 +213,7 @@ public class PreferencesDialog extends AbstractDialog implements
 		Preference pref = PrefUtil.get(PreferenceKey.SPELLING,
 				Spelling.none.toString());
 		Spelling spelling = Spelling.valueOf(pref.getStringValue());
-		spellingCombo.setSelectedIndex(spelling.ordinal());
+		spellingCombo.setSelectedItem(pref.getStringValue());//setSelectedIndex(spelling.ordinal());
 
 		// start options
 		JLabel lbStart = new JLabel(I18N.getMsg("msg.pref.start"));
