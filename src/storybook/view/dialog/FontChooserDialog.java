@@ -55,8 +55,9 @@ public class FontChooserDialog extends JDialog {
 		super(parent, modal);
 		initAll();
 		setTitle(I18N.getMsg("msg.font.chooser"));
-		if (font == null)
+		if (font == null) {
 			font = Sample.getFont();
+		}
 		FontList.setSelectedItem(font.getName());
 		SizeList.setSelectedItem(font.getSize() + "");
 		StyleList.setSelectedItem(styleList[font.getStyle()]);
@@ -65,12 +66,14 @@ public class FontChooserDialog extends JDialog {
 
 	public static Font showDialog(Frame parent, String s, Font font) {
 		FontChooserDialog fd = new FontChooserDialog(parent, true, font);
-		if (s != null)
+		if (s != null) {
 			fd.setTitle(s);
+		}
 		fd.setVisible(true);
 		Font fo = null;
-		if (fd.ob)
+		if (fd.ob) {
 			fo = Sample.getFont();
+		}
 		fd.dispose();
 		return (fo);
 	}
@@ -84,6 +87,7 @@ public class FontChooserDialog extends JDialog {
 		Sample.setForeground(Color.black);
 		getContentPane().add(Sample);
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				setVisible(false);
 			}
@@ -113,12 +117,14 @@ public class FontChooserDialog extends JDialog {
 		getContentPane().add(ok);
 		getContentPane().add(ca);
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				ob = true;
 			}
 		});
 		ca.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				ob = false;
@@ -134,10 +140,12 @@ public class FontChooserDialog extends JDialog {
 		}
 		String st = StyleList.getSelectedValue();
 		int s = Font.PLAIN;
-		if (st.equalsIgnoreCase("Bold"))
+		if (st.equalsIgnoreCase("Bold")) {
 			s = Font.BOLD;
-		if (st.equalsIgnoreCase("Italic"))
+		}
+		if (st.equalsIgnoreCase("Italic")) {
 			s = Font.ITALIC;
+		}
 		Sample.setFont(new Font(FontList.getSelectedValue(), s, g));
 		Sample.setText("The quick brown fox jumped over the lazy dog.");
 		// Sample.setText(" àðé äåìê ìèééì áùîù åáöì, Ok Cancel ");
@@ -162,6 +170,7 @@ public class FontChooserDialog extends JDialog {
 			jl.setBounds(0, 0, 100, 1000);
 			jl.setBackground(Color.white);
 			jl.addListSelectionListener(new ListSelectionListener() {
+				@Override
 				public void valueChanged(ListSelectionEvent e) {
 					jt.setText((String) jl.getSelectedValue());
 					si = (String) jl.getSelectedValue();
@@ -180,6 +189,7 @@ public class FontChooserDialog extends JDialog {
 			jl.setSelectedValue(s, true);
 		}
 
+		@Override
 		public void setBounds(int x, int y, int w, int h) {
 			super.setBounds(x, y, w, h);
 			sp.setBounds(0, y + 12, w, h - 23);

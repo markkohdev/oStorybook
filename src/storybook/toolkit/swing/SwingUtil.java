@@ -80,11 +80,12 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
-import net.atlanticbb.tantlinger.ui.text.WysiwygHTMLEditorKit;
+//import net.atlanticbb.tantlinger.ui.text.WysiwygHTMLEditorKit;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import shef.ui.text.WysiwygHTMLEditorKit;
 import storybook.SbConstants.Language;
 import storybook.SbConstants.LookAndFeel;
 import storybook.SbConstants.PreferenceKey;

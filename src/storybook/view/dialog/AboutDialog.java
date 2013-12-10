@@ -32,7 +32,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 import storybook.SbConstants;
-import storybook.StorybookApp;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.view.MainFrame;
@@ -135,7 +134,7 @@ public class AboutDialog extends AbstractDialog {
 		// application info
 		JLabel lbInfo = new JLabel();
 		JLabel lbReview = new JLabel("");
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		/* SB5 suppress Pro
 		if (StorybookApp.getInstance().isProVersion()) {
 			buf.append(SbConstants.Storybook.PRODUCT_PRO_NAME);
@@ -146,9 +145,8 @@ public class AboutDialog extends AbstractDialog {
 		// always considere pro version is true
 		buf.append(SbConstants.Storybook.PRODUCT_NAME);
 
-		buf.append(" - Version " + SbConstants.Storybook.PRODUCT_VERSION);
-		buf.append(" - Released on "
-				+ SbConstants.Storybook.PRODUCT_RELEASE_DATE);
+		buf.append(" - Version ").append(SbConstants.Storybook.PRODUCT_VERSION);
+		buf.append(" - Released on ").append(SbConstants.Storybook.PRODUCT_RELEASE_DATE);
 		lbInfo.setText(buf.toString());
 
 		JTabbedPane pane = new JTabbedPane();

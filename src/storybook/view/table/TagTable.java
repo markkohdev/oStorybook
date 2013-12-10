@@ -48,6 +48,7 @@ public class TagTable extends AbstractTable {
 		allowMultiDelete = true;
 	}
 
+	@Override
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
@@ -61,7 +62,6 @@ public class TagTable extends AbstractTable {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

@@ -167,7 +167,6 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 					SbConstants.DEFAULT_READING_FONT_SIZE);
 			setFontSize(internal.getIntegerValue());
 		} catch (Exception e) {
-			e.printStackTrace();
 			setZoomedSize(SbConstants.DEFAULT_READING_ZOOM);
 			setFontSize(SbConstants.DEFAULT_READING_FONT_SIZE);
 		}
@@ -216,21 +215,20 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 				.findAllOrderByChapterNoAndSceneNo(currentPart);
 		model.commit();
 
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(HtmlUtil.getHeadWithCSS(fontSize));
 
 		// table of contents
 		buf.append("<p style='font-weight:bold'>");
-		buf.append("<a name='toc'>" + I18N.getMsg("msg.table.of.contents")
-				+ "</a></p>\n");
+		buf.append("<a name='toc'>").append(I18N.getMsg("msg.table.of.contents")).append("</a></p>\n");
 		for (Chapter chapter : chapters) {
 			String no = chapter.getChapternoStr();
-			buf.append("<p><a href='#" + no + "'>");
-			buf.append(no + ": " + chapter.getTitle() + "</a>");
+			buf.append("<p><a href='#").append(no).append("'>");
+			buf.append(no).append(": ").append(chapter.getTitle()).append("</a>");
 			String descr = chapter.getDescription();
 			if (descr != null) {
 				if (!descr.isEmpty()) {
-					buf.append(": " + chapter.getDescription());
+					buf.append(": ").append(chapter.getDescription());
 				}
 			}
 			buf.append("</p>\n");
@@ -286,6 +284,7 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 		final int pos = scroller.getVerticalScrollBar().getValue();
 		tpText.setText(buf.toString());
 		final Action restoreAction = new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				scroller.getVerticalScrollBar().setValue(pos);
 			}
@@ -310,14 +309,13 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 					tpText.setPage(evt.getURL());
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		}
 	}
 
 	private static void dispatchToStrandPanels(Container cont,
 			PropertyChangeEvent evt) {
-		List<Component> ret = new ArrayList<Component>();
+		List<Component> ret = new ArrayList<>();
 		SwingUtil.findComponentsByClass(cont, StrandPanel.class, ret);
 		for (Component comp : ret) {
 			StrandPanel panel = (StrandPanel) comp;

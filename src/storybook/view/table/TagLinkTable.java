@@ -47,6 +47,7 @@ public class TagLinkTable extends AbstractTable {
 		columns = SbColumnFactory.getInstance().getTagLinkColumns();
 	}
 
+	@Override
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
@@ -60,7 +61,6 @@ public class TagLinkTable extends AbstractTable {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

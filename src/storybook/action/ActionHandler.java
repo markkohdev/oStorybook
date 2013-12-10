@@ -39,7 +39,6 @@ import storybook.StorybookApp;
 import storybook.SbConstants.InternalKey;
 import storybook.SbConstants.ViewName;
 import storybook.controller.DocumentController;
-import storybook.export.BookExporter;
 import storybook.model.DbFile;
 import storybook.model.DocumentModel;
 import storybook.model.EntityUtil;
@@ -86,6 +85,7 @@ import storybook.view.dialog.rename.RenameTagCategoryDialog;
 import storybook.view.jasperreports.ExportPrintDialog;
 
 import com.sun.jaf.ui.ActionManager;
+import storybook.export.BookExporter;
 
 /**
  * @author martin
@@ -95,8 +95,8 @@ public class ActionHandler {
 
 	private MainFrame mainFrame;
 
-	public ActionHandler(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
+	public ActionHandler(MainFrame mainframe) {
+		mainFrame = mainframe;
 	}
 
 	public void handleCheckUpdate() {
@@ -627,36 +627,20 @@ public class ActionHandler {
 	}
 
 	public void handleExportBookText(){
-		/* SB5 suppress Pro
-		if (StorybookApp.getInstance().isProVersion()) {
-			BookExporter exp = new BookExporter(mainFrame);
-			exp.setExportForOpenOffice(true);
-			exp.exportToFile();
-		} else {
-			ProOnlyDialog dlg = new ProOnlyDialog(mainFrame);
-			SwingUtil.showModalDialog(dlg, mainFrame);
-		}
-		*/
-		// allways considere pro version is true
+		BookExporter exp = new BookExporter(mainFrame);
+		exp.setExportForOpenOffice(true);
+		exp.exportToFile();
+	}
+
+	public void handleExportBookHtml() {
 		BookExporter exp = new BookExporter(mainFrame);
 		exp.setExportForOpenOffice(true);
 		exp.exportToFile();
 	}
 
 	public void handleCopyBookText() {
-		/* SB5 supress Pro
-		if (StorybookApp.getInstance().isProVersion()) {
-			BookExporter exp = new BookExporter(mainFrame);
-			exp.setExportForOpenOffice(true);
-			exp.exportToClipboard();
-		} else {
-			ProOnlyDialog dlg = new ProOnlyDialog(mainFrame);
-			SwingUtil.showModalDialog(dlg, mainFrame);
-		}
-		*/
-		// always considere pro version is true
 		BookExporter exp = new BookExporter(mainFrame);
-		exp.setExportForOpenOffice(true);
+		exp.setExportForOpenOffice(false);
 		exp.exportToClipboard();
 	}
 

@@ -55,7 +55,7 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 	public final static int TYPE_NEXT = 4;
 
 	private int type = TYPE_NONE;
-	private Scene scene;
+//	private Scene scene;
 	private JLabel lbScene;
 	private int textLength;
 
@@ -78,12 +78,12 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 
 	@Override
 	public void init() {
+		System.out.println("ScenePanel.init()");
 		try {
 			Internal internal = DocumentUtil.restoreInternal(mainFrame,
 					InternalKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
 			setZoomedSize(internal.getIntegerValue());
 		} catch (Exception e) {
-			e.printStackTrace();
 			setZoomedSize(SbConstants.DEFAULT_MANAGE_ZOOM);
 		}
 	}
@@ -94,6 +94,7 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 
 	@Override
 	public void initUi() {
+		System.out.println("ScenePanel.initUI()");
 		setOpaque(true);
 
 		if (type == TYPE_MAKE_UNASSIGNED) {
@@ -127,7 +128,7 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 		}
 
 		lbScene = new JLabel();
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(scene.getChapterSceneNo(true));
 		String titleText = scene.getTitleText(true, textLength);
 		buf.append(HtmlUtil.htmlToText(titleText));

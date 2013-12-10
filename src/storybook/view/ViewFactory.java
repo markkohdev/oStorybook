@@ -668,6 +668,7 @@ public class ViewFactory {
 	private void addRefreshButton(final SbView view) {
 		JButton bt = createMiniButton("icon.mini.refresh", "msg.common.refresh");
 		bt.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.setWaitingCursor();
 				mainFrame.getDocumentController().refresh(view);
@@ -681,6 +682,7 @@ public class ViewFactory {
 	private void addOptionsButton(final SbView view) {
 		JButton bt = createMiniButton("icon.mini.options", "msg.common.options");
 		bt.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.getDocumentController().showOptions(view);
 			}
@@ -692,6 +694,7 @@ public class ViewFactory {
 	private void addExportButton(final SbView view) {
 		JButton bt = createMiniButton("icon.mini.export", "msg.common.export");
 		bt.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.getDocumentController().export(view);
 			}
@@ -703,6 +706,7 @@ public class ViewFactory {
 	private void addPrintButton(final SbView view) {
 		JButton bt = createMiniButton("icon.mini.print", "msg.common.print");
 		bt.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.getDocumentController().print(view);
 			}

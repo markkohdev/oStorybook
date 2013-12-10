@@ -49,6 +49,7 @@ public class ChapterTable extends AbstractTable {
 		allowMultiDelete = false;
 	}
 
+	@Override
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
@@ -64,7 +65,6 @@ public class ChapterTable extends AbstractTable {
 				updateParts(evt);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

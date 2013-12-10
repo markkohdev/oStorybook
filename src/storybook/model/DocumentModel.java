@@ -127,12 +127,12 @@ public class DocumentModel extends AbstractModel {
 			sessionFactory.query(new ChapterDAOImpl(session));
 			commit();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void fireAgain() {
+
 		fireAgainScenes();
 		fireAgainChapters();
 		fireAgainParts();
@@ -319,6 +319,7 @@ public class DocumentModel extends AbstractModel {
 		firePropertyChange(DocumentController.InternalProps.INIT.toString(),
 				null, internals);
 	}
+
 
 	// common
 	public void setRefresh(SbView view) {

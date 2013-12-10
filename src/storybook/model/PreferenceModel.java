@@ -27,6 +27,7 @@ import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.SbConstants.PreferenceKey;
 import storybook.model.hbn.dao.PreferenceDAOImpl;
+import storybook.toolkit.CommonTools;
 import storybook.toolkit.EnvUtil;
 
 /**
@@ -129,7 +130,7 @@ public class PreferenceModel extends AbstractModel {
 	}
 
 	private File getPrefDir() {
-		File homeDir = EnvUtil.getHomeDir();
+		File homeDir = CommonTools.getHomeDir();
 		return new File(homeDir + File.separator + ".storybook5");
 	}
 

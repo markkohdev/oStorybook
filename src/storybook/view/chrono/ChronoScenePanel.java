@@ -118,7 +118,6 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 		if (DocumentController.ChronoViewProps.ZOOM.check(propName)) {
 			setZoomedSize((Integer) newValue);
 			refresh();
-			return;
 		}
 	}
 
@@ -133,7 +132,6 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 					InternalKey.CHRONO_ZOOM, SbConstants.DEFAULT_CHRONO_ZOOM);
 			setZoomedSize(internal.getIntegerValue());
 		} catch (Exception e) {
-			e.printStackTrace();
 			setZoomedSize(SbConstants.DEFAULT_CHRONO_ZOOM);
 		}
 	}
@@ -292,6 +290,7 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 		return this;
 	}
 
+	@Override
 	public Scene getScene() {
 		return this.scene;
 	}
@@ -304,10 +303,13 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 	public void focusLost(FocusEvent e) {
 		if (e.getSource() instanceof JTextComponent) {
 			JTextComponent tc = (JTextComponent) e.getSource();
-			if (CN_TITLE.equals(tc.getName())) {
-				scene.setTitle(tc.getText());
-			} else if (CN_TEXT.equals(tc.getName())) {
-				scene.setSummary(tc.getText());
+			switch (tc.getName()) {
+				case CN_TITLE:
+					scene.setTitle(tc.getText());
+					break;
+				case CN_TEXT:
+					scene.setSummary(tc.getText());
+					break;
 			}
 			mainFrame.getDocumentController().updateScene(scene);
 		}

@@ -28,7 +28,7 @@ import com.googlecode.genericdao.search.Search;
 @SuppressWarnings("serial")
 public class CheckBoxPanel extends AbstractPanel implements IRefreshable {
 
-	private MainFrame mainFrame;
+//	private MainFrame mainFrame;
 	private Map<AbstractEntity, JCheckBox> cbMap;
 	private CbPanelDecorator decorator;
 	private AbstractEntity entity;
@@ -150,6 +150,7 @@ public class CheckBoxPanel extends AbstractPanel implements IRefreshable {
 		this.decorator = decorator;
 	}
 
+	@Override
 	public MainFrame getMainFrame() {
 		return mainFrame;
 	}

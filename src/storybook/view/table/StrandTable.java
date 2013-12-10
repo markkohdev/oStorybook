@@ -69,7 +69,6 @@ public class StrandTable extends AbstractTable {
 				orderDownEntity(evt);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

@@ -10,19 +10,24 @@ import javax.swing.JEditorPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTML;
+import shef.HtmlEditorI18n;
+import shef.ui.UIUtils;
+import shef.ui.text.HTMLUtils;
+import shef.ui.text.actions.HTMLTextEditAction;
+import shef.ui.text.dialogs.ImageDialog;
 
 import storybook.toolkit.swing.SwingUtil;
-
-import net.atlanticbb.tantlinger.i18n.I18n;
+/*
+import net.atlanticbb.tantlinger.i18n.HtmlEditorI18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.HTMLUtils;
 import net.atlanticbb.tantlinger.ui.text.actions.HTMLTextEditAction;
 import net.atlanticbb.tantlinger.ui.text.dialogs.ImageDialog;
-
+*/
 @SuppressWarnings("serial")
 public class SbHTMLImageAction extends HTMLTextEditAction {
 
-	private static final I18n i18n = I18n
+	private static final HtmlEditorI18n i18n = HtmlEditorI18n
 			.getInstance("net.atlanticbb.tantlinger.shef");
 
 	public SbHTMLImageAction() {
@@ -43,6 +48,7 @@ public class SbHTMLImageAction extends HTMLTextEditAction {
 		editor.replaceSelection(d.getHTML());
 	}
 
+	@Override
 	protected void wysiwygEditPerformed(ActionEvent e, JEditorPane editor) {
 		// ImageDialog d = createDialog(editor);
 		// // d.setSize(300, 300);

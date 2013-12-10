@@ -51,7 +51,7 @@ public class DateDiffLabel extends JLabel {
 		setIcon(I18N.getIcon("icon.small.datediff"));
 	}
 
-	public int getDays() {
+	public final int getDays() {
 		return DateUtil.calculateDaysBetween(date1, date2);
 	}
 }

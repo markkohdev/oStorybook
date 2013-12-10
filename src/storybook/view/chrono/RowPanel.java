@@ -76,7 +76,6 @@ public class RowPanel extends AbstractStrandDatePanel {
 				add(colPanel, "grow");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }

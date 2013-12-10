@@ -57,6 +57,7 @@ public class DocumentController extends AbstractController {
 		UNLOAD_EDITOR("UnloadEditor");
 		final private String text;
 		private CommonProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -68,6 +69,7 @@ public class DocumentController extends AbstractController {
 		SHOW_ENTITY("ChronoShowEntity");
 		final private String text;
 		private ChronoViewProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -78,6 +80,7 @@ public class DocumentController extends AbstractController {
 		SHOW_ENTITY("BookShowEntity");
 		final private String text;
 		private BookViewProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -87,6 +90,7 @@ public class DocumentController extends AbstractController {
 		FONT_SIZE("ReadingFontSize");
 		final private String text;
 		private ReadingViewProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -97,6 +101,7 @@ public class DocumentController extends AbstractController {
 		SHOW_ENTITY("ManageShowEntity");
 		final private String text;
 		private ManageViewProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -105,6 +110,7 @@ public class DocumentController extends AbstractController {
 		BALLOON("MemoriaBalloon");
 		final private String text;
 		private MemoriaViewProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	}
@@ -118,6 +124,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateChapter");
 		final private String text;
 		private ChapterProps(String text) { this.text = text; }
+		@Override
 		public String toString() {return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -132,6 +139,7 @@ public class DocumentController extends AbstractController {
 		CHANGE("ChangePart");
 		final private String text;
 		private PartProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -145,6 +153,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateLocation");
 		final private String text;
 		private LocationProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -158,6 +167,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdatePerson");
 		final private String text;
 		private PersonProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -171,6 +181,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateGender");
 		final private String text;
 		private GenderProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -186,6 +197,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateCategory");
 		final private String text;
 		private CategoryProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -201,6 +213,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateStrand");
 		final private String text;
 		private StrandProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -214,6 +227,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateIdea");
 		final private String text;
 		private IdeaProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -227,6 +241,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateTag");
 		final private String text;
 		private TagProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -253,6 +268,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateTagLink");
 		final private String text;
 		private TagLinkProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -266,6 +282,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateItemLink");
 		final private String text;
 		private ItemLinkProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -293,6 +310,7 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateInternal");
 		final private String text;
 		private InternalProps(String text) { this.text = text; }
+		@Override
 		public String toString() { return text; }
 		public boolean check(String prop) { return text.equals(prop); }
 	};
@@ -421,7 +439,6 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -485,7 +502,6 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -549,7 +565,6 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

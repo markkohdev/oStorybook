@@ -159,6 +159,7 @@ public class DocumentUtil {
 		H2FileFilter filter = new H2FileFilter();
 		fc.addChoosableFileFilter(filter);
 		fc.setFileFilter(filter);
+
 		int ret = fc.showOpenDialog(null);
 		if (ret == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();

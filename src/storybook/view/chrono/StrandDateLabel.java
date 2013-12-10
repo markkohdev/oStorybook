@@ -35,7 +35,7 @@ public class StrandDateLabel extends DateLabel implements IRefreshable {
 	}
 
 	@Override
-	public void refresh() {
+	public final void refresh() {
 		String text = getDateText();
 		setText(text);
 		setToolTipText("<html>" + text + "<br>" + strand);

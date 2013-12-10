@@ -49,6 +49,7 @@ public class PersonTable extends AbstractTable {
 		columns = SbColumnFactory.getInstance().getPersonColumns();
 	}
 
+	@Override
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
@@ -67,7 +68,6 @@ public class PersonTable extends AbstractTable {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

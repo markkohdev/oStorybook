@@ -3,6 +3,7 @@ package storybook.controller;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,8 +26,8 @@ public abstract class AbstractController implements PropertyChangeListener {
 	public AbstractController() {
 		// attachedViews = new ArrayList<AbstractPanel>();
 
-		attachedViews = new CopyOnWriteArrayList<Component>();
-		attachedModels = new ArrayList<AbstractModel>();
+		attachedViews = new CopyOnWriteArrayList<>();
+		attachedModels = new ArrayList<>();
 	}
 
 	public void attachModel(AbstractModel model) {
@@ -75,12 +76,14 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	public String getInfoAttachedViews(boolean html) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		int i = 0;
 		int size = attachedViews.size();
 		for (Component view : attachedViews) {
-			buf.append("attached view " + i + "/" + size + ": "
-					+ view.getClass().getSimpleName());
+			buf.append("attached view ")
+				.append(i).append("/")
+				.append(size).append(": ")
+				.append(view.getClass().getSimpleName());
 			if (html) {
 				buf.append("\n<br>");
 			} else {
@@ -100,6 +103,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 		}
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		synchronized (attachedViews) {
 			// must be in synchronized block
@@ -142,6 +146,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 
 	protected synchronized void setModelProperty(String propertyName,
 			Object newValue) {
+		System.out.println("setModelProperty("+propertyName.toString()+","+newValue.toString()+")");
 		for (AbstractModel model : attachedModels) {
 			Method method = null;
 			Class<?>[] classes = null;
@@ -164,26 +169,25 @@ public abstract class AbstractController implements PropertyChangeListener {
 				} else {
 					method.invoke(model);
 				}
-			} catch (Exception e) {
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				System.err
 						.println("AbstractController.setModelProperty(): method:"
 								+ method);
 				System.err
 						.println("AbstractController.setModelProperty(): classes:"
 								+ classes);
-				e.printStackTrace();
 			}
 		}
 	}
 
 	protected synchronized void setModelProperty(String propertyName) {
+		System.out.println("setModelProperty("+propertyName.toString()+")");
 		for (AbstractModel model : attachedModels) {
 			try {
 				Method method = model.getClass()
 						.getMethod("set" + propertyName);
 				method.invoke(model);
-			} catch (Exception ex) {
-				ex.printStackTrace();
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
 			}
 		}
 	}

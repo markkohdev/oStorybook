@@ -21,6 +21,7 @@ package storybook.view.manage.dnd;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -47,6 +48,7 @@ public class SceneTransferHandler extends TransferHandler {
 		this.mainFrame = mainFrame;
 	}
 
+	@Override
 	public boolean importData(JComponent comp, Transferable t) {
 		if (canImport(comp, t.getTransferDataFlavors())) {
 			DTScenePanel destDtScene = (DTScenePanel) comp;
@@ -70,8 +72,7 @@ public class SceneTransferHandler extends TransferHandler {
 				default:
 					break;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (UnsupportedFlavorException | IOException | NumberFormatException e) {
 			}
 		}
 		return false;

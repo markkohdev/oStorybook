@@ -42,10 +42,10 @@ public class LocationCbPanelDecorator extends CbPanelDecorator {
 		String country = WordUtils.capitalize(p.getCountry());
 		String city = WordUtils.capitalize(p.getCity());
 		if (!oldCountry.equals(country) || !oldCity.equals(city)) {
-			StringBuffer buf = new StringBuffer();
+			StringBuilder buf = new StringBuilder();
 			buf.append("<html>");
 			buf.append("<p style='margin-top:5px'>");
-			buf.append("<b>" + city + "</b>");
+			buf.append("<b>").append(city).append("</b>");
 			if (!country.isEmpty()) {
 				if (!city.isEmpty()) {
 					buf.append(" (");

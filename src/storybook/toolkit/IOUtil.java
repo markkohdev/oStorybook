@@ -25,13 +25,45 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import storybook.model.DbFile;
+import storybook.model.hbn.entity.AbstractEntity;
+import storybook.view.MainFrame;
+
 /**
  * @author martin
  *
  */
 public class IOUtil {
 
-	public static String readFileAsString(String filePath)
+  public static String getEntityFileNameForExport(MainFrame paramMainFrame, String paramString, AbstractEntity paramAbstractEntity)
+  {
+    String str1 = "";
+    try
+    {
+      String str2 = paramMainFrame.getDbFile().getName();
+      if (paramAbstractEntity == null)
+        str1 = str2 + " (" + I18N.getMsg("msg.book.info") + ")";
+      else
+        str1 = str2 + " (" + paramString + ") - " + paramAbstractEntity.toString();
+      str1 = cleanupFilename(str1);
+      str1 = str1.replaceAll("\\[", "(");
+      str1 = str1.replaceAll("\\]", ")");
+      str1 = str1.substring(0, 50);
+    }
+    catch (Exception localException)
+    {
+    }
+    return str1;
+  }
+
+  public static String cleanupFilename(String paramString)
+  {
+    String str = paramString.replaceAll("[\\/:*?\"<>|]", "");
+    str = str.replaceAll("\\\\", "");
+    return str;
+  }
+
+  public static String readFileAsString(String filePath)
 			throws java.io.IOException {
 		byte[] buffer = new byte[(int) new File(filePath).length()];
 		BufferedInputStream f = null;

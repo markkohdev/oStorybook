@@ -42,7 +42,7 @@ abstract public class AbstractRenameDialog extends AbstractDialog implements
 		ActionListener {
 
 	private JTextField tfNewName;
-	protected MainFrame mainFrame;
+//	protected MainFrame mainFrame;
 	protected JComboBox combo;
 
 	public AbstractRenameDialog(MainFrame mainFrame) {
@@ -121,8 +121,10 @@ abstract public class AbstractRenameDialog extends AbstractDialog implements
 		return cob;
 	}
 
+	@Override
 	protected AbstractAction getCancelAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				getThis().dispose();
 			}
@@ -136,6 +138,7 @@ abstract public class AbstractRenameDialog extends AbstractDialog implements
 	@Override
 	protected AbstractAction getOkAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				String oldValue = (String) combo.getSelectedItem();
 				String newValue = tfNewName.getText();
@@ -149,6 +152,7 @@ abstract public class AbstractRenameDialog extends AbstractDialog implements
 		combo.setSelectedItem(value);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		JComboBox cb = (JComboBox) e.getSource();
 		String val = (String) cb.getSelectedItem();

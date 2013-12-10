@@ -39,8 +39,9 @@ import storybook.view.dialog.AbstractDialog;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
-public abstract class AbstractFileDialog extends AbstractDialog implements
-		CaretListener {
+public abstract class AbstractFileDialog
+		extends AbstractDialog
+		implements CaretListener {
 
 	protected JLabel lbWarning;
 	protected JButton btOk;
@@ -167,6 +168,7 @@ public abstract class AbstractFileDialog extends AbstractDialog implements
 	@Override
 	protected AbstractAction getOkAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				if (tfName.getText().isEmpty() || tfDir.getText().isEmpty()) {
 					btOk.setEnabled(false);
@@ -195,6 +197,7 @@ public abstract class AbstractFileDialog extends AbstractDialog implements
 
 	private AbstractAction getChooseFolderAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				final JFileChooser fc = new JFileChooser(tfDir.getText());
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

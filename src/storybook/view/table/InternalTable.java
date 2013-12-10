@@ -47,6 +47,7 @@ public class InternalTable extends AbstractTable {
 		columns = SbColumnFactory.getInstance().getInternalColumns();
 	}
 
+	@Override
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
@@ -60,7 +61,6 @@ public class InternalTable extends AbstractTable {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

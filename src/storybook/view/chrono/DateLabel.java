@@ -26,7 +26,7 @@ public class DateLabel extends JLabel {
 		setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
-	public String getDateText() {
+	public final String getDateText() {
 		if (date == null) {
 			return "";
 		}

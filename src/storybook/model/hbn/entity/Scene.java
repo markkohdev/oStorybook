@@ -40,7 +40,7 @@ import storybook.toolkit.html.HtmlUtil;
  */
 public class Scene extends AbstractEntity implements Comparable<Scene> {
 
-	private static final long serialVersionUID = -6602639398552542281L;
+	//private static final long serialVersionUID = -6602639398552542281L;
 
 	private Chapter chapter;
 	private Strand strand;
@@ -85,6 +85,7 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	 *   generator-class="increment"
 	 *   unsaved-value="null"
 	 */
+	@Override
 	public Long getId() {
 		return this.id;
 	}
@@ -264,7 +265,7 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	}
 
 	public String getFullTitle(boolean timestamp, boolean truncate) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(getChapterSceneNo());
 		buf.append(getTitle(truncate));
 		if (timestamp && hasSceneTs()) {
@@ -287,7 +288,7 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	}
 
 	public String getChapterSceneNo(boolean appendColon) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		if (hasChapter()) {
 			buf.append(chapter.getChapterno());
 		} else {
@@ -309,13 +310,13 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		if (!hasChapter()) {
 			return "";
 		}
-		StringBuffer buf = new StringBuffer("<html>");
+		StringBuilder buf = new StringBuilder("<html>");
 		buf.append(I18N.getMsgColon("msg.common.chapter"));
-		buf.append(" " + getChapter().toString());
+		buf.append(" ").append(getChapter().toString());
 		buf.append("<br>");
 		if (getChapter().hasPart()) {
 			buf.append(I18N.getMsgColon("msg.common.part"));
-			buf.append(" " + getChapter().getPart().toString());
+			buf.append(" ").append(getChapter().getPart().toString());
 			buf.append("<br>");
 		}
 		return buf.toString();
@@ -536,7 +537,9 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		}
 		Scene test = (Scene) obj;
 
-		if (id != null ? !id.equals(test.id) : test.id != null) return false;
+		if (id != null ? !id.equals(test.id) : test.id != null) {
+			return false;
+		}
 		boolean ret = true;
 		ret = ret && equalsIntegerNullValue(sceneno, test.getSceneno());
 		ret = ret && equalsIntegerNullValue(status, test.getStatus());

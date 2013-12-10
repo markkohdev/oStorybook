@@ -60,7 +60,7 @@ public class ConfirmMultiDeletionDlg extends AbstractDialog {
 		JLabel lbQuestion = new JLabel(
 				I18N.getMsg("msg.common.multi.delete.question"));
 
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(HtmlUtil.getHeadWithCSS());
 		for (AbstractEntity entity : entities) {
 			buf.append("<p style='margin-bottom:10px'>\n");

@@ -47,6 +47,7 @@ public class GenderTable extends AbstractTable {
 		columns = SbColumnFactory.getInstance().getGenderColumns();
 	}
 
+	@Override
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
@@ -60,7 +61,6 @@ public class GenderTable extends AbstractTable {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

@@ -14,7 +14,7 @@ public abstract class AbstractGradientPanel extends AbstractPanel {
 	private Color endBgColor = Color.black;
 	private boolean showBgGradient = true;
 
-	protected MainFrame mainFrame;
+//	protected MainFrame mainFrame;
 
 	public AbstractGradientPanel() {
 		showBgGradient = false;
@@ -33,6 +33,7 @@ public abstract class AbstractGradientPanel extends AbstractPanel {
 		this.endBgColor = endBgColor;
 	}
 
+	@Override
 	public abstract void modelPropertyChange(PropertyChangeEvent evt);
 
 	@Override

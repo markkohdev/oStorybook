@@ -63,21 +63,25 @@ public class BookPanel extends AbstractScrollPanel {
 		this.mainFrame = mainFrame;
 	}
 
+	@Override
 	protected void setZoomValue(int val){
 		DocumentUtil.storeInternal(mainFrame, InternalKey.BOOK_ZOOM, val);
 		mainFrame.getDocumentController().bookSetZoom(val);
 	}
 
+	@Override
 	protected int getZoomValue(){
 		Internal internal = DocumentUtil.restoreInternal(mainFrame,
 				InternalKey.BOOK_ZOOM, SbConstants.DEFAULT_BOOK_ZOOM);
 		return internal.getIntegerValue();
 	}
 
+	@Override
 	protected int getMinZoomValue() {
 		return SbConstants.MIN_BOOK_ZOOM;
 	}
 
+	@Override
 	protected int getMaxZoomValue() {
 		return SbConstants.MAX_BOOK_ZOOM;
 	}
@@ -213,7 +217,7 @@ public class BookPanel extends AbstractScrollPanel {
 
 	private static void dispatchToBookInfoPanels(Container cont,
 			PropertyChangeEvent evt) {
-		List<Component> ret = new ArrayList<Component>();
+		List<Component> ret = new ArrayList<>();
 		SwingUtil.findComponentsByClass(cont, BookInfoPanel.class, ret);
 		for (Component comp : ret) {
 			BookInfoPanel panel = (BookInfoPanel) comp;
@@ -223,7 +227,7 @@ public class BookPanel extends AbstractScrollPanel {
 
 	private static void dispatchToBookTextPanels(Container cont,
 			PropertyChangeEvent evt) {
-		List<Component> ret = new ArrayList<Component>();
+		List<Component> ret = new ArrayList<>();
 		SwingUtil.findComponentsByClass(cont, BookTextPanel.class, ret);
 		for (Component comp : ret) {
 			BookTextPanel panel = (BookTextPanel) comp;

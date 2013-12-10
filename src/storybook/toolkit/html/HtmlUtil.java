@@ -1,9 +1,11 @@
 package storybook.toolkit.html;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.text.BadLocationException;
 
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLWriter;
@@ -81,8 +83,7 @@ public class HtmlUtil {
 			HTMLWriter htmlWriter = new HtmlBodyWriter(writer, doc);
 			htmlWriter.write();
 			return writer.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException | BadLocationException e) {
 		}
 		return "";
 	}

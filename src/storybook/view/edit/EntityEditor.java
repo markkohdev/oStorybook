@@ -143,7 +143,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	private AbstractEntityHandler entityHandler;
 
-	private MainFrame mainFrame;
+//	private MainFrame mainFrame;
 	private DocumentController ctrl;
 
 	private AbstractEntity entity;
@@ -163,12 +163,14 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	private AbstractEntity origEntity = null;
 
 	public EntityEditor(MainFrame mainFrame) {
+		System.out.println("new EntityEditor("+mainFrame.getName()+")");
 		this.mainFrame = mainFrame;
 		this.ctrl = mainFrame.getDocumentController();
 	}
 
 	@Override
 	public void init() {
+		System.out.println("EntityEditor.init()");
 		containers = new Vector<JPanel>();
 		inputComponents = new Vector<JComponent>();
 		rbgPanels = new HashMap<RadioButtonGroup, RadioButtonGroupPanel>();
@@ -181,7 +183,6 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 				leaveOpen = internal.getBooleanValue();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			leaveOpen = SbConstants.DEFAULT_LEAVE_EDITOR_OPEN;
 		}
 	}
@@ -191,6 +192,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	 */
 	@Override
 	public void initUi() {
+		System.out.println("EntityEditor.initUi()");
 		setLayout(new MigLayout("fill,wrap"));
 		setBackground(Color.white);
 		setMinimumSize(MINIMUM_SIZE);
@@ -499,6 +501,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
+		System.out.println("EntityEditor.modelPropertyChange("+evt.getPropertyName()+")");
 		String propName = evt.getPropertyName();
 
 		// not used
@@ -986,12 +989,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 						// val);
 					}
 				}
-			} catch (NumberFormatException ex1) {
+			} catch (	NumberFormatException | NullPointerException ex1) {
 				// ignore
-			} catch (NullPointerException ex2) {
-				// ignore;
 			} catch (Exception ex) {
-				ex.printStackTrace();
 			}
 		}
 
@@ -1132,7 +1132,6 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			origEntity = entityHandler.createNewEntity();
 			EntityUtil.copyEntityProperties(mainFrame, entity, origEntity);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

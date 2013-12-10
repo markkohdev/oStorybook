@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package storybook.view;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -51,8 +52,11 @@ public class RadioButtonGroup {
 		try {
 			method = entity.getClass().getMethod(methodName);
 			method.invoke(entity);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NoSuchMethodException
+			| SecurityException
+			| IllegalAccessException
+			| IllegalArgumentException
+			| InvocationTargetException e) {
 		}
 	}
 
@@ -64,8 +68,11 @@ public class RadioButtonGroup {
 			method = entity.getClass().getMethod(methodName);
 			Object ret = method.invoke(entity);
 			return (Boolean) ret;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NoSuchMethodException
+			| SecurityException
+			| IllegalAccessException
+			| IllegalArgumentException
+			| InvocationTargetException e) {
 		}
 		return null;
 	}

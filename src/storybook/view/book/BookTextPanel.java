@@ -120,7 +120,6 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 					SbConstants.DEFAULT_BOOK_HEIGHT_FACTOR);
 			heightFactor = internal.getIntegerValue();
 		} catch (Exception e) {
-			e.printStackTrace();
 			setZoomedSize(SbConstants.DEFAULT_BOOK_ZOOM);
 			heightFactor = SbConstants.DEFAULT_BOOK_HEIGHT_FACTOR;
 		}

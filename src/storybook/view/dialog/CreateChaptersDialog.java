@@ -86,6 +86,7 @@ public class CreateChaptersDialog extends AbstractDialog {
 	@Override
 	protected AbstractAction getOkAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				createChapters();
 				getThis().dispose();

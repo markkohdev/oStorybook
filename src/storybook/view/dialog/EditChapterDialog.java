@@ -17,16 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package storybook.view.dialog;
-
+/*
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import storybook.model.hbn.entity.Chapter;
-
+*/
 /**
  * @author martin
  *
  */
+/*
 @SuppressWarnings("serial")
 @Deprecated
 public class EditChapterDialog extends JDialog {
@@ -67,3 +68,4 @@ public class EditChapterDialog extends JDialog {
 		return this;
 	}
 }
+*/

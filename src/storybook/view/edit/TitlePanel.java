@@ -62,7 +62,7 @@ public class TitlePanel extends AbstractPanel {
 
 	public void refresh(AbstractEntity entity) {
 		lbIcon.setIcon(EntityUtil.getEntityIcon(entity));
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append("<html>\n");
 		buf.append(EntityUtil.getEntityFullTitle(entity));
 		buf.append("\n");

@@ -224,7 +224,7 @@ public class DocumentPreferencesDialog extends AbstractDialog {
 		TagDAOImpl tagDao = new TagDAOImpl(session);
 		ItemDAOImpl itemDao = new ItemDAOImpl(session);
 
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append("<html>");
 		buf.append(HtmlUtil.getHeadWithCSS());
 		buf.append("<body><table>");
@@ -425,6 +425,7 @@ public class DocumentPreferencesDialog extends AbstractDialog {
 
 	private AbstractAction getCopyTextAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				HtmlSelection selection = new HtmlSelection(tpInfo.getText());
 				Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();

@@ -21,8 +21,10 @@ package storybook.model;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -50,6 +52,7 @@ import org.apache.commons.beanutils.converters.SqlTimestampConverter;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import storybook.SbConstants;
+
 import storybook.action.ChapterOrderByTimestampAction;
 import storybook.action.ChapterReSortAction;
 import storybook.action.DeleteEntityAction;
@@ -62,7 +65,9 @@ import storybook.action.ShowInGoogleMapsAction;
 import storybook.action.ShowInManageViewAction;
 import storybook.action.ShowInMemoriaAction;
 import storybook.action.ShowInfoAction;
+
 import storybook.controller.DocumentController;
+
 import storybook.model.handler.AbstractEntityHandler;
 import storybook.model.handler.CategoryEntityHandler;
 import storybook.model.handler.ChapterEntityHandler;
@@ -78,6 +83,7 @@ import storybook.model.handler.SceneEntityHandler;
 import storybook.model.handler.StrandEntityHandler;
 import storybook.model.handler.TagEntityHandler;
 import storybook.model.handler.TagLinkEntityHandler;
+
 import storybook.model.hbn.dao.AttributeDAOImpl;
 import storybook.model.hbn.dao.CategoryDAOImpl;
 import storybook.model.hbn.dao.ChapterDAOImpl;
@@ -111,8 +117,8 @@ import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.model.hbn.entity.Tag;
 import storybook.model.hbn.entity.TagLink;
-import storybook.toolkit.DateUtil;
 import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.DateUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.TextUtil;
 import storybook.toolkit.html.HtmlUtil;
@@ -181,7 +187,6 @@ public class EntityUtil {
 		if (!useHtmlScenes && !useHtmlDescr) {
 			return;
 		}
-
 		DocumentModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 
@@ -261,6 +266,7 @@ public class EntityUtil {
 		}
 
 		model.commit();
+
 	}
 
 	public static void convertHtmlToPlainText(MainFrame mainFrame) {
@@ -269,7 +275,6 @@ public class EntityUtil {
 		if (!usePlainTextScenes && !usePlainTextDescr) {
 			return;
 		}
-
 		DocumentModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 
@@ -351,6 +356,7 @@ public class EntityUtil {
 		}
 
 		model.commit();
+
 	}
 
 	public static List<Long> getReadOnlyIds(AbstractEntity entity) {
@@ -402,8 +408,7 @@ public class EntityUtil {
 				System.out.println("EntityUtil.printProperties(): " + name
 						+ ": '" + val + "' " + isNull);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 		}
 	}
 
@@ -441,10 +446,11 @@ public class EntityUtil {
 				model.setDeleteItemLink(link);
 			}
 		}
+
 	}
 
-	public static void copyEntityProperties(MainFrame mainFrame,
-			AbstractEntity entity, AbstractEntity newEntity) {
+	public static void copyEntityProperties(MainFrame mainFrame,AbstractEntity entity,
+		AbstractEntity newEntity) {
 		try {
 			ConvertUtils.register(new DateConverter(null), Date.class);
 			ConvertUtils.register(new SqlTimestampConverter(null),
@@ -456,8 +462,7 @@ public class EntityUtil {
 		}
 	}
 
-	public static AbstractEntity cloneEntity(MainFrame mainFrame,
-			AbstractEntity entity) {
+	public static AbstractEntity cloneEntity(MainFrame mainFrame,AbstractEntity entity) {
 		try {
 			ConvertUtils.register(new DateConverter(null), Date.class);
 			ConvertUtils.register(new SqlTimestampConverter(null),
@@ -470,14 +475,14 @@ public class EntityUtil {
 		return null;
 	}
 
-	public static void copyEntity(MainFrame mainFrame, AbstractEntity entity) {
-//		AbstractEntityHandler handler = getEntityHandler(mainFrame, entity);
-//		AbstractEntity newEntity = handler.createNewEntity();
+	public static void copyEntity(MainFrame mainFrame,AbstractEntity entity) {
+		AbstractEntityHandler handler = getEntityHandler(mainFrame, entity);
+		AbstractEntity newEntity = handler.createNewEntity();
 		DocumentModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
-//		copyEntityProperties(mainFrame, entity, newEntity);
-		AbstractEntity newEntity = cloneEntity(mainFrame, entity);
+		copyEntityProperties(mainFrame, entity, newEntity);
+//		AbstractEntity newEntity = cloneEntity(mainFrame, entity);
 		markCopiedEntity(mainFrame, newEntity);
 
 		List<Person> persons = new ArrayList<Person>();
@@ -531,10 +536,10 @@ public class EntityUtil {
 			person.setAttributes(copyAttributes);
 		}
 		ctrl.updateEntity(entity);
+
 	}
 
-	private static void markCopiedEntity(MainFrame mainFrame,
-			AbstractEntity entity) {
+	private static void markCopiedEntity(	MainFrame mainFrame,AbstractEntity entity) {
 		String copyStr = "(" + I18N.getMsg("msg.common.copy") + ") ";
 		if (entity instanceof Scene) {
 			Scene e = (Scene) entity;
@@ -675,8 +680,7 @@ public class EntityUtil {
 		return false;
 	}
 
-	public static JPopupMenu createPopupMenu(MainFrame mainFrame,
-			AbstractEntity entity) {
+	public static JPopupMenu createPopupMenu(MainFrame mainFrame,AbstractEntity entity) {
 		JPopupMenu menu = new JPopupMenu();
 		if (entity == null) {
 			return null;
@@ -732,8 +736,7 @@ public class EntityUtil {
 		return false;
 	}
 
-	public static List<Attribute> getEntityAttributes(MainFrame mainFrame,
-			AbstractEntity entity) {
+	public static List<Attribute> getEntityAttributes(MainFrame mainFrame,AbstractEntity entity) {
 		if (entity.isTransient()) {
 			return new ArrayList<Attribute>();
 		}
@@ -1684,4 +1687,5 @@ public class EntityUtil {
 		}
 		return "";
 	}
+
 }

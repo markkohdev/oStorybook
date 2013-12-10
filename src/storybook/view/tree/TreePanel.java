@@ -159,7 +159,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		}
 		if (oldValue instanceof AbstractEntity) {
 			refreshTree();
-			return;
+//			return;
 		}
 	}
 
@@ -261,6 +261,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 		for (ToggleIconButton button : toggleButtonList) {
 			button.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (e.getButton() == MouseEvent.BUTTON3) {
 						toggle((ToggleIconButton) e.getSource());
@@ -632,6 +633,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getTogglePersonsAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btTooglePersons);
 			}
@@ -640,6 +642,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getToggleLocationsAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btToogleLocations);
 			}
@@ -648,6 +651,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getToggleTagsAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btToogleTags);
 			}
@@ -656,6 +660,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getToggleItemsAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btToogleItems);
 			}
@@ -664,6 +669,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getToggleScenesAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btToogleScenes);
 			}
@@ -672,6 +678,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getToggleStrandsAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btToogleStrands);
 			}
@@ -680,6 +687,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getTogglePartsAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btToogleParts);
 			}
@@ -688,6 +696,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getToggleIdeaAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				toggleSingle(btToogleIdeas);
 			}
@@ -715,6 +724,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getShowAllAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				for (ToggleIconButton button : toggleButtonList) {
 					button.setSelected(true);
@@ -726,6 +736,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getShowNoneAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				for (ToggleIconButton button : toggleButtonList) {
 					button.setSelected(false);
@@ -737,6 +748,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getExpandAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				for (int i = 0; i < tree.getRowCount(); i++) {
 					tree.expandRow(i);
@@ -747,11 +759,13 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	private AbstractAction getCollapseAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				DefaultMutableTreeNode currentNode = topNode.getNextNode();
 				do {
-					if (currentNode.getLevel() == 1)
+					if (currentNode.getLevel() == 1) {
 						tree.collapsePath(new TreePath(currentNode.getPath()));
+					}
 					currentNode = currentNode.getNextNode();
 				} while (currentNode != null);
 			}
@@ -771,7 +785,8 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			return;
 		}
 		Object userObj = selectedNode.getUserObject();
-		if (!(userObj instanceof AbstractEntity || userObj instanceof AbstractStringCategory)) {
+		if (!(userObj instanceof AbstractEntity
+			|| userObj instanceof AbstractStringCategory)) {
 			return;
 		}
 		JPopupMenu menu = null;

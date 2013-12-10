@@ -133,7 +133,7 @@ public class SceneTable extends AbstractTable {
 				if (newValue instanceof SceneState) {
 					sceneStateCombo.setSelectedItem((SceneState) newValue);
 				}
-				return;
+//				return;
 			}
 
 			// show only scenes from current part
@@ -149,7 +149,6 @@ public class SceneTable extends AbstractTable {
 //				initTableModel(evt2);
 //			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

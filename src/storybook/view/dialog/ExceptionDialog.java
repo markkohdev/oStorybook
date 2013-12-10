@@ -65,7 +65,7 @@ public class ExceptionDialog extends AbstractDialog {
 
 		ta = new JTextArea();
 		ta.setEditable(false);
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append("Exception Message:\n");
 		buf.append(e.getLocalizedMessage());
 		buf.append("\n\nStack Trace:\n");
@@ -90,6 +90,7 @@ public class ExceptionDialog extends AbstractDialog {
 
 	private AbstractAction getCopyTextAction() {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent evt) {
 				HtmlSelection selection = new HtmlSelection(ta.getText());
 				Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();

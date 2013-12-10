@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	protected Vector<SbColumn> columns;
 
-	protected MainFrame mainFrame;
+//	protected MainFrame mainFrame;
 	protected DocumentController ctrl;
 
 	protected JPanel optionsPanel;
@@ -361,7 +362,6 @@ public abstract class AbstractTable extends AbstractPanel implements
 				tableModel.addRow(cols);
 			}
 		} catch (ClassCastException e) {
-			e.printStackTrace();
 		}
 
 		table.packAll();
@@ -415,8 +415,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 				} else {
 					cols.add(ret.toString());
 				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
 			}
 		}
 		model.commit();
@@ -484,7 +483,6 @@ public abstract class AbstractTable extends AbstractPanel implements
 			Long id = Long.parseLong(dataVector.get(modelIndex).get(0));
 			return getEntity(id);
 		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 		return null;
 	}
@@ -555,7 +553,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 		if (ComponentName.BT_ORDER_DOWN.check(compName)) {
 			sendOrderDownEntity(row);
-			return;
+//			return;
 		}
 	}
 

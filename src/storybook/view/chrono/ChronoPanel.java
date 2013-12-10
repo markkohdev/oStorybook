@@ -91,21 +91,25 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 		strandLabels = new ArrayList<JLabel>();
 	}
 
+	@Override
 	protected void setZoomValue(int val){
 		DocumentUtil.storeInternal(mainFrame, InternalKey.CHRONO_ZOOM, val);
 		mainFrame.getDocumentController().chronoSetZoom(val);
 	}
 
+	@Override
 	protected int getZoomValue() {
 		Internal internal = DocumentUtil.restoreInternal(mainFrame,
 				InternalKey.CHRONO_ZOOM, SbConstants.DEFAULT_CHRONO_ZOOM);
 		return internal.getIntegerValue();
 	}
 
+	@Override
 	protected int getMinZoomValue() {
 		return SbConstants.MIN_CHRONO_ZOOM;
 	}
 
+	@Override
 	protected int getMaxZoomValue() {
 		return SbConstants.MAX_CHRONO_ZOOM;
 	}
@@ -278,7 +282,6 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 					SbConstants.DEFAULT_CHRONO_SHOW_DATE_DIFFERENCE);
 			showDateDiff = internal.getBooleanValue();
 		} catch (Exception e) {
-			e.printStackTrace();
 			layoutDirection = SbConstants.DEFAULT_CHRONO_LAYOUT_DIRECTION;
 			showDateDiff = SbConstants.DEFAULT_CHRONO_SHOW_DATE_DIFFERENCE;
 		}

@@ -87,9 +87,10 @@ public class SbConstants {
 		/* SB5 suppress Pro
 		IS_PRO_VERSION("true"),
 		*/
-		IS_BETA_VERSION("false");
+		IS_BETA_VERSION("false"),
+		USER_HOME_DIR("storybook5");
 		final private String text;
-		private Storybook(String text) { this.text = text; }
+		private Storybook(String text) {this.text = text; }
 		@Override
 		public String toString() { return text; }
 	}

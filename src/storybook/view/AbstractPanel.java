@@ -16,11 +16,13 @@ public abstract class AbstractPanel extends JPanel implements IRefreshable,
 	public AbstractPanel() {
 	}
 
-	public AbstractPanel(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
+	public AbstractPanel(MainFrame mainframe) {
+		mainFrame = mainframe;
 	}
+	@Override
 	public abstract void init();
 
+	@Override
 	public abstract void initUi();
 
 	public abstract void modelPropertyChange(PropertyChangeEvent evt);
@@ -30,6 +32,7 @@ public abstract class AbstractPanel extends JPanel implements IRefreshable,
 		initUi();
 	}
 
+	@Override
 	public void refresh() {
 		removeAll();
 		init();

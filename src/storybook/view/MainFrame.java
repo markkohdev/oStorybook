@@ -33,9 +33,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 //import java.net.MalformedURLException;
-import java.net.URL;
+//import java.net.URL;
 import java.util.HashMap;
-import java.util.Locale;
+//import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;

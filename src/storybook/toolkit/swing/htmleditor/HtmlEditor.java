@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,12 +65,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.undo.UndoManager;
-
-import net.atlanticbb.tantlinger.i18n.I18n;
+/*
+import net.atlanticbb.tantlinger.i18n.HtmlEditorI18n;
 import net.atlanticbb.tantlinger.ui.DefaultAction;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
@@ -92,7 +94,7 @@ import net.atlanticbb.tantlinger.ui.text.actions.HTMLLinkAction;
 import net.atlanticbb.tantlinger.ui.text.actions.HTMLTableAction;
 import net.atlanticbb.tantlinger.ui.text.actions.HTMLTextEditAction;
 import net.atlanticbb.tantlinger.ui.text.actions.SpecialCharAction;
-import net.miginfocom.swing.MigLayout;
+*/
 import novaworx.syntax.SyntaxFactory;
 import novaworx.textpane.SyntaxDocument;
 import novaworx.textpane.SyntaxGutter;
@@ -101,6 +103,7 @@ import novaworx.textpane.SyntaxGutterBase;
 import org.bushe.swing.action.ActionList;
 import org.bushe.swing.action.ActionManager;
 import org.bushe.swing.action.ActionUIFactory;
+
 import storybook.SbConstants.PreferenceKey;
 import storybook.SbConstants.Spelling;
 import storybook.model.hbn.entity.Preference;
@@ -109,6 +112,32 @@ import storybook.toolkit.PrefUtil;
 import storybook.toolkit.html.HtmlUtil;
 
 import com.inet.jortho.SpellChecker;
+
+import net.miginfocom.swing.MigLayout;
+
+import shef.HtmlEditorI18n;
+import shef.ui.DefaultAction;
+import shef.ui.UIUtils;
+import shef.ui.text.CompoundUndoManager;
+import shef.ui.text.Entities;
+import shef.ui.text.HTMLUtils;
+import shef.ui.text.IndentationFilter;
+import shef.ui.text.SourceCodeEditor;
+import shef.ui.text.WysiwygHTMLEditorKit;
+import shef.ui.text.actions.ClearStylesAction;
+import shef.ui.text.actions.FindReplaceAction;
+import shef.ui.text.actions.HTMLEditorActionFactory;
+import shef.ui.text.actions.HTMLElementPropertiesAction;
+import shef.ui.text.actions.HTMLFontAction;
+import shef.ui.text.actions.HTMLFontColorAction;
+import shef.ui.text.actions.HTMLHorizontalRuleAction;
+import shef.ui.text.actions.HTMLImageAction;
+import shef.ui.text.actions.HTMLInlineAction;
+import shef.ui.text.actions.HTMLLineBreakAction;
+import shef.ui.text.actions.HTMLLinkAction;
+import shef.ui.text.actions.HTMLTableAction;
+import shef.ui.text.actions.HTMLTextEditAction;
+import shef.ui.text.actions.SpecialCharAction;
 
 /**
  * Based on HTMLEditorPane by SHEF / Bob Tantlinger.<br>
@@ -120,7 +149,7 @@ import com.inet.jortho.SpellChecker;
 @SuppressWarnings("serial")
 public class HtmlEditor extends JPanel {
 
-	private static final I18n i18n = I18n
+	private static final HtmlEditorI18n i18n = HtmlEditorI18n
 			.getInstance("net.atlanticbb.tantlinger.shef");
 
 	private static final String INVALID_TAGS[] = { "html", "head", "body",
@@ -368,6 +397,7 @@ public class HtmlEditor extends JPanel {
 
 		// paragraphs
 		PropertyChangeListener propLst = new PropertyChangeListener() {
+			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals("selected")) {
 					if (evt.getNewValue().equals(Boolean.TRUE)) {
@@ -381,8 +411,9 @@ public class HtmlEditor extends JPanel {
 		};
 		for (Iterator it = blockActs.iterator(); it.hasNext();) {
 			Object o = it.next();
-			if (o instanceof DefaultAction)
+			if (o instanceof DefaultAction) {
 				((DefaultAction) o).addPropertyChangeListener(propLst);
+			}
 		}
 		paragraphCombo = new JComboBox(toArray(blockActs));
 		paragraphCombo.setFont(comboFont);
@@ -414,6 +445,7 @@ public class HtmlEditor extends JPanel {
 		final JPopupMenu sizePopup = ActionUIFactory.getInstance()
 				.createPopupMenu(fontSizeActs);
 		ActionListener al = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				sizePopup.show(fontSizeButton, 0, fontSizeButton.getHeight());
 			}
@@ -520,8 +552,9 @@ public class HtmlEditor extends JPanel {
 		List acts = new ArrayList();
 		for (Iterator it = lst.iterator(); it.hasNext();) {
 			Object v = it.next();
-			if (v != null && v instanceof Action)
+			if (v != null && v instanceof Action) {
 				acts.add(v);
+			}
 		}
 
 		return (Action[]) acts.toArray(new Action[acts.size()]);
@@ -538,8 +571,9 @@ public class HtmlEditor extends JPanel {
 		button.setFocusPainted(false);
 		// button.setBorder(plainBorder);
 		Action a = button.getAction();
-		if (a != null)
+		if (a != null) {
 			button.setToolTipText(a.getValue(Action.NAME).toString());
+		}
 	}
 
 	private JMenu createMenu(ActionList lst, String menuName) {
@@ -563,6 +597,7 @@ public class HtmlEditor extends JPanel {
 
 		tabs.addTab("HTML", scrollPane);
 		tabs.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				updateEditView();
 			}
@@ -622,8 +657,7 @@ public class HtmlEditor extends JPanel {
 			StringReader reader = new StringReader(
 					HTMLUtils.jEditorPaneizeHTML(html));
 			kit.read(reader, doc, location);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (IOException | BadLocationException ex) {
 		}
 	}
 
@@ -707,7 +741,7 @@ public class HtmlEditor extends JPanel {
 	 */
 	private String deIndent(String html) {
 		String ws = "\n    ";
-		StringBuffer sb = new StringBuffer(html);
+		StringBuilder sb = new StringBuilder(html);
 
 		while (sb.indexOf(ws) != -1) {
 			int s = sb.indexOf(ws);
@@ -730,7 +764,7 @@ public class HtmlEditor extends JPanel {
 
 	private String deleteOccurance(String text, String word) {
 		// if(text == null)return "";
-		StringBuffer sb = new StringBuffer(text);
+		StringBuilder sb = new StringBuilder(text);
 		int p;
 		while ((p = sb.toString().toLowerCase().indexOf(word.toLowerCase())) != -1) {
 			sb.delete(p, p + word.length());
@@ -755,6 +789,7 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class CaretHandler implements CaretListener {
+		@Override
 		public void caretUpdate(CaretEvent e) {
 			if (maxLength > 0) {
 				int len = maxLength - getText().length() - 1;
@@ -771,10 +806,12 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class PopupHandler extends MouseAdapter {
+		@Override
 		public void mousePressed(MouseEvent e) {
 			checkForPopupTrigger(e);
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent e) {
 			checkForPopupTrigger(e);
 		}
@@ -782,18 +819,22 @@ public class HtmlEditor extends JPanel {
 		private void checkForPopupTrigger(MouseEvent e) {
 			if (e.isPopupTrigger()) {
 				JPopupMenu p = null;
-				if (e.getSource() == wysEditor)
+				if (e.getSource() == wysEditor) {
 					p = wysPopupMenu;
-				else if (e.getSource() == srcEditor)
+				}
+				else if (e.getSource() == srcEditor) {
 					p = srcPopupMenu;
-				else
+				}
+				else {
 					return;
+				}
 				p.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 	}
 
 	private class FocusHandler implements FocusListener {
+		@Override
 		public void focusGained(FocusEvent e) {
 			if (e.getComponent() instanceof JEditorPane) {
 				JEditorPane ed = (JEditorPane) e.getComponent();
@@ -805,6 +846,7 @@ public class HtmlEditor extends JPanel {
 			}
 		}
 
+		@Override
 		public void focusLost(FocusEvent e) {
 
 			if (e.getComponent() instanceof JEditorPane) {
@@ -815,21 +857,25 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class TextChangedHandler implements DocumentListener {
+		@Override
 		public void insertUpdate(DocumentEvent e) {
 			textChanged();
 		}
 
+		@Override
 		public void removeUpdate(DocumentEvent e) {
 			textChanged();
 		}
 
+		@Override
 		public void changedUpdate(DocumentEvent e) {
 			textChanged();
 		}
 
 		private void textChanged() {
-			if (tabs.getSelectedIndex() == 0)
+			if (tabs.getSelectedIndex() == 0) {
 				isWysTextChanged = true;
+			}
 		}
 	}
 
@@ -847,17 +893,20 @@ public class HtmlEditor extends JPanel {
 					ActionManager.BUTTON_TYPE_VALUE_RADIO);
 		}
 
+		@Override
 		protected void execute(ActionEvent e) {
 			tabs.setSelectedIndex(tab);
 			setSelected(true);
 		}
 
+		@Override
 		protected void contextChanged() {
 			setSelected(tabs.getSelectedIndex() == tab);
 		}
 	}
 
 	private class ParagraphComboHandler implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == paragraphCombo) {
 				Action a = (Action) (paragraphCombo.getSelectedItem());
@@ -872,6 +921,7 @@ public class HtmlEditor extends JPanel {
          */
 		private static final long serialVersionUID = 1L;
 
+		@Override
 		public Component getListCellRendererComponent(JList list, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			if (value instanceof Action) {
@@ -884,6 +934,7 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class FontChangeHandler implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == fontFamilyCombo && focusedEditor == wysEditor) {
 				// MutableAttributeSet tagAttrs = new SimpleAttributeSet();
