@@ -36,20 +36,11 @@ import storybook.StorybookApp;
 
 
 public class I18N {
-
 	private static Logger logger = Logger.getLogger(I18N.class);
-
 	public final static String TIME_FORMAT = "HH:mm:ss";
 	public final static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
 	private static ResourceBundle iconResourceBundle = null;
 	private static ResourceBundle messageResourceBundle = null;
-
-	public static boolean isGerman() {
-		Locale locale = Locale.getDefault();
-		Locale de = new Locale("de", "DE");
-		return locale.equals(de);
-	}
 
 	public static boolean isEnglish() {
 		Locale locale = Locale.getDefault();
@@ -137,7 +128,7 @@ public class I18N {
 
 	public static String getMsg(String resourceKey, boolean required) {
 		ResourceBundle rb = getMessageResourceBundle();
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		if (required) {
 			buf.append('*');
 		}
@@ -155,7 +146,7 @@ public class I18N {
 
 	public static String getMsgColon(String resourceKey, boolean required) {
 		ResourceBundle rb = getMessageResourceBundle();
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		if (required) {
 			buf.append('*');
 		}

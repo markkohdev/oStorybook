@@ -169,7 +169,7 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 		titleScroller.setPreferredSize(new Dimension(size, 40));
 		taTitle.addFocusListener(this);
 		SwingUtil.addCtrlEnterAction(taTitle, new EditEntityAction(mainFrame,
-				scene));
+				scene,true));
 
 		// text
 		tcText = SwingUtil.createTextComponent(mainFrame);
@@ -183,7 +183,7 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		tcText.addFocusListener(this);
 		SwingUtil.addCtrlEnterAction(tcText, new EditEntityAction(mainFrame,
-				scene));
+				scene,true));
 
 		add(lbSceneNo, "split 3,growx");
 		add(lbInformational, "growx,al center");

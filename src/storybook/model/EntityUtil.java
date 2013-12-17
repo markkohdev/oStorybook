@@ -49,6 +49,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.commons.beanutils.converters.SqlTimestampConverter;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import storybook.SbConstants;
@@ -395,8 +396,7 @@ public class EntityUtil {
 
 	public static void printBeanProperties(AbstractEntity entity) {
 		try {
-			System.out
-					.println("EntityUtil.printProperties(): Entity:" + entity);
+			System.out.println("EntityUtil.printProperties(): Entity:" + entity);
 			BeanInfo bi = Introspector.getBeanInfo(entity.getClass());
 			for (PropertyDescriptor propDescr : bi.getPropertyDescriptors()) {
 				String name = propDescr.getName();
@@ -406,9 +406,14 @@ public class EntityUtil {
 					isNull = "is null";
 				}
 				System.out.println("EntityUtil.printProperties(): " + name
-						+ ": '" + val + "' " + isNull);
+						+ ": '" + val + "' " + (val==null?"isNull":"not null"));
 			}
-		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (IntrospectionException
+			| IllegalAccessException
+			| IllegalArgumentException
+			| InvocationTargetException e) {
+			System.err.println("EntityUtil.printBeanProperties("
+				+entity+") Exception : "+e.getMessage());
 		}
 	}
 
@@ -457,8 +462,8 @@ public class EntityUtil {
 					Timestamp.class);
 			ConvertUtils.register(new NullConverter(), Integer.class);
 			BeanUtils.copyProperties(newEntity, entity);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			System.err.println("EntityUtil.copyEntityProperties() Exception : "+e.getMessage());
 		}
 	}
 
@@ -469,8 +474,8 @@ public class EntityUtil {
 					Timestamp.class);
 			ConvertUtils.register(new NullConverter(), Integer.class);
 			return (AbstractEntity)BeanUtils.cloneBean(entity);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+			System.err.println("EntityUtil.cloneEntityProperties() Exception : "+e.getMessage());
 		}
 		return null;
 	}
@@ -593,7 +598,7 @@ public class EntityUtil {
 		}
 		if (entity instanceof AbstractTagLink) {
 			// no string value can be changed
-			return;
+			//return;
 		}
 	}
 
@@ -692,7 +697,7 @@ public class EntityUtil {
 		lbTitle.setFont(FontUtil.getBoldFont());
 		menu.add(lbTitle);
 		menu.add(new JPopupMenu.Separator());
-		menu.add(new EditEntityAction(mainFrame, entity));
+		menu.add(new EditEntityAction(mainFrame, entity,false));
 		menu.add(new DeleteEntityAction(mainFrame, entity));
 		menu.add(new JPopupMenu.Separator());
 		if (entity instanceof Scene || entity instanceof Chapter) {
@@ -781,7 +786,7 @@ public class EntityUtil {
 				person.setAttributes(attributes);
 				mainFrame.getDocumentController().updatePerson(person);
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.err.println("EntityUtil.copyEntityProperties() Exception : "+e.getMessage());
 			}
 		}
 	}
@@ -988,7 +993,7 @@ public class EntityUtil {
 				transaction.commit();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("EntityUtil.copyEntityProperties() Exception : "+e.getMessage());
 		}
 	}
 
@@ -1073,7 +1078,7 @@ public class EntityUtil {
 	}
 
 	public static String getInfo(MainFrame mainFrame, AbstractEntity entity) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append(HtmlUtil.getHeadWithCSS());
 		buf.append(getInfo(mainFrame, entity, false));
 		return buf.toString();
@@ -1276,7 +1281,7 @@ public class EntityUtil {
 					} else if (ret instanceof List<?>) {
 						List<?> list = (List<?>) ret;
 						if (!list.isEmpty()) {
-							StringBuffer buf2 = new StringBuffer();
+							StringBuilder buf2 = new StringBuilder();
 							buf2.append("<ul>");
 							for (Object o : list) {
 								session.refresh(o);
@@ -1315,8 +1320,8 @@ public class EntityUtil {
 					buf.append(str);
 				}
 				model.commit();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (HibernateException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				System.err.println("EntityUtil.copyEntityProperties() Exception : "+e.getMessage());
 			}
 			buf.append("</p>\n");
 		}
@@ -1441,8 +1446,8 @@ public class EntityUtil {
 			combo.addItem("");
 			combo.getModel().setSelectedItem(text);
 			combo.revalidate();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			System.err.println("EntityUtil.copyEntityProperties() Exception : "+e.getMessage());
 		}
 	}
 
@@ -1496,28 +1501,28 @@ public class EntityUtil {
 		JPanel panel = new JPanel(new MigLayout("flowx,ins 2"));
 		panel.setOpaque(false);
 		panel.add(getEntityIconLabel(entity));
-		StringBuffer buf = new StringBuffer();
-		buf.append("<html>\n");
-		buf.append(getEntityFullTitle(entity));
-		buf.append("\n");
+		StringBuilder buf = new StringBuilder();
+		buf.append("<html>\n")
+			.append(getEntityFullTitle(entity))
+			.append("\n");
 		panel.add(new JLabel(buf.toString()));
 		return panel;
 	}
 
 	public static String getEntityFullTitle(AbstractEntity entity) {
-		StringBuffer buf = new StringBuffer();
-		buf.append("<span ");
-		buf.append(getCSSTitle1());
-		buf.append(">\n");
-		buf.append(getEntityTitle(entity));
-		buf.append("</span>\n");
+		StringBuilder buf = new StringBuilder();
+		buf.append("<span ")
+			.append(getCSSTitle1())
+			.append(">\n")
+			.append(getEntityTitle(entity))
+			.append("</span>\n");
 		if (!entity.isTransient()) {
-			buf.append("&nbsp;&nbsp;");
-			buf.append("<span ");
-			buf.append(getCSSTitle2());
-			buf.append("/>\n");
-			buf.append(entity.toString());
-			buf.append("</span>");
+			buf.append("&nbsp;&nbsp;")
+				.append("<span ")
+				.append(getCSSTitle2())
+				.append("/>\n")
+				.append(entity.toString())
+				.append("</span>");
 		}
 		return buf.toString();
 	}

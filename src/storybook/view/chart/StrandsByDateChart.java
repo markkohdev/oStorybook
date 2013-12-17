@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.JPanel;
 import org.hibernate.Session;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -29,99 +28,89 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.Layer;
 
-public class StrandsByDateChart extends AbstractChartPanel
-{
-  private ChartPanel chartPanel;
-  private double average;
+public class StrandsByDateChart extends AbstractChartPanel {
 
-  public StrandsByDateChart(MainFrame paramMainFrame)
-  {
-    super(paramMainFrame, "msg.menu.tools.charts.overall.character.date");
-    this.partRelated = true;
-    this.needsFullRefresh = true;
-  }
+	private ChartPanel chartPanel;
+	private double average;
 
-  public void actionPerformed(ActionEvent paramActionEvent)
-  {
-  }
+	public StrandsByDateChart(MainFrame mainFrame) {
+		super(mainFrame, "msg.menu.tools.charts.overall.character.date");
+		this.partRelated = true;
+		this.needsFullRefresh = true;
+	}
 
-  protected void initChart()
-  {
-    CategoryDataset localCategoryDataset = createDataset();
-    JFreeChart localJFreeChart = createChart(localCategoryDataset);
-    this.chartPanel = new ChartPanel(localJFreeChart);
-  }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	}
 
-  protected void initChartUi()
-  {
-    this.panel.add(this.chartPanel, "grow");
-  }
+	@Override
+	protected void initChart() {
+		CategoryDataset setCategory = createDataset();
+		JFreeChart chart = createChart(setCategory);
+		this.chartPanel = new ChartPanel(chart);
+	}
 
-  protected void initOptionsUi()
-  {
-  }
+	@Override
+	protected void initChartUi() {
+		this.panel.add(this.chartPanel, "grow");
+	}
 
-  private JFreeChart createChart(CategoryDataset paramCategoryDataset)
-  {
-    JFreeChart localJFreeChart = ChartFactory.createBarChart(this.chartTitle, "", "", paramCategoryDataset, PlotOrientation.VERTICAL, true, true, false);
-    CategoryPlot localCategoryPlot = (CategoryPlot)localJFreeChart.getPlot();
-    localCategoryPlot.addRangeMarker(ChartUtil.getAverageMarker(this.average), Layer.FOREGROUND);
-    DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-    Session localSession = localDocumentModel.beginTransaction();
-    StrandDAOImpl localStrandDAOImpl = new StrandDAOImpl(localSession);
-    List localList = localStrandDAOImpl.findAll();
-    localDocumentModel.commit();
-    Color[] arrayOfColor = new Color[localList.size()];
-    int i = 0;
-    Object localObject = localList.iterator();
-    while (((Iterator)localObject).hasNext())
-    {
-      Strand localStrand = (Strand)((Iterator)localObject).next();
-      arrayOfColor[i] = ColorUtil.darker(localStrand.getJColor(), 0.25D);
-      i++;
-    }
-    localObject = (BarRenderer)localCategoryPlot.getRenderer();
-    for (int j = 0; j < paramCategoryDataset.getRowCount(); j++)
-    {
-      Color localColor = arrayOfColor[(j % arrayOfColor.length)];
-      ((BarRenderer)localObject).setSeriesPaint(j, localColor);
-    }
-    return localJFreeChart;
-  }
+	@Override
+	protected void initOptionsUi() {
+	}
 
-  private CategoryDataset createDataset()
-  {
-    DefaultCategoryDataset localDefaultCategoryDataset = new DefaultCategoryDataset();
-    try
-    {
-      Part localPart = this.mainFrame.getCurrentPart();
-      DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-      Session localSession = localDocumentModel.beginTransaction();
-      StrandDAOImpl localStrandDAOImpl = new StrandDAOImpl(localSession);
-      List localList1 = localStrandDAOImpl.findAll();
-      SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
-      List localList2 = localSceneDAOImpl.findDistinctDates(localPart);
-      double d = 0.0D;
-      Iterator localIterator1 = localList1.iterator();
-      while (localIterator1.hasNext())
-      {
-        Strand localStrand = (Strand)localIterator1.next();
-        Iterator localIterator2 = localList2.iterator();
-        while (localIterator2.hasNext())
-        {
-          Date localDate = (Date)localIterator2.next();
-          long l = localStrandDAOImpl.countByDate(localDate, localStrand);
-          localDefaultCategoryDataset.addValue(l, localStrand, localDate);
-          d += l;
-        }
-      }
-      localDocumentModel.commit();
-      this.average = (d / (localList1.size() + localList2.size()));
-    }
-    catch (Exception localException)
-    {
-      localException.printStackTrace();
-    }
-    return localDefaultCategoryDataset;
-  }
+	private JFreeChart createChart(CategoryDataset setCategory) {
+		JFreeChart chart = ChartFactory.createBarChart(this.chartTitle, "", "", setCategory, PlotOrientation.VERTICAL, true, true, false);
+		CategoryPlot plot = (CategoryPlot) chart.getPlot();
+		plot.addRangeMarker(ChartUtil.getAverageMarker(this.average), Layer.FOREGROUND);
+		DocumentModel model = this.mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		StrandDAOImpl daoStrand = new StrandDAOImpl(session);
+		List strands = daoStrand.findAll();
+		model.commit();
+		Color[] colors = new Color[strands.size()];
+		int i = 0;
+		Object iObject = strands.iterator();
+		while (((Iterator) iObject).hasNext()) {
+			Strand strand = (Strand) ((Iterator) iObject).next();
+			colors[i] = ColorUtil.darker(strand.getJColor(), 0.25D);
+			i++;
+		}
+		iObject = (BarRenderer) plot.getRenderer();
+		for (int j = 0; j < setCategory.getRowCount(); j++) {
+			Color color = colors[(j % colors.length)];
+			((BarRenderer) iObject).setSeriesPaint(j, color);
+		}
+		return chart;
+	}
+
+	private CategoryDataset createDataset() {
+		DefaultCategoryDataset setCategory = new DefaultCategoryDataset();
+		try {
+			Part part = this.mainFrame.getCurrentPart();
+			DocumentModel model = this.mainFrame.getDocumentModel();
+			Session session = model.beginTransaction();
+			StrandDAOImpl daoStrand = new StrandDAOImpl(session);
+			List strands = daoStrand.findAll();
+			SceneDAOImpl daoScene = new SceneDAOImpl(session);
+			List scenes = daoScene.findDistinctDates(part);
+			double d = 0.0D;
+			Iterator iStrand = strands.iterator();
+			while (iStrand.hasNext()) {
+				Strand strand = (Strand) iStrand.next();
+				Iterator iScene = scenes.iterator();
+				while (iScene.hasNext()) {
+					Date date = (Date) iScene.next();
+					long l = daoStrand.countByDate(date, strand);
+					setCategory.addValue(l, strand, date);
+					d += l;
+				}
+			}
+			model.commit();
+			this.average = (d / (strands.size() + scenes.size()));
+		} catch (Exception exc) {
+			System.err.println("StrandsByDateChart.createDataset() Exception : "+exc.getMessage());
+		}
+		return setCategory;
+	}
 }

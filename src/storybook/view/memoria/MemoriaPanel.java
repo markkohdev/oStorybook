@@ -1,11 +1,5 @@
 package storybook.view.memoria;
 
-import storybook.SbConstants.ComponentName;
-import storybook.SbConstants.IconSize;
-import storybook.SbConstants.InternalKey;
-import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController.CommonProps;
-import storybook.controller.DocumentController.MemoriaViewProps;
 import storybook.model.DocumentModel;
 import storybook.model.hbn.dao.ItemDAOImpl;
 import storybook.model.hbn.dao.ItemLinkDAOImpl;
@@ -17,14 +11,12 @@ import storybook.model.hbn.dao.TagLinkDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.AbstractTag;
 import storybook.model.hbn.entity.Attribute;
-import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Item;
 import storybook.model.hbn.entity.ItemLink;
 import storybook.model.hbn.entity.Location;
 import storybook.model.hbn.entity.Person;
 import storybook.model.hbn.entity.Scene;
-import storybook.model.hbn.entity.Strand;
 import storybook.model.hbn.entity.Tag;
 import storybook.model.hbn.entity.TagLink;
 import storybook.toolkit.DocumentUtil;
@@ -42,18 +34,15 @@ import storybook.view.combo.EntityTypeListCellRenderer;
 import storybook.view.interfaces.IRefreshable;
 import storybook.view.options.MemoriaOptionsDialog;
 import edu.uci.ics.jung.algorithms.layout.BalloonLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.TreeLayout;
 import edu.uci.ics.jung.graph.DelegateForest;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
-import edu.uci.ics.jung.visualization.RenderContext;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.CrossoverScalingControl;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
 import edu.uci.ics.jung.visualization.decorators.DefaultVertexIconTransformer;
 import edu.uci.ics.jung.visualization.decorators.EdgeShape;
-import edu.uci.ics.jung.visualization.decorators.EdgeShape.Line;
 import edu.uci.ics.jung.visualization.decorators.EllipseVertexShapeTransformer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.decorators.VertexIconShapeTransformer;
@@ -61,18 +50,15 @@ import edu.uci.ics.jung.visualization.layout.LayoutTransition;
 import edu.uci.ics.jung.visualization.util.Animator;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -155,10 +141,11 @@ public class MemoriaPanel extends AbstractPanel
 		super(paramMainFrame);
 	}
 
-	public void modelPropertyChange(PropertyChangeEvent paramPropertyChangeEvent) {
+	@Override
+	public void modelPropertyChange(PropertyChangeEvent evt) {
 		try {
-			Object localObject1 = paramPropertyChangeEvent.getNewValue();
-			String str = paramPropertyChangeEvent.getPropertyName();
+			Object localObject1 = evt.getNewValue();
+			String str = evt.getPropertyName();
 			if (str == null) {
 				return;
 			}
@@ -178,7 +165,7 @@ public class MemoriaPanel extends AbstractPanel
 				return;
 			}
 			if (DocumentController.CommonProps.SHOW_OPTIONS.check(str)) {
-				localObject2 = (View) paramPropertyChangeEvent.getNewValue();
+				localObject2 = (View) evt.getNewValue();
 				if (!((View) localObject2).getName().equals(SbConstants.ViewName.MEMORIA.toString())) {
 					return;
 				}
@@ -201,13 +188,13 @@ public class MemoriaPanel extends AbstractPanel
 				if (localObject3 == localObject2) {
 					export();
 				}
-				return;
 			}
-		} catch (Exception localException) {
-			localException.printStackTrace();
+		} catch (Exception exc) {
+			System.err.println("MemoriaPanel.modelPropertyChange("+evt.toString()+") Exception"+exc.getMessage());
 		}
 	}
 
+	@Override
 	public void init() {
 		try {
 			this.chosenDate = new Date(0L);
@@ -216,127 +203,128 @@ public class MemoriaPanel extends AbstractPanel
 			this.involvedTags = new HashSet();
 			this.scaler = new CrossoverScalingControl();
 			try {
-				Internal localInternal = DocumentUtil.restoreInternal(this.mainFrame, SbConstants.InternalKey.MEMORIA_BALLOON, Boolean.valueOf(true));
-				this.showBalloonLayout = localInternal.getBooleanValue().booleanValue();
-			} catch (Exception localException1) {
+				Internal internal = DocumentUtil.restoreInternal(this.mainFrame, SbConstants.InternalKey.MEMORIA_BALLOON, Boolean.valueOf(true));
+				this.showBalloonLayout = internal.getBooleanValue().booleanValue();
+			} catch (Exception exc) {
 				this.showBalloonLayout = true;
 			}
-		} catch (Exception localException2) {
-			localException2.printStackTrace();
+		} catch (Exception exc2) {
+			System.err.println("MemoriaPanel.init() Exception"+exc2.getMessage());
 		}
 	}
 
+	@Override
 	public void initUi() {
 		try {
-			MigLayout localMigLayout1 = new MigLayout("wrap,fill", "[]", "[][grow]");
-			setLayout(localMigLayout1);
+			MigLayout migLayout1 = new MigLayout("wrap,fill", "[]", "[][grow]");
+			setLayout(migLayout1);
 			setBackground(SwingUtil.getBackgroundColor());
 			this.controlPanel = new JPanel();
-			MigLayout localMigLayout2 = new MigLayout("flowx", "", "");
-			this.controlPanel.setLayout(localMigLayout2);
+			MigLayout migLayout2 = new MigLayout("flowx", "", "");
+			this.controlPanel.setLayout(migLayout2);
 			this.controlPanel.setOpaque(false);
 			refreshControlPanel();
 			initGraph();
 			add(this.controlPanel, "alignx center");
 			add(this.graphPanel, "grow");
-		} catch (Exception localException) {
-			localException.printStackTrace();
+		} catch (Exception exc) {
+			System.err.println("MemoriaPanel.modelPropertyChange() Exception"+exc.getMessage());
 		}
 	}
 
-	private void refreshEntityCombo(EntityTypeCbItem.Type paramType) {
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-		Session localSession = localDocumentModel.beginTransaction();
-		Object localObject;
-		List localList;
-		if (paramType == EntityTypeCbItem.Type.SCENE) {
-			localObject = new SceneDAOImpl(localSession);
-			localList = ((SceneDAOImpl) localObject).findAll();
-			refreshCombo(new Scene(), localList, false);
+	private void refreshEntityCombo(EntityTypeCbItem.Type type) {
+		DocumentModel model = this.mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		Object object;
+		List list;
+		if (type == EntityTypeCbItem.Type.SCENE) {
+			object = new SceneDAOImpl(session);
+			list = ((SceneDAOImpl) object).findAll();
+			refreshCombo(new Scene(), list, false);
 			this.datePanel.setVisible(false);
-		} else if (paramType == EntityTypeCbItem.Type.PERSON) {
-			localObject = new PersonDAOImpl(localSession);
-			localList = ((PersonDAOImpl) localObject).findAll();
-			Person localPerson = new Person();
-			ArrayList localArrayList = new ArrayList();
-			localArrayList.add(new Attribute("fd", "fds"));
-			localPerson.setAttributes(localArrayList);
-			refreshCombo(localPerson, localList, false);
+		} else if (type == EntityTypeCbItem.Type.PERSON) {
+			object = new PersonDAOImpl(session);
+			list = ((PersonDAOImpl) object).findAll();
+			Person person = new Person();
+			ArrayList array = new ArrayList();
+			array.add(new Attribute("fd", "fds"));
+			person.setAttributes(array);
+			refreshCombo(person, list, false);
 			this.datePanel.setVisible(true);
-		} else if (paramType == EntityTypeCbItem.Type.LOCATION) {
-			localObject = new LocationDAOImpl(localSession);
-			localList = ((LocationDAOImpl) localObject).findAll();
-			refreshCombo(new Location(), localList, false);
+		} else if (type == EntityTypeCbItem.Type.LOCATION) {
+			object = new LocationDAOImpl(session);
+			list = ((LocationDAOImpl) object).findAll();
+			refreshCombo(new Location(), list, false);
 			this.datePanel.setVisible(true);
-		} else if (paramType == EntityTypeCbItem.Type.TAG) {
-			localObject = new TagDAOImpl(localSession);
-			localList = ((TagDAOImpl) localObject).findAll();
-			refreshCombo(new Tag(), localList, false);
+		} else if (type == EntityTypeCbItem.Type.TAG) {
+			object = new TagDAOImpl(session);
+			list = ((TagDAOImpl) object).findAll();
+			refreshCombo(new Tag(), list, false);
 			this.datePanel.setVisible(true);
-		} else if (paramType == EntityTypeCbItem.Type.ITEM) {
-			localObject = new ItemDAOImpl(localSession);
-			localList = ((ItemDAOImpl) localObject).findAll();
-			refreshCombo(new Item(), localList, false);
+		} else if (type == EntityTypeCbItem.Type.ITEM) {
+			object = new ItemDAOImpl(session);
+			list = ((ItemDAOImpl) object).findAll();
+			refreshCombo(new Item(), list, false);
 			this.datePanel.setVisible(true);
 		}
-		localDocumentModel.commit();
+		model.commit();
 	}
 
 	private void refreshControlPanel() {
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-		Session localSession = localDocumentModel.beginTransaction();
-		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
-		List localList1 = localSceneDAOImpl.findAll();
-		List localList2 = localSceneDAOImpl.findDistinctDates();
-		localList2.removeAll(Collections.singletonList(null));
-		localDocumentModel.commit();
-		Object localObject1 = null;
+		DocumentModel model = this.mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		SceneDAOImpl dao = new SceneDAOImpl(session);
+		List scenes = dao.findAll();
+		List dates = dao.findDistinctDates();
+		dates.removeAll(Collections.singletonList(null));
+		model.commit();
+		Object object = null;
 		if (this.entityTypeCombo != null) {
-			localObject1 = this.entityTypeCombo.getSelectedItem();
+			object = this.entityTypeCombo.getSelectedItem();
 		}
-		Object localObject2 = null;
+		Object object2 = null;
 		if (this.entityCombo != null) {
-			localObject2 = this.entityCombo.getSelectedItem();
+			object2 = this.entityCombo.getSelectedItem();
 		}
-		Object localObject3 = null;
+		Object object3 = null;
 		if (this.dateCombo != null) {
-			localObject3 = this.dateCombo.getSelectedItem();
+			object3 = this.dateCombo.getSelectedItem();
 		}
 		this.dateCombo = new JComboBox();
 		this.dateCombo.setPreferredSize(new Dimension(100, 20));
-		Object localObject4 = localList2.iterator();
-		while (((Iterator) localObject4).hasNext()) {
-			this.dateCombo.addItem((Date) ((Iterator) localObject4).next());
+		Object object4 = dates.iterator();
+		while (((Iterator) object4).hasNext()) {
+			this.dateCombo.addItem((Date) ((Iterator) object4).next());
 		}
 		this.dateCombo.setName(SbConstants.ComponentName.COMBO_DATES.toString());
 		this.dateCombo.setMaximumRowCount(15);
-		if (localObject3 != null) {
-			this.dateCombo.setSelectedItem(localObject3);
+		if (object3 != null) {
+			this.dateCombo.setSelectedItem(object3);
 		}
 		this.datePanel = new JPanel(new MigLayout("flowx,ins 0"));
 		this.datePanel.setOpaque(false);
 		this.datePanel.setVisible(false);
-		localObject4 = new IconButton("icon.small.first");
-		((IconButton) localObject4).setSize32x20();
-		((IconButton) localObject4).setName(SbConstants.ComponentName.BT_FIRST.toString());
-		((IconButton) localObject4).addActionListener(this);
-		Object localObject5 = new IconButton("icon.small.next");
-		((IconButton) localObject5).setSize32x20();
-		((IconButton) localObject5).setName(SbConstants.ComponentName.BT_NEXT.toString());
-		((IconButton) localObject5).addActionListener(this);
-		IconButton localIconButton1 = new IconButton("icon.small.previous");
-		localIconButton1.setSize32x20();
-		localIconButton1.setName(SbConstants.ComponentName.BT_PREVIOUS.toString());
-		localIconButton1.addActionListener(this);
-		IconButton localIconButton2 = new IconButton("icon.small.last");
-		localIconButton2.setSize32x20();
-		localIconButton2.setName(SbConstants.ComponentName.BT_LAST.toString());
-		localIconButton2.addActionListener(this);
+		object4 = new IconButton("icon.small.first");
+		((IconButton) object4).setSize32x20();
+		((IconButton) object4).setName(SbConstants.ComponentName.BT_FIRST.toString());
+		((IconButton) object4).addActionListener(this);
+		Object object5 = new IconButton("icon.small.next");
+		((IconButton) object5).setSize32x20();
+		((IconButton) object5).setName(SbConstants.ComponentName.BT_NEXT.toString());
+		((IconButton) object5).addActionListener(this);
+		IconButton iconButton1 = new IconButton("icon.small.previous");
+		iconButton1.setSize32x20();
+		iconButton1.setName(SbConstants.ComponentName.BT_PREVIOUS.toString());
+		iconButton1.addActionListener(this);
+		IconButton iconButton2 = new IconButton("icon.small.last");
+		iconButton2.setSize32x20();
+		iconButton2.setName(SbConstants.ComponentName.BT_LAST.toString());
+		iconButton2.addActionListener(this);
 		this.datePanel.add(this.dateCombo);
-		this.datePanel.add((Component) localObject4);
-		this.datePanel.add(localIconButton1);
-		this.datePanel.add((Component) localObject5);
-		this.datePanel.add(localIconButton2);
+		this.datePanel.add((Component) object4);
+		this.datePanel.add(iconButton1);
+		this.datePanel.add((Component) object5);
+		this.datePanel.add(iconButton2);
 		this.entityTypeCombo = new JComboBox();
 		this.entityTypeCombo.setPreferredSize(new Dimension(120, 20));
 		this.entityTypeCombo.setName(SbConstants.ComponentName.COMBO_ENTITY_TYPES.toString());
@@ -346,18 +334,18 @@ public class MemoriaPanel extends AbstractPanel
 		this.entityTypeCombo.addItem(new EntityTypeCbItem(EntityTypeCbItem.Type.LOCATION));
 		this.entityTypeCombo.addItem(new EntityTypeCbItem(EntityTypeCbItem.Type.TAG));
 		this.entityTypeCombo.addItem(new EntityTypeCbItem(EntityTypeCbItem.Type.ITEM));
-		if (localObject1 != null) {
-			this.entityTypeCombo.setSelectedItem(localObject1);
+		if (object != null) {
+			this.entityTypeCombo.setSelectedItem(object);
 		}
 		this.entityCombo = new JComboBox();
 		this.entityCombo.setName(SbConstants.ComponentName.COMBO_ENTITIES.toString());
 		this.entityCombo.setMaximumRowCount(15);
-		if (localObject2 != null) {
-			EntityTypeCbItem localEntityTypeCbItem = (EntityTypeCbItem) localObject1;
-			refreshEntityCombo(localEntityTypeCbItem.getType());
-			this.entityCombo.setSelectedItem(localObject2);
+		if (object2 != null) {
+			EntityTypeCbItem cbbItem = (EntityTypeCbItem) object;
+			refreshEntityCombo(cbbItem.getType());
+			this.entityCombo.setSelectedItem(object2);
 		} else {
-			refreshCombo(new Scene(), localList1, false);
+			refreshCombo(new Scene(), scenes, false);
 		}
 		this.controlPanel.removeAll();
 		this.controlPanel.add(this.entityTypeCombo);
@@ -378,14 +366,14 @@ public class MemoriaPanel extends AbstractPanel
 		if (this.vv == null) {
 			return;
 		}
-		LayoutTransition localLayoutTransition;
+		LayoutTransition layout;
 		if (this.showBalloonLayout) {
-			localLayoutTransition = new LayoutTransition(this.vv, this.treeLayout, this.balloonLayout);
+			layout = new LayoutTransition(this.vv, this.treeLayout, this.balloonLayout);
 		} else {
-			localLayoutTransition = new LayoutTransition(this.vv, this.balloonLayout, this.treeLayout);
+			layout = new LayoutTransition(this.vv, this.balloonLayout, this.treeLayout);
 		}
-		Animator localAnimator = new Animator(localLayoutTransition);
-		localAnimator.start();
+		Animator animator = new Animator(layout);
+		animator.start();
 		this.vv.repaint();
 	}
 
@@ -395,15 +383,15 @@ public class MemoriaPanel extends AbstractPanel
 				this.graph = new DelegateForest();
 				return;
 			}
-			Collection localCollection = this.graph.getRoots();
-			Iterator localIterator = localCollection.iterator();
-			while (localIterator.hasNext()) {
-				AbstractEntity localAbstractEntity = (AbstractEntity) localIterator.next();
-				if (localAbstractEntity != null) {
-					this.graph.removeVertex(localAbstractEntity);
+			Collection collection = this.graph.getRoots();
+			Iterator iCollection = collection.iterator();
+			while (iCollection.hasNext()) {
+				AbstractEntity entity = (AbstractEntity) iCollection.next();
+				if (entity != null) {
+					this.graph.removeVertex(entity);
 				}
 			}
-		} catch (Exception localException) {
+		} catch (Exception exc) {
 			this.graph = new DelegateForest();
 		}
 	}
@@ -421,42 +409,44 @@ public class MemoriaPanel extends AbstractPanel
 			if (this.shownEntity == null) {
 				return;
 			}
-			Internal localInternal = DocumentUtil.restoreInternal(this.mainFrame, SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(this.mainFrame));
-			File localFile1 = new File(localInternal.getStringValue());
-			JFileChooser localJFileChooser = new JFileChooser(localFile1);
-			localJFileChooser.setFileFilter(new PngFileFilter());
-			localJFileChooser.setApproveButtonText(I18N.getMsg("msg.common.export"));
+			Internal internal = DocumentUtil.restoreInternal(this.mainFrame, SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(this.mainFrame));
+			File file1 = new File(internal.getStringValue());
+			JFileChooser chooser = new JFileChooser(file1);
+			chooser.setFileFilter(new PngFileFilter());
+			chooser.setApproveButtonText(I18N.getMsg("msg.common.export"));
 			String str = IOUtil.getEntityFileNameForExport(this.mainFrame, "Memoria", this.shownEntity);
-			localJFileChooser.setSelectedFile(new File(str));
-			int i = localJFileChooser.showDialog(getThis(), I18N.getMsg("msg.common.export"));
+			chooser.setSelectedFile(new File(str));
+			int i = chooser.showDialog(getThis(), I18N.getMsg("msg.common.export"));
 			if (i == 1) {
 				return;
 			}
-			File localFile2 = localJFileChooser.getSelectedFile();
-			if (!localFile2.getName().endsWith(".png")) {
-				localFile2 = new File(localFile2.getPath() + ".png");
+			File file2 = chooser.getSelectedFile();
+			if (!file2.getName().endsWith(".png")) {
+				file2 = new File(file2.getPath() + ".png");
 			}
-			ScreenImage.createImage(this.graphPanel, localFile2.toString());
-			JOptionPane.showMessageDialog(getThis(), I18N.getMsg("msg.common.export.success") + "\n" + localFile2.getAbsolutePath(), I18N.getMsg("msg.common.export"), 1);
-		} catch (IOException localIOException) {
-			localIOException.printStackTrace();
+			ScreenImage.createImage(this.graphPanel, file2.toString());
+			JOptionPane.showMessageDialog(getThis(), I18N.getMsg("msg.common.export.success") + "\n" + file2.getAbsolutePath(), I18N.getMsg("msg.common.export"), 1);
+		} catch (IOException exc) {
+			System.err.println("MemoriaPanel.export() Exception"+exc.getMessage());
 		}
 	}
 
-	private void refreshCombo(AbstractEntity paramAbstractEntity, List<? extends AbstractEntity> paramList, boolean paramBoolean) {
+	private void refreshCombo(AbstractEntity pEntity, List<? extends AbstractEntity> pList, boolean b) {
 		try {
 			this.processActionListener = false;
-			DefaultComboBoxModel localDefaultComboBoxModel = (DefaultComboBoxModel) this.entityCombo.getModel();
-			localDefaultComboBoxModel.removeAllElements();
-			localDefaultComboBoxModel.addElement(paramAbstractEntity);
-			Iterator localIterator = paramList.iterator();
-			while (localIterator.hasNext()) {
-				AbstractEntity localAbstractEntity = (AbstractEntity) localIterator.next();
-				localDefaultComboBoxModel.addElement(localAbstractEntity);
+			DefaultComboBoxModel combo = (DefaultComboBoxModel) this.entityCombo.getModel();
+			combo.removeAllElements();
+			combo.addElement(pEntity);
+			Iterator iterator = pList.iterator();
+			while (iterator.hasNext()) {
+				AbstractEntity entity = (AbstractEntity) iterator.next();
+				combo.addElement(entity);
 			}
 			this.processActionListener = true;
-		} catch (Exception localException) {
-			localException.printStackTrace();
+		} catch (Exception exc) {
+			System.err.println("MemoriaPanel.refreshCombo("
+				+pEntity.toString()+", list"+", "+b
+				+") Exception : "+exc.getMessage());
 		}
 	}
 
@@ -475,21 +465,21 @@ public class MemoriaPanel extends AbstractPanel
 			this.vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
 			this.vv.setVertexToolTipTransformer(new EntityTransformer());
 			this.graphPanel = new GraphZoomScrollPane(this.vv);
-			DefaultModalGraphMouse localDefaultModalGraphMouse = new DefaultModalGraphMouse();
-			this.vv.setGraphMouse(localDefaultModalGraphMouse);
-			localDefaultModalGraphMouse.add(new MemoriaGraphMouse(this));
+			DefaultModalGraphMouse mouse = new DefaultModalGraphMouse();
+			this.vv.setGraphMouse(mouse);
+			mouse.add(new MemoriaGraphMouse(this));
 			/* TODO MemoriaPanel compile error
 			VertexStringerImpl localVertexStringerImpl = new VertexStringerImpl(this.labelMap);
 			this.vv.getRenderContext().setVertexLabelTransformer(new VertexStringerImpl(localVertexStringerImpl));
 			*/
-			VertexIconShapeTransformer localVertexIconShapeTransformer = new VertexIconShapeTransformer(new EllipseVertexShapeTransformer());
-			DefaultVertexIconTransformer localDefaultVertexIconTransformer = new DefaultVertexIconTransformer();
-			localVertexIconShapeTransformer.setIconMap(this.iconMap);
-			localDefaultVertexIconTransformer.setIconMap(this.iconMap);
-			this.vv.getRenderContext().setVertexShapeTransformer(localVertexIconShapeTransformer);
-			this.vv.getRenderContext().setVertexIconTransformer(localDefaultVertexIconTransformer);
-		} catch (Exception localException) {
-			localException.printStackTrace();
+			VertexIconShapeTransformer transformer = new VertexIconShapeTransformer(new EllipseVertexShapeTransformer());
+			DefaultVertexIconTransformer iconTransformer = new DefaultVertexIconTransformer();
+			transformer.setIconMap(this.iconMap);
+			iconTransformer.setIconMap(this.iconMap);
+			this.vv.getRenderContext().setVertexShapeTransformer(transformer);
+			this.vv.getRenderContext().setVertexIconTransformer(iconTransformer);
+		} catch (Exception exc) {
+			System.err.println("MemoriaPanel.initGraph() Exception : "+exc.getMessage());
 		}
 	}
 
@@ -497,31 +487,31 @@ public class MemoriaPanel extends AbstractPanel
 		refreshGraph(null);
 	}
 
-	private void refreshGraph(AbstractEntity paramAbstractEntity) {
+	private void refreshGraph(AbstractEntity entity) {
 		try {
 			clearGraph();
-			if (paramAbstractEntity == null) {
-				paramAbstractEntity = (AbstractEntity) this.entityCombo.getItemAt(0);
+			if (entity == null) {
+				entity = (AbstractEntity) this.entityCombo.getItemAt(0);
 			}
-			if ((!(paramAbstractEntity instanceof Scene)) && (this.chosenDate == null)) {
+			if ((!(entity instanceof Scene)) && (this.chosenDate == null)) {
 				return;
 			}
-			if ((paramAbstractEntity instanceof Scene)) {
+			if ((entity instanceof Scene)) {
 				createSceneGraph();
-			} else if ((paramAbstractEntity instanceof Person)) {
+			} else if ((entity instanceof Person)) {
 				createPersonGraph();
-			} else if ((paramAbstractEntity instanceof Location)) {
+			} else if ((entity instanceof Location)) {
 				createLocationGraph();
-			} else if ((paramAbstractEntity instanceof Tag)) {
+			} else if ((entity instanceof Tag)) {
 				createTagGraph();
-			} else if ((paramAbstractEntity instanceof Item)) {
+			} else if ((entity instanceof Item)) {
 				createItemGraph();
 			}
-			this.shownEntity = paramAbstractEntity;
+			this.shownEntity = entity;
 			this.treeLayout = new TreeLayout(this.graph);
 			this.balloonLayout = new BalloonLayout(this.graph);
-			Dimension localDimension = this.mainFrame.getSize();
-			this.balloonLayout.setSize(new Dimension(localDimension.width / 2, localDimension.height / 2));
+			Dimension dimension = this.mainFrame.getSize();
+			this.balloonLayout.setSize(new Dimension(dimension.width / 2, dimension.height / 2));
 			this.balloonLayout.setGraph(this.graph);
 			if (this.showBalloonLayout) {
 				this.vv.setGraphLayout(this.balloonLayout);
@@ -529,8 +519,8 @@ public class MemoriaPanel extends AbstractPanel
 				this.vv.setGraphLayout(this.treeLayout);
 			}
 			this.vv.repaint();
-		} catch (Exception localException) {
-			localException.printStackTrace();
+		} catch (Exception exc) {
+			System.err.println("MemoriaPanel.refreshGraph() Exception : "+exc.getMessage());
 		}
 	}
 
@@ -539,90 +529,90 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void showMessage(String paramString) {
-		Graphics2D localGraphics2D = (Graphics2D) this.vv.getGraphics();
-		if (localGraphics2D == null) {
+		Graphics2D graphics2D = (Graphics2D) this.vv.getGraphics();
+		if (graphics2D == null) {
 			return;
 		}
-		Rectangle localRectangle = this.vv.getBounds();
-		int i = (int) localRectangle.getCenterX();
-		int j = (int) localRectangle.getCenterY();
-		localGraphics2D.setColor(Color.lightGray);
-		localGraphics2D.fillRect(i - 200, j - 20, 400, 40);
-		localGraphics2D.setColor(Color.black);
-		localGraphics2D.drawString(paramString, i - 180, j + 5);
+		Rectangle rectangle = this.vv.getBounds();
+		int i = (int) rectangle.getCenterX();
+		int j = (int) rectangle.getCenterY();
+		graphics2D.setColor(Color.lightGray);
+		graphics2D.fillRect(i - 200, j - 20, 400, 40);
+		graphics2D.setColor(Color.black);
+		graphics2D.drawString(paramString, i - 180, j + 5);
 	}
 
 	private void scaleToLayout(ScalingControl paramScalingControl) {
-		Dimension localDimension1 = this.vv.getPreferredSize();
+		Dimension dimension1 = this.vv.getPreferredSize();
 		if (this.vv.isShowing()) {
-			localDimension1 = this.vv.getSize();
+			dimension1 = this.vv.getSize();
 		}
-		Dimension localDimension2 = this.vv.getGraphLayout().getSize();
-		if (!localDimension1.equals(localDimension2)) {
-			paramScalingControl.scale(this.vv, (float) (localDimension1.getWidth() / localDimension2.getWidth()), new Point2D.Double());
+		Dimension dimension2 = this.vv.getGraphLayout().getSize();
+		if (!dimension1.equals(dimension2)) {
+			paramScalingControl.scale(this.vv, (float) (dimension1.getWidth() / dimension2.getWidth()), new Point2D.Double());
 		}
 	}
 
 	private void createSceneGraph() {
 		this.graphIndex = 0L;
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-		Session localSession = localDocumentModel.beginTransaction();
-		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
-		Scene localScene = (Scene) localSceneDAOImpl.find(Long.valueOf(this.entityId));
-		if (localScene == null) {
-			localDocumentModel.commit();
+		DocumentModel model = this.mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		SceneDAOImpl daoScene = new SceneDAOImpl(session);
+		Scene scene = (Scene) daoScene.find(Long.valueOf(this.entityId));
+		if (scene == null) {
+			model.commit();
 			return;
 		}
-		this.graph.addVertex(localScene);
-		this.labelMap.put(localScene, localScene.toString());
-		this.iconMap.put(localScene, this.sceneIconLarge);
+		this.graph.addVertex(scene);
+		this.labelMap.put(scene, scene.toString());
+		this.iconMap.put(scene, this.sceneIconLarge);
 		this.sceneVertexTitle = I18N.getMsg("msg.graph.scenes.same.date");
-		initVertices(localScene);
-		HashSet localHashSet1 = new HashSet();
-		HashSet localHashSet2 = new HashSet();
-		TagLinkDAOImpl localTagLinkDAOImpl = new TagLinkDAOImpl(localSession);
-		ItemLinkDAOImpl localItemLinkDAOImpl = new ItemLinkDAOImpl(localSession);
-		Date localDate = null;
-		if (!localScene.hasNoSceneTs()) {
-			localDate = new Date(localScene.getSceneTs().getTime());
+		initVertices(scene);
+		HashSet hashSet1 = new HashSet();
+		HashSet hashSet2 = new HashSet();
+		TagLinkDAOImpl daoTagLink = new TagLinkDAOImpl(session);
+		ItemLinkDAOImpl daoItemLink = new ItemLinkDAOImpl(session);
+		Date date = null;
+		if (!scene.hasNoSceneTs()) {
+			date = new Date(scene.getSceneTs().getTime());
 		}
-		Object localObject6;
-		Object localObject7;
-		Iterator localObject5;
+		Object object6;
+		Object object7;
+		Iterator object5;
 		Person localObject2;
-		if (!localScene.hasNoSceneTs()) {
-			Iterator<Scene> lo2 = (localSceneDAOImpl.findByDate(localDate)).iterator();
+		if (!scene.hasNoSceneTs()) {
+			Iterator<Scene> lo2 = (daoScene.findByDate(date)).iterator();
 			while (((Iterator) lo2).hasNext()) {
 				Scene localObject3 = (Scene) ((Iterator) lo2).next();
-				if ((!((Scene) localObject3).getId().equals(localScene.getId())) && (((Scene) localObject3).getStrand().getId() == localScene.getStrand().getId())) {
+				if ((!((Scene) localObject3).getId().equals(scene.getId())) && (((Scene) localObject3).getStrand().getId() == scene.getStrand().getId())) {
 					this.graph.addVertex(localObject3);
 					this.labelMap.put(localObject3, ((Scene) localObject3).getFullTitle(true));
 					this.iconMap.put(localObject3, this.sceneIconMedium);
 					this.graph.addEdge(Long.valueOf(this.graphIndex++), this.sceneVertex, localObject3);
-					List<TagLink> localObject4 = localTagLinkDAOImpl.findByScene((Scene) localObject3);
+					List<TagLink> localObject4 = daoTagLink.findByScene((Scene) localObject3);
 					if (!((List) localObject4).isEmpty()) {
-						localObject5 = ((List) localObject4).iterator();
-						while (((Iterator) localObject5).hasNext()) {
-							localObject6 = (TagLink) ((Iterator) localObject5).next();
-							if (((TagLink) localObject6).hasOnlyScene()) {
-								this.involvedTags.add(((TagLink) localObject6).getTag());
+						object5 = ((List) localObject4).iterator();
+						while (((Iterator) object5).hasNext()) {
+							object6 = (TagLink) ((Iterator) object5).next();
+							if (((TagLink) object6).hasOnlyScene()) {
+								this.involvedTags.add(((TagLink) object6).getTag());
 							}
 						}
 					}
-					List<ItemLink> lo5 = localItemLinkDAOImpl.findByScene((Scene) localObject3);
+					List<ItemLink> lo5 = daoItemLink.findByScene((Scene) localObject3);
 					if (!((List) lo5).isEmpty()) {
-						localObject6 = ((List) lo5).iterator();
-						while (((Iterator) localObject6).hasNext()) {
-							localObject7 = (ItemLink) ((Iterator) localObject6).next();
-							if (((ItemLink) localObject7).hasOnlyScene()) {
-								this.involvedTags.add(((ItemLink) localObject7).getItem());
+						object6 = ((List) lo5).iterator();
+						while (((Iterator) object6).hasNext()) {
+							object7 = (ItemLink) ((Iterator) object6).next();
+							if (((ItemLink) object7).hasOnlyScene()) {
+								this.involvedTags.add(((ItemLink) object7).getItem());
 							}
 						}
 					}
 				}
 			}
 		}
-		Object localObject1 = localScene.getPersons().iterator();
+		Object localObject1 = scene.getPersons().iterator();
 		while (((Iterator) localObject1).hasNext()) {
 			Person person = (Person) ((Iterator) localObject1).next();
 			this.graph.addVertex(person);
@@ -630,7 +620,7 @@ public class MemoriaPanel extends AbstractPanel
 			this.iconMap.put(person, getPersonIcon((Person) person, SbConstants.IconSize.MEDIUM));
 			this.graph.addEdge(Long.valueOf(this.graphIndex++), this.characterVertex, person);
 		}
-		localObject1 = localScene.getLocations().iterator();
+		localObject1 = scene.getLocations().iterator();
 		while (((Iterator) localObject1).hasNext()) {
 			Location location = (Location) ((Iterator) localObject1).next();
 			this.graph.addVertex(location);
@@ -638,40 +628,40 @@ public class MemoriaPanel extends AbstractPanel
 			this.iconMap.put(location, this.locationIconMedium);
 			this.graph.addEdge(Long.valueOf(this.graphIndex++), this.locationVertex, location);
 		}
-		localObject1 = localTagLinkDAOImpl.findByScene(localScene);
+		localObject1 = daoTagLink.findByScene(scene);
 		Object lo22 = ((List) localObject1).iterator();
 		while (((Iterator) lo22).hasNext()) {
 			TagLink lo33 = (TagLink) ((Iterator) lo22).next();
 			if (((TagLink) lo33).hasOnlyScene()) {
 				Tag lo44 = ((TagLink) lo33).getTag();
-				localHashSet1.add(lo44);
+				hashSet1.add(lo44);
 			}
 		}
-		List<ItemLink> lo222 = localItemLinkDAOImpl.findByScene(localScene);
+		List<ItemLink> lo222 = daoItemLink.findByScene(scene);
 		Object localObject3 = ((List) lo222).iterator();
 		while (((Iterator) localObject3).hasNext()) {
 			ItemLink lo444 = (ItemLink) ((Iterator) localObject3).next();
 			if (((ItemLink) lo444).hasOnlyScene()) {
 				Item lo55 = ((ItemLink) lo444).getItem();
-				localHashSet2.add(lo55);
+				hashSet2.add(lo55);
 			}
 		}
-		localObject3 = localTagLinkDAOImpl.findAll();
+		localObject3 = daoTagLink.findAll();
 		Object localObject4 = ((List) localObject3).iterator();
 		while (((Iterator) localObject4).hasNext()) {
 			TagLink lo55 = (TagLink) ((Iterator) localObject4).next();
 			if (((TagLink) lo55).hasPerson()) {
-				localObject6 = ((TagLink) lo55).getPerson();
-				if (!localScene.getPersons().contains(localObject6));
+				object6 = ((TagLink) lo55).getPerson();
+				if (!scene.getPersons().contains(object6));
 			} else if (((TagLink) lo55).hasLocation()) {
 				if ((((TagLink) lo55).hasStartScene()) && (!((TagLink) lo55).hasEndScene())) {
-					if (((TagLink) lo55).getStartScene().getId() == localScene.getId());
+					if (((TagLink) lo55).getStartScene().getId() == scene.getId());
 				} else {
-					localObject6 = ((TagLink) lo55).getPeriod();
-					if ((localObject6 == null) || (localDate == null) || (((Period) localObject6).isInside(localDate))) {
+					object6 = ((TagLink) lo55).getPeriod();
+					if ((object6 == null) || (date == null) || (((Period) object6).isInside(date))) {
 						if (((TagLink) lo55).hasLocationOrPerson()) {
-							localObject6 = ((TagLink) lo55).getLocation();
-							if (!localScene.getLocations().contains(localObject6)) {
+							object6 = ((TagLink) lo55).getLocation();
+							if (!scene.getLocations().contains(object6)) {
 								continue;
 							}
 						}
@@ -679,10 +669,10 @@ public class MemoriaPanel extends AbstractPanel
 				}
 			} else if (((TagLink) lo55).hasOnlyScene()) {
 				if (((TagLink) lo55).hasEndScene()) {
-					localObject6 = ((TagLink) lo55).getStartScene();
-					if (((Scene) localObject6).getStrand().getId() == localScene.getStrand().getId()) {
-						localObject7 = ((TagLink) lo55).getPeriod();
-						if ((localObject7 != null) && (localDate != null) && (!((Period) localObject7).isInside(localDate)));
+					object6 = ((TagLink) lo55).getStartScene();
+					if (((Scene) object6).getStrand().getId() == scene.getStrand().getId()) {
+						object7 = ((TagLink) lo55).getPeriod();
+						if ((object7 != null) && (date != null) && (!((Period) object7).isInside(date)));
 					}
 				}
 			} else {
@@ -691,46 +681,46 @@ public class MemoriaPanel extends AbstractPanel
 				}
 			}
 		}
-		localObject4 = localItemLinkDAOImpl.findAll();
+		localObject4 = daoItemLink.findAll();
 		Object lo50 = ((List) localObject4).iterator();
 		while (((Iterator) lo50).hasNext()) {
-			localObject6 = (ItemLink) ((Iterator) lo50).next();
-			if (((ItemLink) localObject6).hasPerson()) {
-				Person lo17 = ((ItemLink) localObject6).getPerson();
-				if (!localScene.getPersons().contains(lo17));
-			} else if (((ItemLink) localObject6).hasLocation()) {
-				if ((((ItemLink) localObject6).hasStartScene()) && (!((ItemLink) localObject6).hasEndScene())) {
-					if (((ItemLink) localObject6).getStartScene().getId() == localScene.getId());
+			object6 = (ItemLink) ((Iterator) lo50).next();
+			if (((ItemLink) object6).hasPerson()) {
+				Person lo17 = ((ItemLink) object6).getPerson();
+				if (!scene.getPersons().contains(lo17));
+			} else if (((ItemLink) object6).hasLocation()) {
+				if ((((ItemLink) object6).hasStartScene()) && (!((ItemLink) object6).hasEndScene())) {
+					if (((ItemLink) object6).getStartScene().getId() == scene.getId());
 				} else {
-					Period lo27 = ((ItemLink) localObject6).getPeriod();
-					if ((lo27 == null) || (localDate == null) || (((Period) lo27).isInside(localDate))) {
-						if (((ItemLink) localObject6).hasLocationOrPerson()) {
-							Location lo37 = ((ItemLink) localObject6).getLocation();
-							if (!localScene.getLocations().contains(lo37)) {
+					Period lo27 = ((ItemLink) object6).getPeriod();
+					if ((lo27 == null) || (date == null) || (((Period) lo27).isInside(date))) {
+						if (((ItemLink) object6).hasLocationOrPerson()) {
+							Location lo37 = ((ItemLink) object6).getLocation();
+							if (!scene.getLocations().contains(lo37)) {
 								continue;
 							}
 						}
 					}
 				}
-			} else if (((ItemLink) localObject6).hasOnlyScene()) {
-				if (((ItemLink) localObject6).hasEndScene()) {
-					Scene lo37 = ((ItemLink) localObject6).getStartScene();
-					if (((Scene) lo37).getStrand().getId() == localScene.getStrand().getId()) {
-						Period localPeriod = ((ItemLink) localObject6).getPeriod();
-						if ((localPeriod != null) && (localDate != null) && (!localPeriod.isInside(localDate)));
+			} else if (((ItemLink) object6).hasOnlyScene()) {
+				if (((ItemLink) object6).hasEndScene()) {
+					Scene lo37 = ((ItemLink) object6).getStartScene();
+					if (((Scene) lo37).getStrand().getId() == scene.getStrand().getId()) {
+						Period localPeriod = ((ItemLink) object6).getPeriod();
+						if ((localPeriod != null) && (date != null) && (!localPeriod.isInside(date)));
 					}
 				}
 			} else {
-				Item lo47 = ((ItemLink) localObject6).getItem();
+				Item lo47 = ((ItemLink) object6).getItem();
 				if (lo47 != null) {
 					this.involvedTags.add(lo47);
 				}
 			}
 		}
-		removeDoublesFromInvolvedTags(localHashSet1, localHashSet2);
-		localObject5 = localHashSet1.iterator();
-		while (((Iterator) localObject5).hasNext()) {
-			Tag lo16 = (Tag) ((Iterator) localObject5).next();
+		removeDoublesFromInvolvedTags(hashSet1, hashSet2);
+		object5 = hashSet1.iterator();
+		while (((Iterator) object5).hasNext()) {
+			Tag lo16 = (Tag) ((Iterator) object5).next();
 			if (lo16 != null) {
 				this.graph.addVertex(lo16);
 				this.labelMap.put(lo16, ((Tag) lo16).toString());
@@ -738,9 +728,9 @@ public class MemoriaPanel extends AbstractPanel
 				this.graph.addEdge(Long.valueOf(this.graphIndex++), this.tagVertex, lo16);
 			}
 		}
-		localObject5 = localHashSet2.iterator();
-		while (((Iterator) localObject5).hasNext()) {
-			Item lo26 = (Item) ((Iterator) localObject5).next();
+		object5 = hashSet2.iterator();
+		while (((Iterator) object5).hasNext()) {
+			Item lo26 = (Item) ((Iterator) object5).next();
 			if (lo26 != null) {
 				this.graph.addVertex(lo26);
 				this.labelMap.put(lo26, ((Item) lo26).toString());
@@ -749,60 +739,60 @@ public class MemoriaPanel extends AbstractPanel
 			}
 		}
 		addToVertexInvolvedTags();
-		localDocumentModel.commit();
+		model.commit();
 	}
 
 	private void removeDoublesFromInvolvedTags(Set<Tag> paramSet, Set<Item> paramSet1) {
 		ArrayList localArrayList = new ArrayList();
 		Iterator localIterator1 = this.involvedTags.iterator();
-		AbstractTag localAbstractTag;
+		AbstractTag tag;
 		while (localIterator1.hasNext()) {
-			localAbstractTag = (AbstractTag) localIterator1.next();
+			tag = (AbstractTag) localIterator1.next();
 			Iterator localIterator2 = paramSet.iterator();
 			Object localObject;
 			while (localIterator2.hasNext()) {
 				localObject = (Tag) localIterator2.next();
-				if (((Tag) localObject).getId().equals(localAbstractTag.getId())) {
-					localArrayList.add(localAbstractTag);
+				if (((Tag) localObject).getId().equals(tag.getId())) {
+					localArrayList.add(tag);
 				}
 			}
 			localIterator2 = paramSet1.iterator();
 			while (localIterator2.hasNext()) {
 				localObject = (Item) localIterator2.next();
-				if (((Item) localObject).getId().equals(localAbstractTag.getId())) {
-					localArrayList.add(localAbstractTag);
+				if (((Item) localObject).getId().equals(tag.getId())) {
+					localArrayList.add(tag);
 				}
 			}
 		}
 		localIterator1 = localArrayList.iterator();
 		while (localIterator1.hasNext()) {
-			localAbstractTag = (AbstractTag) localIterator1.next();
-			this.involvedTags.remove(localAbstractTag);
+			tag = (AbstractTag) localIterator1.next();
+			this.involvedTags.remove(tag);
 		}
 	}
 
 	private void createTagGraph() {
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-		Session localSession = localDocumentModel.beginTransaction();
-		TagDAOImpl localTagDAOImpl = new TagDAOImpl(localSession);
-		Tag localTag = (Tag) localTagDAOImpl.find(Long.valueOf(this.entityId));
-		if (localTag == null) {
-			localDocumentModel.commit();
+		DocumentModel model = this.mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		TagDAOImpl localTagDAOImpl = new TagDAOImpl(session);
+		Tag tag = (Tag) localTagDAOImpl.find(Long.valueOf(this.entityId));
+		if (tag == null) {
+			model.commit();
 			return;
 		}
-		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
-		TagLinkDAOImpl localTagLinkDAOImpl = new TagLinkDAOImpl(localSession);
-		ItemLinkDAOImpl localItemLinkDAOImpl = new ItemLinkDAOImpl(localSession);
+		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(session);
+		TagLinkDAOImpl localTagLinkDAOImpl = new TagLinkDAOImpl(session);
+		ItemLinkDAOImpl localItemLinkDAOImpl = new ItemLinkDAOImpl(session);
 		this.graphIndex = 0L;
-		this.graph.addVertex(localTag);
-		this.labelMap.put(localTag, localTag.toString());
-		this.iconMap.put(localTag, this.tagIconLarge);
+		this.graph.addVertex(tag);
+		this.labelMap.put(tag, tag.toString());
+		this.iconMap.put(tag, this.tagIconLarge);
 		this.showTagVertex = false;
-		initVertices(localTag);
+		initVertices(tag);
 		HashSet localHashSet1 = new HashSet();
 		HashSet localHashSet2 = new HashSet();
 		HashSet localHashSet3 = new HashSet();
-		List localList = localTagLinkDAOImpl.findByTag(localTag);
+		List localList = localTagLinkDAOImpl.findByTag(tag);
 		Iterator localIterator = localList.iterator();
 		while (localIterator.hasNext()) {
 			TagLink localTagLink = (TagLink) localIterator.next();
@@ -820,7 +810,7 @@ public class MemoriaPanel extends AbstractPanel
 						localObject2 = ((List) localObject1).iterator();
 						while (((Iterator) localObject2).hasNext()) {
 							localObject3 = (TagLink) ((Iterator) localObject2).next();
-							if (((TagLink) localObject3).getTag().getId() != localTag.getId()) {
+							if (((TagLink) localObject3).getTag().getId() != tag.getId()) {
 								localObject4 = ((TagLink) localObject3).getTag();
 								if (localObject4 != null) {
 									if (!isTagInGraph((Tag) localObject4)) {
@@ -847,7 +837,7 @@ public class MemoriaPanel extends AbstractPanel
 						localObject2 = ((List) localObject1).iterator();
 						while (((Iterator) localObject2).hasNext()) {
 							localObject3 = (TagLink) ((Iterator) localObject2).next();
-							if (((TagLink) localObject3).getTag().getId() != localTag.getId()) {
+							if (((TagLink) localObject3).getTag().getId() != tag.getId()) {
 								localObject4 = ((TagLink) localObject3).getTag();
 								if (localObject4 != null) {
 									if (!isTagInGraph((Tag) localObject4)) {
@@ -884,7 +874,7 @@ public class MemoriaPanel extends AbstractPanel
 									TagLink lo777 = (TagLink) ((Iterator) localObject6).next();
 									Tag lo18 = ((TagLink) lo777).getTag();
 									if (lo18 != null) {
-										if ((localTag.getId() != ((Tag) lo18).getId()) && (!isTagInGraph((Tag) lo18))) {
+										if ((tag.getId() != ((Tag) lo18).getId()) && (!isTagInGraph((Tag) lo18))) {
 											this.involvedTags.add(lo18);
 										}
 									}
@@ -906,7 +896,7 @@ public class MemoriaPanel extends AbstractPanel
 				}
 			}
 		}
-		localDocumentModel.commit();
+		model.commit();
 		addToVertexScenes(localHashSet3);
 		addToVertexPersons(localHashSet2);
 		addToVertexLocations(localHashSet1);
@@ -914,17 +904,17 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void createItemGraph() {
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-		Session localSession = localDocumentModel.beginTransaction();
-		ItemDAOImpl localItemDAOImpl = new ItemDAOImpl(localSession);
+		DocumentModel model = this.mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		ItemDAOImpl localItemDAOImpl = new ItemDAOImpl(session);
 		Item localItem = (Item) localItemDAOImpl.find(Long.valueOf(this.entityId));
 		if (localItem == null) {
-			localDocumentModel.commit();
+			model.commit();
 			return;
 		}
-		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
-		TagLinkDAOImpl localTagLinkDAOImpl = new TagLinkDAOImpl(localSession);
-		ItemLinkDAOImpl localItemLinkDAOImpl = new ItemLinkDAOImpl(localSession);
+		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(session);
+		TagLinkDAOImpl localTagLinkDAOImpl = new TagLinkDAOImpl(session);
+		ItemLinkDAOImpl localItemLinkDAOImpl = new ItemLinkDAOImpl(session);
 		this.graphIndex = 0L;
 		this.graph.addVertex(localItem);
 		this.labelMap.put(localItem, localItem.toString());
@@ -1038,7 +1028,7 @@ public class MemoriaPanel extends AbstractPanel
 				}
 			}
 		}
-		localDocumentModel.commit();
+		model.commit();
 		addToVertexScenes(localHashSet3);
 		addToVertexPersons(localHashSet2);
 		addToVertexLocations(localHashSet1);
@@ -1580,16 +1570,16 @@ public class MemoriaPanel extends AbstractPanel
 		this.entityId = paramInt;
 	}
 
-	public void refresh(AbstractEntity paramAbstractEntity) {
+	public void refresh(AbstractEntity entity) {
 		try {
-			if (paramAbstractEntity == null) {
+			if (entity == null) {
 				return;
 			}
-			this.entityId = paramAbstractEntity.getId().longValue();
-			refreshGraph(paramAbstractEntity);
-			updateControlPanel(paramAbstractEntity);
-		} catch (Exception localException) {
-			localException.printStackTrace();
+			this.entityId = entity.getId().longValue();
+			refreshGraph(entity);
+			updateControlPanel(entity);
+		} catch (Exception exc) {
+			System.err.println("MemoriaPanel.refresh("+entity+") Exception : "+exc.getMessage());
 		}
 	}
 
@@ -1638,6 +1628,7 @@ public class MemoriaPanel extends AbstractPanel
 		return this.cbAutoRefresh.isSelected();
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent paramActionEvent) {
 		Object localObject1 = paramActionEvent.getSource();
 		if ((localObject1 == null) || (!this.processActionListener)) {
@@ -1671,11 +1662,13 @@ public class MemoriaPanel extends AbstractPanel
 		refresh((AbstractEntity) localObject2);
 	}
 
+	@Override
 	public void refresh() {
 		refreshControlPanel();
 		refreshGraph();
 	}
 
+	@Override
 	public MainFrame getMainFrame() {
 		return this.mainFrame;
 	}
@@ -1690,6 +1683,7 @@ public class MemoriaPanel extends AbstractPanel
 			this.map = (Map<V, String>) localObject;
 		}
 
+		@Override
 		public String transform(V paramV) {
 			if (isEnabled()) {
 				return "<html><table width='100'><tr><td>" + (String) this.map.get(paramV) + "</td></tr></table>";

@@ -7,7 +7,6 @@ package storybook.view.chart;
 import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.JPanel;
 import org.hibernate.Session;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -28,84 +27,75 @@ import storybook.view.MainFrame;
 import storybook.view.chart.jfreechart.ChartUtil;
 import storybook.view.chart.jfreechart.DbTableCategoryItemLabelGenerator;
 
-public class OccurrenceOfPersonsChart extends AbstractPersonsChart
-{
-  private ChartPanel chartPanel;
-  private double average;
+public class OccurrenceOfPersonsChart extends AbstractPersonsChart {
 
-  public OccurrenceOfPersonsChart(MainFrame paramMainFrame)
-  {
-    super(paramMainFrame, "msg.report.person.occurrence.title");
-  }
+	private ChartPanel chartPanel;
+	private double average;
+
+	public OccurrenceOfPersonsChart(MainFrame paramMainFrame) {
+		super(paramMainFrame, "msg.report.person.occurrence.title");
+	}
 
 	@Override
-  protected void initChartUi()
-  {
-    CategoryDataset localCategoryDataset = createDataset();
-    JFreeChart localJFreeChart = createChart(localCategoryDataset);
-    this.chartPanel = new ChartPanel(localJFreeChart);
-    this.panel.add(this.chartPanel, "grow");
-  }
+	protected void initChartUi() {
+		CategoryDataset setCategory = createDataset();
+		JFreeChart chart = createChart(setCategory);
+		this.chartPanel = new ChartPanel(chart);
+		this.panel.add(this.chartPanel, "grow");
+	}
 
-  private JFreeChart createChart(CategoryDataset paramCategoryDataset)
-  {
-    JFreeChart localJFreeChart = ChartFactory.createBarChart(this.chartTitle, "", "", paramCategoryDataset, PlotOrientation.VERTICAL, true, true, false);
-    CategoryPlot localCategoryPlot = (CategoryPlot)localJFreeChart.getPlot();
-    ChartUtil.hideDomainAxis(localCategoryPlot);
-    localCategoryPlot.addRangeMarker(ChartUtil.getAverageMarker(this.average), Layer.FOREGROUND);
-    BarRenderer localBarRenderer = (BarRenderer)localCategoryPlot.getRenderer();
-    DbTableCategoryItemLabelGenerator localDbTableCategoryItemLabelGenerator = new DbTableCategoryItemLabelGenerator();
-    localBarRenderer.setBaseItemLabelGenerator(localDbTableCategoryItemLabelGenerator);
-    localBarRenderer.setBaseItemLabelsVisible(true);
-    ItemLabelPosition localItemLabelPosition = ChartUtil.getNiceItemLabelPosition();
-    localBarRenderer.setBasePositiveItemLabelPosition(localItemLabelPosition);
-    localBarRenderer.setPositiveItemLabelPositionFallback(localItemLabelPosition);
-    int i = 0;
-    Color[] arrayOfColor = ColorUtil.getDarkColors(ColorUtil.getPastelColors(), 0.35D);
-    for (int j = 0; j < paramCategoryDataset.getRowCount(); j++)
-    {
-      Person localPerson = (Person)paramCategoryDataset.getRowKey(j);
-      Color localColor = localPerson.getJColor();
-      if (localColor != null) {
-			localColor = ColorUtil.darker(localColor, 0.15D);
+	private JFreeChart createChart(CategoryDataset setCategory) {
+		JFreeChart chart = ChartFactory.createBarChart(this.chartTitle, "", "", setCategory, PlotOrientation.VERTICAL, true, true, false);
+		CategoryPlot plot = (CategoryPlot) chart.getPlot();
+		ChartUtil.hideDomainAxis(plot);
+		plot.addRangeMarker(ChartUtil.getAverageMarker(this.average), Layer.FOREGROUND);
+		BarRenderer bar = (BarRenderer) plot.getRenderer();
+		DbTableCategoryItemLabelGenerator item = new DbTableCategoryItemLabelGenerator();
+		bar.setBaseItemLabelGenerator(item);
+		bar.setBaseItemLabelsVisible(true);
+		ItemLabelPosition position = ChartUtil.getNiceItemLabelPosition();
+		bar.setBasePositiveItemLabelPosition(position);
+		bar.setPositiveItemLabelPositionFallback(position);
+		int i = 0;
+		Color[] colors = ColorUtil.getDarkColors(ColorUtil.getPastelColors(), 0.35D);
+		for (int j = 0; j < setCategory.getRowCount(); j++) {
+			Person person = (Person) setCategory.getRowKey(j);
+			Color color = person.getJColor();
+			if (color != null) {
+				color = ColorUtil.darker(color, 0.15D);
+			} else {
+				color = colors[(j % colors.length)];
+			}
+			bar.setSeriesPaint(j, color);
+			if ((color != null) && (ColorUtil.isDark(color))) {
+				bar.setSeriesItemLabelPaint(i, Color.white);
+			}
+			i++;
 		}
-      else {
-			localColor = arrayOfColor[(j % arrayOfColor.length)];
-		}
-      localBarRenderer.setSeriesPaint(j, localColor);
-      if ((localColor != null) && (ColorUtil.isDark(localColor)))
-        localBarRenderer.setSeriesItemLabelPaint(i, Color.white);
-      i++;
-    }
-    return localJFreeChart;
-  }
+		return chart;
+	}
 
-  private CategoryDataset createDataset()
-  {
-    DefaultCategoryDataset localDefaultCategoryDataset = new DefaultCategoryDataset();
-    try
-    {
-      DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-      Session localSession = localDocumentModel.beginTransaction();
-      PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
-      List localList = localPersonDAOImpl.findByCategories(this.selectedCategories);
-      SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
-      double d = 0.0D;
-      Iterator localIterator = localList.iterator();
-      while (localIterator.hasNext())
-      {
-        Person localPerson = (Person)localIterator.next();
-        long l = localSceneDAOImpl.countByPerson(localPerson);
-        localDefaultCategoryDataset.addValue(l, localPerson, new Integer(1));
-        d += l;
-      }
-      localDocumentModel.commit();
-      this.average = (d / localList.size());
-    }
-    catch (Exception localException)
-    {
-      localException.printStackTrace();
-    }
-    return localDefaultCategoryDataset;
-  }
+	private CategoryDataset createDataset() {
+		DefaultCategoryDataset setCategory = new DefaultCategoryDataset();
+		try {
+			DocumentModel model = this.mainFrame.getDocumentModel();
+			Session session = model.beginTransaction();
+			PersonDAOImpl dao = new PersonDAOImpl(session);
+			List categories = dao.findByCategories(this.selectedCategories);
+			SceneDAOImpl scenes = new SceneDAOImpl(session);
+			double d = 0.0D;
+			Iterator localIterator = categories.iterator();
+			while (localIterator.hasNext()) {
+				Person person = (Person) localIterator.next();
+				long l = scenes.countByPerson(person);
+				setCategory.addValue(l, person, new Integer(1));
+				d += l;
+			}
+			model.commit();
+			this.average = (d / categories.size());
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return setCategory;
+	}
 }

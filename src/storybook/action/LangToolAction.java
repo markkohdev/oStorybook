@@ -73,15 +73,13 @@ public class LangToolAction extends AbstractAction {
 						if (!text.isEmpty()) {
 							langTool.setTextToCheck(text);
 						}
-					} catch (Exception e2) {
-						e2.printStackTrace();
-					} catch (NoClassDefFoundError e3) {
-						e3.printStackTrace();
+					} catch (	Exception | NoClassDefFoundError e2) {
+						System.err.println("LangToolAction.actionPerformed(?) Exception :"+e2.getMessage());
 					}
 				}
 			});
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			System.err.println("LangToolAction.actionPerformed("+e.toString()+") Exception :"+e1.getMessage());
 		}
 	}
 }

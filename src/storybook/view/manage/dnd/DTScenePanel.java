@@ -30,20 +30,31 @@ import storybook.view.MainFrame;
 @SuppressWarnings("serial")
 public class DTScenePanel extends ScenePanel implements MouseMotionListener {
 
+	private boolean trace=true;
+
 	private MouseEvent firstMouseEvent = null;
 
 	private int previousNumber = 0;
 
 	public DTScenePanel(MainFrame mainFrame, Scene scene) {
 		this(mainFrame, scene, TYPE_NONE);
+		if (trace) {
+			System.out.println("DTScenePanel_scene("+mainFrame.getName()+","+scene.getFullTitle()+")");
+		}
 	}
 
 	public DTScenePanel(MainFrame mainFrame, int type) {
 		this(mainFrame, null, type);
+		if (trace) {
+			System.out.println("DTScenePanel_type("+mainFrame.getName()+","+type+")");
+		}
 	}
 
 	public DTScenePanel(MainFrame mainFrame, Scene scene, int type) {
 		super(mainFrame, scene, type);
+		if (trace) {
+			System.out.println("DTScenePanel_full("+mainFrame.getName()+","+scene.getFullTitle()+","+type+")");
+		}
 		addMouseMotionListener(this);
 		setAutoscrolls(true);
 	}

@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/* vérification OK */
 
 package storybook.action;
 
@@ -32,14 +33,27 @@ import storybook.view.MainFrame;
  */
 @SuppressWarnings("serial")
 public class EditEntityAction extends AbstractEntityAction {
+	private boolean trace=true;
+	private boolean saveBeforeEdit;
 
-	public EditEntityAction(MainFrame mainFrame, AbstractEntity entity) {
-		super(mainFrame, entity, I18N.getMsg("msg.common.edit"), I18N
-				.getIcon("icon.small.edit"));
+	public EditEntityAction(MainFrame mainFrame, AbstractEntity entity, boolean b) {
+		super(mainFrame, entity,
+			I18N.getMsg("msg.common.edit"),
+			I18N.getIcon("icon.small.edit"));
+		saveBeforeEdit = b;
+		if (trace) {
+			System.out.println("EditEntityAction("+mainFrame.getName()+","+entity.toString()+","+b+")");
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (trace) {
+			System.out.println("EditEntityAction.actionPerformed("+e.toString()+")");
+		}
+		if (this.saveBeforeEdit) {
+			mainFrame.getActionController().handleSave();
+		}
 		DocumentController ctrl = mainFrame.getDocumentController();
 		ctrl.setEntityToEdit(entity);
 		mainFrame.showView(ViewName.EDITOR);

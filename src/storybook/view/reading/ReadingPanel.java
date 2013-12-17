@@ -141,7 +141,7 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 
 		if (DocumentController.StrandProps.UPDATE.check(propName)) {
 			refresh();
-			return;
+//			return;
 		}
 	}
 

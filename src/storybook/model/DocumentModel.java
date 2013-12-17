@@ -69,8 +69,12 @@ import storybook.view.reading.ReadingPanel;
  *
  */
 public class DocumentModel extends AbstractModel {
+	private boolean trace=false;
 
 	public synchronized void initEntites() {
+		if (trace) {
+			System.out.println("DocumentModel.initEntities()");
+		}
 		Session session = beginTransaction();
 
 		// default strand
@@ -119,6 +123,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	public synchronized void initSession(String dbName) {
+		if (trace) {
+			System.out.println("DocumentModel.initSession("+dbName+")");
+		}
 		try {
 			super.initSession(dbName, "hibernate.cfg.xml");
 			Session session = beginTransaction();
@@ -132,6 +139,9 @@ public class DocumentModel extends AbstractModel {
 
 	@Override
 	public void fireAgain() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgain()");
+		}
 
 		fireAgainScenes();
 		fireAgainChapters();
@@ -155,6 +165,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	public void fireAgain(SbView view) {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgain("+view.getName()+")");
+		}
 		if (ViewName.CHRONO.compare(view)) {
 			fireAgainScenes();
 		} else if (ViewName.BOOK.compare(view)) {
@@ -195,6 +208,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainScenes() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainScenes()");
+		}
 		Session session = beginTransaction();
 		SceneDAOImpl sceneDao = new SceneDAOImpl(session);
 		List<Scene> scenes = sceneDao.findAll();
@@ -204,6 +220,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainChapters() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainChapters()");
+		}
 		Session session = beginTransaction();
 		ChapterDAOImpl chapterDao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = chapterDao.findAll();
@@ -213,6 +232,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainParts() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainParts()");
+		}
 		Session session = beginTransaction();
 		PartDAOImpl partDao = new PartDAOImpl(session);
 		List<Part> parts = partDao.findAll();
@@ -222,6 +244,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainLocations() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainLocations()");
+		}
 		Session session = beginTransaction();
 		LocationDAOImpl locationDao = new LocationDAOImpl(session);
 		List<Location> locations = locationDao.findAll();
@@ -231,6 +256,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainPersons() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainPersons()");
+		}
 		Session session = beginTransaction();
 		PersonDAOImpl personDao = new PersonDAOImpl(session);
 		List<Person> persons = personDao.findAll();
@@ -240,6 +268,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainGenders() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainGenders()");
+		}
 		Session session = beginTransaction();
 		GenderDAOImpl genderDao = new GenderDAOImpl(session);
 		List<Gender> genders = genderDao.findAll();
@@ -249,6 +280,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainCategories() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainCategories()");
+		}
 		Session session = beginTransaction();
 		CategoryDAOImpl categoryDao = new CategoryDAOImpl(session);
 		List<Category> categories = categoryDao.findAll();
@@ -258,6 +292,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainStrands() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainStrands()");
+		}
 		Session session = beginTransaction();
 		StrandDAOImpl strandDao = new StrandDAOImpl(session);
 		List<Strand> strands = strandDao.findAll();
@@ -267,6 +304,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainIdeas() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainIdeas()");
+		}
 		Session session = beginTransaction();
 		IdeaDAOImpl ideaDao = new IdeaDAOImpl(session);
 		List<Idea> ideas = ideaDao.findAll();
@@ -276,6 +316,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainTags() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainTags()");
+		}
 		Session session = beginTransaction();
 		TagDAOImpl tagDao = new TagDAOImpl(session);
 		List<Tag> tags = tagDao.findAll();
@@ -285,6 +328,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainItems() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainItems()");
+		}
 		Session session = beginTransaction();
 		ItemDAOImpl itemDao = new ItemDAOImpl(session);
 		List<Item> items = itemDao.findAll();
@@ -294,6 +340,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainTagLinks() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainTagLinks()");
+		}
 		Session session = beginTransaction();
 		TagLinkDAOImpl tagLinkDao = new TagLinkDAOImpl(session);
 		List<TagLink> tagLinks = tagLinkDao.findAll();
@@ -303,6 +352,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainItemLinks() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainItemLinks()");
+		}
 		Session session = beginTransaction();
 		ItemLinkDAOImpl itemLinkDao = new ItemLinkDAOImpl(session);
 		List<ItemLink> itemLinks = itemLinkDao.findAll();
@@ -312,6 +364,9 @@ public class DocumentModel extends AbstractModel {
 	}
 
 	private void fireAgainInternals() {
+		if (trace) {
+			System.out.println("DocumentModel.fireAgainInternals()");
+		}
 		Session session = beginTransaction();
 		InternalDAOImpl internalDao = new InternalDAOImpl(session);
 		List<Internal> internals = internalDao.findAll();
@@ -323,6 +378,9 @@ public class DocumentModel extends AbstractModel {
 
 	// common
 	public void setRefresh(SbView view) {
+		if (trace) {
+			System.out.println("DocumentModel.setRefresh("+view.getName()+")");
+		}
 		firePropertyChange(DocumentController.CommonProps.REFRESH.toString(),
 				null, view);
 		try {

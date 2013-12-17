@@ -174,8 +174,8 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 				NetUtil.openBrowser(e.getURL().toString());
 			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
+		} catch (Exception exc) {
+			System.err.println("InfoPanel.hyperlinkUpdate("+e.toString()+") Exception : "+exc.getMessage());
 		}
 	}
 }

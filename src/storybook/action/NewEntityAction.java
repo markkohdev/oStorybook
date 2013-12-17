@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/* vérification OK */
 
 package storybook.action;
 
@@ -36,9 +37,10 @@ import storybook.view.MainFrame;
 public class NewEntityAction extends AbstractEntityAction {
 
 	public NewEntityAction(MainFrame mainFrame, AbstractEntity entity) {
-		super(mainFrame, entity, I18N.getMsg("msg.common.new") + " "
-				+ EntityUtil.getEntityTitle(entity), I18N
-				.getIcon("icon.small.new"));
+		super(mainFrame, entity,
+			I18N.getMsg("msg.common.new") + " "
+				+ EntityUtil.getEntityTitle(entity),
+			I18N.getIcon("icon.small.new"));
 	}
 
 	@Override

@@ -68,7 +68,6 @@ public class PersistenceManager {
         try {
             getConnection();
         } catch (Exception e) {
-            e.printStackTrace();
         }
         log.info("open db, databaseName=" + this.databaseName);
     }
@@ -105,9 +104,8 @@ public class PersistenceManager {
                 Class.forName("org.h2.Driver");
                 connection = DriverManager.getConnection(
                         connectionStr, "sa", "");
-            } catch (Exception e) {
+            } catch (ClassNotFoundException | SQLException e) {
                 log.error(e);
-                e.printStackTrace();
             }
         }
         return connection;
@@ -123,7 +121,6 @@ public class PersistenceManager {
             this.connection = null;
             this.databaseName = null;
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -198,14 +195,12 @@ public class PersistenceManager {
                 ++count;
             }
         } catch (SQLException exc) {
-            exc.printStackTrace();
         } finally {
             this.closeResultSet(rs);
         }
         return retour;
     }
 
-	/* SB5 suppress checking old version before 4.0
 	public boolean checkAndAlterModel() throws Exception {
 		oldDbVersion = InternalPeer.getDbModelVersion();
 		if (oldDbVersion == null) {
@@ -277,11 +272,11 @@ public class PersistenceManager {
 		// I18N.getMsg("msg.error.wrong.version", projectDbVersion),
 		// I18N.getMsg("msg.common.error"),
 		// JOptionPane.ERROR_MESSAGE);
-		return true;
+		// return true;
     }
-	*/
+	/* */
 
-	/* SB5 check old version before 4.0
+	/* SB5 check old version before 4.0 */
 	private void alterFrom1_5to4_0() throws Exception {
 		// dlg.append("Updating file version from 1.4 to 1.5 ...");
 
@@ -414,9 +409,9 @@ public class PersistenceManager {
 		InternalPeer.setDbModelVersion(SbConstants.Storybook.DB_VERSION
 				.toString());
 	}
-	*/
+	/* */
 
-	/* SB5 check old version before 4.0
+	/* SB5 check old version before 4.0 */
 	private void executeSQLStatement(String sql, Statement stmt) {
 		try {
 			log.debug(sql);
@@ -450,5 +445,5 @@ public class PersistenceManager {
 		}
 		return !oldDbVersion.equals(newDbVersion);
 	}
-	*/
+	/* */
 }

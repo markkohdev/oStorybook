@@ -46,8 +46,9 @@ import storybook.view.combo.SceneStateListCellRenderer;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
+
 public class SceneTable extends AbstractTable {
+	private boolean trace=true;
 
 	private JComboBox sceneStateCombo;
 
@@ -154,6 +155,7 @@ public class SceneTable extends AbstractTable {
 
 	@Override
 	protected void sendSetEntityToEdit(int row) {
+		if (trace) {System.out.println("AbstractTable.sendSetEntitytToEdit("+row+")");}
 		if (row == -1) {
 			return;
 		}

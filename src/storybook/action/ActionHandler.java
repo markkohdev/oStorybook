@@ -1,20 +1,21 @@
 /*
-Storybook: Open Source software for novelists and authors.
-Copyright (C) 2008 - 2012 Martin Mustun
+ Storybook: Open Source software for novelists and authors.
+ Copyright (C) 2008 - 2012 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/* vérification OK */
 
 package storybook.action;
 
@@ -73,8 +74,8 @@ import storybook.view.dialog.FoiDialog;
 import storybook.view.dialog.ManageLayoutsDialog;
 import storybook.view.dialog.PreferencesDialog;
 /* SB5 suppress Pro
-import storybook.view.dialog.ProOnlyDialog;
-*/
+ import storybook.view.dialog.ProOnlyDialog;
+ */
 import storybook.view.dialog.WaitDialog;
 import storybook.view.dialog.file.RenameFileDialog;
 import storybook.view.dialog.file.SaveAsFileDialog;
@@ -86,6 +87,7 @@ import storybook.view.jasperreports.ExportPrintDialog;
 
 import com.sun.jaf.ui.ActionManager;
 import storybook.export.BookExporter;
+import storybook.view.SbView;
 
 /**
  * @author martin
@@ -102,19 +104,22 @@ public class ActionHandler {
 	public void handleCheckUpdate() {
 		if (Updater.checkForUpdate()) {
 			JOptionPane.showMessageDialog(mainFrame,
-					I18N.getMsg("msg.update.no.text"),
-					I18N.getMsg("msg.update.no.title"),
-					JOptionPane.INFORMATION_MESSAGE);
+				I18N.getMsg("msg.update.no.text"),
+				I18N.getMsg("msg.update.no.title"),
+				JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
 	public void handleOpenExportFolder() {
 		try {
 			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.EXPORT_DIRECTORY,
-					EnvUtil.getDefaultExportDir(mainFrame));
+				InternalKey.EXPORT_DIRECTORY,
+				EnvUtil.getDefaultExportDir(mainFrame));
 			Desktop.getDesktop().open(new File(internal.getStringValue()));
-		} catch (Exception | Error e) {
+		} catch (Exception ex) {
+			System.err.println("ActionHandler.handleExportDir() Exception : " + ex.getMessage());
+		} catch (Error er) {
+			System.err.println("ActionHandler.handleExportDir() Error : " + er.getMessage());
 		}
 	}
 
@@ -153,7 +158,7 @@ public class ActionHandler {
 	public void handleRenameCity() {
 		RenameCityDialog dlg = new RenameCityDialog(mainFrame);
 		ActionManager actMngr = mainFrame.getSbActionManager()
-				.getActionManager();
+			.getActionManager();
 		Action act = actMngr.getAction("rename-city-command");
 		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
 		if (obj != null) {
@@ -166,7 +171,7 @@ public class ActionHandler {
 	public void handleRenameCountry() {
 		RenameCountryDialog dlg = new RenameCountryDialog(mainFrame);
 		ActionManager actMngr = mainFrame.getSbActionManager()
-				.getActionManager();
+			.getActionManager();
 		Action act = actMngr.getAction("rename-country-command");
 		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
 		if (obj != null) {
@@ -179,7 +184,7 @@ public class ActionHandler {
 	public void handleRenameTagCategory() {
 		RenameTagCategoryDialog dlg = new RenameTagCategoryDialog(mainFrame);
 		ActionManager actMngr = mainFrame.getSbActionManager()
-				.getActionManager();
+			.getActionManager();
 		Action act = actMngr.getAction("rename-tag-category-command");
 		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
 		if (obj != null) {
@@ -192,7 +197,7 @@ public class ActionHandler {
 	public void handleRenameItemCategory() {
 		RenameItemCategoryDialog dlg = new RenameItemCategoryDialog(mainFrame);
 		ActionManager actMngr = mainFrame.getSbActionManager()
-				.getActionManager();
+			.getActionManager();
 		Action act = actMngr.getAction("rename-item-category-command");
 		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
 		if (obj != null) {
@@ -202,57 +207,31 @@ public class ActionHandler {
 		act.putValue(SbConstants.ActionKey.CATEGORY.toString(), null);
 	}
 
-	public void handleNewScene() {
-		handleNewEntity(new Scene());
-	}
+	public void handleNewScene()		{handleNewEntity(new Scene());}
 
-	public void handleNewChapter() {
-		handleNewEntity(new Chapter());
-	}
+	public void handleNewChapter()	{handleNewEntity(new Chapter());}
 
-	public void handleNewPart() {
-		handleNewEntity(new Part());
-	}
+	public void handleNewPart()		{handleNewEntity(new Part());}
 
-	public void handleNewStrand() {
-		handleNewEntity(new Strand());
-	}
+	public void handleNewStrand()		{handleNewEntity(new Strand());}
 
-	public void handleNewPerson() {
-		handleNewEntity(new Person());
-	}
+	public void handleNewPerson()		{handleNewEntity(new Person());}
 
-	public void handleNewCategory() {
-		handleNewEntity(new Category());
-	}
+	public void handleNewCategory()	{handleNewEntity(new Category());}
 
-	public void handleNewGender() {
-		handleNewEntity(new Gender());
-	}
+	public void handleNewGender()		{handleNewEntity(new Gender());}
 
-	public void handleNewLocation() {
-		handleNewEntity(new Location());
-	}
+	public void handleNewLocation()	{handleNewEntity(new Location());}
 
-	public void handleNewTag() {
-		handleNewEntity(new Tag());
-	}
+	public void handleNewTag()			{handleNewEntity(new Tag());}
 
-	public void handleNewTagLink() {
-		handleNewEntity(new TagLink());
-	}
+	public void handleNewTagLink()	{handleNewEntity(new TagLink());}
 
-	public void handleNewItem() {
-		handleNewEntity(new Item());
-	}
+	public void handleNewItem()		{handleNewEntity(new Item());}
 
-	public void handleNewItemLink() {
-		handleNewEntity(new ItemLink());
-	}
+	public void handleNewItemLink()	{handleNewEntity(new ItemLink());}
 
-	public void handleNewIdea() {
-		handleNewEntity(new Idea());
-	}
+	public void handleNewIdea()		{handleNewEntity(new Idea());}
 
 	private void handleNewEntity(AbstractEntity entity) {
 		DocumentController ctrl = mainFrame.getDocumentController();
@@ -272,14 +251,14 @@ public class ActionHandler {
 
 	public void handleExportPrint() {
 		/* SB5 suppress Pro
-		if (StorybookApp.getInstance().isProVersion()) {
-			ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
-			SwingUtil.showDialog(dlg, mainFrame);
-		} else {
-			ProOnlyDialog dlg = new ProOnlyDialog(mainFrame);
-			SwingUtil.showModalDialog(dlg, mainFrame);
-		}
-		*/
+		 if (StorybookApp.getInstance().isProVersion()) {
+		 ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
+		 SwingUtil.showDialog(dlg, mainFrame);
+		 } else {
+		 ProOnlyDialog dlg = new ProOnlyDialog(mainFrame);
+		 SwingUtil.showModalDialog(dlg, mainFrame);
+		 }
+		 */
 		// always considere Pro version is true
 		ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
 		SwingUtil.showDialog(dlg, mainFrame);
@@ -396,46 +375,25 @@ public class ActionHandler {
 		DocumentController ctrl = mainFrame.getDocumentController();
 		ctrl.printAttachedViews();
 	}
-
-	public void handleRunGC() {
-		SwingUtil.printMemoryUsage();
-		System.out.println("ActionHandler.handleRunGC(): running GC...");
-		StorybookApp.getInstance().runGC();
-		SwingUtil.printMemoryUsage();
-	}
+	/* suppression du garbage collector
+	 public void handleRunGC() {
+	 SwingUtil.printMemoryUsage();
+	 System.out.println("ActionHandler.handleRunGC(): running GC...");
+	 StorybookApp.getInstance().runGC();
+	 SwingUtil.printMemoryUsage();
+	 }
+	 */
 
 	public void handleDummy() {
 		try {
 			System.out.println("ActionHandler.handleDummy(): ");
-
-//			DocumentModel model = mainFrame.getDocumentModel();
-//			Session session = model.beginTransaction();
-//			SceneDAOImpl dao = new SceneDAOImpl(session);
-//			Scene s = dao.find(15l);
-//			System.out.println("ActionHandler.handleDummy(): scene:" + s);
-//			System.out.println("ActionHandler.handleDummy(): scene ts:"
-//					+ s.getSceneTs());
-//			model.commit();
-//
-//			session = model.beginTransaction();
-//			session.refresh(s);
-//			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-//			Date date = dateFormat.parse("2012-05-08 13:14:15");
-//			long time = date.getTime();
-//			s.setSceneTs(new Timestamp(time));
-//			model.commit();
-//
-//			session = model.beginTransaction();
-//			dao = new SceneDAOImpl(session);
-//			s = dao.find(15l);
-//			System.out.println("ActionHandler.handleDummy(): scene ts:"
-//					+ s.getSceneTs());
-//			model.commit();
-
-//			DockingWindowUtil.setDefaultLayout(mainFrame);
-		} catch (Exception e) {
+			SbView view = mainFrame.getView(SbConstants.ViewName.EDITOR);
+			mainFrame.getViewFactory().unloadView(view);
+		} catch (Exception ex) {
+			System.err.println("ActionHandler.handleDummy() Exception : "+ex.getMessage());
 		}
 	}
+
 
 	public void handleShowInternals() {
 		showAndFocus(ViewName.INTERNALS);
@@ -514,8 +472,7 @@ public class ActionHandler {
 	}
 
 	public void handleSave() {
-		WaitDialog dlg = new WaitDialog(mainFrame,
-				I18N.getMsg("msg.file.saving"));
+		WaitDialog dlg = new WaitDialog(mainFrame,I18N.getMsg("msg.file.saving"));
 		Timer timer = new Timer(500, new DisposeDialogAction(dlg));
 		timer.setRepeats(false);
 		timer.start();
@@ -532,6 +489,7 @@ public class ActionHandler {
 		try {
 			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
 		} catch (IOException ioe) {
+			System.err.println("ActionHandler.handleSaveAs() IOex : "+ioe.getMessage());
 		}
 		DbFile dbFile = new DbFile(file);
 		OpenFileAction act = new OpenFileAction("", dbFile);
@@ -554,9 +512,9 @@ public class ActionHandler {
 
 	public void handleSaveLayout() {
 		String name = JOptionPane.showInputDialog(mainFrame,
-				I18N.getMsgColon("msg.common.enter.name"),
-				I18N.getMsg("msg.docking.save.layout"),
-				JOptionPane.PLAIN_MESSAGE);
+			I18N.getMsgColon("msg.common.enter.name"),
+			I18N.getMsg("msg.docking.save.layout"),
+			JOptionPane.PLAIN_MESSAGE);
 		if (name != null) {
 			DockingWindowUtil.saveLayout(mainFrame, name);
 		}
@@ -569,43 +527,45 @@ public class ActionHandler {
 
 	public void handleDefaultLayout() {
 		DockingWindowUtil.setLayout(mainFrame,
-				DockingWindowUtil.DEFAULT_LAYOUT);
+			DockingWindowUtil.DEFAULT_LAYOUT);
 	}
 
 	public void handlePersonsLocationsLayout() {
 		DockingWindowUtil.setLayout(mainFrame,
-				DockingWindowUtil.PERSONS_LOCATIONS_LAYOUT);
+			DockingWindowUtil.PERSONS_LOCATIONS_LAYOUT);
 	}
 
 	public void handleTagsItemsLayout() {
 		DockingWindowUtil.setLayout(mainFrame,
-				DockingWindowUtil.TAGS_ITEMS_LAYOUT);
+			DockingWindowUtil.TAGS_ITEMS_LAYOUT);
 	}
 
 	public void handleChronoOnlyLayout() {
 		DockingWindowUtil.setLayout(mainFrame,
-				DockingWindowUtil.CHRONO_ONLY_LAYOUT);
+			DockingWindowUtil.CHRONO_ONLY_LAYOUT);
 	}
 
 	public void handleBookOnlyLayout() {
 		DockingWindowUtil.setLayout(mainFrame,
-				DockingWindowUtil.BOOK_ONLY_LAYOUT);
+			DockingWindowUtil.BOOK_ONLY_LAYOUT);
 	}
 
 	public void handleManageOnlyLayout() {
 		DockingWindowUtil.setLayout(mainFrame,
-				DockingWindowUtil.MANAGE_ONLY_LAYOUT);
+			DockingWindowUtil.MANAGE_ONLY_LAYOUT);
 	}
 
 	public void handleReadingOnlyLayout() {
 		DockingWindowUtil.setLayout(mainFrame,
-				DockingWindowUtil.READING_ONLY_LAYOUT);
+			DockingWindowUtil.READING_ONLY_LAYOUT);
 	}
 
 	public void handleResetLayout() {
 		SwingUtil.setWaitingCursor(mainFrame);
 		mainFrame.setDefaultLayout();
-		StorybookApp.getInstance().runGC();
+		/* suppression du garbage collector
+		 StorybookApp.getInstance().runGC();
+		 */
 		SwingUtil.setDefaultCursor(mainFrame);
 	}
 
@@ -626,7 +586,7 @@ public class ActionHandler {
 	public void handleViewStatus(boolean selected) {
 	}
 
-	public void handleExportBookText(){
+	public void handleExportBookText() {
 		BookExporter exp = new BookExporter(mainFrame);
 		exp.setExportForOpenOffice(true);
 		exp.exportToFile();
@@ -646,23 +606,22 @@ public class ActionHandler {
 
 	public void handleCopyBlurb() {
 		Internal internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.BLURB, "");
+			InternalKey.BLURB, "");
 		StringSelection selection = new StringSelection(
-				internal.getStringValue() + "\n");
+			internal.getStringValue() + "\n");
 		Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clbrd.setContents(selection, selection);
 	}
 
 	/* SB5 suppress Pro
-	public void handleGoPro() {
-		if (I18N.isGerman()) {
-			NetUtil.openBrowser(SbConstants.URL.GO_PRO_DE.toString());
-			return;
-		}
-		NetUtil.openBrowser(SbConstants.URL.GO_PRO_EN.toString());
-	}
-	*/
-
+	 public void handleGoPro() {
+	 if (I18N.isGerman()) {
+	 NetUtil.openBrowser(SbConstants.URL.GO_PRO_DE.toString());
+	 return;
+	 }
+	 NetUtil.openBrowser(SbConstants.URL.GO_PRO_EN.toString());
+	 }
+	 */
 	public void handleReportBug() {
 		NetUtil.openBrowser(SbConstants.URL.REPORTBUG.toString());
 	}
@@ -681,8 +640,8 @@ public class ActionHandler {
 
 	public void handleFacebook() {
 		/* SB5 never more FACEBOOK
-		NetUtil.openBrowser(SbConstants.URL.FACEBOOK.toString());
-		*/
+		 NetUtil.openBrowser(SbConstants.URL.FACEBOOK.toString());
+		 */
 	}
 
 	public void handleAbout() {

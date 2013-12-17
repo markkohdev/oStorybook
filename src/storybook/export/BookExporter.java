@@ -4,7 +4,6 @@
  */
 package storybook.export;
 
-import storybook.model.DbFile;
 import storybook.model.DocumentModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.PartDAOImpl;
@@ -52,11 +51,13 @@ public class BookExporter extends AbstractExporter {
 
 	public boolean exportToClipboard() {
 		try {
-			StringBuffer localStringBuffer = getContent();
-			HtmlSelection localHtmlSelection = new HtmlSelection(localStringBuffer.toString());
-			Clipboard localClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-			localClipboard.setContents(localHtmlSelection, localHtmlSelection);
-			JOptionPane.showMessageDialog(this.mainFrame, I18N.getMsg("msg.book.copy.confirmation"), I18N.getMsg("msg.copied.title"), 1);
+			StringBuffer str = getContent();
+			HtmlSelection html = new HtmlSelection(str.toString());
+			Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clip.setContents(html, html);
+			JOptionPane.showMessageDialog(this.mainFrame,
+				I18N.getMsg("msg.book.copy.confirmation"),
+				I18N.getMsg("msg.copied.title"), 1);
 		} catch (Exception IOException) {
 			return false;
 		}
@@ -122,26 +123,27 @@ public class BookExporter extends AbstractExporter {
 					buf.append(Part2.getNumber());
 					buf.append(eH1);
 				}
-				List localList = ChapterDAO.findAll(Part2);
-				Iterator Iterator2 = localList.iterator();
+				List chapters = ChapterDAO.findAll(Part2);
+				Iterator Iterator2 = chapters.iterator();
 				while (Iterator2.hasNext()) {
-					Chapter localChapter = (Chapter) Iterator2.next();
+					Chapter chapter = (Chapter) Iterator2.next();
 					buf.append(bH2);
 					if (i != 0) {
-						buf.append("<a name='").append(localChapter.getChapternoStr()).append("'>");
+						buf.append("<a name='")
+							.append(chapter.getChapternoStr())
+							.append("'>");
 					} else {
 						buf.append("\n");
 					}
 					if (isExportChapterNumbers) {
 						if (isExportRomanNumerals) {
-							buf.append((String) LangUtil.intToRoman(localChapter.getChapterno().intValue()));
+							buf.append((String) LangUtil.intToRoman(chapter.getChapterno().intValue()));
 						} else {
-							buf.append(localChapter.getChapternoStr());
+							buf.append(chapter.getChapternoStr());
 						}
 					}
 					if (isExportChapterTitles) {
-						buf.append(": ");
-						buf.append(localChapter.getTitle());
+						buf.append(": ").append(chapter.getTitle());
 					}
 					if (i != 0) {
 						buf.append("</a>\n");
@@ -149,33 +151,33 @@ public class BookExporter extends AbstractExporter {
 					buf.append(eH2);
 					if (isExportChapterDatesLocations) {
 						buf.append(bH3);
-						buf.append(DateUtil.getNiceDates((List) ChapterDAO.findDates(localChapter)));
-						if (!((List) ChapterDAO.findLocations(localChapter)).isEmpty()) {
+						buf.append(DateUtil.getNiceDates((List) ChapterDAO.findDates(chapter)));
+						if (!((List) ChapterDAO.findLocations(chapter)).isEmpty()) {
 							buf.append(": ");
-							buf.append(StringUtils.join((Iterable) ChapterDAO.findLocations(localChapter), ", "));
+							buf.append(StringUtils.join((Iterable) ChapterDAO.findLocations(chapter), ", "));
 						}
 						buf.append(eH3);
 					}
-					Object localObject2 = SceneDAO.findByChapter(localChapter);
-					Object localObject3 = ((List) localObject2).iterator();
+					Object scenes = SceneDAO.findByChapter(chapter);
+					Iterator iterator = ((List) scenes).iterator();
 					boolean bx;
-					while (((Iterator) localObject3).hasNext()) {
-						Scene localScene = (Scene) ((Iterator) localObject3).next();
+					while ((iterator).hasNext()) {
+						Scene scene = (Scene) (iterator).next();
 						bx = true;
 						if (this.strandIdsToExport != null) {
-							long l = localScene.getStrand().getId().longValue();
+							long l = scene.getStrand().getId().longValue();
 							if (!this.strandIdsToExport.contains(Long.valueOf(l))) {
 								bx = false;
 							}
 						}
 						if (bx) {
-							if (!localScene.getInformative().booleanValue()) {
+							if (!scene.getInformative().booleanValue()) {
 								if (isExportSceneTitle) {
-									buf.append(bH4);
-									buf.append(localScene.getTitle());
-									buf.append(eH4);
+									buf.append(bH4)
+										.append(scene.getTitle())
+										.append(eH4);
 								}
-								String str = localScene.getText();
+								String str = scene.getText();
 								if (isUseHtmlScenes) {
 									HtmlUtil.appendCleanHtml(buf, str);
 								} else {

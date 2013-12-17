@@ -833,7 +833,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			Object value = selectedNode.getUserObject();
 			if (value instanceof AbstractEntity) {
 				AbstractEntity entity = (AbstractEntity) value;
-				EditEntityAction act = new EditEntityAction(mainFrame, entity);
+				EditEntityAction act = new EditEntityAction(mainFrame, entity,false);
 				act.actionPerformed(null);
 			}
 		}

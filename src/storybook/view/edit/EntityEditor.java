@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
@@ -131,10 +132,9 @@ import net.miginfocom.swing.MigLayout;
 public class EntityEditor extends AbstractPanel implements ActionListener,
 		ItemListener {
 
+	private boolean trace=true;
 	public static Dimension MINIMUM_SIZE = new Dimension(440, 500);
-
 	private static final String ERROR_LABEL = "error_label";
-
 	private enum MsgState {
 		ERRORS, WARNINGS, UPDATED, ADDED
 	}
@@ -163,18 +163,21 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	private AbstractEntity origEntity = null;
 
 	public EntityEditor(MainFrame mainFrame) {
-		System.out.println("new EntityEditor("+mainFrame.getName()+")");
+		if (trace) {
+			System.out.println("EntityEditor.EntityEditor("+mainFrame.getName()+")");
+		}
 		this.mainFrame = mainFrame;
 		this.ctrl = mainFrame.getDocumentController();
 	}
 
 	@Override
 	public void init() {
-		System.out.println("EntityEditor.init()");
+		if (trace) {
+			System.out.println("EntityEditor.init() <-"+mainFrame.getName());
+		}
 		containers = new Vector<JPanel>();
 		inputComponents = new Vector<JComponent>();
 		rbgPanels = new HashMap<RadioButtonGroup, RadioButtonGroupPanel>();
-
 		try {
 			Internal internal = DocumentUtil.restoreInternal(mainFrame,
 					InternalKey.LEAVE_EDITOR_OPEN,
@@ -192,7 +195,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	 */
 	@Override
 	public void initUi() {
-		System.out.println("EntityEditor.initUi()");
+		if (trace) {
+			System.out.println("EntityEditor.initUI() <-"+mainFrame.getName());
+		}
 		setLayout(new MigLayout("fill,wrap"));
 		setBackground(Color.white);
 		setMinimumSize(MINIMUM_SIZE);
@@ -379,7 +384,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 					Iterator<JComponent> it = inputComponents.iterator();
 					while (it.hasNext()) {
 						JComponent comp = it.next();
-						if (comp.getName() == column.getMethodName()) {
+						if (comp.getName().equals(column.getMethodName())) {
 							abbrCompleter.setComp((JTextComponent) comp);
 						}
 						if (comp.getName().equals(abbrCompleter.getCompName1())) {
@@ -424,9 +429,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 		btAddOrUpdate = new JButton(I18N.getMsg("msg.editor.update"));
 		btAddOrUpdate.setName(ComponentName.BT_ADD_OR_UPDATE.toString());
-		if (I18N.isEnglish()) {
+		/*if (I18N.isEnglish()) {*/
 			btAddOrUpdate.setIcon(I18N.getIcon("icon.small.refresh"));
-		}
+		/*}*/
 		btAddOrUpdate.addActionListener(this);
 
 		JButton btCancel = new JButton(I18N.getMsg("msg.common.cancel"));
@@ -501,36 +506,10 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
-		System.out.println("EntityEditor.modelPropertyChange("+evt.getPropertyName()+")");
+		if (trace) {
+			System.out.println("EntityEditor.modelPropertyChange("+evt.getPropertyName()+")");
+		}
 		String propName = evt.getPropertyName();
-
-		// not used
-//		if (CommonProps.UNLOAD_EDITOR.check(propName)) {
-//			if (entity != null) {
-//				final View editorView = mainFrame.getView(ViewName.EDITOR);
-//				boolean showing = editorView.isShowing();
-//				if (showing) {
-//					int n = showConfirmation();
-//					if (n == 0) {
-//						addOrUpdateEntity();
-//					} else if (n == 1) {
-//						abandonEntityChanges();
-//					} else if (n == 2) {
-//						SwingUtilities.invokeLater(new Runnable() {
-//							@Override
-//							public void run() {
-//								editorView.restoreFocus();
-//							}
-//						});
-//						return;
-//					}
-//				}
-//			}
-//			entity = null;
-//			entityHandler = null;
-//			initUi();
-//			return;
-//		}
 
 		if (propName.startsWith("Delete")) {
 			if (entity != null
@@ -541,9 +520,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			return;
 		}
 
-		if (!propName.startsWith("Edit")) {
-			return;
-		}
+		if (!propName.startsWith("Edit")) {return;}
 
 		if (entity != null) {
 			updateEntityFromInputComponents();
@@ -664,6 +641,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void editEntity(PropertyChangeEvent evt) {
+		if (trace) {
+			System.out.println("EntityEditor.initUi()");
+		}
 		for (SbColumn col : entityHandler.getColumns()) {
 			try {
 				String methodName = "get" + col.getMethodName();
@@ -697,12 +677,12 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 							}
 							((JCheckBox) comp).setSelected((Boolean)ret);
 						} else if (comp instanceof AutoCompleteComboBox) {
-							AbstractEntityHandler entityHandler = EntityUtil
+							AbstractEntityHandler eh = EntityUtil
 									.getEntityHandler(mainFrame, ret, method,
 											entity);
 							AutoCompleteComboBox autoCombo = (AutoCompleteComboBox) comp;
 							EntityUtil.fillAutoCombo(mainFrame, autoCombo,
-									entityHandler, (String) ret,
+									eh, (String) ret,
 									col.getAutoCompleteDaoMethod());
 						} else if (comp instanceof JComboBox) {
 							boolean isNew = (ret == null);
@@ -767,8 +747,8 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 						}
 					}
 				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+				System.err.println("EntityEditor.editEntity() Exception : "+ex.getMessage());
 			}
 
 			if (col.hasRadioButtonGroup()) {
@@ -789,6 +769,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void updateEntityFromInputComponents() {
+		if (trace) {
+			System.out.println("EntityEditor.initUi()");
+		}
 		for (SbColumn col : entityHandler.getColumns()) {
 			try {
 				if (col.isReadOnly()) {
@@ -1010,11 +993,14 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void verifyInput() {
+		if (trace) {
+			System.out.println("EntityEditor.initUi()");
+		}
 		errorState = ErrorState.OK;
 		try {
 			// remove error labels
 			for (Container container : containers) {
-				ArrayList<Component> components = new ArrayList<Component>();
+				ArrayList<Component> components = new ArrayList<>();
 				SwingUtil.findComponentsNameStartsWith(container, ERROR_LABEL,
 						components);
 				for (Component comp : components) {
@@ -1091,12 +1077,14 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 				SwingUtil.forceRevalidate(container);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("EntityEditor.verifyInput() Exception :"+e.getMessage());
 		}
-		return;
 	}
 
 	private void addOrUpdateEntity() {
+		if (trace) {
+			System.out.println("EntityEditor.initUi()");
+		}
 		try {
 			updateEntityFromInputComponents();
 			if (entity.isTransient()) {
@@ -1162,6 +1150,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (trace) {
+			System.out.println("EntityEditor.initUi()");
+		}
 		String compName = ((Component) e.getSource()).getName();
 		if (ComponentName.BT_OK.check(compName)) {
 			addOrUpdateEntity();

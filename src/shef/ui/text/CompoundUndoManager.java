@@ -186,6 +186,7 @@ public class CompoundUndoManager implements UndoableEditListener
         this(doc, new UndoManager());
     }
 
+	@Override
     public void undoableEditHappened(UndoableEditEvent evt)
     {
         UndoableEdit edit = evt.getEdit();
@@ -240,6 +241,7 @@ public class CompoundUndoManager implements UndoableEditListener
             putValue(SHORT_DESCRIPTION, getValue(NAME));
         }
 
+		@Override
         public void actionPerformed(ActionEvent e)
         {
             Document doc = getTextComponent(e).getDocument();
@@ -253,7 +255,6 @@ public class CompoundUndoManager implements UndoableEditListener
                 catch (CannotUndoException ex)
                 {
                     System.out.println("Unable to undo: " + ex);
-                    ex.printStackTrace();
                 }
 
                 updateUndo(doc);
@@ -281,6 +282,7 @@ public class CompoundUndoManager implements UndoableEditListener
             putValue(SHORT_DESCRIPTION, getValue(NAME));
         }
 
+		@Override
         public void actionPerformed(ActionEvent e)
         {
             Document doc = getTextComponent(e).getDocument();
@@ -294,7 +296,6 @@ public class CompoundUndoManager implements UndoableEditListener
                 catch (CannotUndoException ex)
                 {
                     System.out.println("Unable to redo: " + ex);
-                    ex.printStackTrace();
                 }
 
                 updateUndo(doc);

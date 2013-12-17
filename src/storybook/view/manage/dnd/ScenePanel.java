@@ -48,6 +48,7 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class ScenePanel extends AbstractScenePanel implements MouseListener,
 		Accessible, IRefreshable {
+	private boolean trace=true;
 	public final static int TYPE_NONE = 0;
 	public final static int TYPE_UNASSIGNED = 1;
 	public final static int TYPE_MAKE_UNASSIGNED = 2;
@@ -61,10 +62,16 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 
 	public ScenePanel(MainFrame mainFrame, Scene scene) {
 		this(mainFrame, scene, TYPE_NONE);
+		if (trace) {
+			System.out.println("ScenePanel("+mainFrame.getName()+", "+scene.getFullTitle()+", "+type);
+		}
 	}
 
 	public ScenePanel(MainFrame mainFrame, Scene scene, int type) {
 		super(mainFrame, scene);
+		if (trace) {
+			System.out.println("ScenePanel("+mainFrame.getName()+", "+scene.getFullTitle()+", "+type);
+		}
 		this.scene = scene;
 		this.type = type;
 		initAll();
@@ -78,7 +85,9 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 
 	@Override
 	public void init() {
-		System.out.println("ScenePanel.init()");
+		if (trace) {
+			System.out.println("ScenePanel.init()");
+		}
 		try {
 			Internal internal = DocumentUtil.restoreInternal(mainFrame,
 					InternalKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
@@ -94,7 +103,9 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 
 	@Override
 	public void initUi() {
-		System.out.println("ScenePanel.initUI()");
+		if (trace) {
+			System.out.println("ScenePanel.initUI()");
+		}
 		setOpaque(true);
 
 		if (type == TYPE_MAKE_UNASSIGNED) {
@@ -153,7 +164,7 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 		}
 		requestFocusInWindow();
 		if (evt.getClickCount() == 2) {
-			EditEntityAction act = new EditEntityAction(mainFrame, scene);
+			EditEntityAction act = new EditEntityAction(mainFrame, scene,false);
 			act.actionPerformed(null);
 			return;
 		}

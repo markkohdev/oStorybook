@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-  <class name="storybook.model.hbn.entity.Preference" table="PREFERENCE">
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="storybook.model.hbn.entity">
+  <class name="Preference" table="PREFERENCE">
     <id column="ID" name="id" type="java.lang.Long" unsaved-value="null">
-      <generator class="increment">
-            </generator>
+      <generator class="increment"></generator>
     </id>
     <property column="key" insert="true" length="512" name="key" type="java.lang.String" unique="true" update="true"/>
     <property column="stringValue" insert="true" length="4096" name="stringValue" type="java.lang.String" update="true"/>

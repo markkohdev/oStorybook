@@ -47,9 +47,7 @@ import storybook.controller.PreferenceController;
 import storybook.model.DbFile;
 import storybook.model.PreferenceModel;
 import storybook.model.hbn.entity.Preference;
-/* SB5 suppress deprecated
 import storybook.model.legacy.PersistenceManager;
-*/
 /* SB5 suppress Pro
 import storybook.pro.guardian.Guardian;
 */
@@ -62,14 +60,17 @@ import storybook.toolkit.swing.splash.HourglassSplash;
 import storybook.view.MainFrame;
 import storybook.view.dialog.ExceptionDialog;
 import storybook.view.dialog.FirstStartDialog;
-//import storybook.view.dialog.PostModelUpdateDialog;
+import storybook.view.dialog.PostModelUpdateDialog;
 import storybook.view.dialog.file.NewFileDialog;
 
 /**
+ * Classe principale de l'application de type Component
  * @author martin
  */
 @SuppressWarnings({ "serial", "deprecation" })
 public class StorybookApp extends Component {
+
+	private boolean trace=false;
 
 	private static StorybookApp instance;
 
@@ -79,10 +80,22 @@ public class StorybookApp extends Component {
 	private Font defaultFont;
 
 	private StorybookApp() {
-		mainFrames = new ArrayList<MainFrame>();
+		mainFrames = new ArrayList<>();
 	}
 
+/**
+ * init()
+ * Initialisation de la classe StorybookApp
+ * - composant "préférence" (Controleur, Model)
+ * - internationalisation
+ * - look & feel
+ * - détection si première activation
+ * - interface utilisateur
+ */
 	private void init() {
+		if (trace) {
+			System.out.println("StorybookApp.init()");
+		}
 		try {
 			// preference model and controller
 			preferenceController = new PreferenceController();
@@ -112,7 +125,9 @@ public class StorybookApp extends Component {
 				Preference pref2 = PrefUtil.get(PreferenceKey.LAST_OPEN_FILE,
 						"");
 				DbFile dbFile = new DbFile(pref2.getStringValue());
-				System.out.println("StorybookApp.init(): loading... " + dbFile);
+				if (trace) {
+					System.out.println("StorybookApp.init(): loading... " + dbFile);
+				}
 				fileHasBeenOpened = openFile(dbFile);
 			}
 			if (fileHasBeenOpened) {
@@ -127,7 +142,7 @@ public class StorybookApp extends Component {
 
 			// check for updates
 			Updater.checkForUpdate();
-
+/* abandon de l'appel au garbarge collector, utilisation non recommandée
 			Timer timer = new Timer(10000, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -135,6 +150,7 @@ public class StorybookApp extends Component {
 				}
 			});
 			timer.start();
+			*/
 
 		} catch (Exception e) {
 			ExceptionDialog dlg = new ExceptionDialog(e);
@@ -142,7 +158,14 @@ public class StorybookApp extends Component {
 		}
 	}
 
+	/**
+	 * initI18N
+	 * initialisation de l'internationalisation
+	 */
 	public void initI18N() {
+		if (trace) {
+			System.out.println("StorybookApp.initI18N()");
+		}
 		String localeStr = PrefUtil.get(PreferenceKey.LANG,
 				SbConstants.DEFAULT_LANG).getStringValue();
 		SbConstants.Language lang = SbConstants.Language.valueOf(localeStr);
@@ -151,27 +174,64 @@ public class StorybookApp extends Component {
 		I18N.initResourceBundles(getLocale());
 	}
 
+	/**
+	 * getPreferenceModel
+	 * obtenir le preferenceModel actuel
+	 * @return le preferenceModel actuel
+	 */
 	public PreferenceModel getPreferenceModel() {
 		return preferenceModel;
 	}
 
+	/**
+	 * getPreferenceControler
+	 * obtenir le preferenceControler actuel
+	 * @return  le preferenceControler actuel
+	 */
 	public PreferenceController getPreferenceController() {
 		return preferenceController;
 	}
 
+	/**
+	 * getMainFrames
+	 * Obtenir la liste des mainFrames existants
+	 * @return la liste des mainFrames
+	 */
 	public List<MainFrame> getMainFrames() {
 		return mainFrames;
 	}
 
+	/**
+	 * addMainFrame()
+	 * ajout d'un mainFrame à la liste des mainFrames
+	 * @param mainFrame : mainFrame cible
+	 */
 	public void addMainFrame(MainFrame mainFrame) {
+		if (trace) {
+			System.out.println("StorybookApp.addMainFrame("+mainFrame.getName()+")");
+		}
 		mainFrames.add(mainFrame);
 	}
 
+	/**
+	 * removeMainFrame
+	 * @param mainFrame
+	 */
 	public void removeMainFrame(MainFrame mainFrame) {
+		if (trace) {
+			System.out.println("StorybookApp.removeMainFrame("+mainFrame.getName()+")");
+		}
 		mainFrames.remove(mainFrame);
 	}
 
+	/**
+	 * closeBlank
+	 * suppression de mainFrame vide
+	 */
 	public void closeBlank() {
+		if (trace) {
+			System.out.println("StorybookApp.closeBlank()");
+		}
 		for (MainFrame mainFrame : mainFrames) {
 			if (mainFrame.isBlank()) {
 				mainFrames.remove(mainFrame);
@@ -179,11 +239,16 @@ public class StorybookApp extends Component {
 			}
 		}
 	}
-
+/* suppression de l'appel du garbage collector
 	public void runGC(){
 		System.gc();
 	}
-
+*/
+	/**
+	 * getInstance
+	 * obtenir l'instance courante
+	 * @return l'objet StorybookApp actuel ou crée l'instance
+	 */
 	public static StorybookApp getInstance() {
 		if (instance == null) {
 			instance = new StorybookApp();
@@ -191,7 +256,18 @@ public class StorybookApp extends Component {
 		return instance;
 	}
 
+	/**
+	 * createNewFile
+	 * créer un nouveau fichier
+	 * si le nom de fichier est correct :
+	 * - réinitialisation de l'interface utilisateur
+	 * - fermeture des mainFrames vide
+	 * - actualisation de la liste des derniers fichiers ouverts
+	 */
 	public void createNewFile() {
+		if (trace) {
+			System.out.println("StorybookApp.createNewFile()");
+		}
 		try {
 			NewFileDialog dlg = new NewFileDialog();
 			SwingUtil.showModalDialog(dlg, null);
@@ -223,7 +299,20 @@ public class StorybookApp extends Component {
 		}
 	}
 
+	/**
+	 * renameFile
+	 * modification du nom du fichier par copie dans un nouveau
+	 * fichier
+	 * @param mainFrame le mainFrame cible
+	 * @param file nouveau nom du fichier
+	 * si la transformation du nom du fichier :
+	 * - fermeture du mainFrame courant (désynchronisé de 1 seconde)
+	 * - suppression de l'ancien fichier (désynchronisé de 4 secondes)
+	 */
 	public void renameFile(final MainFrame mainFrame, File file) {
+		if (trace) {
+			System.out.println("StorybookApp.renameFile("+mainFrame.getName()+","+file.getAbsolutePath()+")");
+		}
 		try {
 			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
 			DbFile dbFile = new DbFile(file);
@@ -246,10 +335,19 @@ public class StorybookApp extends Component {
 			timer2.setRepeats(false);
 			timer2.start();
 		} catch (Exception e) {
+			System.err.println("StorybookApp.renameFile("+mainFrame.getName()+","+file.getName()+") Eception :"+e.getMessage());
 		}
 	}
 
+	/**
+	 * openFile
+	 * ouverture d'un fichier avec dialogue de choix
+	 * @return booléen vrai si le fichier est bien ouvert
+	 */
 	public boolean openFile() {
+		if (trace) {
+			System.out.println("StorybookApp.openFile()");
+		}
 		final DbFile dbFile = DocumentUtil.openDocumentDialog();
 		if (dbFile == null) {
 			return false;
@@ -257,7 +355,21 @@ public class StorybookApp extends Component {
 		return openFile(dbFile);
 	}
 
+	/**
+	 * openFile
+	 * ouverture d'un fichier avec vérification
+	 * @param dbFile fichier à ouvrir
+	 * @return booléen vrai si ouverture effectuée
+	 * Si l'ouverture est correcte :
+	 * - vérification que le fichier existe, si non retourne faux
+	 * - vérification si le fichier peut être écrit, si non retourne faux
+	 * - vérification que le fichier n'est pas déjà ouvert, si déjà ouvert
+	 *		retourne vrai
+	 */
 	public boolean openFile(final DbFile dbFile) {
+		if (trace) {
+			System.out.println("StorybookApp.openFile("+dbFile.getDbName()+")");
+		}
 		try {
 			// file doesn't exist
 			if (!dbFile.getFile().exists()) {
@@ -285,7 +397,6 @@ public class StorybookApp extends Component {
 				return true;
 			}
 
-			/* SB5 suppress old version
 			// model update from Storybook 3.x to 4.0
 			final PersistenceManager oldPersMngr = PersistenceManager.getInstance();
 			oldPersMngr.open(dbFile);
@@ -297,14 +408,12 @@ public class StorybookApp extends Component {
 			} catch (Exception e) {
 				oldPersMngr.closeConnection();
 				System.err.println("StorybookApp.openFile(): DB update failed");
-				e.printStackTrace();
 				ExceptionDialog dlg = new ExceptionDialog(e);
 				SwingUtil.showModalDialog(dlg, null);
 				return false;
 			}
-			oldPersMngr.closeConnection();
-			*/
 
+			oldPersMngr.closeConnection();
 			setWaitCursor();
 			String text = I18N.getMsg("msg.common.loading", dbFile.getName());
 			final HourglassSplash dlg = new HourglassSplash(text);
@@ -322,13 +431,11 @@ public class StorybookApp extends Component {
 						updateFilePref(dbFile);
 						reloadMenuBars();
 						setDefaultCursor();
-						/* SB5 supress old DB version usage
 						if (oldPersMngr.hasAlteredDbModel()) {
-							PostModelUpdateDialog dlg = new PostModelUpdateDialog(
+							PostModelUpdateDialog dlg2 = new PostModelUpdateDialog(
 									newMainFrame);
-							SwingUtil.showModalDialog(dlg, newMainFrame);
+							SwingUtil.showModalDialog(dlg2, newMainFrame);
 						}
-						*/
 					} catch (Exception e) {
 					}
 				}
@@ -339,6 +446,9 @@ public class StorybookApp extends Component {
 	}
 
 	private boolean checkIfAlreadyOpened(String dbName) {
+		if (trace) {
+			System.out.println("StorybookApp.checkIfAlreadyOpened("+dbName+")");
+		}
 		for (MainFrame mainFrame : mainFrames) {
 			if (mainFrame.isBlank()) {
 				continue;
@@ -352,6 +462,9 @@ public class StorybookApp extends Component {
 	}
 
 	private void updateFilePref(DbFile dbFile) {
+		if (trace) {
+			System.out.println("StorybookApp.updateFilePref("+dbFile.getDbName()+")");
+		}
 		// save last open directory and file
 		File file = dbFile.getFile();
 		PrefUtil.set(PreferenceKey.LAST_OPEN_DIR, file.getParent());
@@ -374,11 +487,17 @@ public class StorybookApp extends Component {
 	}
 
 	public void clearRecentFiles() {
+		if (trace) {
+			System.out.println("StorybookApp.clearRecentFiles()");
+		}
 		PrefUtil.setDbFileList(new ArrayList<DbFile>());
 		reloadMenuBars();
 	}
 
 	public void exit() {
+		if (trace) {
+			System.out.println("StorybookApp.exit()");
+		}
 		if (mainFrames.size() > 0) {
 			Preference pref = PrefUtil.get(PreferenceKey.CONFIRM_EXIT, true);
 			if (pref.getBooleanValue()) {
@@ -451,6 +570,9 @@ public class StorybookApp extends Component {
 	}
 
 	public void refresh() {
+		if (trace) {
+			System.out.println("StorybookApp.refresh()");
+		}
 		for (MainFrame mainFrame : mainFrames) {
 			int width = mainFrame.getWidth();
 			int height = mainFrame.getHeight();
@@ -498,6 +620,9 @@ public class StorybookApp extends Component {
 	*/
 
 	public void saveAll() {
+		if (trace) {
+			System.out.println("StorybookApp.saveAll()");
+		}
 		for (MainFrame mainFrame : mainFrames) {
 			mainFrame.getSbActionManager().getActionHandler().handleSave();
 		}

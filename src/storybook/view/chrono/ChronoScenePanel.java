@@ -225,7 +225,7 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 		taTitle.getUndoManager().discardAllEdits();
 		taTitle.addFocusListener(this);
 		SwingUtil.addCtrlEnterAction(taTitle, new EditEntityAction(mainFrame,
-				scene));
+				scene,true));
 		JScrollPane spTitle = new JScrollPane(taTitle);
 		spTitle.setPreferredSize(new Dimension(50, 35));
 
@@ -236,7 +236,7 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 		tcText.setDragEnabled(true);
 		tcText.addFocusListener(this);
 		SwingUtil.addCtrlEnterAction(tcText, new EditEntityAction(mainFrame,
-				scene));
+				scene,true));
 		JScrollPane spText = new JScrollPane(tcText);
 		spText.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		spText.setPreferredSize(new Dimension(Integer.MAX_VALUE,

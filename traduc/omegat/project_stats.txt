@@ -1,0 +1,14 @@
+17/12/13 20:14
+Données du projet
+
+                           	Segments	Mots	Caractères (sans espaces)	Caractères (avec espaces)	
+Total :                    	     703	1994	                    10584	                    11840	
+Restants :                 	     695	1946	                    10330	                    11547	
+Segments uniques :         	     641	1916	                    10106	                    11346	
+Segments uniques restants :	     633	1868	                     9852	                    11053	
+
+
+Statistiques par fichiers :
+
+Nom du fichier     	Total segments	Segments restants	Segments uniques	Segments uniques restants	Total mots	Mots restants	Mots uniques	Mots uniques restants	Total caractères (sans espaces)	Caractères restants (sans espaces)	Caractères uniques (sans espaces)	Caractères uniques restants (sans espaces)	Total caractères (avec espaces)	Caractères restants (avec espaces)	Caractères uniques (avec espaces)	Caractères uniques restants (avec espaces)	
+messages.properties	           703	              695	             641	                      633	      1994	         1946	        1916	                 1868	                          10584	                             10330	                            10106	                                      9852	                          11840	                             11547	                            11346	                                     11053	

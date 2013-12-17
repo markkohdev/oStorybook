@@ -61,6 +61,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
@@ -659,7 +660,7 @@ public final class LangToolMain implements ActionListener {
 			if (args.length == 1
 					&& (args[0].equals("-t") || args[0].equals("--tray"))) {
 				// dock to systray on startup
-				javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						try {
@@ -679,7 +680,7 @@ public final class LangToolMain implements ActionListener {
 						.println("  -t, --tray: dock LanguageTool to system tray on startup");
 				prg.stopServer();
 			} else {
-				javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						try {

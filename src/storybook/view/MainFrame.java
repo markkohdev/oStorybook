@@ -105,6 +105,7 @@ import storybook.view.interfaces.IPaintable;
  */
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements IPaintable {
+	private boolean trace=false;
 
 	private DocumentModel documentModel;
 	private DocumentController documentController;
@@ -127,6 +128,9 @@ public class MainFrame extends JFrame implements IPaintable {
 
 	@Override
 	public void init() {
+		if (trace) {
+			System.out.println("MainFrame.init()");
+		}
 		dbFile = null;
 		viewFactory = new ViewFactory(this);
 		sbActionManager = new SbActionManager(this);
@@ -139,6 +143,9 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	public void init(DbFile dbFile) {
+		if (trace) {
+			System.out.println("MainFrame.init("+dbFile.getDbName()+")");
+		}
 		try {
 			this.dbFile = dbFile;
 
@@ -168,6 +175,9 @@ public class MainFrame extends JFrame implements IPaintable {
 
 	@Override
 	public void initUi() {
+		if (trace) {
+			System.out.println("MainFrame.initUi()");
+		}
 		setLayout(new MigLayout("flowy,fill,ins 0,gap 0", "", "[grow]"));
 		setIconImage(I18N.getIconImage("icon.sb"));
 		setTitle();
@@ -283,6 +293,9 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	private void initRootWindow() {
+		if (trace) {
+			System.out.println("MainFrame.initRootWindow()");
+		}
 		StringViewMap viewMap = viewFactory.getViewMap();
 		MixedViewHandler handler = new MixedViewHandler(viewMap,
 				new ViewSerializer() {
@@ -736,7 +749,9 @@ public class MainFrame extends JFrame implements IPaintable {
 				documentController.detachView((AbstractPanel) view
 						.getComponent());
 				viewFactory.unloadView(view);
+				/* suppression du garbage collector
 				StorybookApp.getInstance().runGC();
+				*/
 			}
 		}
 	}

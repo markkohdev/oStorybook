@@ -84,7 +84,7 @@ abstract public class AbstractScenePanel extends AbstractGradientPanel {
 			return btEdit;
 		}
 		btEdit = new IconButton("icon.small.edit", new EditEntityAction(
-				mainFrame, scene));
+				mainFrame, scene,false));
 		btEdit.setText("");
 		btEdit.setSize32x20();
 		btEdit.setToolTipText(I18N.getMsg("msg.common.edit"));

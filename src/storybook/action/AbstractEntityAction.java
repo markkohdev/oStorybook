@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/* vérification OK */
 
 package storybook.action;
 
@@ -34,10 +35,10 @@ public abstract class AbstractEntityAction extends AbstractAction {
 	protected MainFrame mainFrame;
 	protected AbstractEntity entity;
 
-	public AbstractEntityAction(MainFrame mainFrame, AbstractEntity entity,
+	public AbstractEntityAction(MainFrame mainframe, AbstractEntity entity,
 			String name, Icon icon) {
 		super(name, icon);
-		this.mainFrame = mainFrame;
+		this.mainFrame = mainframe;
 		this.entity = entity;
 	}
 }

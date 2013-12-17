@@ -18,8 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package storybook.model.legacy;
 
-/* SB5 suppress deprecated Internal
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -189,4 +187,4 @@ public class Internal extends DbTable {
 		this.booleanValue = booleanValue;
 	}
 }
-*/
+/* */

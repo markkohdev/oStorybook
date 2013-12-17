@@ -92,9 +92,6 @@ public class SbActionManager implements PropertyChangeListener {
 			actionManager = new ActionManager();
 			ActionManager.setInstance(actionManager);
 
-//			String xmlFile = "resources/actions/actions.xml";
-//			URL actionFileURL = StorybookApp.class.getResource(xmlFile);
-//			File file = new File(actionFileURL.toURI());
 			/* SB5 transfer action.xml under root project
 			File file = new File("resources/actions/actions.xml");
 			*/

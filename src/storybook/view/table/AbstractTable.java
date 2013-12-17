@@ -79,6 +79,8 @@ import storybook.view.table.renderer.DateTableCellRenderer;
 public abstract class AbstractTable extends AbstractPanel implements
 		ActionListener, ListSelectionListener {
 
+	private boolean trace=true;
+
 	protected Vector<SbColumn> columns;
 
 //	protected MainFrame mainFrame;
@@ -489,10 +491,15 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	@Override
 	public synchronized void actionPerformed(ActionEvent e) {
+		if (trace) {System.out.println("AbstractTable.actionPerformed("+e.toString());}
 		String actCmd = e.getActionCommand();
 		Component comp = (Component) e.getSource();
 		String compName = comp.getName();
 		int row = table.getSelectedRow();
+		if (trace) {
+			System.out.println("actCmd="+actCmd
+				+",comp="+compName
+				+",row="+row);}
 
 		if (ComponentName.BT_EDIT.check(compName)
 				|| ActionCommand.EDIT.check(actCmd)) {

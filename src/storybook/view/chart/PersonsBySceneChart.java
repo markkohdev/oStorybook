@@ -85,6 +85,7 @@ public class PersonsBySceneChart extends AbstractPersonsChart
 		this.optionsPanel.add(this.colSlider);
 	}
 
+	@Override
 	public void refresh() {
 		this.colWidth = this.colSlider.getValue();
 		super.refresh();
@@ -93,81 +94,78 @@ public class PersonsBySceneChart extends AbstractPersonsChart
 	}
 
 	private JTable createTable() {
-		Part localPart = this.mainFrame.getCurrentPart();
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
-		Session localSession = localDocumentModel.beginTransaction();
-		PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
-		List localList1 = localPersonDAOImpl.findByCategories(this.selectedCategories);
-		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
-		List localList2 = localSceneDAOImpl.findByPart(localPart);
-		localDocumentModel.commit();
-		String[] arrayOfString = new String[localList2.size() + 1];
-		arrayOfString[0] = "";
+		Part part = mainFrame.getCurrentPart();
+		DocumentModel model = mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		PersonDAOImpl personDAO = new PersonDAOImpl(session);
+		List persons = personDAO.findByCategories(selectedCategories);
+		SceneDAOImpl sceneDAO = new SceneDAOImpl(session);
+		List scenes = sceneDAO.findByPart(part);
+		model.commit();
+		String[] string1 = new String[scenes.size() + 1];
+		string1[0] = "";
 		int i = 1;
-		/* Obfuscator ?
-		Object localObject1 = localList2.iterator();
-		while (((Iterator) localObject1).hasNext()) {
-		Scene localObject2 = (Scene) ((Iterator) localObject1).next();
-		arrayOfString[i] = ((Scene) localObject2).getChapterSceneNo(false);
-		i++;
-		}*/
-		ArrayList localObject1 = new ArrayList();
-		String[] localObject2 = new String[localList2.size() + 1];
-		Object localObject3 = localList1.iterator();
+		Object scenesIterator = scenes.iterator();
+		while (((Iterator) scenesIterator).hasNext()) {
+			Scene scene = (Scene) ((Iterator) scenesIterator).next();
+			string1[i] = ((Scene) scene).getChapterSceneNo(false);
+			i++;
+		}
+		scenesIterator = new ArrayList();
+		String[] string2 = new String[scenes.size() + 1];
+		Iterator personsIterator = persons.iterator();
 		Object localObject6;
-		while (((Iterator) localObject3).hasNext()) {
-			Person localObject4 = (Person) ((Iterator) localObject3).next();
+		while (personsIterator.hasNext()) {
+			Person person = (Person) personsIterator.next();
 			int j = 0;
-			Object[] arrayOfObject2 = new Object[localList2.size() + 1];
-			arrayOfObject2[(j++)] = localObject4;
+			Object[] string3 = new Object[scenes.size() + 1];
+			string3[(j++)] = person.getAbbreviation();
 			int n = 0;
-			localObject6 = localList2.iterator();
+			localObject6 = scenes.iterator();
 			while (((Iterator) localObject6).hasNext()) {
 				Scene localScene = (Scene) ((Iterator) localObject6).next();
-				if (localScene.getPersons().contains(localObject4)) {
+				if (localScene.getPersons().contains(person)) {
 					n = 1;
-					arrayOfObject2[j] = ColorUtil.darker(localScene.getStrand().getJColor(), 0.05D);
+					string3[j] = ColorUtil.darker(localScene.getStrand().getJColor(), 0.05D);
 				} else {
-					arrayOfObject2[j] = null;
+					string3[j] = null;
 				}
-				localObject2[j] = (String)HtmlUtil.wrapIntoTable(localScene.getTitleText(true, 500));
+				string2[j] = HtmlUtil.wrapIntoTable(localScene.getTitleText(true, 500));
 				j++;
 			}
-			if ((this.cbShowUnusedPersons == null) || (this.cbShowUnusedPersons.isSelected()) || (n != 0)) {
-				((ArrayList) localObject1).add(arrayOfObject2);
+			if ((cbShowUnusedPersons == null) || (cbShowUnusedPersons.isSelected()) || (n != 0)) {
+				((ArrayList) scenesIterator).add(string3);
 			}
 		}
-		localObject3 = new Object[((ArrayList) localObject1).size()][];
+		Object[][] localObject31 = new Object[((ArrayList) scenesIterator).size()][];
 		i = 0;
-		/* Obfuscator ?
-		 Object localObject4 = ((ArrayList)localObject1).iterator();
-		 while (((Iterator)localObject4).hasNext())
-		 {
-		 Object[] arrayOfObject1 = (Object[])((Iterator)localObject4).next();
-		 localObject3[(i++)] = arrayOfObject1;
-		 }*/
-		ReadOnlyTable localObject4 = new ReadOnlyTable((Object[][]) localObject3, arrayOfString);
-		if (((JTable) localObject4).getModel().getRowCount() == 0) {
-			return localObject4;
+		Iterator localObject4 = ((ArrayList) scenesIterator).iterator();
+		while (((Iterator) localObject4).hasNext()) {
+			Object[] arrayOfObject1 = (Object[]) ((Iterator) localObject4).next();
+			localObject31[(i++)] = arrayOfObject1;
 		}
-		((JTable) localObject4).getColumnModel().getColumn(0).setPreferredWidth(200);
-		((JTable) localObject4).getColumnModel().getColumn(0).setCellRenderer(new HeaderTableCellRenderer());
-		for (int k = 1; k < ((JTable) localObject4).getColumnCount(); k++) {
-			int m = ((JTable) localObject4).getColumnModel().getColumn(k).getModelIndex();
-			Object localObject5 = ((JTable) localObject4).getModel().getValueAt(0, m);
-			localObject6 = ((JTable) localObject4).getColumnModel().getColumn(k);
+		JTable ntable = new ReadOnlyTable((Object[][]) localObject31, string1);
+		if (ntable.getModel().getRowCount() == 0) {
+			return ntable;
+		}
+		ntable.getColumnModel().getColumn(0).setPreferredWidth(200);
+		ntable.getColumnModel().getColumn(0).setCellRenderer(new HeaderTableCellRenderer());
+		for (int k = 1; k < ntable.getColumnCount(); k++) {
+			int m = ntable.getColumnModel().getColumn(k).getModelIndex();
+			Object localObject5 = ntable.getModel().getValueAt(0, m);
+			localObject6 = ntable.getColumnModel().getColumn(k);
 			if ((localObject5 == null) || ((localObject5 instanceof Color))) {
-				((TableColumn) localObject6).setPreferredWidth(this.colWidth);
+				((TableColumn) localObject6).setPreferredWidth(colWidth);
 				((TableColumn) localObject6).setCellRenderer(new ColorTableCellRenderer(false));
 			}
 		}
-		((JTable) localObject4).setAutoResizeMode(0);
-		((JTable) localObject4).getTableHeader().setReorderingAllowed(false);
-		ToolTipHeader localToolTipHeader = new ToolTipHeader(((JTable) localObject4).getColumnModel());
-		localToolTipHeader.setToolTipStrings((String[]) localObject2);
+		ntable.setAutoResizeMode(0);
+		ntable.getTableHeader().setReorderingAllowed(false);
+		ToolTipHeader localToolTipHeader = new ToolTipHeader(ntable.getColumnModel());
+		localToolTipHeader.setToolTipStrings((String[]) string2);
 		localToolTipHeader.setToolTipText("Default ToolTip TEXT");
-		((JTable) localObject4).setTableHeader(localToolTipHeader);
-		return localObject4;
+		ntable.setTableHeader(localToolTipHeader);
+		return ntable;
 	}
 
 	@Override
