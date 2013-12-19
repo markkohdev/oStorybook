@@ -26,9 +26,6 @@ import javax.swing.JLabel;
 
 import storybook.SbConstants.ViewName;
 import storybook.toolkit.I18N;
-/* SB5 suppress Pro
-import storybook.toolkit.swing.panel.ProOnlyPanel;
-*/
 import storybook.view.book.BookPanel;
 import storybook.view.chart.GanttChart;
 import storybook.view.chart.OccurrenceOfLocationsChart;
@@ -156,9 +153,6 @@ public class ViewFactory {
 		if (view == null) {
 			return;
 		}
-		/* SB5 suppress Pro
-		boolean isProVersion = StorybookApp.getInstance().isProVersion();
-		*/
 		AbstractPanel comp = new BlankPanel(mainFrame);
 		if (ViewName.CHRONO.compare(view)) {
 			comp = new ChronoPanel(mainFrame);
@@ -169,14 +163,6 @@ public class ViewFactory {
 		} else if (ViewName.READING.compare(view)) {
 			comp = new ReadingPanel(mainFrame);
 		} else if (ViewName.MEMORIA.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new MemoriaPanel(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}
-			*/
-			// allways consider pro version is true
 			comp = new MemoriaPanel(mainFrame);
 		} else if (ViewName.SCENES.compare(view)) {
 			comp = new SceneTable(mainFrame);
@@ -205,75 +191,22 @@ public class ViewFactory {
 		} else if (ViewName.ITEMLINKS.compare(view)) {
 			comp = new ItemLinkTable(mainFrame);
 		} else if (ViewName.CHART_PERSONS_BY_DATE.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new PersonsByDateChart(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}
-			*/
-			// allways consider pro version is true
 			comp = new PersonsByDateChart(mainFrame);
 
 		} else if (ViewName.CHART_PERSONS_BY_SCENE.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new PersonsBySceneChart(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}*/
-			// allways consider pro version is true
 			comp = new PersonsBySceneChart(mainFrame);
 
 		} else if (ViewName.CHART_WiWW.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new WiWWChart(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}
-			*/
-			// allways consider pro version is true
 			comp = new WiWWChart(mainFrame);
 
 		} else if (ViewName.CHART_STRANDS_BY_DATE.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new StrandsByDateChart(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}
-			*/
-			// allways consider pro version is true
 			comp = new StrandsByDateChart(mainFrame);
 
 		} else if (ViewName.CHART_OCCURRENCE_OF_PERSONS.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new OccurrenceOfPersonsChart(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}
-			*/
-			// allways consider pro version is true
 			comp = new OccurrenceOfPersonsChart(mainFrame);
 		} else if (ViewName.CHART_OCCURRENCE_OF_LOCATIONS.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new OccurrenceOfLocationsChart(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}*/
-			// allways consider pro version is true
 			comp = new OccurrenceOfLocationsChart(mainFrame);
 		} else if (ViewName.CHART_GANTT.compare(view)) {
-			/* SB5 suppress Pro
-			if (isProVersion) {
-				comp = new GanttChart(mainFrame);
-			} else {
-				comp = new ProOnlyPanel(mainFrame);
-			}*/
-			// allways consider pro version is true
 			comp = new GanttChart(mainFrame);
 
 		} else if (ViewName.TREE.compare(view)) {

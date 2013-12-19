@@ -92,9 +92,6 @@ public class SbActionManager implements PropertyChangeListener {
 			actionManager = new ActionManager();
 			ActionManager.setInstance(actionManager);
 
-			/* SB5 transfer action.xml under root project
-			File file = new File("resources/actions/actions.xml");
-			*/
 			File file = new File("actions.xml");
 			String str = IOUtil.readFileAsString(file.getAbsolutePath());
 

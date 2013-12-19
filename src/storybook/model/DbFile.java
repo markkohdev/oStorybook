@@ -51,6 +51,10 @@ public class DbFile {
 		return file;
 	}
 
+	public String getPath() {
+		return dbName.substring(0, dbName.lastIndexOf(File.separator));
+	}
+
 	public String getDbName() {
 		return dbName;
 	}

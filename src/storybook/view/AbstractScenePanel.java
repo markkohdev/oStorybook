@@ -29,10 +29,12 @@ import storybook.action.EditEntityAction;
 import storybook.controller.DocumentController;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.I18N;
+import storybook.toolkit.swing.ColorUtil;
 import storybook.toolkit.swing.IconButton;
 
 @SuppressWarnings("serial")
 abstract public class AbstractScenePanel extends AbstractGradientPanel {
+	private boolean trace=true;
 	protected Scene scene;
 
 	protected AbstractAction newAction;
@@ -44,6 +46,9 @@ abstract public class AbstractScenePanel extends AbstractGradientPanel {
 	public AbstractScenePanel(MainFrame mainFrame, Scene scene) {
 		super(mainFrame);
 		this.scene = scene;
+		if (trace) {
+			System.out.println("AbstractScenePanel(mainFrame,scene)");
+		}
 	}
 
 	public AbstractScenePanel(MainFrame mainFrame, Scene scene,
@@ -52,6 +57,15 @@ abstract public class AbstractScenePanel extends AbstractGradientPanel {
 				: startBgcolor, scene.getInformative() ? Color.white
 				: endBgColor);
 		this.scene = scene;
+		if (trace) {
+			System.out.println("AbstractScenePanel("
+				+mainFrame.getName()+","
+				+scene.getFullTitle()+","
+				+showBgGradient+","
+				+ColorUtil.getColorString(startBgcolor)+","
+				+ColorUtil.getColorString(endBgColor)
+				+")");
+		}
 	}
 
 	public Scene getScene() {
@@ -63,6 +77,9 @@ abstract public class AbstractScenePanel extends AbstractGradientPanel {
 	}
 
 	protected AbstractAction getNewAction() {
+		if (trace) {
+			System.out.println("AbstractScenePanel.getNewAction()");
+		}
 		if (newAction == null) {
 			newAction = new AbstractAction() {
 				@Override

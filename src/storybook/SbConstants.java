@@ -73,20 +73,12 @@ public class SbConstants {
 		PRODUCT_VERSION("4.9.9"),
 		PRODUCT_FULL_NAME(PRODUCT_NAME + " " + PRODUCT_VERSION),
 		PRODUCT_RELEASE_DATE("2013-11-30"),
-		/* SB5 suppress pro
-		PRODUCT_PRO_NAME("Storybook Pro"),
-		PRODUCT_PRO_FULL_NAME(PRODUCT_PRO_NAME + " " + PRODUCT_VERSION),
-		PRODUCT_PRO_RELEASE_DATE("2012-06-12"),
-		*/
 		COPYRIGHT_YEAR("2012-2013"),
 		COPYRIGHT_COMPANY("The Storybook Team"),
 		PREFERENCE_DB_NAME("preference"),
 		DB_VERSION("4.0"),
 		DB_FILE_EXT(".h2.db"),
 		DB_CONFIG_EXT(".cfg.xml"),
-		/* SB5 suppress Pro
-		IS_PRO_VERSION("true"),
-		*/
 		IS_BETA_VERSION("false"),
 		USER_HOME_DIR("storybook5");
 		final private String text;
@@ -96,25 +88,6 @@ public class SbConstants {
 	}
 
 	public enum URL {
-		/* SB5 update new URL
-		HOMEPAGE_EN("http://www.novelist.ch"),
-		HOMEPAGE_DE("http://www.novelist.ch/joomla/index.php/de"),
-		*/
-		/* SB5 suppress Pro
-		GO_PRO_EN("http://www.novelist.ch/joomla/index.php/en/go-pro"),
-		GO_PRO_DE("http://www.novelist.ch/joomla/index.php/de/go-pro"),
-		PRO_ONLY_EN("http://www.novelist.ch/joomla/index.php/en/go-pro"),
-		*/
-		/* SB5 update new URL
-		DOC_EN("http://www.novelist.ch/joomla/index.php/en/documentations"),
-		DOC_DE("http://www.novelist.ch/joomla/index.php/de/dokumentation"),
-		FAQ_EN("http://www.novelist.ch/joomla/index.php/en/faq"),
-		FAQ_DE("http://www.novelist.ch/joomla/index.php/de/faq"),
-		REPORT_BUG("http://www.novelist.ch/reportbug"),
-		FACEBOOK("http://www.facebook.com/StorybookSoftware"),
-		TEASER_URL("http://www.novelist.ch/gopro/4_0/teaser"),
-		BANNER_URL("http://www.novelist.ch/gopro/4_0/banner"),
-		PW_FORGOTTEN("http://shop.novelist.ch/zencart/index.php?main_page=password_forgotten")*/
 		HOMEPAGE	("http://sourceforge.net/projects/ostorybook/"),
 		DOC			(HOMEPAGE+"wiki/home"),
 		FAQ			(HOMEPAGE+"wiki/faq"),
@@ -127,9 +100,6 @@ public class SbConstants {
 	}
 
 	public enum Directory {
-		/* SB5 dictionaries are now at root app
-		DICTONARIES("resources/dicts/"),
-		*/
 		DICTONARIES("dicts/"),
 		USER_DICTS("dicts");
 		final private String text;

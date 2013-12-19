@@ -204,16 +204,6 @@ public class MainFrame extends JFrame implements IPaintable {
 		sbActionManager.reloadMenuToolbar();
 		initRootWindow();
 		setDefaultLayout();
-		/* SB5 suppress Pro
-		if (!StorybookApp.getInstance().isProVersion()) {
-			JPanel panel = new JPanel(new MigLayout("flowx,ins 0,gap 0"));
-			panel.add(createTeaser(), "growy,w 240!");
-			panel.add(rootWindow, "grow");
-			add(panel, "grow");
-		} else {
-			add(rootWindow, "grow");
-		}*/
-		// always consider pro version is true
 		add(rootWindow, "grow");
 
 		statusBar = new StatusBarPanel(this);
@@ -267,11 +257,6 @@ public class MainFrame extends JFrame implements IPaintable {
 
 	public void setTitle() {
 		String prodFullTitle = Storybook.PRODUCT_FULL_NAME.toString();
-		/* SB5 suppress Pro
-		if (StorybookApp.getInstance().isProVersion()) {
-			prodFullTitle = Storybook.PRODUCT_PRO_FULL_NAME.toString();
-		}
-		*/
 		if (dbFile != null) {
 			Part part = getCurrentPart();
 			String partName = "";
@@ -471,29 +456,6 @@ public class MainFrame extends JFrame implements IPaintable {
 		}
 		quickInfoView.restoreFocus();
 		chronoView.restoreFocus();
-	}
-
-	public JScrollPane createTeaser() {
-		/* SB5 never more use Teaser
-		final int w = 600;
-		final int h = 160;
-		BrowserPanel teaser;
-		try {
-			String locale = Locale.getDefault().toString();
-			URL url = new URL(SbConstants.URL.TEASER_URL.toString()
-					+ "/?locale=" + locale);
-			teaser = new BrowserPanel(url.toString(), w, h);
-			teaser.setBackground(Color.white);
-			JScrollPane scroller = new JScrollPane(teaser);
-			scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			scroller.setMinimumSize(new Dimension(w, h));
-			return new JScrollPane(teaser);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		return new JScrollPane();
-		*/
-		return(null);
 	}
 
 	public SbView getView(String viewName) {

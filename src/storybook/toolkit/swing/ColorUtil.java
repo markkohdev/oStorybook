@@ -105,6 +105,9 @@ public class ColorUtil {
 		return new Color[] { Color.blue, Color.red, Color.green, Color.cyan,
 				Color.magenta, Color.orange, Color.pink, Color.yellow };
 	}
+	public static String getColorString(Color c) {
+		return ("["+c.getRed()+","+c.getGreen()+","+c.getBlue()+"]");
+	}
 
 	public static Color[] getPastelColors() {
 		return new Color[] { new Color(0xFFBFBF), // red

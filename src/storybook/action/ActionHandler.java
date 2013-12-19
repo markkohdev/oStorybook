@@ -73,9 +73,6 @@ import storybook.view.dialog.DocumentPreferencesDialog;
 import storybook.view.dialog.FoiDialog;
 import storybook.view.dialog.ManageLayoutsDialog;
 import storybook.view.dialog.PreferencesDialog;
-/* SB5 suppress Pro
- import storybook.view.dialog.ProOnlyDialog;
- */
 import storybook.view.dialog.WaitDialog;
 import storybook.view.dialog.file.RenameFileDialog;
 import storybook.view.dialog.file.SaveAsFileDialog;
@@ -250,16 +247,6 @@ public class ActionHandler {
 	}
 
 	public void handleExportPrint() {
-		/* SB5 suppress Pro
-		 if (StorybookApp.getInstance().isProVersion()) {
-		 ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
-		 SwingUtil.showDialog(dlg, mainFrame);
-		 } else {
-		 ProOnlyDialog dlg = new ProOnlyDialog(mainFrame);
-		 SwingUtil.showModalDialog(dlg, mainFrame);
-		 }
-		 */
-		// always considere Pro version is true
 		ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
 		SwingUtil.showDialog(dlg, mainFrame);
 	}
@@ -613,15 +600,6 @@ public class ActionHandler {
 		clbrd.setContents(selection, selection);
 	}
 
-	/* SB5 suppress Pro
-	 public void handleGoPro() {
-	 if (I18N.isGerman()) {
-	 NetUtil.openBrowser(SbConstants.URL.GO_PRO_DE.toString());
-	 return;
-	 }
-	 NetUtil.openBrowser(SbConstants.URL.GO_PRO_EN.toString());
-	 }
-	 */
 	public void handleReportBug() {
 		NetUtil.openBrowser(SbConstants.URL.REPORTBUG.toString());
 	}
@@ -636,12 +614,6 @@ public class ActionHandler {
 
 	public void handleHomepage() {
 		NetUtil.openBrowser(SbConstants.URL.HOMEPAGE.toString());
-	}
-
-	public void handleFacebook() {
-		/* SB5 never more FACEBOOK
-		 NetUtil.openBrowser(SbConstants.URL.FACEBOOK.toString());
-		 */
 	}
 
 	public void handleAbout() {

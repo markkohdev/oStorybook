@@ -24,7 +24,6 @@ import javax.swing.JDialog;
 
 import net.miginfocom.swing.MigLayout;
 
-@SuppressWarnings("serial")
 public class SplashDialog extends JDialog {
 
 	public SplashDialog() {

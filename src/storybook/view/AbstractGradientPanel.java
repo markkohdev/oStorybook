@@ -10,6 +10,7 @@ import storybook.toolkit.swing.ColorUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractGradientPanel extends AbstractPanel {
+	private boolean trace=true;
 	private Color startBgColor = Color.white;
 	private Color endBgColor = Color.black;
 	private boolean showBgGradient = true;
@@ -18,11 +19,17 @@ public abstract class AbstractGradientPanel extends AbstractPanel {
 
 	public AbstractGradientPanel() {
 		showBgGradient = false;
+		if (trace) {
+			System.out.println("AbstractGradientPanel()");
+		}
 	}
 
 	public AbstractGradientPanel(MainFrame mainFrame) {
 		this();
 		this.mainFrame = mainFrame;
+		if (trace) {
+			System.out.println("AbstractGradientPanel("+mainFrame.getName()+")");
+		}
 	}
 
 	public AbstractGradientPanel(MainFrame mainFrame, boolean showBgGradient,
@@ -31,6 +38,14 @@ public abstract class AbstractGradientPanel extends AbstractPanel {
 		this.showBgGradient = showBgGradient;
 		this.startBgColor = startBgColor;
 		this.endBgColor = endBgColor;
+		if (trace) {
+			System.out.println("AbstractGradientPanel("
+				+mainFrame.getName()+","
+				+showBgGradient+","
+				+ColorUtil.getColorString(startBgColor)+","
+				+ColorUtil.getColorString(endBgColor)
+				+")");
+		}
 	}
 
 	@Override

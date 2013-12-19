@@ -1,21 +1,20 @@
 /*
-Storybook: Open Source software for novelists and authors.
-Copyright (C) 2008 - 2012 Martin Mustun
+ Storybook: Open Source software for novelists and authors.
+ Copyright (C) 2008 - 2012 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package storybook.controller;
 
 import java.util.ArrayList;
@@ -47,6 +46,7 @@ import storybook.view.SbView;
 public class DocumentController extends AbstractController {
 
 	public enum CommonProps {
+
 		REFRESH("Refresh"),
 		SHOW_OPTIONS("ShowOptions"),
 		SHOW_INFO("ShowInfo"),
@@ -56,66 +56,126 @@ public class DocumentController extends AbstractController {
 		SHOW_IN_MEMORIA("ShowInMemoria"),
 		UNLOAD_EDITOR("UnloadEditor");
 		final private String text;
-		private CommonProps(String text) { this.text = text; }
+
+		private CommonProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	}
 
 	public enum ChronoViewProps {
+
 		ZOOM("ChronoZoom"),
 		LAYOUT_DIRECTION("ChronoLayoutDirection"),
 		SHOW_DATE_DIFFERENCE("ChronoShowDateDifference"),
 		SHOW_ENTITY("ChronoShowEntity");
 		final private String text;
-		private ChronoViewProps(String text) { this.text = text; }
+
+		private ChronoViewProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	}
 
 	public enum BookViewProps {
+
 		ZOOM("BookZoom"),
 		HEIGHT_FACTOR("BookHeightFactor"),
 		SHOW_ENTITY("BookShowEntity");
 		final private String text;
-		private BookViewProps(String text) { this.text = text; }
+
+		private BookViewProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	}
 
 	public enum ReadingViewProps {
+
 		ZOOM("ReadingZoom"),
 		FONT_SIZE("ReadingFontSize");
 		final private String text;
-		private ReadingViewProps(String text) { this.text = text; }
+
+		private ReadingViewProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	}
 
 	public enum ManageViewProps {
+
 		ZOOM("ManageZoom"),
 		COLUMNS("ManageColumns"),
 		SHOW_ENTITY("ManageShowEntity");
 		final private String text;
-		private ManageViewProps(String text) { this.text = text; }
+
+		private ManageViewProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	}
 
 	public enum MemoriaViewProps {
+
 		BALLOON("MemoriaBalloon");
 		final private String text;
-		private MemoriaViewProps(String text) { this.text = text; }
+
+		private MemoriaViewProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	}
 
 	public enum ChapterProps {
+
 		INIT("InitChapters"),
 		EDIT("EditChapter"),
 		DELETE("DeleteChapter"),
@@ -123,13 +183,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewChapter"),
 		UPDATE("UpdateChapter");
 		final private String text;
-		private ChapterProps(String text) { this.text = text; }
+
+		private ChapterProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() {return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum PartProps {
+
 		INIT("InitParts"),
 		EDIT("EditPart"),
 		DELETE("DeletePart"),
@@ -138,13 +208,23 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdatePart"),
 		CHANGE("ChangePart");
 		final private String text;
-		private PartProps(String text) { this.text = text; }
+
+		private PartProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum LocationProps {
+
 		INIT("InitLocations"),
 		EDIT("EditLocation"),
 		DELETE("DeleteLocation"),
@@ -152,13 +232,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewLocation"),
 		UPDATE("UpdateLocation");
 		final private String text;
-		private LocationProps(String text) { this.text = text; }
+
+		private LocationProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum PersonProps {
+
 		INIT("InitPersons"),
 		EDIT("EditPerson"),
 		DELETE("DeletePerson"),
@@ -166,13 +256,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewPerson"),
 		UPDATE("UpdatePerson");
 		final private String text;
-		private PersonProps(String text) { this.text = text; }
+
+		private PersonProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum GenderProps {
+
 		INIT("InitGenders"),
 		EDIT("EditGender"),
 		DELETE("DeleteGender"),
@@ -180,13 +280,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewGender"),
 		UPDATE("UpdateGender");
 		final private String text;
-		private GenderProps(String text) { this.text = text; }
+
+		private GenderProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum CategoryProps {
+
 		INIT("InitCategories"),
 		EDIT("EditCategory"),
 		DELETE("DeleteCategory"),
@@ -196,13 +306,23 @@ public class DocumentController extends AbstractController {
 		ORDER_DOWN("OrderDownCategory"),
 		UPDATE("UpdateCategory");
 		final private String text;
-		private CategoryProps(String text) { this.text = text; }
+
+		private CategoryProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum StrandProps {
+
 		INIT("InitStrands"),
 		EDIT("EditStrand"),
 		DELETE("DeleteStrand"),
@@ -212,13 +332,23 @@ public class DocumentController extends AbstractController {
 		ORDER_DOWN("OrderDownStrand"),
 		UPDATE("UpdateStrand");
 		final private String text;
-		private StrandProps(String text) { this.text = text; }
+
+		private StrandProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum IdeaProps {
+
 		INIT("InitIdeas"),
 		EDIT("EditIdea"),
 		DELETE("DeleteIdea"),
@@ -226,13 +356,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewIdea"),
 		UPDATE("UpdateIdea");
 		final private String text;
-		private IdeaProps(String text) { this.text = text; }
+
+		private IdeaProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum TagProps {
+
 		INIT("InitTags"),
 		EDIT("EditTag"),
 		DELETE("DeleteTag"),
@@ -240,13 +380,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewTag"),
 		UPDATE("UpdateTag");
 		final private String text;
-		private TagProps(String text) { this.text = text; }
+
+		private TagProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum ItemProps {
+
 		INIT("InitItem"),
 		EDIT("EditItem"),
 		DELETE("DeleteItem"),
@@ -254,12 +404,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewItem"),
 		UPDATE("UpdateItem");
 		final private String text;
-		private ItemProps(String text) { this.text = text; }
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+
+		private ItemProps(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum TagLinkProps {
+
 		INIT("InitTagLink"),
 		EDIT("EditTagLink"),
 		DELETE("DeleteTagLink"),
@@ -267,13 +428,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewTagLink"),
 		UPDATE("UpdateTagLink");
 		final private String text;
-		private TagLinkProps(String text) { this.text = text; }
+
+		private TagLinkProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum ItemLinkProps {
+
 		INIT("InitItemLink"),
 		EDIT("EditItemLink"),
 		DELETE("DeleteItemLink"),
@@ -281,13 +452,23 @@ public class DocumentController extends AbstractController {
 		NEW("NewItemLink"),
 		UPDATE("UpdateItemLink");
 		final private String text;
-		private ItemLinkProps(String text) { this.text = text; }
+
+		private ItemLinkProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum SceneProps {
+
 		INIT("InitScene"),
 		EDIT("EditScene"),
 		DELETE("DeleteScene"),
@@ -296,12 +477,23 @@ public class DocumentController extends AbstractController {
 		UPDATE("UpdateScene"),
 		FILTER("FilterScenes");
 		final private String text;
-		private SceneProps(String text) { this.text = text; }
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+
+		private SceneProps(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public enum InternalProps {
+
 		INIT("InitInternal"),
 		EDIT("EditInternal"),
 		DELETE("DeleteInternal"),
@@ -309,10 +501,19 @@ public class DocumentController extends AbstractController {
 		NEW("NewInternal"),
 		UPDATE("UpdateInternal");
 		final private String text;
-		private InternalProps(String text) { this.text = text; }
+
+		private InternalProps(String text) {
+			this.text = text;
+		}
+
 		@Override
-		public String toString() { return text; }
-		public boolean check(String prop) { return text.equals(prop); }
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
 	};
 
 	public void updateEntity(AbstractEntity entity) {
@@ -375,7 +576,7 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("DocumentController.updateEntity(" + entity.getAbbr() + ")");
 		}
 	}
 
@@ -439,6 +640,8 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
+			System.err.println("DocumentController.deleteEntity(" + entity.getAbbr()
+				+ ") Exception:"+e.getMessage());
 		}
 	}
 
@@ -502,6 +705,8 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
+			System.err.println("DocumentController.newEntity(" + entity.getAbbr()
+				+ ") Exception:"+e.getMessage());
 		}
 	}
 
@@ -565,9 +770,10 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
+			System.err.println("DocumentController.setEntityToEdit(" + entity.getAbbr()
+				+ ") Exception:"+e.getMessage());
 		}
 	}
-
 
 	// common
 	public void refresh(SbView view) {
@@ -982,5 +1188,4 @@ public class DocumentController extends AbstractController {
 	public void setInternalToEdit(Internal internalToEdit) {
 		setModelProperty(InternalProps.EDIT.toString(), internalToEdit);
 	}
-
 }

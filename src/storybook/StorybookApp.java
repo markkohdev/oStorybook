@@ -48,9 +48,6 @@ import storybook.model.DbFile;
 import storybook.model.PreferenceModel;
 import storybook.model.hbn.entity.Preference;
 import storybook.model.legacy.PersistenceManager;
-/* SB5 suppress Pro
-import storybook.pro.guardian.Guardian;
-*/
 import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.PrefUtil;
@@ -107,9 +104,6 @@ public class StorybookApp extends Component {
 			initI18N();
 			SwingUtil.setLookAndFeel();
 			restoreDefaultFont();
-			/* SB5 suppress Pro
-			Guardian.getInstance().init();
-			*/
 			// first start dialog
 			Preference prefFirstStart = PrefUtil.get(
 					PreferenceKey.FIRST_START_4, true);
@@ -153,6 +147,7 @@ public class StorybookApp extends Component {
 			*/
 
 		} catch (Exception e) {
+			System.err.println("StorybookApp.init() Exception:"+e.getMessage());
 			ExceptionDialog dlg = new ExceptionDialog(e);
 			SwingUtil.showModalDialog(dlg, null);
 		}
@@ -512,11 +507,6 @@ public class StorybookApp extends Component {
 			}
 			saveAll();
 		}
-		/* SB5 suppress Pro
-		if (isProVersion()) {
-			Guardian.getInstance().unlock();
-		}
-		*/
 		System.exit(0);
 	}
 
@@ -609,15 +599,6 @@ public class StorybookApp extends Component {
 			SwingUtil.setDefaultCursor(mainFrame);
 		}
 	}
-
-	/* SB5 suppress Pro
-	public boolean isProVersion() {
-		if (Guardian.getInstance().isLicenseValid()) {
-			return true;
-		}
-		return false;
-	}
-	*/
 
 	public void saveAll() {
 		if (trace) {

@@ -184,11 +184,6 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 		strandPanel.initUi();
 
 		tpText = new JTextPane();
-		/* SB5 suppress Pro
-		if (!StorybookApp.getInstance().isProVersion()) {
-			tpText.setHighlighter(null);
-		}
-		*/
 		tpText.setEditable(false);
 		tpText.setContentType("text/html");
 		tpText.addHyperlinkListener(this);

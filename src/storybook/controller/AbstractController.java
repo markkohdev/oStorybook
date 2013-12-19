@@ -1,21 +1,20 @@
 /*
-Storybook: Open Source software for novelists and authors.
-Copyright (C) 2008 - 2012 Martin Mustun
+ Storybook: Open Source software for novelists and authors.
+ Copyright (C) 2008 - 2012 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package storybook.controller;
 
 import java.awt.Component;
@@ -24,7 +23,6 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -40,7 +38,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 
 	private final List<Component> attachedViews;
 	private final ArrayList<AbstractModel> attachedModels;
-	private boolean trace=false;
+	private boolean trace = false;
 
 	public AbstractController() {
 		// attachedViews = new ArrayList<AbstractPanel>();
@@ -64,14 +62,15 @@ public abstract class AbstractController implements PropertyChangeListener {
 	public void attachView(Component view) {
 		if (trace) {
 			System.out.println("AbstractController.attachView(): view cl:"
-				+ view.getClass());
+				+ view.getName());
 		}
 		synchronized (attachedViews) {
 			attachedViews.add(view);
 		}
-		printNumberOfAttachedViews();
-		// attachedViews.add(view);
-		printAttachedViews();
+		if (trace) {
+			printNumberOfAttachedViews();
+			printAttachedViews();
+		}
 	}
 
 	public void detachView(Component view) {
@@ -85,7 +84,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 	public void printNumberOfAttachedViews() {
 		if (trace) {
 			System.out.println("AbstractController.printNumberOfAttachedViews():"
-				+ " attached views: "+attachedViews.size());
+				+ " attached views: " + attachedViews.size());
 		}
 	}
 
@@ -123,7 +122,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 			System.out.println("AbstractController.printAttachedModels(): ");
 			for (AbstractModel model : attachedModels) {
 				System.out.println("AbstractController.printAttachedModels():"
-					+ " model:"+ model);
+					+ " model:" + model);
 			}
 		}
 	}
@@ -132,9 +131,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		synchronized (attachedViews) {
 			// must be in synchronized block
-			Iterator<Component> i = attachedViews.iterator();
-			while (i.hasNext()) {
-				Component comp = i.next();
+			for (Component comp : attachedViews) {
 				if (comp instanceof AbstractPanel) {
 					((AbstractPanel) comp).modelPropertyChange(evt);
 					continue;
@@ -145,8 +142,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 				// }
 				if (comp instanceof JMenuBar) {
 					JMenuBar mb = (JMenuBar) comp;
-					PropertyChangeListener[] pcls = mb
-							.getPropertyChangeListeners();
+					PropertyChangeListener[] pcls = mb.getPropertyChangeListeners();
 					for (PropertyChangeListener pcl : pcls) {
 						pcl.propertyChange(evt);
 					}
@@ -158,9 +154,6 @@ public abstract class AbstractController implements PropertyChangeListener {
 				}
 			}
 		}
-		// for (AbstractPanel view : attachedViews) {
-		// view.modelPropertyChange(evt);
-		// }
 	}
 
 	public synchronized void fireAgain() {
@@ -169,21 +162,20 @@ public abstract class AbstractController implements PropertyChangeListener {
 		}
 	}
 
-	protected synchronized void setModelProperty(String propertyName,
-			Object newValue) {
+	protected synchronized void setModelProperty(String propertyName, Object newValue) {
 		if (trace) {
 			System.out.println("AbstractControler.setModelProperty("
-				+propertyName.toString()+","+newValue.toString()+")");
+				+ propertyName.toString() + "," + newValue.toString() + ")");
 		}
 		for (AbstractModel model : attachedModels) {
 			Method method = null;
 			Class<?>[] classes = null;
 			try {
 				if (newValue instanceof AbstractEntity) {
-					classes = new Class[] { EntityUtil
-							.getEntityClass((AbstractEntity) newValue) };
+					classes = new Class[]{EntityUtil
+						.getEntityClass((AbstractEntity) newValue)};
 				} else if (newValue != null) {
-					classes = new Class[] { newValue.getClass() };
+					classes = new Class[]{newValue.getClass()};
 				}
 				// OLD: method = model.getClass().getMethod("set" +
 				// propertyName, new Class[] { newValue.getClass() });
@@ -191,19 +183,20 @@ public abstract class AbstractController implements PropertyChangeListener {
 				// "entity.Tag_$$_javassist_2" which is not found as parameter
 				// "Tag"
 				method = model.getClass().getMethod("set" + propertyName,
-						classes);
+					classes);
 				if (newValue != null) {
 					method.invoke(model, newValue);
 				} else {
 					method.invoke(model);
 				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 				System.err
-						.println("ERR AbstractController.setModelProperty(): method:"
-								+ method);
+					.println("ERR AbstractController.setModelProperty(): method:"
+					+ method);
 				System.err
-						.println("ERR AbstractController.setModelProperty(): classes:"
-								+ classes);
+					.println("ERR AbstractController.setModelProperty(): classes:"
+					+ classes);
 			}
 		}
 	}
@@ -211,14 +204,15 @@ public abstract class AbstractController implements PropertyChangeListener {
 	protected synchronized void setModelProperty(String propertyName) {
 		if (trace) {
 			System.out.println("AbstractController.setModelProperty("
-				+propertyName.toString()+")");
+				+ propertyName.toString() + ")");
 		}
 		for (AbstractModel model : attachedModels) {
 			try {
 				Method method = model.getClass()
-						.getMethod("set" + propertyName);
+					.getMethod("set" + propertyName);
 				method.invoke(model);
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException ex) {
 			}
 		}
 	}

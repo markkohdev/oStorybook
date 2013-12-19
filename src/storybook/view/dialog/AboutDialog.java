@@ -135,14 +135,6 @@ public class AboutDialog extends AbstractDialog {
 		JLabel lbInfo = new JLabel();
 		JLabel lbReview = new JLabel("");
 		StringBuilder buf = new StringBuilder();
-		/* SB5 suppress Pro
-		if (StorybookApp.getInstance().isProVersion()) {
-			buf.append(SbConstants.Storybook.PRODUCT_PRO_NAME);
-		} else {
-			buf.append(SbConstants.Storybook.PRODUCT_NAME);
-		}
-		*/
-		// always considere pro version is true
 		buf.append(SbConstants.Storybook.PRODUCT_NAME);
 
 		buf.append(" - Version ").append(SbConstants.Storybook.PRODUCT_VERSION);

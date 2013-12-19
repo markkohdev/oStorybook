@@ -80,14 +80,7 @@ public class PreferencesDialog extends AbstractDialog implements
 	private JTabbedPane tabbedPane;
 	private JTextField tfGoogleMapsUrl;
 	private JCheckBox cbTranslatorMode;
-	/* SB5 suppress Pro
-	private JTextField tfEmail;
-	private JPasswordField pfPassword;
-	private JButton btCheck;
-	private JButton btPwForgotten;
-	private JButton btGoPro;
-	*/
-	private JTextArea taResult;
+//	private JTextArea taResult;
 
 	public PreferencesDialog() {
 		super();
@@ -115,9 +108,6 @@ public class PreferencesDialog extends AbstractDialog implements
 		panel.add(createInternetPanel(), "growx");
 		tabbedPane = new JTabbedPane();
 		tabbedPane.addTab(I18N.getMsg("msg.dlg.preference.global"), panel);
-		/* SB5 suppress Pro
-		tabbedPane.addTab("Storybook Pro", createProPanel());
-		*/
 		tabbedPane.addTab("Translators", createTranslatorsPanel());
 
 		// layout
@@ -246,68 +236,13 @@ public class PreferencesDialog extends AbstractDialog implements
 		panel.add(cbLoadFileOnStart);
 		panel.add(lbConfirmExit);
 		panel.add(cbConfirmExit);
-		/* TODO check for update
+		/** TODO check for update
 		panel.add(lbUpdate);
 		panel.add(cbUpdate);
 		* */
 
 		return panel;
 	}
-
-	/* SB5 suppress Pro
-	private JPanel createProPanel() {
-		JPanel panel = new JPanel();
-		MigLayout layout = new MigLayout("wrap 2", "[][fill,grow]", "");
-		panel.setLayout(layout);
-
-		Guardian guardian = Guardian.getInstance();
-
-		JLabel lbEmail = new JLabel(I18N.getMsgColon("msg.pro.email"));
-		tfEmail = new JTextField();
-		tfEmail.setText(guardian.getEmail());
-		tfEmail.addCaretListener(this);
-
-		JLabel lbPasswort = new JLabel(I18N.getMsgColon("msg.pro.password"));
-		pfPassword = new JPasswordField();
-		pfPassword.setText(guardian.getPassword());
-		pfPassword.addCaretListener(this);
-
-		btCheck = new JButton();
-		btCheck.setName(CN_CHECK);
-		btCheck.setEnabled(false);
-		btCheck.setText(I18N.getMsg("msg.pro.check"));
-		btCheck.addActionListener(this);
-		checkButton();
-
-		btPwForgotten = new JButton();
-		btPwForgotten.setName(CN_PW_FORGOTTEN);
-		btPwForgotten.setText(I18N.getMsg("msg.pro.pw.forgotten"));
-		btPwForgotten.addActionListener(this);
-
-		btGoPro = new JButton();
-		btGoPro.setName(CN_GO_PRO);
-		btGoPro.setText(I18N.getMsg("msg.common.go.pro"));
-		btGoPro.addActionListener(this);
-
-		taResult = new JTextArea(5, 40);
-		taResult.setEditable(false);
-		taResult.setBorder(SwingUtil.getBorderEtched());
-		taResult.setLineWrap(true);
-		taResult.setWrapStyleWord(true);
-
-		// layout
-		panel.add(lbEmail);
-		panel.add(tfEmail);
-		panel.add(lbPasswort);
-		panel.add(pfPassword);
-		panel.add(btCheck, "gaptop 10,span,split 3,sg");
-		panel.add(btPwForgotten, "sg");
-		panel.add(btGoPro, "sg");
-		panel.add(new JScrollPane(taResult), "gaptop 10,span,growx");
-
-		return panel;
-	}
-	*/
 
 	private JPanel createAppearancePanel() {
 		MigLayout layout = new MigLayout("wrap 2", "", "[]20[][]");
@@ -405,54 +340,10 @@ public class PreferencesDialog extends AbstractDialog implements
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String cn = ((JComponent) e.getSource()).getName();
-		if (CN_CHECK.equals(cn)) {
-			SwingUtil.setWaitingCursor(this);
-			/*
-			String pw = new String(pfPassword.getPassword());
-			Guardian guardian = Guardian.getInstance();
-			guardian.setEmail(tfEmail.getText());
-			guardian.setPassword(pw);
-			if (guardian.check()) {
-				taResult.setText(I18N.getMsg("msg.pro.ok"));
-			} else {
-				taResult.setText(guardian.getErrorMessage());
-			}
-			*/
-			SwingUtil.setDefaultCursor(this);
-			//return;
-		}
-
-		/* SB5 suppress Pro
-		if (CN_PW_FORGOTTEN.equals(cn)) {
-			NetUtil.openBrowser(SbConstants.URL.PW_FORGOTTEN.toString());
-			return;
-		}
-		if (CN_GO_PRO.equals(cn)) {
-			if (I18N.isGerman()) {
-				NetUtil.openBrowser(SbConstants.URL.GO_PRO_DE.toString());
-			} else {
-				NetUtil.openBrowser(SbConstants.URL.GO_PRO_EN.toString());
-			}
-			return;
-		}
-		*/
+		
 	}
 
 	@Override
 	public void caretUpdate(CaretEvent e) {
-		/* SB5 suppress Pro
-		checkButton();
-		*/
 	}
-	/* SB5 suppress Pro
-	private void checkButton() {
-		if (tfEmail.getText().length() > 0
-				&& pfPassword.getPassword().length > 0) {
-			btCheck.setEnabled(true);
-		} else {
-			btCheck.setEnabled(false);
-		}
-	}
-	*/
 }

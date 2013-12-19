@@ -25,7 +25,6 @@ import javax.swing.JTextField;
 
 import storybook.toolkit.I18N;
 
-@SuppressWarnings("serial")
 public class WaitDialog extends SplashDialog {
 
 	private String text;
