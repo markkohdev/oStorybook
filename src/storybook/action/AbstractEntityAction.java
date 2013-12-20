@@ -29,7 +29,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public abstract class AbstractEntityAction extends AbstractAction {
 
 	protected MainFrame mainFrame;

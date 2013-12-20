@@ -23,17 +23,4 @@ package storybook.controller;
  *
  */
 public class PreferenceController extends AbstractController {
-
-	// public enum PrefProps {
-	// RECENT_CLEARED("RecentCleared");
-	// final private String text;
-	// private PrefProps(String text) { this.text = text; }
-	// public String toString() { return text; }
-	// public boolean check(String prop) { return text.equals(prop); }
-	// }
-	//
-	// public void recentCleared() {
-	// setModelProperty(PrefProps.RECENT_CLEARED.toString(), new Boolean(
-	// true));
-	// }
 }

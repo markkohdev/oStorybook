@@ -35,7 +35,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class LangToolAction extends AbstractAction {
 
 	private MainFrame mainFrame;

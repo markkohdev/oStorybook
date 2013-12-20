@@ -69,7 +69,7 @@ import storybook.toolkit.swing.SwingUtil;
 import storybook.view.MainFrame;
 import storybook.view.dialog.AboutDialog;
 import storybook.view.dialog.CreateChaptersDialog;
-import storybook.view.dialog.DocumentPreferencesDialog;
+import storybook.view.dialog.BookPropertiesDialog;
 import storybook.view.dialog.FoiDialog;
 import storybook.view.dialog.ManageLayoutsDialog;
 import storybook.view.dialog.PreferencesDialog;
@@ -561,7 +561,7 @@ public class ActionHandler {
 	}
 
 	public void handleDocumentPreferences() {
-		DocumentPreferencesDialog dlg = new DocumentPreferencesDialog(mainFrame);
+		BookPropertiesDialog dlg = new BookPropertiesDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
 	}
 

@@ -32,7 +32,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class ShowInBookViewAction extends AbstractEntityAction {
 
 	public ShowInBookViewAction(MainFrame mainFrame, AbstractEntity entity) {

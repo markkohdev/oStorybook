@@ -68,7 +68,7 @@ import storybook.view.MainFrame;
  *
  */
 @SuppressWarnings("serial")
-public class DocumentPreferencesDialog extends AbstractDialog {
+public class BookPropertiesDialog extends AbstractDialog {
 
 	private JTabbedPane tabbedPane;
 
@@ -91,7 +91,7 @@ public class DocumentPreferencesDialog extends AbstractDialog {
 
 	private JTextPane tpInfo;
 
-	public DocumentPreferencesDialog(MainFrame mainFrame) {
+	public BookPropertiesDialog(MainFrame mainFrame) {
 		super(mainFrame);
 		initAll();
 	}

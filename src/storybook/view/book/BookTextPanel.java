@@ -95,13 +95,9 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 		if (DocumentController.BookViewProps.ZOOM.check(propName)) {
 			setZoomedSize((Integer) newValue);
 			refresh();
-			return;
-		}
-
-		if (DocumentController.BookViewProps.HEIGHT_FACTOR.check(propName)) {
+		} else if (DocumentController.BookViewProps.HEIGHT_FACTOR.check(propName)) {
 			heightFactor = (Integer) newValue;
 			refresh();
-			return;
 		}
 	}
 
@@ -210,10 +206,13 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 	public void focusLost(FocusEvent e) {
 		if (e.getSource() instanceof JTextComponent) {
 			JTextComponent tc = (JTextComponent) e.getSource();
-			if (CN_TITLE.equals(tc.getName())) {
-				scene.setTitle(tc.getText());
-			} else if (CN_TEXT.equals(tc.getName())) {
-				scene.setSummary(tc.getText());
+			switch (tc.getName()) {
+				case CN_TITLE:
+					scene.setTitle(tc.getText());
+					break;
+				case CN_TEXT:
+					scene.setSummary(tc.getText());
+					break;
 			}
 			mainFrame.getDocumentController().updateScene(scene);
 		}

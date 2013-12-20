@@ -29,7 +29,6 @@ import storybook.model.hbn.entity.Part;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class ChangePartAction extends AbstractAction {
 
 	private ActionHandler actionHandler;

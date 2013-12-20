@@ -122,7 +122,6 @@ public class SbActionManager implements PropertyChangeListener {
 			// actionManager.loadActions(xmlFile);
 		} catch (Exception e) {
 			System.err.println("SbActionManager.initActions(): Exception:" + e);
-			e.printStackTrace();
 		}
 
 		registerActions();

@@ -640,7 +640,7 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			System.err.println("DocumentController.deleteEntity(" + entity.getAbbr()
+			System.err.println("DocumentController.deleteEntity(" + entity.getClass().getName()
 				+ ") Exception:"+e.getMessage());
 		}
 	}
@@ -705,7 +705,7 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			System.err.println("DocumentController.newEntity(" + entity.getAbbr()
+			System.err.println("DocumentController.newEntity(" + entity.getClass().getName()
 				+ ") Exception:"+e.getMessage());
 		}
 	}
@@ -770,7 +770,7 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			System.err.println("DocumentController.setEntityToEdit(" + entity.getAbbr()
+			System.err.println("DocumentController.setEntityToEdit(" + entity.getClass().getName()
 				+ ") Exception:"+e.getMessage());
 		}
 	}

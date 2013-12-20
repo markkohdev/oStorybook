@@ -33,7 +33,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class NewEntityAction extends AbstractEntityAction {
 
 	public NewEntityAction(MainFrame mainFrame, AbstractEntity entity) {

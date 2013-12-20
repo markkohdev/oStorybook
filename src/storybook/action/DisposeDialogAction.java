@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 
-@SuppressWarnings("serial")
 public class DisposeDialogAction extends AbstractAction {
 	private JDialog dlg;
 

@@ -54,8 +54,8 @@ public abstract class AbstractEntityHandler {
 	public SbGenericDAOImpl<?, ?> createDAO() {
 		try {
 			return (SbGenericDAOImpl<?, ?>) getDAOClass().newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (InstantiationException | IllegalAccessException e) {
+			System.err.println("AbstractEntityHandler.createDAO() Exception:"+e.getMessage());
 		}
 		return null;
 	}

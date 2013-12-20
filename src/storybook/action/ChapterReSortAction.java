@@ -30,7 +30,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class ChapterReSortAction extends AbstractEntityAction {
 
 	private Chapter chapter;

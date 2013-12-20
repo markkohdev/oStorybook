@@ -57,43 +57,43 @@ public abstract class AbstractExporter {
 		if (this.onlyHtmlExport) {
 			bool = true;
 		}
-		Internal localInternal = DocumentUtil.restoreInternal(this.mainFrame,
+		Internal internal = DocumentUtil.restoreInternal(this.mainFrame,
 			SbConstants.InternalKey.EXPORT_DIRECTORY,
 			EnvUtil.getDefaultExportDir(this.mainFrame));
-		File localFile1 = new File(localInternal.getStringValue());
-		JFileChooser localJFileChooser = new JFileChooser(localFile1);
-		localJFileChooser.setApproveButtonText(I18N.getMsg("msg.common.export"));
-		localJFileChooser.setSelectedFile(new File(getFileName()));
+		File file1 = new File(internal.getStringValue());
+		JFileChooser chooser = new JFileChooser(file1);
+		chooser.setApproveButtonText(I18N.getMsg("msg.common.export"));
+		chooser.setSelectedFile(new File(getFileName()));
 		if (bool) {
-			localJFileChooser.setFileFilter(new HtmlFileFilter());
+			chooser.setFileFilter(new HtmlFileFilter());
 		} else {
-			localJFileChooser.setFileFilter(new TextFileFilter());
+			chooser.setFileFilter(new TextFileFilter());
 		}
-		int i = localJFileChooser.showOpenDialog(this.mainFrame);
+		int i = chooser.showOpenDialog(this.mainFrame);
 		if (i == 1) {
 			return false;
 		}
-		File localFile2 = localJFileChooser.getSelectedFile();
+		File outFile = chooser.getSelectedFile();
 		if (bool) {
-			if ((!localFile2.getName().endsWith(".html")) || (localFile2.getName().endsWith(".htm"))) {
-				localFile2 = new File(localFile2.getPath() + ".html");
+			if ((!outFile.getName().endsWith(".html")) || (outFile.getName().endsWith(".htm"))) {
+				outFile = new File(outFile.getPath() + ".html");
 			}
-		} else if (!localFile2.getName().endsWith(".txt")) {
-			localFile2 = new File(localFile2.getPath() + ".txt");
+		} else if (!outFile.getName().endsWith(".txt")) {
+			outFile = new File(outFile.getPath() + ".txt");
 		}
-		StringBuffer localStringBuffer = getContent();
+		StringBuffer buffer = getContent();
 		try {
-			try (BufferedWriter localBufferedWriter = new BufferedWriter(new FileWriter(localFile2))) {
-				String str = localStringBuffer.toString();
-				localBufferedWriter.write(str);
+			try (BufferedWriter outStream = new BufferedWriter(new FileWriter(outFile))) {
+				String str = buffer.toString();
+				outStream.write(str);
 			}
-		} catch (IOException localIOException) {
+		} catch (IOException e) {
 			return false;
 		}
 		JOptionPane.showMessageDialog(this.mainFrame,
 			I18N.getMsg("msg.common.export.success")
 			+ "\n"
-			+ localFile2.getAbsolutePath(),
+			+ outFile.getAbsolutePath(),
 			I18N.getMsg("msg.common.export"), 1);
 		return true;
 	}

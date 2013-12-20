@@ -32,7 +32,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class ShowInChronoViewAction extends AbstractEntityAction {
 
 	public ShowInChronoViewAction(MainFrame mainFrame, AbstractEntity entity) {

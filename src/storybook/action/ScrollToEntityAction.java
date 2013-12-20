@@ -51,11 +51,8 @@ public class ScrollToEntityAction implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (entity instanceof Scene) {
 			found = ViewUtil.doScrolling(container, panel, (Scene) entity);
-			return;
-		}
-		if (entity instanceof Chapter) {
+		} else if (entity instanceof Chapter) {
 			found = ViewUtil.doScrolling(container, panel, (Chapter) entity);
-			return;
 		}
 	}
 

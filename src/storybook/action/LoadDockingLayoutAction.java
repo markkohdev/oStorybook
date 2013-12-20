@@ -29,7 +29,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class LoadDockingLayoutAction extends AbstractAction {
 
 	private MainFrame mainFrame;

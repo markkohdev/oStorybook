@@ -77,7 +77,6 @@ public abstract class AbstractController implements PropertyChangeListener {
 		synchronized (attachedViews) {
 			attachedViews.remove(view);
 		}
-		// attachedViews.remove(view);
 		printAttachedViews();
 	}
 
@@ -136,10 +135,6 @@ public abstract class AbstractController implements PropertyChangeListener {
 					((AbstractPanel) comp).modelPropertyChange(evt);
 					continue;
 				}
-				// if (comp instanceof MainFrame) {
-				// ((MainFrame) comp).modelPropertyChange(evt);
-				// continue;
-				// }
 				if (comp instanceof JMenuBar) {
 					JMenuBar mb = (JMenuBar) comp;
 					PropertyChangeListener[] pcls = mb.getPropertyChangeListeners();
@@ -177,11 +172,6 @@ public abstract class AbstractController implements PropertyChangeListener {
 				} else if (newValue != null) {
 					classes = new Class[]{newValue.getClass()};
 				}
-				// OLD: method = model.getClass().getMethod("set" +
-				// propertyName, new Class[] { newValue.getClass() });
-				// doesn't work in any case since hibernate returns
-				// "entity.Tag_$$_javassist_2" which is not found as parameter
-				// "Tag"
 				method = model.getClass().getMethod("set" + propertyName,
 					classes);
 				if (newValue != null) {
@@ -192,11 +182,9 @@ public abstract class AbstractController implements PropertyChangeListener {
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
 				System.err
-					.println("ERR AbstractController.setModelProperty(): method:"
-					+ method);
-				System.err
-					.println("ERR AbstractController.setModelProperty(): classes:"
-					+ classes);
+					.println("ERR AbstractController.setModelProperty() Exception: "+e.getMessage()
+					+ "method:" + method + "\n"
+					+ "classes:" + classes);
 			}
 		}
 	}

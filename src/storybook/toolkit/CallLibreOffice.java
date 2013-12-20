@@ -17,6 +17,7 @@ package storybook.toolkit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 import storybook.model.hbn.entity.Scene;
 import storybook.view.MainFrame;
@@ -27,7 +28,7 @@ import storybook.view.MainFrame;
  */
 public class CallLibreOffice {
 
-	String pathToLO = "";
+	String pathToLO = "/home/favdb/";
 
 	public void execLibreOffice() {
 	}
@@ -65,17 +66,18 @@ public class CallLibreOffice {
 
 	private String getFilePath(MainFrame mainFrame, Scene scene) {
 		String path = mainFrame.getDbFile().getPath();
-		String str = scene.getChapterSceneNo();
-		if (str.length() < 2) {
-			str = "0" + str;
+		String str1 = scene.getChapterSceneNo();
+		if (str1.length() < 2) {
+			str1 = "0" + str1;
 		}
 		String str2 = scene.getChapterSceneNo();
 		if (str2.length() < 2) {
-			str = str + "0" + str2;
-		} else {
-			str = str + str2;
+			str2 = "0" + str2;
 		}
-		str = path + str + ".odt";
+		String str = path
+			+ I18N.getMsg("msg.common.chapter") + " " + str1 + " "
+			+ I18N.getMsg("msg.common.scene") + " " + str2
+			+ ".odt";
 		System.out.println("Scene odt file=" + str);
 		return(str);
 	}

@@ -26,7 +26,6 @@ import javax.swing.AbstractAction;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class RunAttesoroAction extends AbstractAction {
 
 	public RunAttesoroAction() {

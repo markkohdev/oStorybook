@@ -26,7 +26,6 @@ import storybook.model.hbn.entity.Location;
 import storybook.toolkit.I18N;
 import storybook.toolkit.net.NetUtil;
 
-@SuppressWarnings("serial")
 public class ShowInGoogleMapsAction extends AbstractAction {
 	private Location location;
 
@@ -37,12 +36,12 @@ public class ShowInGoogleMapsAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-		StringBuffer buf = new StringBuffer();
-		buf.append(location.getCity());
-		buf.append(",");
-		buf.append(location.getAddress());
-		buf.append(",");
-		buf.append(location.getCountry());
+		StringBuilder buf = new StringBuilder();
+		buf.append(location.getCity())
+			.append(",")
+			.append(location.getAddress())
+			.append(",")
+			.append(location.getCountry());
 		NetUtil.openGoogleMap(buf.toString());
 	}
 }

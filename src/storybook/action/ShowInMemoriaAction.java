@@ -32,7 +32,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class ShowInMemoriaAction extends AbstractEntityAction {
 
 	public ShowInMemoriaAction(MainFrame mainFrame, AbstractEntity entity) {

@@ -42,7 +42,6 @@ import storybook.view.edit.EntityEditor;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class DeleteEntityAction extends AbstractEntityAction {
 
 	public DeleteEntityAction(MainFrame mainFrame, AbstractEntity entity) {

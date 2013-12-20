@@ -47,7 +47,6 @@ import storybook.controller.PreferenceController;
 import storybook.model.DbFile;
 import storybook.model.PreferenceModel;
 import storybook.model.hbn.entity.Preference;
-import storybook.model.legacy.PersistenceManager;
 import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.PrefUtil;
@@ -393,7 +392,7 @@ public class StorybookApp extends Component {
 			}
 
 			// model update from Storybook 3.x to 4.0
-			final PersistenceManager oldPersMngr = PersistenceManager.getInstance();
+			/*final PersistenceManager oldPersMngr = PersistenceManager.getInstance();
 			oldPersMngr.open(dbFile);
 			try {
 				if (!oldPersMngr.checkAndAlterModel()) {
@@ -408,7 +407,7 @@ public class StorybookApp extends Component {
 				return false;
 			}
 
-			oldPersMngr.closeConnection();
+			oldPersMngr.closeConnection();*/
 			setWaitCursor();
 			String text = I18N.getMsg("msg.common.loading", dbFile.getName());
 			final HourglassSplash dlg = new HourglassSplash(text);
@@ -426,11 +425,11 @@ public class StorybookApp extends Component {
 						updateFilePref(dbFile);
 						reloadMenuBars();
 						setDefaultCursor();
-						if (oldPersMngr.hasAlteredDbModel()) {
+						/*if (oldPersMngr.hasAlteredDbModel()) {
 							PostModelUpdateDialog dlg2 = new PostModelUpdateDialog(
 									newMainFrame);
 							SwingUtil.showModalDialog(dlg2, newMainFrame);
-						}
+						}*/
 					} catch (Exception e) {
 					}
 				}

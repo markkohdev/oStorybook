@@ -29,7 +29,6 @@ import storybook.toolkit.I18N;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class ClearRecentFilesAction extends AbstractAction {
 
 	private ActionHandler actionHandler;

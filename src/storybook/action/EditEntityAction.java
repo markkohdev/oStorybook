@@ -31,7 +31,6 @@ import storybook.view.MainFrame;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class EditEntityAction extends AbstractEntityAction {
 	private boolean trace=true;
 	private boolean saveBeforeEdit;

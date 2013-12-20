@@ -32,7 +32,6 @@ import storybook.toolkit.html.HtmlUtil;
 
 public abstract class AbstractEntity implements Serializable {
 
-	private static final long serialVersionUID = -1712718006802742365L;
 	private static Long transientIdCounter = 1L;
 
 	protected Long id = -1L;

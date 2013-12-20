@@ -29,7 +29,6 @@ import storybook.model.DbFile;
  * @author martin
  *
  */
-@SuppressWarnings("serial")
 public class OpenFileAction extends AbstractAction {
 
 	private DbFile dbFile;
