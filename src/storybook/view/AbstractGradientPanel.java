@@ -10,7 +10,7 @@ import storybook.toolkit.swing.ColorUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractGradientPanel extends AbstractPanel {
-	private boolean trace=true;
+	private boolean trace=false;
 	private Color startBgColor = Color.white;
 	private Color endBgColor = Color.black;
 	private boolean showBgGradient = true;

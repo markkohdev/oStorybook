@@ -30,7 +30,7 @@ import storybook.view.MainFrame;
 @SuppressWarnings("serial")
 public class DTScenePanel extends ScenePanel implements MouseMotionListener {
 
-	private boolean trace=true;
+	private boolean trace=false;
 
 	private MouseEvent firstMouseEvent = null;
 

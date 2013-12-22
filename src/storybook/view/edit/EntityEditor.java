@@ -132,7 +132,7 @@ import net.miginfocom.swing.MigLayout;
 public class EntityEditor extends AbstractPanel implements ActionListener,
 		ItemListener {
 
-	private boolean trace=true;
+	private boolean trace=false;
 	public static Dimension MINIMUM_SIZE = new Dimension(440, 500);
 	private static final String ERROR_LABEL = "error_label";
 	private enum MsgState {

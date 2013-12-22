@@ -48,7 +48,7 @@ import storybook.view.combo.SceneStateListCellRenderer;
  */
 
 public class SceneTable extends AbstractTable {
-	private boolean trace=true;
+	private boolean trace=false;
 
 	private JComboBox sceneStateCombo;
 

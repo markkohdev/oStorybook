@@ -32,7 +32,7 @@ import storybook.view.MainFrame;
  *
  */
 public class EditEntityAction extends AbstractEntityAction {
-	private boolean trace=true;
+	private boolean trace=false;
 	private boolean saveBeforeEdit;
 
 	public EditEntityAction(MainFrame mainFrame, AbstractEntity entity, boolean b) {

@@ -79,7 +79,7 @@ import storybook.view.table.renderer.DateTableCellRenderer;
 public abstract class AbstractTable extends AbstractPanel implements
 		ActionListener, ListSelectionListener {
 
-	private boolean trace=true;
+	private boolean trace=false;
 
 	protected Vector<SbColumn> columns;
 

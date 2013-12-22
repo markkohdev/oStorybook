@@ -34,7 +34,7 @@ import storybook.toolkit.swing.IconButton;
 
 @SuppressWarnings("serial")
 abstract public class AbstractScenePanel extends AbstractGradientPanel {
-	private boolean trace=true;
+	private boolean trace=false;
 	protected Scene scene;
 
 	protected AbstractAction newAction;

@@ -48,7 +48,7 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class ScenePanel extends AbstractScenePanel implements MouseListener,
 		Accessible, IRefreshable {
-	private boolean trace=true;
+	private boolean trace=false;
 	public final static int TYPE_NONE = 0;
 	public final static int TYPE_UNASSIGNED = 1;
 	public final static int TYPE_MAKE_UNASSIGNED = 2;
