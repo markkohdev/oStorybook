@@ -783,7 +783,7 @@ public class HTMLUtils
             return;
         }
 
-        //TODO figure out what the "CR" attribute is.
+        //Figure out what the "CR" attribute is.
         //Somewhere along the line the attribute  CR (String key) with a value of Boolean.TRUE
         //gets inserted. If it is in the attributes, something gets screwed up
         //and the text gets all jumbled up and doesn't render correctly.

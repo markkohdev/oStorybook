@@ -452,32 +452,31 @@ public class MemoriaPanel extends AbstractPanel
 
 	private void initGraph() {
 		try {
-			this.labelMap = new HashMap();
-			this.iconMap = new HashMap();
-			this.graph = new DelegateForest();
-			this.treeLayout = new TreeLayout(this.graph);
-			this.balloonLayout = new BalloonLayout(this.graph);
-			this.vv = new VisualizationViewer(this.balloonLayout);
-			this.vv.setSize(new Dimension(800, 800));
+			labelMap = new HashMap();
+			iconMap = new HashMap();
+			graph = new DelegateForest();
+			treeLayout = new TreeLayout(graph);
+			balloonLayout = new BalloonLayout(graph);
+			vv = new VisualizationViewer(balloonLayout);
+			vv.setSize(new Dimension(800, 800));
 			refreshGraph();
-			this.vv.setBackground(Color.white);
-			this.vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line());
-			this.vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-			this.vv.setVertexToolTipTransformer(new EntityTransformer());
-			this.graphPanel = new GraphZoomScrollPane(this.vv);
+			vv.setBackground(Color.white);
+			vv.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line());
+			vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+			vv.setVertexToolTipTransformer(new EntityTransformer());
+			graphPanel = new GraphZoomScrollPane(vv);
 			DefaultModalGraphMouse mouse = new DefaultModalGraphMouse();
-			this.vv.setGraphMouse(mouse);
+			vv.setGraphMouse(mouse);
 			mouse.add(new MemoriaGraphMouse(this));
-			/* TODO MemoriaPanel compile error
-			VertexStringerImpl localVertexStringerImpl = new VertexStringerImpl(this.labelMap);
-			this.vv.getRenderContext().setVertexLabelTransformer(new VertexStringerImpl(localVertexStringerImpl));
-			*/
+			// T O D O  MemoriaPanel compile error suppress 2 lines
+			//VertexStringerImpl localVertexStringerImpl = new VertexStringerImpl(/*this.labelMap*/);
+			//this.vv.getRenderContext().setVertexLabelTransformer(new VertexStringerImpl(/*localVertexStringerImpl*/));
 			VertexIconShapeTransformer transformer = new VertexIconShapeTransformer(new EllipseVertexShapeTransformer());
 			DefaultVertexIconTransformer iconTransformer = new DefaultVertexIconTransformer();
-			transformer.setIconMap(this.iconMap);
-			iconTransformer.setIconMap(this.iconMap);
-			this.vv.getRenderContext().setVertexShapeTransformer(transformer);
-			this.vv.getRenderContext().setVertexIconTransformer(iconTransformer);
+			transformer.setIconMap(iconMap);
+			iconTransformer.setIconMap(iconMap);
+			vv.getRenderContext().setVertexShapeTransformer(transformer);
+			vv.getRenderContext().setVertexIconTransformer(iconTransformer);
 		} catch (Exception exc) {
 			System.err.println("MemoriaPanel.initGraph() Exception : "+exc.getMessage());
 		}

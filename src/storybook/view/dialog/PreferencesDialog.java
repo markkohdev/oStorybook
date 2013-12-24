@@ -62,25 +62,25 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class PreferencesDialog extends AbstractDialog implements
 		ActionListener, CaretListener {
-
+/*
 	private static final String CN_CHECK = "check";
 	private static final String CN_PW_FORGOTTEN = "pwforgotten";
 	private static final String CN_GO_PRO = "gopro";
-
+*/
 	private AbstractAction fontChooserAction;
 
 	private JComboBox languageCombo;
 	private JComboBox spellingCombo;
 	private JCheckBox cbLoadFileOnStart;
 	private JCheckBox cbConfirmExit;
-	// private JCheckBox cbUpdate;
+	private JCheckBox cbUpdate;
 	private JLabel lbShowFont;
 	private Font font;
 	private JComboBox lafCombo;
 	private JTabbedPane tabbedPane;
 	private JTextField tfGoogleMapsUrl;
 	private JCheckBox cbTranslatorMode;
-//	private JTextArea taResult;
+	private JTextArea taResult;
 
 	public PreferencesDialog() {
 		super();
@@ -218,15 +218,6 @@ public class PreferencesDialog extends AbstractDialog implements
 		pref = PrefUtil.get(PreferenceKey.CONFIRM_EXIT, true);
 		cbConfirmExit.setSelected(pref.getBooleanValue());
 
-		// check for updates
-		/* TODO check for update
-		JLabel lbUpdate = new JLabel(I18N.getMsg("msg.pref.update"));
-		cbUpdate = new JCheckBox(I18N.getMsg("msg.pref.update.chb"));
-		Boolean updates = PrefManager.getInstance().getBooleanValue(
-		Constants.Preference.CHECK_UPDATES);
-		chbUpdate.getModel().setSelected(updates);
-		*/
-
 		// layout
 		panel.add(lbLanguage);
 		panel.add(languageCombo);
@@ -236,10 +227,16 @@ public class PreferencesDialog extends AbstractDialog implements
 		panel.add(cbLoadFileOnStart);
 		panel.add(lbConfirmExit);
 		panel.add(cbConfirmExit);
-		/** TODO check for update
+		// check for updates
+		/*
+		JLabel lbUpdate = new JLabel(I18N.getMsg("msg.pref.update"));
+		cbUpdate = new JCheckBox(I18N.getMsg("msg.pref.update.chb"));
+		Boolean updates = PrefManager.getInstance().getBooleanValue(
+		Preference.CHECK_UPDATES);
+		cbUpdate.getModel().setSelected(updates);
 		panel.add(lbUpdate);
 		panel.add(cbUpdate);
-		* */
+		*/
 
 		return panel;
 	}
@@ -340,7 +337,7 @@ public class PreferencesDialog extends AbstractDialog implements
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 	}
 
 	@Override

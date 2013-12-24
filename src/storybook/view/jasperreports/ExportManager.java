@@ -81,7 +81,7 @@ public class ExportManager implements ReportConstants {
 		return formatMap;
 	}
 
-	public void fillReport(final ExportReport paramExportReport) {
+	public void fillReport(final ExportReport param) {
 		DocumentModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.doWork(new Work() {
@@ -91,20 +91,21 @@ public class ExportManager implements ReportConstants {
 				try {
 					String str = "resources/reports"
 						+ File.separator
-						+ paramExportReport.getJasperReportName()
+						+ param.getJasperReportName()
 						+ ".jasper";
 					HashMap localHashMap = new HashMap();
 					localHashMap.put("PARAM_TITLE",
-						paramExportReport.getName()
+						param.getName()
 						+ " - " + I18N.getMsg("msg.common.project")
 						+ ": \"" + ExportManager.this.mainFrame.getDbFile().getName() + "\"");
 					localHashMap.put("SUBREPORT_DIR", "resources/reports" + File.separator);
 					/* TODO solve access$102
-					ExportManager.access$102(JasperFillManager.fillReport(str, localHashMap, connection));
-					*/
+					 ExportManager.access$102(JasperFillManager.fillReport(str, localHashMap, connection));
+					 */
 					JasperFillManager.fillReport(str, localHashMap, connection);
 					/* TODO solve access$102 end */
-				} catch (JRException localJRException) {
+				} catch (JRException e) {
+					System.err.println("ExportManager.fillReport(param)" + e.getMessage());
 				}
 			}
 		});

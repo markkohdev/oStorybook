@@ -92,6 +92,10 @@ public class SbConstants {
 		DOC			(HOMEPAGE+"wiki/home"),
 		FAQ			(HOMEPAGE+"wiki/faq"),
 		REPORTBUG	(HOMEPAGE+"tickets"),
+		WEB			("http://ostorybook.sourceforge.net/"),
+		VERSION		(WEB+"version.txt"),
+		UPDATE		(WEB+"update.zip"),
+		DO_UPDATE	("false")
 		;
 		final private String text;
 		private URL(String text) { this.text = text; }

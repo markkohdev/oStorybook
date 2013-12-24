@@ -1,21 +1,20 @@
 /*
-Storybook: Scene-based software for novelists and authors.
-Copyright (C) 2008 - 2011 Martin Mustun
+ Storybook: Scene-based software for novelists and authors.
+ Copyright (C) 2008 - 2011 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package storybook.toolkit.net;
 
 import java.io.BufferedReader;
@@ -35,60 +34,54 @@ import storybook.view.net.BrowserDialog;
 public class Updater {
 
 	public static boolean checkForUpdate() {
-		// TODO checkForUpdate provisoirement neutralisé
-		return true;
-		/*
-		try {
-			// get version
-			URL url = new URL(SbConstants.URL.HOMEPAGE_EN.toString()
-					+ "/version.txt");
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					url.openStream()));
-			String inputLine = "";
-			String versionStr = "";
-			int c = 0;
-			while ((inputLine = in.readLine()) != null) {
-				versionStr = inputLine;
-				if (c == 0) {
-					// currently only the first line is read
-					break;
-				}
-			}
-			in.close();
-
-			// compare version
-			int remoteVersion = calculateVersion(versionStr);
-			int localVersion = calculateVersion(SbConstants.Storybook.PRODUCT_VERSION
-					.toString());
-			// for testing
-//			remoteVersion = 4002000;
-			if (localVersion < remoteVersion) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						String locale = Locale.getDefault().toString();
-						String updateUrl = SbConstants.URL.HOMEPAGE_EN
-								+ "/update/?locale=" + locale;
-						BrowserDialog dlg = new BrowserDialog(updateUrl, I18N
-								.getMsg("msg.update.title"), 600, 300);
-						SwingUtil.showModalDialog(dlg, null);
+		if (SbConstants.URL.DO_UPDATE.toString().equals("true")) {
+			try {
+				// get version
+				URL url = new URL(SbConstants.URL.VERSION.toString());
+				String versionStr;
+				try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
+					String inputLine = "";
+					versionStr = "";
+					int c = 0;
+					while ((inputLine = in.readLine()) != null) {
+						versionStr = inputLine;
+						if (c == 0) {
+							// currently only the first line is read
+							break;
+						}
 					}
-				});
-				return false;
+				}
+
+				// compare version
+				int remoteVersion = calculateVersion(versionStr);
+				int localVersion = calculateVersion(SbConstants.Storybook.PRODUCT_VERSION
+					.toString());
+				// for testing
+//			remoteVersion = 4002000;
+				if (localVersion < remoteVersion) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							String locale = Locale.getDefault().toString();
+							String updateUrl = SbConstants.URL.UPDATE.toString() + locale;
+							BrowserDialog dlg = new BrowserDialog(updateUrl, I18N
+								.getMsg("msg.update.title"), 600, 300);
+							SwingUtil.showModalDialog(dlg, null);
+						}
+					});
+					return false;
+				}
+			} catch (SocketException | UnknownHostException e) {
+				return true;
+			} catch (Exception e) {
+				System.err.println("Updater.checkForUpdate() Exception:" + e.toString());
 			}
-		} catch (SocketException e) {
-			return true;
-		} catch (UnknownHostException e) {
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return true;
-		*/
 	}
 
 	private static int calculateVersion(String str) {
-		String[] s = str.split("\\.");
+		String[] s = str.split(".");
 		if (s.length != 3) {
 			return -1;
 		}

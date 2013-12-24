@@ -144,8 +144,6 @@ public final class LangToolMain implements ActionListener {
 		frame.setJMenuBar(new MainMenuBar(this, messages));
 
 		textArea = new JTextArea(messages.getString("guiDemoText"));
-		// TODO: wrong line number is displayed for lines that are wrapped
-		// automatically:
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.addKeyListener(new ControlReturnTextCheckingListener());

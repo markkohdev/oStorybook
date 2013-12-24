@@ -44,6 +44,7 @@ import storybook.view.SbView;
  *
  */
 public class DocumentController extends AbstractController {
+	private boolean trace=true;
 
 	public enum CommonProps {
 
@@ -517,6 +518,10 @@ public class DocumentController extends AbstractController {
 	};
 
 	public void updateEntity(AbstractEntity entity) {
+		if (trace) {
+			String n=entity.getClass().getName();
+			System.out.println("DocumentController.updateEntity("+n+")");
+		}
 		try {
 			if (entity instanceof Chapter) {
 				updateChapter((Chapter) entity);
@@ -711,6 +716,10 @@ public class DocumentController extends AbstractController {
 	}
 
 	public void setEntityToEdit(AbstractEntity entity) {
+		if (trace) {
+			String n=entity.getClass().getName();
+			System.out.println("DocumentController.setEntityToEdit("+n+")");
+		}
 		try {
 			if (entity instanceof Chapter) {
 				setChapterToEdit((Chapter) entity);

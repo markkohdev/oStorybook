@@ -133,6 +133,7 @@ import storybook.view.SbColumn;
  *
  */
 public class EntityUtil {
+	private static boolean trace=true;
 
 	public static Boolean isPersonAlive(Person person, Date now) {
 		if (person.getDayofdeath() == null) {
@@ -395,8 +396,10 @@ public class EntityUtil {
 	}
 
 	public static void printBeanProperties(AbstractEntity entity) {
+		if (trace) {
+			System.out.println("EntityUtil.printBeanProperties(" + entity.getClass().getName()+")");
+		}
 		try {
-			System.out.println("EntityUtil.printProperties(): Entity:" + entity);
 			BeanInfo bi = Introspector.getBeanInfo(entity.getClass());
 			for (PropertyDescriptor propDescr : bi.getPropertyDescriptors()) {
 				String name = propDescr.getName();

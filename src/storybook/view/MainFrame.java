@@ -498,19 +498,19 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	public void showEditor() {
-		SwingUtilities.invokeLater(new Runnable() {
+		/*SwingUtilities.invokeLater(new Runnable() {
 			@Override
-			public void run() {
+			public void run() {*/
 				SbView editorView = getView(ViewName.EDITOR);
 				editorView.cleverRestoreFocus();
-			}
-		});
+			/*}
+		});*/
 	}
 
 	public void hideEditor() {
-		Timer timer = new Timer(200, new ActionListener() {
+		/*Timer timer = new Timer(200, new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {*/
 				View editorView = getView(ViewName.EDITOR);
 				if (!editorView.isShowing()) {
 					return;
@@ -521,10 +521,10 @@ public class MainFrame extends JFrame implements IPaintable {
 				} else {
 					editorView.close();
 				}
-			}
+			/*}
 		});
 		timer.setRepeats(false);
-		timer.start();
+		timer.start();*/
 	}
 
 	public void initBlankUi() {

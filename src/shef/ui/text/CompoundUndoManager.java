@@ -25,21 +25,16 @@ import org.bushe.swing.action.ActionManager;
 import shef.HtmlEditorI18n;
 import shef.ui.UIUtils;
 
-
-
-//TODO add static method to unregister documents
-
 /**
  * Manages compound undoable edits.
  *
- * Before an undoable edit happens on a particular document, you should call
- * the static method CompoundUndoManager.beginCompoundEdit(doc)
+ * Before an undoable edit happens on a particular document, you should call the static method
+ * CompoundUndoManager.beginCompoundEdit(doc)
  *
- * Conversely after an undoable edit happens on a particular document,
- * you shoulc call the static method CompoundUndoManager.beginCompoundEdit(doc)
+ * Conversely after an undoable edit happens on a particular document, you shoulc call the static method
+ * CompoundUndoManager.beginCompoundEdit(doc)
  *
- * For either of these methods to work, you must add an instance of
- * CompoundUndoManager as a document listener... e.g
+ * For either of these methods to work, you must add an instance of CompoundUndoManager as a document listener... e.g
  *
  * doc.addUndoableEditListener(new CompoundUndoManager(doc, new UndoManager());
  *
@@ -48,258 +43,221 @@ import shef.ui.UIUtils;
  *
  * @author Bob Tantlinger
  */
-public class CompoundUndoManager implements UndoableEditListener
-{
-    private static final HtmlEditorI18n i18n = HtmlEditorI18n.getInstance("shef.ui.text");
+public class CompoundUndoManager implements UndoableEditListener {
 
-    /**
-     * Static undo action that works across all documents
-     * with a CompoundUndoManager registered as an UndoableEditListener
-     */
-    public static Action UNDO = new UndoAction();
+	private static final HtmlEditorI18n i18n = HtmlEditorI18n.getInstance("shef.ui.text");
+	/**
+	 * Static undo action that works across all documents with a CompoundUndoManager registered as an
+	 * UndoableEditListener
+	 */
+	public static Action UNDO = new UndoAction();
+	/**
+	 * Static undo action that works across all documents with a CompoundUndoManager registered as an
+	 * UndoableEditListener
+	 */
+	public static Action REDO = new RedoAction();
+	private UndoManager undoer;
+	private CompoundEdit compoundEdit = null;
+	private Document document = null;
+	private static Vector docs = new Vector();
+	private static Vector lsts = new Vector();
+	private static Vector undoers = new Vector();
 
-    /**
-     * Static undo action that works across all documents
-     * with a CompoundUndoManager registered as an UndoableEditListener
-     */
-    public static Action REDO = new RedoAction();
+	protected static void registerDocument(Document doc, CompoundUndoManager lst, UndoManager um) {
+		docs.add(doc);
+		lsts.add(lst);
+		undoers.add(um);
+	}
 
-    private UndoManager undoer;
-    private CompoundEdit compoundEdit = null;
-    private Document document = null;
-    private static Vector docs = new Vector();
-    private static Vector lsts = new Vector();
-    private static Vector undoers = new Vector();
+	/**
+	 * Gets the undo manager for a document that has a CompoundUndoManager as an UndoableEditListener
+	 *
+	 * @param doc
+	 * @return The registed undomanger for the document
+	 */
+	public static UndoManager getUndoManagerForDocument(Document doc) {
+		for (int i = 0; i < docs.size(); i++) {
+			if (docs.elementAt(i) == doc) {
+				return (UndoManager) undoers.elementAt(i);
+			}
+		}
 
-    protected static void registerDocument(Document doc, CompoundUndoManager lst, UndoManager um)
-    {
-        docs.add(doc);
-        lsts.add(lst);
-        undoers.add(um);
-    }
+		return null;
+	}
 
-    /**
-     * Gets the undo manager for a document that has a CompoundUndoManager
-     * as an UndoableEditListener
-     * @param doc
-     * @return The registed undomanger for the document
-     */
-    public static UndoManager getUndoManagerForDocument(Document doc)
-    {
-        for(int i = 0; i < docs.size(); i++)
-        {
-            if(docs.elementAt(i) == doc)
-                return (UndoManager)undoers.elementAt(i);
-        }
+	/**
+	 * Notifies the CompoundUndoManager for the specified Document that a compound edit is about to begin.
+	 *
+	 * @param doc
+	 */
+	public static void beginCompoundEdit(Document doc) {
+		for (int i = 0; i < docs.size(); i++) {
+			if (docs.elementAt(i) == doc) {
+				CompoundUndoManager l = (CompoundUndoManager) lsts.elementAt(i);
+				l.beginCompoundEdit();
+				return;
+			}
+		}
+	}
 
-        return null;
-    }
+	/**
+	 * Notifies the CompoundUndoManager for the specified Document that a compound edit is complete.
+	 *
+	 * @param doc
+	 */
+	public static void endCompoundEdit(Document doc) {
+		for (int i = 0; i < docs.size(); i++) {
+			if (docs.elementAt(i) == doc) {
+				CompoundUndoManager l = (CompoundUndoManager) lsts.elementAt(i);
+				l.endCompoundEdit();
+				return;
+			}
+		}
+	}
 
-    /**
-     * Notifies the CompoundUndoManager for the specified Document that
-     * a compound edit is about to begin.
-     *
-     * @param doc
-     */
-    public static void beginCompoundEdit(Document doc)
-    {
-        for(int i = 0; i < docs.size(); i++)
-        {
-            if(docs.elementAt(i) == doc)
-            {
-                CompoundUndoManager l = (CompoundUndoManager)lsts.elementAt(i);
-                l.beginCompoundEdit();
-                return;
-            }
-        }
-    }
+	/**
+	 * Updates the enabled states of the UNDO and REDO actions for the specified document
+	 *
+	 * @param doc
+	 */
+	public static void updateUndo(Document doc) {
+		UndoManager um = getUndoManagerForDocument(doc);
+		if (um != null) {
+			UNDO.setEnabled(um.canUndo());
+			REDO.setEnabled(um.canRedo());
+		}
+	}
 
-    /**
-     * Notifies the CompoundUndoManager for the specified Document that
-     * a compound edit is complete.
-     *
-     * @param doc
-     */
-    public static void endCompoundEdit(Document doc)
-    {
-        for(int i = 0; i < docs.size(); i++)
-        {
-            if(docs.elementAt(i) == doc)
-            {
-                CompoundUndoManager l = (CompoundUndoManager)lsts.elementAt(i);
-                l.endCompoundEdit();
-                return;
-            }
-        }
-    }
+	/**
+	 * Discards all edits for the specified Document
+	 *
+	 * @param doc
+	 */
+	public static void discardAllEdits(Document doc) {
+		UndoManager um = getUndoManagerForDocument(doc);
+		if (um != null) {
+			um.discardAllEdits();
+			UNDO.setEnabled(um.canUndo());
+			REDO.setEnabled(um.canRedo());
+		}
+	}
 
-    /**
-     * Updates the enabled states of the UNDO and REDO actions
-     * for the specified document
-     * @param doc
-     */
-    public static void updateUndo(Document doc)
-    {
-        UndoManager um = getUndoManagerForDocument(doc);
-        if(um != null)
-        {
-            UNDO.setEnabled(um.canUndo());
-            REDO.setEnabled(um.canRedo());
-        }
-    }
+	/**
+	 * Creates a new CompoundUndoManager
+	 *
+	 * @param doc
+	 * @param um The UndoManager to use for this document
+	 */
+	public CompoundUndoManager(Document doc, UndoManager um) {
+		undoer = um;
+		document = doc;
+		registerDocument(document, this, undoer);
+	}
 
-    /**
-     * Discards all edits for the specified Document
-     *
-     * @param doc
-     */
-    public static void discardAllEdits(Document doc)
-    {
-        UndoManager um = getUndoManagerForDocument(doc);
-        if(um != null)
-        {
-            um.discardAllEdits();
-            UNDO.setEnabled(um.canUndo());
-            REDO.setEnabled(um.canRedo());
-        }
-    }
-
-    /**
-     * Creates a new CompoundUndoManager
-     *
-     * @param doc
-     * @param um The UndoManager to use for this document
-     */
-    public CompoundUndoManager(Document doc, UndoManager um)
-    {
-       undoer = um;
-       document = doc;
-       registerDocument(document, this, undoer);
-    }
-
-    /**
-     * Creates a new CompoundUndoManager
-     * @param doc
-     */
-    public CompoundUndoManager(Document doc)
-    {
-        this(doc, new UndoManager());
-    }
+	/**
+	 * Creates a new CompoundUndoManager
+	 *
+	 * @param doc
+	 */
+	public CompoundUndoManager(Document doc) {
+		this(doc, new UndoManager());
+	}
 
 	@Override
-    public void undoableEditHappened(UndoableEditEvent evt)
-    {
-        UndoableEdit edit = evt.getEdit();
-        if(compoundEdit != null)
-        {
-            //System.out.println("adding to compound");
-            compoundEdit.addEdit(edit);
-        }
-        else
-        {
-            undoer.addEdit(edit);
-            updateUndo(document);
-        }
-    }
+	public void undoableEditHappened(UndoableEditEvent evt) {
+		UndoableEdit edit = evt.getEdit();
+		if (compoundEdit != null) {
+			//System.out.println("adding to compound");
+			compoundEdit.addEdit(edit);
+		} else {
+			undoer.addEdit(edit);
+			updateUndo(document);
+		}
+	}
 
-    protected void beginCompoundEdit()
-    {
-        //System.out.println("starting compound");
-        compoundEdit = new CompoundEdit();
-    }
+	protected void beginCompoundEdit() {
+		//System.out.println("starting compound");
+		compoundEdit = new CompoundEdit();
+	}
 
-    protected void endCompoundEdit()
-    {
-        //System.out.println("ending compound");
-        if(compoundEdit != null)
-        {
-            compoundEdit.end();
-            undoer.addEdit(compoundEdit);
-            updateUndo(document);
-        }
-        compoundEdit = null;
-    }
+	protected void endCompoundEdit() {
+		//System.out.println("ending compound");
+		if (compoundEdit != null) {
+			compoundEdit.end();
+			undoer.addEdit(compoundEdit);
+			updateUndo(document);
+		}
+		compoundEdit = null;
+	}
 
-    static class UndoAction extends TextAction
-    {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
+	static class UndoAction extends TextAction {
 
-        public UndoAction()
-        {
-            super(i18n.str("undo"));
-            putValue(Action.SMALL_ICON, UIUtils.getIcon(UIUtils.X16, "undo.png"));
-            putValue(ActionManager.LARGE_ICON, UIUtils.getIcon(UIUtils.X24, "undo.png"));
-            putValue(MNEMONIC_KEY, new Integer(i18n.mnem("undo")));
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1L;
 
-            setEnabled(false);
-            putValue(
-                Action.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
-            putValue(SHORT_DESCRIPTION, getValue(NAME));
-        }
+		public UndoAction() {
+			super(i18n.str("undo"));
+			putValue(Action.SMALL_ICON, UIUtils.getIcon(UIUtils.X16, "undo.png"));
+			putValue(ActionManager.LARGE_ICON, UIUtils.getIcon(UIUtils.X24, "undo.png"));
+			putValue(MNEMONIC_KEY, new Integer(i18n.mnem("undo")));
+
+			setEnabled(false);
+			putValue(
+				Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+			putValue(SHORT_DESCRIPTION, getValue(NAME));
+		}
 
 		@Override
-        public void actionPerformed(ActionEvent e)
-        {
-            Document doc = getTextComponent(e).getDocument();
-            UndoManager um = getUndoManagerForDocument(doc);
-            if(um != null)
-            {
-                try
-                {
-                    um.undo();
-                }
-                catch (CannotUndoException ex)
-                {
-                    System.out.println("Unable to undo: " + ex);
-                }
+		public void actionPerformed(ActionEvent e) {
+			Document doc = getTextComponent(e).getDocument();
+			UndoManager um = getUndoManagerForDocument(doc);
+			if (um != null) {
+				try {
+					um.undo();
+				} catch (CannotUndoException ex) {
+					System.out.println("Unable to undo: " + ex);
+				}
 
-                updateUndo(doc);
-            }
-        }
-    }
+				updateUndo(doc);
+			}
+		}
+	}
 
-    static class RedoAction extends TextAction
-    {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
+	static class RedoAction extends TextAction {
 
-        public RedoAction()
-        {
-            super(i18n.str("redo"));
-            putValue(Action.SMALL_ICON, UIUtils.getIcon(UIUtils.X16, "redo.png"));
-            putValue(ActionManager.LARGE_ICON, UIUtils.getIcon(UIUtils.X24, "redo.png"));
-            putValue(MNEMONIC_KEY, new Integer(i18n.mnem("redo")));
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1L;
 
-            setEnabled(false);
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_Y, InputEvent.CTRL_MASK));
-            putValue(SHORT_DESCRIPTION, getValue(NAME));
-        }
+		public RedoAction() {
+			super(i18n.str("redo"));
+			putValue(Action.SMALL_ICON, UIUtils.getIcon(UIUtils.X16, "redo.png"));
+			putValue(ActionManager.LARGE_ICON, UIUtils.getIcon(UIUtils.X24, "redo.png"));
+			putValue(MNEMONIC_KEY, new Integer(i18n.mnem("redo")));
+
+			setEnabled(false);
+			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+				KeyEvent.VK_Y, InputEvent.CTRL_MASK));
+			putValue(SHORT_DESCRIPTION, getValue(NAME));
+		}
 
 		@Override
-        public void actionPerformed(ActionEvent e)
-        {
-            Document doc = getTextComponent(e).getDocument();
-            UndoManager um = getUndoManagerForDocument(doc);
-            if(um != null)
-            {
-                try
-                {
-                    um.redo();
-                }
-                catch (CannotUndoException ex)
-                {
-                    System.out.println("Unable to redo: " + ex);
-                }
+		public void actionPerformed(ActionEvent e) {
+			Document doc = getTextComponent(e).getDocument();
+			UndoManager um = getUndoManagerForDocument(doc);
+			if (um != null) {
+				try {
+					um.redo();
+				} catch (CannotUndoException ex) {
+					System.out.println("Unable to redo: " + ex);
+				}
 
-                updateUndo(doc);
-            }
-        }
-    }
+				updateUndo(doc);
+			}
+		}
+	}
 }

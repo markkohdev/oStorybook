@@ -67,13 +67,9 @@ public class CallLibreOffice {
 	private String getFilePath(MainFrame mainFrame, Scene scene) {
 		String path = mainFrame.getDbFile().getPath();
 		String str1 = scene.getChapterSceneNo();
-		if (str1.length() < 2) {
-			str1 = "0" + str1;
-		}
+		if (str1.length() < 2) {str1 = "0" + str1;}
 		String str2 = scene.getChapterSceneNo();
-		if (str2.length() < 2) {
-			str2 = "0" + str2;
-		}
+		if (str2.length() < 2) {str2 = "0" + str2;}
 		String str = path
 			+ I18N.getMsg("msg.common.chapter") + " " + str1 + " "
 			+ I18N.getMsg("msg.common.scene") + " " + str2
