@@ -1,0 +1,10 @@
+Package: oStorybook
+Version: 4.9.9
+Section: base
+Priority: optional
+Architecture: all
+Depends:
+Maintainer: favdb <favdb@sourceforge.net>
+Homepage: http://ostorybook.sourceforge.net
+Description: Writing a book,novelist authoring.
+
