@@ -21,8 +21,11 @@ package storybook.view.dialog;
 import java.awt.Frame;
 
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
+import storybook.toolkit.I18N;
 
 public class SplashDialog extends JDialog {
 

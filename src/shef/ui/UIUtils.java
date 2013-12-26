@@ -68,7 +68,7 @@ public class UIUtils {
 		if (!_package.endsWith("/")) {
 			_package += "/";
 		}
-		return getIcon("/shef/ui/"+_package + iconName);
+		return getIcon("/shef/ui/" + _package + iconName);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class UIUtils {
 	 */
 	public static ImageIcon createImageIcon(String path) {
 
-		URL u =UIUtils.class.getResource(path);
+		URL u = UIUtils.class.getResource(path);
 		if (u == null) {
 			return null;
 		}
