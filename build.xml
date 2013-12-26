@@ -8,9 +8,10 @@
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
 <project name="Storybook" default="default" basedir=".">
-	<property name="sb.version" value="4.9.9" />
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
+	<property name="sb.version" value="4.9.9" />
+	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
     <!--
 
     There exist several targets which are by default empty and which can be
@@ -94,10 +95,11 @@
 			<copy file="storybook.sh" todir="${dist.dir}" />
         </target>
 		<target name="distrib-zip" depends="jar" >
-			<zip destfile="storybook-${sb.version}.zip" basedir="${basedir}/dist" />
+			<mkdir dir="${sb.distdir}" />
+			<zip destfile="${sb.distdir}/oStorybook-${sb.version}.zip" basedir="${basedir}/dist" />
 		</target>
 		<target name="distrib-deb" >
-			<property name="deb" value="${basedir}/debian-package" />
+			<property name="deb" value="${sb.distdir}/debian-package" />
 			<mkdir dir="${deb}" />
 			<mkdir dir="${deb}/DEBIAN" />
 				<touch file="${deb}/DEBIAN/control" verbose="false"/>
@@ -120,7 +122,7 @@ Description: Writing a book,novelist authoring.
 			<exec executable="dpkg-deb">
 				<arg value="--build" />
 				<arg value="${deb}" />
-				<arg value="${basedir}/oStorybook-${sb.version}.deb" />
+				<arg value="${sb.distdir}/oStorybook-${sb.version}.deb" />
 			</exec>
 		</target>
 		<target name="distrib_lang">
