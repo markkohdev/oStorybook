@@ -30,12 +30,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-//import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -62,25 +59,20 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class PreferencesDialog extends AbstractDialog implements
 		ActionListener, CaretListener {
-/*
-	private static final String CN_CHECK = "check";
-	private static final String CN_PW_FORGOTTEN = "pwforgotten";
-	private static final String CN_GO_PRO = "gopro";
-*/
+
 	private AbstractAction fontChooserAction;
 
 	private JComboBox languageCombo;
 	private JComboBox spellingCombo;
 	private JCheckBox cbLoadFileOnStart;
 	private JCheckBox cbConfirmExit;
-	private JCheckBox cbUpdate;
 	private JLabel lbShowFont;
 	private Font font;
 	private JComboBox lafCombo;
 	private JTabbedPane tabbedPane;
 	private JTextField tfGoogleMapsUrl;
 	private JCheckBox cbTranslatorMode;
-	private JTextArea taResult;
+	private JCheckBox cbUpdate;
 
 	public PreferencesDialog() {
 		super();
@@ -169,15 +161,6 @@ public class PreferencesDialog extends AbstractDialog implements
 		PrefUtil.set(PreferenceKey.TRANSLATOR_MODE,
 				cbTranslatorMode.isSelected());
 
-		// email, password
-		/*
-		PrefUtil.set(PreferenceKey.EMAIL, tfEmail.getText());
-		String pw = new String(pfPassword.getPassword());
-		PrefUtil.set(PreferenceKey.PASSWORD, pw);
-		Guardian guardian = Guardian.getInstance();
-		guardian.setEmail(tfEmail.getText());
-		guardian.setPassword(pw);
-		*/
 		// refresh
 		app.refresh();
 
@@ -227,16 +210,6 @@ public class PreferencesDialog extends AbstractDialog implements
 		panel.add(cbLoadFileOnStart);
 		panel.add(lbConfirmExit);
 		panel.add(cbConfirmExit);
-		// check for updates
-		/*
-		JLabel lbUpdate = new JLabel(I18N.getMsg("msg.pref.update"));
-		cbUpdate = new JCheckBox(I18N.getMsg("msg.pref.update.chb"));
-		Boolean updates = PrefManager.getInstance().getBooleanValue(
-		Preference.CHECK_UPDATES);
-		cbUpdate.getModel().setSelected(updates);
-		panel.add(lbUpdate);
-		panel.add(cbUpdate);
-		*/
 
 		return panel;
 	}

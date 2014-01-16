@@ -10,6 +10,7 @@ import javax.swing.JEditorPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTML;
+
 import shef.HtmlEditorI18n;
 import shef.ui.UIUtils;
 import shef.ui.text.HTMLUtils;
@@ -18,17 +19,19 @@ import shef.ui.text.dialogs.ImageDialog;
 
 import storybook.toolkit.swing.SwingUtil;
 /*
-import net.atlanticbb.tantlinger.i18n.HtmlEditorI18n;
-import net.atlanticbb.tantlinger.ui.UIUtils;
-import net.atlanticbb.tantlinger.ui.text.HTMLUtils;
-import net.atlanticbb.tantlinger.ui.text.actions.HTMLTextEditAction;
-import net.atlanticbb.tantlinger.ui.text.dialogs.ImageDialog;
-*/
+ import net.atlanticbb.tantlinger.i18n.HtmlEditorI18n;
+ import net.atlanticbb.tantlinger.ui.UIUtils;
+ import net.atlanticbb.tantlinger.ui.text.HTMLUtils;
+ import net.atlanticbb.tantlinger.ui.text.actions.HTMLTextEditAction;
+ import net.atlanticbb.tantlinger.ui.text.dialogs.ImageDialog;
+ import storybook.toolkit.swing.htmleditor.SbImageDialog;
+ */
+
 @SuppressWarnings("serial")
 public class SbHTMLImageAction extends HTMLTextEditAction {
 
 	private static final HtmlEditorI18n i18n = HtmlEditorI18n
-			.getInstance("net.atlanticbb.tantlinger.shef");
+		.getInstance("net.atlanticbb.tantlinger.shef");
 
 	public SbHTMLImageAction() {
 		super(i18n.str("image_")); //$NON-NLS-1$
@@ -36,13 +39,15 @@ public class SbHTMLImageAction extends HTMLTextEditAction {
 		putValue(Action.SHORT_DESCRIPTION, getValue(Action.NAME));
 	}
 
+	@Override
 	protected void sourceEditPerformed(ActionEvent e, JEditorPane editor) {
 		ImageDialog d = createDialog(editor);
 		// d.setSize(300, 300);
 		d.setLocationRelativeTo(d.getParent());
 		d.setVisible(true);
-		if (d.hasUserCancelled())
+		if (d.hasUserCancelled()) {
 			return;
+		}
 
 		editor.requestFocusInWindow();
 		editor.replaceSelection(d.getHTML());
@@ -64,13 +69,15 @@ public class SbHTMLImageAction extends HTMLTextEditAction {
 			return;
 		}
 		String tagText = dlg.getHTML();
-		if (editor.getCaretPosition() == editor.getDocument().getLength())
-			tagText += "&nbsp;"; //$NON-NLS-1$
+		if (editor.getCaretPosition() == editor.getDocument().getLength()) {
+			tagText += "&nbsp;";
+		} //$NON-NLS-1$
 
 		editor.replaceSelection(""); //$NON-NLS-1$
 		HTML.Tag tag = HTML.Tag.IMG;
-		if (tagText.startsWith("<a")) //$NON-NLS-1$
+		if (tagText.startsWith("<a")) {
 			tag = HTML.Tag.A;
+		}
 
 		HTMLUtils.insertHTML(tagText, tag, editor);
 	}
@@ -78,10 +85,11 @@ public class SbHTMLImageAction extends HTMLTextEditAction {
 	protected ImageDialog createDialog(JTextComponent ed) {
 		Window w = SwingUtilities.getWindowAncestor(ed);
 		ImageDialog d = null;
-		if (w != null && w instanceof Frame)
+		if (w != null && w instanceof Frame) {
 			d = new ImageDialog((Frame) w);
-		else if (w != null && w instanceof Dialog)
+		} else if (w != null && w instanceof Dialog) {
 			d = new ImageDialog((Dialog) w);
+		}
 
 		return d;
 	}

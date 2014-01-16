@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
+		<property name="hibernate.connection.driver_class">org.h2.Driver</property>
+		<!-- <property name="hibernate.connection.url">jdbc:h2:/home/martin/tmp/Demo</property> -->
+		<property name="hibernate.connection.username">sa</property>
+		<property name="hibernate.connection.password"></property>
+
+		<!-- Automatic schema creation
+			validate: validate the schema, makes no changes to the database.
+			update: update the schema.
+			create: creates the schema, destroying previous data.
+			create-drop: drop the schema at the end of the session.
+		-->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+
+		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		<property name="hibernate.c3p0.min_size">0</property>
+		<property name="hibernate.c3p0.max_size">1</property>
+		<property name="hibernate.c3p0.timeout">5000</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">300</property>
+		<property name="hibernate.c3p0.acquire_increment">2</property>
+
+		<property name="current_session_context_class">thread</property>
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+		<property name="hibernate.show_sql">false</property>
+
+		<mapping resource="storybook/model/hbn/entity/Scene.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Chapter.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Part.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Person.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Gender.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Location.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Strand.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/AbstractTag.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/AbstractTagLink.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Idea.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Internal.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Category.hbm.xml" />
+		<mapping resource="storybook/model/hbn/entity/Attribute.hbm.xml" />
+
+	</session-factory>
+</hibernate-configuration>

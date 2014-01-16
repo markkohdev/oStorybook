@@ -30,6 +30,7 @@ import storybook.model.hbn.entity.AbstractEntity;
 import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
 import java.util.logging.Level;
 import org.hibernate.HibernateException;
+import storybook.StorybookApp;
 
 public class SbSessionFactory {
 
@@ -57,12 +58,12 @@ public class SbSessionFactory {
 	}
 
 	public void init(String filename, String configFile) {
-		if (trace) {
+		if (StorybookApp.getTrace()) {
 			System.out.println("SbSessionFactory.init()");
 		}
-		//if (traceHibernate) {
+		if (!StorybookApp.getTraceHibernate()) {
 			java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-		//}
+		}
 		try {
 			// create the SessionFactory from given config file
 			// modif favdb remplacement du configFile par la programmation directe

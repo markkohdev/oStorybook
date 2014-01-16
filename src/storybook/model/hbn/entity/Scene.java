@@ -451,7 +451,7 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	*   cascade="none"
 	* @hibernate.collection-many-to-many
 	*   column="person_id"
-	*   class="ch.intertec.storybook.model.hbn.entity.Person"
+	*   class="storybook.model.hbn.entity.Person"
 	* @hibernate.collection-key
 	*   column="scene_id"
 	*/
@@ -470,7 +470,7 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	*   cascade="save-update"
 	* @hibernate.collection-many-to-many
 	*   column="location_id"
-	*   class="ch.intertec.storybook.model.hbn.entity.Location"
+	*   class="storybook.model.hbn.entity.Location"
 	* @hibernate.collection-key
 	*   column="scene_id"
 	* @hibernate.collection-index
@@ -490,7 +490,7 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	*   cascade="save-update"
 	* @hibernate.collection-many-to-many
 	*   column="strand_id"
-	*   class="ch.intertec.storybook.model.hbn.entity.Strand"
+	*   class="storybook.model.hbn.entity.Strand"
 	* @hibernate.collection-key
 	*   column="scene_id"
 	* @hibernate.collection-index

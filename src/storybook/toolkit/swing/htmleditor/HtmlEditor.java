@@ -138,6 +138,7 @@ import shef.ui.text.actions.HTMLLinkAction;
 import shef.ui.text.actions.HTMLTableAction;
 import shef.ui.text.actions.HTMLTextEditAction;
 import shef.ui.text.actions.SpecialCharAction;
+import storybook.StorybookApp;
 
 /**
  * Based on HTMLEditorPane by SHEF / Bob Tantlinger.<br>
@@ -720,7 +721,7 @@ public class HtmlEditor extends JPanel {
 				topText = Entities.HTML40.unescapeUnknownEntities(topText);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			StorybookApp.error("HtmlEditor.getText() Exception:",e);
 		}
 		return topText;
 		// OLD
@@ -776,10 +777,12 @@ public class HtmlEditor extends JPanel {
 		if (focusedEditor == wysEditor) {
 			fontFamilyCombo.removeActionListener(fontChangeHandler);
 			String fontName = HTMLUtils.getFontFamily(wysEditor);
-			if (fontName == null)
+			if (fontName == null) {
 				fontFamilyCombo.setSelectedIndex(0);
-			else
+			}
+			else {
 				fontFamilyCombo.setSelectedItem(fontName);
+			}
 			fontFamilyCombo.addActionListener(fontChangeHandler);
 		}
 

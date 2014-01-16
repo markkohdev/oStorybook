@@ -114,9 +114,9 @@ public class ActionHandler {
 				EnvUtil.getDefaultExportDir(mainFrame));
 			Desktop.getDesktop().open(new File(internal.getStringValue()));
 		} catch (Exception ex) {
-			System.err.println("ActionHandler.handleExportDir() Exception : " + ex.getMessage());
+			StorybookApp.logErr("ActionHandler.handleExportDir() Exception : ",ex);
 		} catch (Error er) {
-			System.err.println("ActionHandler.handleExportDir() Error : " + er.getMessage());
+			StorybookApp.logErr("ActionHandler.handleExportDir() Error : ",er);
 		}
 	}
 
@@ -180,8 +180,7 @@ public class ActionHandler {
 
 	public void handleRenameTagCategory() {
 		RenameTagCategoryDialog dlg = new RenameTagCategoryDialog(mainFrame);
-		ActionManager actMngr = mainFrame.getSbActionManager()
-			.getActionManager();
+		ActionManager actMngr = mainFrame.getSbActionManager().getActionManager();
 		Action act = actMngr.getAction("rename-tag-category-command");
 		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
 		if (obj != null) {
@@ -193,8 +192,7 @@ public class ActionHandler {
 
 	public void handleRenameItemCategory() {
 		RenameItemCategoryDialog dlg = new RenameItemCategoryDialog(mainFrame);
-		ActionManager actMngr = mainFrame.getSbActionManager()
-			.getActionManager();
+		ActionManager actMngr = mainFrame.getSbActionManager().getActionManager();
 		Action act = actMngr.getAction("rename-item-category-command");
 		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
 		if (obj != null) {
@@ -372,12 +370,12 @@ public class ActionHandler {
 	 */
 
 	public void handleDummy() {
+		StorybookApp.trace("ActionHandler.handleDummy(): ");
 		try {
-			System.out.println("ActionHandler.handleDummy(): ");
 			SbView view = mainFrame.getView(SbConstants.ViewName.EDITOR);
 			mainFrame.getViewFactory().unloadView(view);
 		} catch (Exception ex) {
-			System.err.println("ActionHandler.handleDummy() Exception : "+ex.getMessage());
+			StorybookApp.logErr("ActionHandler.handleDummy() Exception : ",ex);
 		}
 	}
 
@@ -513,38 +511,31 @@ public class ActionHandler {
 	}
 
 	public void handleDefaultLayout() {
-		DockingWindowUtil.setLayout(mainFrame,
-			DockingWindowUtil.DEFAULT_LAYOUT);
+		DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.DEFAULT_LAYOUT);
 	}
 
 	public void handlePersonsLocationsLayout() {
-		DockingWindowUtil.setLayout(mainFrame,
-			DockingWindowUtil.PERSONS_LOCATIONS_LAYOUT);
+		DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.PERSONS_LOCATIONS_LAYOUT);
 	}
 
 	public void handleTagsItemsLayout() {
-		DockingWindowUtil.setLayout(mainFrame,
-			DockingWindowUtil.TAGS_ITEMS_LAYOUT);
+		DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.TAGS_ITEMS_LAYOUT);
 	}
 
 	public void handleChronoOnlyLayout() {
-		DockingWindowUtil.setLayout(mainFrame,
-			DockingWindowUtil.CHRONO_ONLY_LAYOUT);
+		DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.CHRONO_ONLY_LAYOUT);
 	}
 
 	public void handleBookOnlyLayout() {
-		DockingWindowUtil.setLayout(mainFrame,
-			DockingWindowUtil.BOOK_ONLY_LAYOUT);
+		DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.BOOK_ONLY_LAYOUT);
 	}
 
 	public void handleManageOnlyLayout() {
-		DockingWindowUtil.setLayout(mainFrame,
-			DockingWindowUtil.MANAGE_ONLY_LAYOUT);
+		DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.MANAGE_ONLY_LAYOUT);
 	}
 
 	public void handleReadingOnlyLayout() {
-		DockingWindowUtil.setLayout(mainFrame,
-			DockingWindowUtil.READING_ONLY_LAYOUT);
+		DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.READING_ONLY_LAYOUT);
 	}
 
 	public void handleResetLayout() {
@@ -592,10 +583,8 @@ public class ActionHandler {
 	}
 
 	public void handleCopyBlurb() {
-		Internal internal = DocumentUtil.restoreInternal(mainFrame,
-			InternalKey.BLURB, "");
-		StringSelection selection = new StringSelection(
-			internal.getStringValue() + "\n");
+		Internal internal = DocumentUtil.restoreInternal(mainFrame,InternalKey.BLURB, "");
+		StringSelection selection = new StringSelection(internal.getStringValue() + "\n");
 		Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clbrd.setContents(selection, selection);
 	}

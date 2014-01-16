@@ -48,7 +48,7 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class AboutDialog extends AbstractDialog {
 
-	private final String gpl = "<html>"
+	private final String gplLoc = "<html>"
 		+ SbConstants.Storybook.PRODUCT_NAME
 		+ " is a free, open source novel-writing tool "
 		+ "for creative writers, novelists and authors which "
@@ -141,13 +141,7 @@ public class AboutDialog extends AbstractDialog {
 		lbInfo.setText(buf.toString());
 		JTabbedPane pane = new JTabbedPane();
 		// licenses
-		JTextPane taGpl = new JTextPane();
-		taGpl.setContentType("text/html");
-		taGpl.setEditable(false);
-		taGpl.setText(gpl);
-		JScrollPane scroller1 = new JScrollPane(taGpl);
-		scroller1.setBorder(SwingUtil.getBorderEtched());
-		pane.addTab("Copyright (GPL)", scroller1);
+		pane.addTab("Copyright (GPL)", createGplScrollPane());
 		// credits
 		pane.addTab("Credits",createCreditsScrollPane());
 		// system properties
@@ -158,7 +152,26 @@ public class AboutDialog extends AbstractDialog {
 		add(lbReview);
 		add(pane, "grow");
 		add(getCloseButton(), "right");
+	}
+
+	private JScrollPane createGplScrollPane() {
+		String gpl="<html>";
+		gpl+="<p>"+I18N.getMsg("msg.dlg.about.gpl.intro")+"</p>";
+		gpl+="<p>"+I18N.getMsg("msg.dlg.about.gpl.copyright") +
+			SbConstants.Storybook.COPYRIGHT_YEAR+"</p>";
+		gpl+="<p>"+I18N.getMsg("msg.dlg.about.gpl.homepage") + SbConstants.URL.HOMEPAGE + "</p>";
+		gpl+="<p>"+I18N.getMsg("msg.dlg.about.gpl.distribution")+"</p>";
+		gpl+="<p>"+I18N.getMsg("msg.dlg.about.gpl.gpl")+"</p>";
+		gpl+="<p>"+I18N.getMsg("msg.dlg.about.gpl.license")+"</p>";
+		gpl+="</html>";
+		JTextPane taGpl = new JTextPane();
+		taGpl.setContentType("text/html");
+		taGpl.setEditable(false);
+		taGpl.setText(gpl);
 		taGpl.setCaretPosition(0);
+		JScrollPane scroller1 = new JScrollPane(taGpl);
+		scroller1.setBorder(SwingUtil.getBorderEtched());
+		return(scroller1);
 	}
 
 	private JScrollPane createCreditsScrollPane() {

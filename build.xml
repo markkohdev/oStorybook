@@ -10,7 +10,7 @@
 <project name="Storybook" default="default" basedir=".">
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
-	<property name="sb.version" value="4.9.9" />
+	<property name="sb.version" value="4.9.10" />
 	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
     <!--
 
@@ -72,66 +72,89 @@
     properties which you can use, check the target you are overriding in the
     nbproject/build-impl.xml file.
 
-    -->
-        <target name="-post-jar">
-			<mkdir dir="${dist.dir}/dicts" />
-			<mkdir dir="${dist.dir}/lib/languagetool" />
-			<copy todir="${dist.dir}/dicts" flatten="false">
-				<fileset dir="dicts" />
-			</copy>
-			<copy todir="${dist.dir}/lib/languagetool" flatten="false">
-				<fileset dir="languagetool" />
-			</copy>
-			<copy file="INSTALL.txt" todir="${dist.dir}" />
-			<copy file="THANKS.txt" todir="${dist.dir}" />
-			<copy file="LICENSE.txt" todir="${dist.dir}" />
-			<copy file="actions.xml" todir="${dist.dir}" />
-			<copy file="jasperreports.properties" todir="${dist.dir}" />
-			<copy file="log4j.dtd" todir="${dist.dir}" />
-			<copy file="log4j.xml" todir="${dist.dir}" />
-			<copy file="splash.png" todir="${dist.dir}" />
-			<copy file="storybook-icon.icns" todir="${dist.dir}" />
-			<copy file="storybook.bat" todir="${dist.dir}" />
-			<copy file="storybook.sh" todir="${dist.dir}" />
-        </target>
-		<target name="distrib-zip" depends="jar" >
-			<mkdir dir="${sb.distdir}" />
-			<zip destfile="${sb.distdir}/oStorybook-${sb.version}.zip" basedir="${basedir}/dist" />
-		</target>
-		<target name="distrib-deb" >
-			<property name="deb" value="${sb.distdir}/debian-package" />
-			<mkdir dir="${deb}" />
-			<mkdir dir="${deb}/DEBIAN" />
-				<touch file="${deb}/DEBIAN/control" verbose="false"/>
-				<echo file="${deb}/DEBIAN/control" append="false">Package: oStorybook
+ -->
+	<target name="-post-compile">
+<!--
+		<echo>Récupération du fichier de configuration Hibernate dans le classpath</echo>
+		<copy file="hibernate.cfg.xml" todir="${build.classes.dir}" />
+-->
+		<echo>Récupération des fichiers de configuration de log4j dans le classpath</echo>
+		<copy file="log4j.dtd" todir="${build.classes.dir}" />
+		<copy file="log4j.xml" todir="${build.classes.dir}" />
+		<echo>Récupération du fichier d'action dans le classpath</echo>
+		<copy file="actions.xml" todir="${build.classes.dir}" />
+		<echo>Récupération du fichier de configuration Jasper dans le classpath</echo>
+		<copy file="jasperreports.properties" todir="${build.classes.dir}" />
+	</target>
+	<!-- Récupération des autres fichiers l'application -->
+	<target name="-post-jar">
+		<mkdir dir="${dist.dir}/dicts" />
+		<copy todir="${dist.dir}/dicts" flatten="false">
+			<fileset dir="dicts.all/dicts/" />
+		</copy>
+		<mkdir dir="${dist.dir}/lib/languagetool" />
+		<copy todir="${dist.dir}/lib/languagetool" flatten="false">
+			<fileset dir="languagetool" />
+		</copy>
+		<copy file="INSTALL.txt" todir="${dist.dir}" />
+		<copy file="INSTALL_LANG.txt" todir="${dist.dir}" />
+		<copy file="LICENSE.txt" todir="${dist.dir}" />
+		<copy file="THANKS.txt" todir="${dist.dir}" />
+		<copy file="splash.png" todir="${dist.dir}" />
+		<copy file="oStorybook-icon.icns" todir="${dist.dir}" />
+		<copy file="oStorybook-icon.ico" todir="${dist.dir}" />
+		<copy file="oStorybook-icon.png" todir="${dist.dir}" />
+		<copy file="oStorybook.bat" todir="${dist.dir}" />
+		<copy file="oStorybook.sh" todir="${dist.dir}" />
+<!--
+		<echo>Récupération du fichier de configuration Hibernate dans le classpath</echo>
+		<copy file="hibernate.cfg.xml" todir="${dist.dir}" />
+-->
+		<echo>Récupération des fichiers de configuration de log4j dans le classpath</echo>
+		<copy file="log4j.dtd" todir="${dist.dir}" />
+		<copy file="log4j.xml" todir="${dist.dir}" />
+		<echo>Récupération du fichier d'action dans le classpath</echo>
+		<copy file="actions.xml" todir="${dist.dir}" />
+		<echo>Récupération du fichier de configuration Jasper dans le classpath</echo>
+		<copy file="jasperreports.properties" todir="${dist.dir}" />
+	</target>
+	<target name="distrib-zip" depends="jar" >
+		<mkdir dir="${sb.distdir}" />
+		<zip destfile="${sb.distdir}/oStorybook-${sb.version}.zip" basedir="${basedir}/dist" />
+	</target>
+	<target name="distrib-deb" >
+		<property name="deb" value="${sb.distdir}/debian-package" />
+		<mkdir dir="${deb}" />
+		<mkdir dir="${deb}/DEBIAN" />
+		<touch file="${deb}/DEBIAN/control" verbose="false"/>
+		<echo file="${deb}/DEBIAN/control" append="false">Package: oStorybook
 Version: ${sb.version}
 Section: base
 Priority: optional
 Architecture: all
+Installed-Size: 49100
 Depends:
 Maintainer: favdb &lt;favdb@sourceforge.net&gt;
 Homepage: http://ostorybook.sourceforge.net
 Description: Writing a book,novelist authoring.
-
 </echo>
-			<mkdir dir="${deb}/opt" />
-			<mkdir dir="${deb}/opt/Storybook" />
-			<copy todir="${deb}/opt/Storybook" flatten="false">
-				<fileset dir="${basedir}/dist" />
-			</copy>
-			<exec executable="dpkg-deb">
-				<arg value="--build" />
-				<arg value="${deb}" />
-				<arg value="${sb.distdir}/oStorybook-${sb.version}.deb" />
-			</exec>
-		</target>
-		<target name="distrib_lang">
-			<property name="langue" value="es" />
-			<zip destfile="language_all.zip">
-				<zipfileset dir="dicts.others" includes="*.ortho" />
-				<zipfileset dir="languagetool.others/" includes="resource/**" />
-				<zipfileset dir="languagetool.others/" includes="rules/**" />
-				<zipfileset dir="." includes="INSTALL_LANG.txt" />
-			</zip>
-		</target>
+		<mkdir dir="${deb}/opt" />
+		<mkdir dir="${deb}/opt/oStorybook" />
+		<copy todir="${deb}/opt/oStorybook" flatten="false">
+			<fileset dir="${basedir}/dist" />
+		</copy>
+		<exec executable="dpkg-deb">
+			<arg value="--build" />
+			<arg value="${deb}" />
+			<arg value="${sb.distdir}/oStorybook-${sb.version}.deb" />
+		</exec>
+	</target>
+	<target name="distrib_lang">
+		<property name="langue" value="es" />
+		<zip destfile="language_all.zip">
+			<zipfileset dir="dicts.others" includes="dicts/**" />
+			<zipfileset dir="languagetool.others/" includes="languagetool/**" />
+			<zipfileset dir="." includes="INSTALL_LANG.txt" />
+		</zip>
+	</target>
 </project>

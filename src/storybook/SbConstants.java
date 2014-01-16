@@ -69,10 +69,10 @@ public class SbConstants {
 	public final static String DEFAULT_GOOGLE_MAPS_URL = "http://maps.google.com";
 
 	public enum Storybook {
-		PRODUCT_NAME("Storybook"),
-		PRODUCT_VERSION("4.9.9"),
+		PRODUCT_NAME("oStorybook"),
+		PRODUCT_VERSION("4.9.10"),
 		PRODUCT_FULL_NAME(PRODUCT_NAME + " " + PRODUCT_VERSION),
-		PRODUCT_RELEASE_DATE("2013-11-30"),
+		PRODUCT_RELEASE_DATE("2014-01-17"),
 		COPYRIGHT_YEAR("2012-2013"),
 		COPYRIGHT_COMPANY("The Storybook Team"),
 		PREFERENCE_DB_NAME("preference"),
@@ -93,8 +93,8 @@ public class SbConstants {
 		FAQ			(HOMEPAGE+"wiki/faq"),
 		REPORTBUG	(HOMEPAGE+"tickets"),
 		WEB			("http://ostorybook.sourceforge.net/"),
-		VERSION		(WEB+"version.txt"),
-		UPDATE		(WEB+"update.zip"),
+		VERSION		(WEB+"Version.txt"),
+		UPDATE		(WEB+"Update.zip"),
 		DO_UPDATE	("false")
 		;
 		final private String text;
@@ -104,7 +104,7 @@ public class SbConstants {
 	}
 
 	public enum Directory {
-		DICTONARIES("dicts/"),
+		DICTIONARIES("dicts/"),
 		USER_DICTS("dicts");
 		final private String text;
 		private Directory(String text) { this.text = text; }

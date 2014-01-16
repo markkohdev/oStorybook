@@ -42,13 +42,16 @@ public class Updater {
 				try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
 					String inputLine = "";
 					versionStr = "";
-					int c = 0;
+					int c = 0,nc=-1;
 					while ((inputLine = in.readLine()) != null) {
 						versionStr = inputLine;
-						if (c == 0) {
-							// currently only the first line is read
+						if (inputLine.contains("Versions")) {
+							nc = c + 1;
+						}
+						if (c == nc) {
 							break;
 						}
+						c++;
 					}
 				}
 

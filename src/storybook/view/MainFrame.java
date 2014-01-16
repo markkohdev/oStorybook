@@ -25,8 +25,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -48,8 +46,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 //import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 
@@ -756,4 +752,5 @@ public class MainFrame extends JFrame implements IPaintable {
 	public JToolBar getMainToolBar() {
 		return mainToolBar;
 	}
+
 }

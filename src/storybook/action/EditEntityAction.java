@@ -22,6 +22,7 @@ package storybook.action;
 import java.awt.event.ActionEvent;
 
 import storybook.SbConstants.ViewName;
+import storybook.StorybookApp;
 import storybook.controller.DocumentController;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.toolkit.I18N;
@@ -32,7 +33,7 @@ import storybook.view.MainFrame;
  *
  */
 public class EditEntityAction extends AbstractEntityAction {
-	private boolean trace=false;
+
 	private boolean saveBeforeEdit;
 
 	public EditEntityAction(MainFrame mainFrame, AbstractEntity entity, boolean b) {
@@ -40,16 +41,12 @@ public class EditEntityAction extends AbstractEntityAction {
 			I18N.getMsg("msg.common.edit"),
 			I18N.getIcon("icon.small.edit"));
 		saveBeforeEdit = b;
-		if (trace) {
-			System.out.println("EditEntityAction("+mainFrame.getName()+","+entity.toString()+","+b+")");
-		}
+		StorybookApp.trace("EditEntityAction("+mainFrame.getName()+","+entity.toString()+","+b+")");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (trace) {
-			System.out.println("EditEntityAction.actionPerformed("+e.toString()+")");
-		}
+		StorybookApp.trace("EditEntityAction.actionPerformed("+e.toString()+")");
 		if (this.saveBeforeEdit) {
 			mainFrame.getActionController().handleSave();
 		}

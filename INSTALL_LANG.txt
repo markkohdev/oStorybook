@@ -1,16 +1,14 @@
 How to install other language in Storybook?
 
 You have downloaded the language package. You unziped it
-somewhere in you disk, int dlLang by exemple. You have to copy the files
-*.ortho in the directory dicts where you installed Storybook. Then
-copy the directories resource in the directory languagetool/resource, and
-the directory rules in the directory languagetool/rules.
+somewhere in you disk, int dlLang by exemple. You have to copy the
+directories in the directory you installed Storybook. All asked questions like
+"do you want to replace" you must asnwer yes.
 That's it.
 
 Français
 Vous avez téléchargé le paquage de langue. Vous l'avez dézipé quelque part sur
 votre disque, dans dlLang par exemple.
-Vous devez copier les fichiers *.ortho dans le répertoire dicts là
-où vous avez installé Storybook. Puis copiez le contenu du répertoire
-resource dans le répertoire languagetool/resource, et le répertoire
-rules dans le répertoire languagetool/rules.
+Vous devez copier les répertoires dicts et languetool dans le répertoire
+où vous avez installé Storybook. A toute question du type évoulez-vous remplacer"
+vous devez répondre oui.

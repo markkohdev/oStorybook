@@ -56,17 +56,17 @@ import storybook.toolkit.swing.splash.HourglassSplash;
 import storybook.view.MainFrame;
 import storybook.view.dialog.ExceptionDialog;
 import storybook.view.dialog.FirstStartDialog;
-import storybook.view.dialog.PostModelUpdateDialog;
 import storybook.view.dialog.file.NewFileDialog;
 
 /**
  * Classe principale de l'application de type Component
  * @author martin
  */
-@SuppressWarnings({ "serial", "deprecation" })
+
 public class StorybookApp extends Component {
 
-	private boolean trace=false;
+	private static boolean bTrace=false;
+	private static boolean bTraceHibernate=false;
 
 	private static StorybookApp instance;
 
@@ -89,9 +89,7 @@ public class StorybookApp extends Component {
  * - interface utilisateur
  */
 	private void init() {
-		if (trace) {
-			System.out.println("StorybookApp.init()");
-		}
+		trace("StorybookApp.init()");
 		try {
 			// preference model and controller
 			preferenceController = new PreferenceController();
@@ -101,6 +99,7 @@ public class StorybookApp extends Component {
 			preferenceController.attachView(this);
 
 			initI18N();
+
 			SwingUtil.setLookAndFeel();
 			restoreDefaultFont();
 			// first start dialog
@@ -118,9 +117,7 @@ public class StorybookApp extends Component {
 				Preference pref2 = PrefUtil.get(PreferenceKey.LAST_OPEN_FILE,
 						"");
 				DbFile dbFile = new DbFile(pref2.getStringValue());
-				if (trace) {
-					System.out.println("StorybookApp.init(): loading... " + dbFile);
-				}
+				trace("StorybookApp.init(): loading... " + dbFile);
 				fileHasBeenOpened = openFile(dbFile);
 			}
 			if (fileHasBeenOpened) {
@@ -146,7 +143,7 @@ public class StorybookApp extends Component {
 			*/
 
 		} catch (Exception e) {
-			System.err.println("StorybookApp.init() Exception:"+e.getMessage());
+			error("StorybookApp.init()",e);
 			ExceptionDialog dlg = new ExceptionDialog(e);
 			SwingUtil.showModalDialog(dlg, null);
 		}
@@ -157,9 +154,7 @@ public class StorybookApp extends Component {
 	 * initialisation de l'internationalisation
 	 */
 	public void initI18N() {
-		if (trace) {
-			System.out.println("StorybookApp.initI18N()");
-		}
+		trace("StorybookApp.initI18N()");
 		String localeStr = PrefUtil.get(PreferenceKey.LANG,
 				SbConstants.DEFAULT_LANG).getStringValue();
 		SbConstants.Language lang = SbConstants.Language.valueOf(localeStr);
@@ -201,9 +196,7 @@ public class StorybookApp extends Component {
 	 * @param mainFrame : mainFrame cible
 	 */
 	public void addMainFrame(MainFrame mainFrame) {
-		if (trace) {
-			System.out.println("StorybookApp.addMainFrame("+mainFrame.getName()+")");
-		}
+		trace("StorybookApp.addMainFrame("+mainFrame.getName()+")");
 		mainFrames.add(mainFrame);
 	}
 
@@ -212,9 +205,7 @@ public class StorybookApp extends Component {
 	 * @param mainFrame
 	 */
 	public void removeMainFrame(MainFrame mainFrame) {
-		if (trace) {
-			System.out.println("StorybookApp.removeMainFrame("+mainFrame.getName()+")");
-		}
+		trace("StorybookApp.removeMainFrame("+mainFrame.getName()+")");
 		mainFrames.remove(mainFrame);
 	}
 
@@ -223,9 +214,7 @@ public class StorybookApp extends Component {
 	 * suppression de mainFrame vide
 	 */
 	public void closeBlank() {
-		if (trace) {
-			System.out.println("StorybookApp.closeBlank()");
-		}
+		trace("StorybookApp.closeBlank()");
 		for (MainFrame mainFrame : mainFrames) {
 			if (mainFrame.isBlank()) {
 				mainFrames.remove(mainFrame);
@@ -259,9 +248,7 @@ public class StorybookApp extends Component {
 	 * - actualisation de la liste des derniers fichiers ouverts
 	 */
 	public void createNewFile() {
-		if (trace) {
-			System.out.println("StorybookApp.createNewFile()");
-		}
+		trace("StorybookApp.createNewFile()");
 		try {
 			NewFileDialog dlg = new NewFileDialog();
 			SwingUtil.showModalDialog(dlg, null);
@@ -290,6 +277,7 @@ public class StorybookApp extends Component {
 
 			setDefaultCursor();
 		} catch (Exception e) {
+			error("StorybookApp.createNewFile()",e);
 		}
 	}
 
@@ -304,9 +292,7 @@ public class StorybookApp extends Component {
 	 * - suppression de l'ancien fichier (désynchronisé de 4 secondes)
 	 */
 	public void renameFile(final MainFrame mainFrame, File file) {
-		if (trace) {
-			System.out.println("StorybookApp.renameFile("+mainFrame.getName()+","+file.getAbsolutePath()+")");
-		}
+		trace("StorybookApp.renameFile("+mainFrame.getName()+","+file.getAbsolutePath()+")");
 		try {
 			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
 			DbFile dbFile = new DbFile(file);
@@ -329,7 +315,7 @@ public class StorybookApp extends Component {
 			timer2.setRepeats(false);
 			timer2.start();
 		} catch (Exception e) {
-			System.err.println("StorybookApp.renameFile("+mainFrame.getName()+","+file.getName()+") Eception :"+e.getMessage());
+			error("StorybookApp.renameFile("+mainFrame.getName()+","+file.getName()+")", e);
 		}
 	}
 
@@ -339,9 +325,7 @@ public class StorybookApp extends Component {
 	 * @return booléen vrai si le fichier est bien ouvert
 	 */
 	public boolean openFile() {
-		if (trace) {
-			System.out.println("StorybookApp.openFile()");
-		}
+		trace("StorybookApp.openFile()");
 		final DbFile dbFile = DocumentUtil.openDocumentDialog();
 		if (dbFile == null) {
 			return false;
@@ -361,9 +345,7 @@ public class StorybookApp extends Component {
 	 *		retourne vrai
 	 */
 	public boolean openFile(final DbFile dbFile) {
-		if (trace) {
-			System.out.println("StorybookApp.openFile("+dbFile.getDbName()+")");
-		}
+		trace("StorybookApp.openFile("+dbFile.getDbName()+")");
 		try {
 			// file doesn't exist
 			if (!dbFile.getFile().exists()) {
@@ -440,9 +422,7 @@ public class StorybookApp extends Component {
 	}
 
 	private boolean checkIfAlreadyOpened(String dbName) {
-		if (trace) {
-			System.out.println("StorybookApp.checkIfAlreadyOpened("+dbName+")");
-		}
+		trace("StorybookApp.checkIfAlreadyOpened("+dbName+")");
 		for (MainFrame mainFrame : mainFrames) {
 			if (mainFrame.isBlank()) {
 				continue;
@@ -456,9 +436,7 @@ public class StorybookApp extends Component {
 	}
 
 	private void updateFilePref(DbFile dbFile) {
-		if (trace) {
-			System.out.println("StorybookApp.updateFilePref("+dbFile.getDbName()+")");
-		}
+		trace("StorybookApp.updateFilePref("+dbFile.getDbName()+")");
 		// save last open directory and file
 		File file = dbFile.getFile();
 		PrefUtil.set(PreferenceKey.LAST_OPEN_DIR, file.getParent());
@@ -481,17 +459,13 @@ public class StorybookApp extends Component {
 	}
 
 	public void clearRecentFiles() {
-		if (trace) {
-			System.out.println("StorybookApp.clearRecentFiles()");
-		}
+		trace("StorybookApp.clearRecentFiles()");
 		PrefUtil.setDbFileList(new ArrayList<DbFile>());
 		reloadMenuBars();
 	}
 
 	public void exit() {
-		if (trace) {
-			System.out.println("StorybookApp.exit()");
-		}
+		trace("StorybookApp.exit()");
 		if (mainFrames.size() > 0) {
 			Preference pref = PrefUtil.get(PreferenceKey.CONFIRM_EXIT, true);
 			if (pref.getBooleanValue()) {
@@ -559,9 +533,7 @@ public class StorybookApp extends Component {
 	}
 
 	public void refresh() {
-		if (trace) {
-			System.out.println("StorybookApp.refresh()");
-		}
+		trace("StorybookApp.refresh()");
 		for (MainFrame mainFrame : mainFrames) {
 			int width = mainFrame.getWidth();
 			int height = mainFrame.getHeight();
@@ -600,9 +572,7 @@ public class StorybookApp extends Component {
 	}
 
 	public void saveAll() {
-		if (trace) {
-			System.out.println("StorybookApp.saveAll()");
-		}
+		trace("StorybookApp.saveAll()");
 		for (MainFrame mainFrame : mainFrames) {
 			mainFrame.getSbActionManager().getActionHandler().handleSave();
 		}
@@ -666,11 +636,23 @@ public class StorybookApp extends Component {
 			}
 			return;
 		}
-
+		StorybookApp app = StorybookApp.getInstance();
+		if (args.length>0) {
+			for (int i=0;i<args.length;i++) {
+				if (args[i].equalsIgnoreCase("--trace")) {
+					app.bTrace=true;
+					app.trace("Storybook execution in trace mode");
+				}
+				if (args[i].equalsIgnoreCase("--hibernate")) {
+					app.bTraceHibernate=true;
+					app.trace("Hibernate in trace mode");
+				}
+			}
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				StorybookApp app = StorybookApp.getInstance();
+				StorybookApp app=StorybookApp.getInstance();
 				app.init();
 			}
 		});
@@ -691,17 +673,46 @@ public class StorybookApp extends Component {
 							randomAccessFile.close();
 							file.delete();
 						} catch (Exception e) {
-							System.err.println("Unable to remove lock file: "
-									+ lockFile);
+							System.err.println("Unable to remove lock file: "+ lockFile+"->"+e.getMessage());
 						}
 					}
 				});
 				return true;
 			}
 		} catch (Exception e) {
-			System.err
-					.println("Unable to create and/or lock file: " + lockFile);
+			System.err.println("Unable to create and/or lock file: " + lockFile+"->"+e.getMessage());
 		}
 		return false;
 	}
+
+	public static void error(String txt, Exception e) {
+		System.err.println(txt+" Exception:"+e.getMessage());
+	}
+
+	public static void error() {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	public static void trace(String msg) {
+		if (bTrace) {
+			System.out.println(msg);
+		}
+	}
+
+	public static boolean getTrace() {
+		return(bTrace);
+	}
+
+	public static boolean getTraceHibernate() {
+		return(bTraceHibernate);
+	}
+
+	public static void logErr(String str, Exception ex) {
+		System.err.println(str+ex.getMessage());
+	}
+
+	public static void logErr(String str, Error er) {
+		System.err.println(str+er.getMessage());
+	}
+
 }

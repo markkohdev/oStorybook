@@ -642,7 +642,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	private void editEntity(PropertyChangeEvent evt) {
 		if (trace) {
-			System.out.println("EntityEditor.initUi()");
+			System.out.println("EntityEditor.editEntity("+evt.toString()+")");
 		}
 		for (SbColumn col : entityHandler.getColumns()) {
 			try {
@@ -770,7 +770,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	private void updateEntityFromInputComponents() {
 		if (trace) {
-			System.out.println("EntityEditor.initUi()");
+			System.out.println("EntityEditor.updateEntityFromInputComponents()");
 		}
 		for (SbColumn col : entityHandler.getColumns()) {
 			try {
@@ -994,7 +994,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	private void verifyInput() {
 		if (trace) {
-			System.out.println("EntityEditor.initUi()");
+			System.out.println("EntityEditor.verifyInput()");
 		}
 		errorState = ErrorState.OK;
 		try {
@@ -1083,7 +1083,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	private void addOrUpdateEntity() {
 		if (trace) {
-			System.out.println("EntityEditor.initUi()");
+			System.out.println("EntityEditor.addOrUpdateEntity()");
 		}
 		try {
 			updateEntityFromInputComponents();
@@ -1151,7 +1151,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (trace) {
-			System.out.println("EntityEditor.initUi()");
+			System.out.println("EntityEditor.actionPerformed()");
 		}
 		String compName = ((Component) e.getSource()).getName();
 		if (ComponentName.BT_OK.check(compName)) {
