@@ -29,7 +29,7 @@ import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.I18N;
 import storybook.toolkit.html.HtmlUtil;
 import storybook.toolkit.langtool.LangToolMain;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

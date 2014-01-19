@@ -29,7 +29,7 @@ import javax.swing.event.CaretListener;
 
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.AbstractPanel;
+import storybook.ui.panel.AbstractPanel;
 
 import net.miginfocom.swing.MigLayout;
 

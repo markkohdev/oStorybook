@@ -23,9 +23,9 @@ import javax.swing.ListCellRenderer;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Person;
-import storybook.view.MainFrame;
-import storybook.view.SbColumnFactory;
-import storybook.view.combo.PersonListCellRenderer;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumnFactory;
+import storybook.ui.combo.PersonListCellRenderer;
 
 /**
  * @author martin

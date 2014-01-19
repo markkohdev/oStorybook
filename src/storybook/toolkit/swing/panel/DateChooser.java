@@ -37,8 +37,8 @@ import storybook.model.EntityUtil;
 import storybook.toolkit.DateUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.IconButton;
-import storybook.view.AbstractPanel;
-import storybook.view.MainFrame;
+import storybook.ui.panel.AbstractPanel;
+import storybook.ui.MainFrame;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;

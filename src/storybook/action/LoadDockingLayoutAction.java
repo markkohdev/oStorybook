@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import storybook.toolkit.DockingWindowUtil;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

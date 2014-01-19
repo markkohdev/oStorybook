@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import storybook.controller.DocumentController;
-import storybook.view.MainFrame;
-import storybook.view.interfaces.IPaintable;
+import storybook.ui.MainFrame;
+import storybook.ui.interfaces.IPaintable;
 
 import net.miginfocom.swing.MigLayout;
 

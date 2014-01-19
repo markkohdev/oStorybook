@@ -23,9 +23,9 @@ import javax.swing.ListCellRenderer;
 import storybook.model.hbn.dao.GenderDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Gender;
-import storybook.view.MainFrame;
-import storybook.view.SbColumnFactory;
-import storybook.view.combo.GenderListCellRenderer;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumnFactory;
+import storybook.ui.combo.GenderListCellRenderer;
 
 /**
  * @author martin

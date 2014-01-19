@@ -21,8 +21,8 @@ package storybook.model.handler;
 import storybook.model.hbn.dao.ItemLinkDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.ItemLink;
-import storybook.view.MainFrame;
-import storybook.view.SbColumnFactory;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumnFactory;
 
 /**
  * @author martin

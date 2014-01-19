@@ -25,7 +25,7 @@ import storybook.toolkit.EnvUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.filefilter.HtmlFileFilter;
 import storybook.toolkit.filefilter.TextFileFilter;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

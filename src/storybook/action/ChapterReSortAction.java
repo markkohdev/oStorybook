@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.Chapter;
 import storybook.toolkit.I18N;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

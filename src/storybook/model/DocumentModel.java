@@ -58,11 +58,11 @@ import storybook.model.hbn.entity.TagLink;
 import storybook.model.state.SceneState;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.ColorUtil;
-import storybook.view.SbView;
-import storybook.view.book.BookPanel;
-import storybook.view.chrono.ChronoPanel;
-import storybook.view.manage.ManagePanel;
-import storybook.view.reading.ReadingPanel;
+import storybook.ui.SbView;
+import storybook.ui.panel.book.BookPanel;
+import storybook.ui.panel.chrono.ChronoPanel;
+import storybook.ui.panel.manage.ManagePanel;
+import storybook.ui.panel.reading.ReadingPanel;
 
 /**
  * @author martin

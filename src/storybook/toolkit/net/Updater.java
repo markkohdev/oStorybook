@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 import storybook.SbConstants;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.net.BrowserDialog;
+import storybook.ui.net.BrowserDialog;
 
 public class Updater {
 

@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.interfaces.IPaintable;
+import storybook.ui.interfaces.IPaintable;
 
 import net.miginfocom.swing.MigLayout;
 

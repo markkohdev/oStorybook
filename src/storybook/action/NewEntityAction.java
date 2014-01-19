@@ -27,7 +27,7 @@ import storybook.model.EntityUtil;
 import storybook.model.handler.AbstractEntityHandler;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.toolkit.I18N;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

@@ -32,13 +32,12 @@ import storybook.StorybookApp;
 import storybook.model.AbstractModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.AbstractEntity;
-import storybook.view.AbstractPanel;
+import storybook.ui.panel.AbstractPanel;
 
 public abstract class AbstractController implements PropertyChangeListener {
 
 	private final List<Component> attachedViews;
 	private final ArrayList<AbstractModel> attachedModels;
-	private boolean trace = false;
 
 	public AbstractController() {
 		// attachedViews = new ArrayList<AbstractPanel>();
@@ -60,14 +59,11 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	public void attachView(Component view) {
-		if (trace) {
-			System.out.println("AbstractController.attachView(): view cl:"
-				+ view.getName());
-		}
+		StorybookApp.trace("AbstractController.attachView(" + view.getName()+")");
 		synchronized (attachedViews) {
 			attachedViews.add(view);
 		}
-		if (trace) {
+		if (StorybookApp.getTrace()) {
 			printNumberOfAttachedViews();
 			printAttachedViews();
 		}
@@ -81,16 +77,12 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	public void printNumberOfAttachedViews() {
-		if (trace) {
-			System.out.println("AbstractController.printNumberOfAttachedViews():"
-				+ " attached views: " + attachedViews.size());
-		}
+		StorybookApp.trace("AbstractController.printNumberOfAttachedViews():"
+				+ " attached views size: " + attachedViews.size());
 	}
 
 	public void printAttachedViews() {
-		if (trace) {
-			System.out.println("printAttachedViews()");
-		}
+		StorybookApp.trace("AbstractController.printAttachedViews()");
 	}
 
 	public String getInfoAttachedViews() {
@@ -117,7 +109,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	public void printAttachedModels() {
-		if (trace) {
+		if (StorybookApp.getTrace()) {
 			System.out.println("AbstractController.printAttachedModels(): ");
 			for (AbstractModel model : attachedModels) {
 				System.out.println("AbstractController.printAttachedModels():"
@@ -158,7 +150,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	protected synchronized void setModelProperty(String propertyName, Object newValue) {
-		if (trace) {
+		if (StorybookApp.getTrace()) {
 			System.out.println("AbstractControler.setModelProperty("
 				+ propertyName.toString() + "," + newValue.toString() + ")");
 		}
@@ -190,7 +182,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	protected synchronized void setModelProperty(String propertyName) {
-		if (trace) {
+		if (StorybookApp.getTrace()) {
 			System.out.println("AbstractController.setModelProperty("
 				+ propertyName.toString() + ")");
 		}

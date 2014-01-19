@@ -27,7 +27,7 @@ import storybook.model.stringcategory.CityCategory;
 import storybook.model.stringcategory.CountryCategory;
 import storybook.model.stringcategory.ItemCategory;
 import storybook.model.stringcategory.TagCategory;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 import com.sun.jaf.ui.ActionManager;
 

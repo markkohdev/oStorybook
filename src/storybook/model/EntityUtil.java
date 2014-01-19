@@ -125,8 +125,8 @@ import storybook.toolkit.TextUtil;
 import storybook.toolkit.html.HtmlUtil;
 import storybook.toolkit.swing.AutoCompleteComboBox;
 import storybook.toolkit.swing.FontUtil;
-import storybook.view.MainFrame;
-import storybook.view.SbColumn;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumn;
 
 /**
  * @author martin

@@ -23,9 +23,9 @@ import javax.swing.ListCellRenderer;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Scene;
-import storybook.view.MainFrame;
-import storybook.view.SbColumnFactory;
-import storybook.view.combo.SceneListCellRenderer;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumnFactory;
+import storybook.ui.combo.SceneListCellRenderer;
 
 /**
  * @author martin

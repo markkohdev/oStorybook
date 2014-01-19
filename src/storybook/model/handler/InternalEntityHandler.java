@@ -21,8 +21,8 @@ package storybook.model.handler;
 import storybook.model.hbn.dao.InternalDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Internal;
-import storybook.view.MainFrame;
-import storybook.view.SbColumnFactory;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumnFactory;
 
 /**
  * @author martin

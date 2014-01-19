@@ -1,0 +1,41 @@
+oStorybook
+--------------------------------------------------------------------------------
+
+Versions :
+4.9.11  : favdb, 19/01/2014
+- essai pour forcer le panneau editor pour le cas où il apparaît vide
+- correction du action.xml (internationalisation du menu Help)
+- correction du dialogue d'options (fenêtre trop petite),
+  cadrage à gauche et wrap de chaque élément
+- restructuration du code (partie interface utilisateur)
+- introduction de la nouvelle interface utilisateur
+  (non fonctionnelle les actions ne sont pas opérationnelles)
+- ajout du paramètre d'exécution "--newUI" pour assurer la
+  compatibilité 4.x.x et 5.x.x et permettre le test de la nouvelle interface
+4.9.10  : favdb, 16/01/2014
+- petites correction du code
+- ajout des fonctions trace et logErr centralisées
+- quelques traduction pour le fançais
+- adaptation de la détection du changement de version
+- internationalisation du About
+4.9.9   : favdb
+4.0.9   : Martin Mustun, 13/05/2013
+3.1.12  : Martin Mustun
+3.0.0   : Martin Mustun, 13/09/2011
+2.1.17  : Martin Mustun, 19/08/2011
+2.1.15  : Martin Mustun, 20/12/2010
+2.1.12  : Martin Mustun, 02/02/2010
+2.1.11  : Martin Mustun,
+2.1.6   : Martin Mustun, 30/10/2008
+2.0.10  : Martin Mustun, 11/01/2009
+
+Next version:
+5.0.1
+- correction du action.xml (internationalisation du menu Help)
+- correction du dialogue d'options (fenêtre trop petite),
+  cadrage à gauche et wrap de chaque élément
+- restructuration du code (partie interface utilisateur)
+- introduction de la nouvelle interface utilisateur
+  (non fonctionnelle les actions ne sont pas opérationnelles)
+- ajout du paramètre d'exécution "--newUI" pour assurer la
+  compatibilité 4.x.x et 5.x.x et permettre le test de la nouvelle interface

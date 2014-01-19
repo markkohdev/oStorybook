@@ -20,7 +20,7 @@ package storybook.toolkit;
 
 import java.io.File;
 
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

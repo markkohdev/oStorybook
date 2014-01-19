@@ -43,17 +43,17 @@ import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.AbstractPanel;
-import storybook.view.AbstractScenePanel;
-import storybook.view.MainFrame;
-import storybook.view.book.BookPanel;
-import storybook.view.book.BookScenePanel;
-import storybook.view.chrono.ChronoPanel;
-import storybook.view.chrono.ChronoScenePanel;
-import storybook.view.chrono.StrandDateLabel;
-import storybook.view.manage.ChapterPanel;
-import storybook.view.manage.ManagePanel;
-import storybook.view.manage.dnd.ScenePanel;
+import storybook.ui.panel.AbstractPanel;
+import storybook.ui.panel.AbstractScenePanel;
+import storybook.ui.MainFrame;
+import storybook.ui.panel.book.BookPanel;
+import storybook.ui.panel.book.BookScenePanel;
+import storybook.ui.panel.chrono.ChronoPanel;
+import storybook.ui.panel.chrono.ChronoScenePanel;
+import storybook.ui.panel.chrono.StrandDateLabel;
+import storybook.ui.panel.manage.ChapterPanel;
+import storybook.ui.panel.manage.ManagePanel;
+import storybook.ui.panel.manage.dnd.ScenePanel;
 
 /**
  * Provides tools around the views.

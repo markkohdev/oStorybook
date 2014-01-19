@@ -24,8 +24,8 @@ import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Part;
 import storybook.toolkit.I18N;
-import storybook.view.MainFrame;
-import storybook.view.SbColumnFactory;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumnFactory;
 
 /**
  * @author martin

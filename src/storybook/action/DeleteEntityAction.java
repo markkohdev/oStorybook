@@ -34,9 +34,9 @@ import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Part;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.MainFrame;
-import storybook.view.dialog.ConfirmDeletionDialog;
-import storybook.view.edit.EntityEditor;
+import storybook.ui.MainFrame;
+import storybook.ui.dialog.ConfirmDeletionDialog;
+import storybook.ui.edit.EntityEditor;
 
 /**
  * @author martin

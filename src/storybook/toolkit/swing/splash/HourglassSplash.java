@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.interfaces.IPaintable;
+import storybook.ui.interfaces.IPaintable;
 
 import net.miginfocom.swing.MigLayout;
 

@@ -24,8 +24,8 @@ import javax.swing.ListCellRenderer;
 
 import storybook.model.hbn.dao.SbGenericDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
-import storybook.view.MainFrame;
-import storybook.view.SbColumn;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumn;
 
 /**
  * @author martin

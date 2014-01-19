@@ -66,25 +66,25 @@ import storybook.toolkit.I18N;
 import storybook.toolkit.net.NetUtil;
 import storybook.toolkit.net.Updater;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.MainFrame;
-import storybook.view.dialog.AboutDialog;
-import storybook.view.dialog.CreateChaptersDialog;
-import storybook.view.dialog.BookPropertiesDialog;
-import storybook.view.dialog.FoiDialog;
-import storybook.view.dialog.ManageLayoutsDialog;
-import storybook.view.dialog.PreferencesDialog;
-import storybook.view.dialog.WaitDialog;
-import storybook.view.dialog.file.RenameFileDialog;
-import storybook.view.dialog.file.SaveAsFileDialog;
-import storybook.view.dialog.rename.RenameCityDialog;
-import storybook.view.dialog.rename.RenameCountryDialog;
-import storybook.view.dialog.rename.RenameItemCategoryDialog;
-import storybook.view.dialog.rename.RenameTagCategoryDialog;
-import storybook.view.jasperreports.ExportPrintDialog;
+import storybook.ui.MainFrame;
+import storybook.ui.dialog.AboutDialog;
+import storybook.ui.dialog.CreateChaptersDialog;
+import storybook.ui.dialog.BookPropertiesDialog;
+import storybook.ui.dialog.FoiDialog;
+import storybook.ui.dialog.ManageLayoutsDialog;
+import storybook.ui.dialog.PreferencesDialog;
+import storybook.ui.dialog.WaitDialog;
+import storybook.ui.dialog.file.RenameFileDialog;
+import storybook.ui.dialog.file.SaveAsFileDialog;
+import storybook.ui.dialog.rename.RenameCityDialog;
+import storybook.ui.dialog.rename.RenameCountryDialog;
+import storybook.ui.dialog.rename.RenameItemCategoryDialog;
+import storybook.ui.dialog.rename.RenameTagCategoryDialog;
+import storybook.ui.jasperreports.ExportPrintDialog;
 
 import com.sun.jaf.ui.ActionManager;
 import storybook.export.BookExporter;
-import storybook.view.SbView;
+import storybook.ui.SbView;
 
 /**
  * @author martin

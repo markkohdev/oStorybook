@@ -15,7 +15,7 @@
  */
 package storybook.export;
 
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  *

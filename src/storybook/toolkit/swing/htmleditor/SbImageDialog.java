@@ -31,7 +31,7 @@ import javax.swing.JTextField;
 
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.IconButton;
-import storybook.view.dialog.AbstractDialog;
+import storybook.ui.dialog.AbstractDialog;
 
 import net.miginfocom.swing.MigLayout;
 

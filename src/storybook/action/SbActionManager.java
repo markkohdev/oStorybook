@@ -54,10 +54,12 @@ import storybook.toolkit.I18N;
 import storybook.toolkit.IOUtil;
 import storybook.toolkit.PrefUtil;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 import com.sun.jaf.ui.ActionManager;
 import com.sun.jaf.ui.UIFactory;
+import storybook.ui.MainMenu;
+import storybook.ui.MainToolBar;
 
 /**
  * @author martin
@@ -233,7 +235,7 @@ public class SbActionManager implements PropertyChangeListener {
 		actionManager.registerCallback("preferences-command", actionHandler, "handlePreferences");
 
 		// help
-		actionManager.registerCallback("go-pro-command", actionHandler, "handleGoPro");
+		//actionManager.registerCallback("go-pro-command", actionHandler, "handleGoPro");
 		actionManager.registerCallback("report-bug-command", actionHandler, "handleReportBug");
 		actionManager.registerCallback("doc-command", actionHandler, "handleDoc");
 		actionManager.registerCallback("faq-command", actionHandler, "handleFAQ");
@@ -252,29 +254,37 @@ public class SbActionManager implements PropertyChangeListener {
 		StorybookApp.trace("SbActionManager.initUiFactory()");
 		UIFactory.setActionManager(ActionManager.getInstance());
 		UIFactory factory = UIFactory.getInstance();
-		JMenuBar menubar = factory.createMenuBar("main-menu");
-		menubar.addPropertyChangeListener(this);
-		if (menubar != null) {
-			reloadRecentMenu(menubar);
-			reloadPartMenu(menubar);
-			reloadWindowMenu(menubar);
-			JMenuBar oldMenubar = mainFrame.getJMenuBar();
-			if (oldMenubar != null) {
-				mainFrame.remove(oldMenubar);
+		if (!StorybookApp.isNewUi()) {
+			JMenuBar menubar = factory.createMenuBar("main-menu");
+			menubar.addPropertyChangeListener(this);
+			if (menubar != null) {
+				reloadRecentMenu(menubar);
+				reloadPartMenu(menubar);
+				reloadWindowMenu(menubar);
+				JMenuBar oldMenubar = mainFrame.getJMenuBar();
+				if (oldMenubar != null) {
+					mainFrame.remove(oldMenubar);
+				}
+				Preference pref = PrefUtil
+					.get(PreferenceKey.TRANSLATOR_MODE, false);
+				if (pref != null && pref.getBooleanValue()) {
+					JMenuItem item = new JMenuItem(new RunAttesoroAction());
+					menubar.add(item);
+				}
+				mainFrame.setJMenuBar(menubar);
 			}
-			Preference pref = PrefUtil
-				.get(PreferenceKey.TRANSLATOR_MODE, false);
-			if (pref != null && pref.getBooleanValue()) {
-				JMenuItem item = new JMenuItem(new RunAttesoroAction());
-				menubar.add(item);
+			JToolBar toolBar = factory.createToolBar("main-toolbar");
+			if (toolBar != null) {
+				toolBar.setName(SbConstants.ComponentName.TB_MAIN.toString());
+				mainFrame.setMainToolBar(toolBar);
 			}
-			mainFrame.setJMenuBar(menubar);
+		} else {
+			MainMenu newMainMenu=new MainMenu();
+			mainFrame.setJMenuBar(newMainMenu.getJMenuBar());
+			MainToolBar newToolBar=new MainToolBar();
+			mainFrame.setMainToolBar(newToolBar.getToolBar());
 		}
-		JToolBar toolBar = factory.createToolBar("main-toolbar");
-		if (toolBar != null) {
-			toolBar.setName(SbConstants.ComponentName.TB_MAIN.toString());
-			mainFrame.setMainToolBar(toolBar);
-		}
+
 		mainFrame.invalidate();
 		mainFrame.validate();
 		// old
@@ -404,7 +414,7 @@ public class SbActionManager implements PropertyChangeListener {
 			"parts-menu-command", "charts-menu-command",
 			"tools-menu-command", "langtool-command",
 			"window-menu-command", "preferences-command", "help-menu",
-			"go-pro-command", "report-bug-command", "doc-command", "faq-command",
+			/*"go-pro-command",*/ "report-bug-command", "doc-command", "faq-command",
 			"homepage-command", "facebook-command", "check-update-command", "about-command"};
 		List<String> list = Arrays.asList(actionNames);
 		@SuppressWarnings("unchecked")

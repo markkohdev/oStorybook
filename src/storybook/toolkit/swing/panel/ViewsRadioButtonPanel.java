@@ -25,8 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 import storybook.toolkit.I18N;
-import storybook.view.AbstractPanel;
-import storybook.view.MainFrame;
+import storybook.ui.panel.AbstractPanel;
+import storybook.ui.MainFrame;
 
 import net.miginfocom.swing.MigLayout;
 

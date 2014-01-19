@@ -33,7 +33,7 @@ import storybook.model.hbn.dao.InternalDAOImpl;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Preference;
 import storybook.toolkit.filefilter.H2FileFilter;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

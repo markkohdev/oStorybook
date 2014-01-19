@@ -22,7 +22,7 @@ import java.awt.Frame;
 
 import javax.swing.JDialog;
 
-import storybook.view.interfaces.IPaintable;
+import storybook.ui.interfaces.IPaintable;
 
 import net.miginfocom.swing.MigLayout;
 

@@ -9,5 +9,5 @@ rem echo dp0: %~dp0
 
 pushd %CD%
 cd %~dp0
-java -Dfile.encoding=UTF-8 -XX:MaxPermSize=256m -Xmx300m -jar Storybook.jar %1 %2
+java -Dfile.encoding=UTF-8 -XX:MaxPermSize=256m -Xmx300m -jar oStorybook.jar %1 %2
 popd

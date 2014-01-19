@@ -27,9 +27,9 @@ import storybook.model.DocumentModel;
 import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Strand;
-import storybook.view.MainFrame;
-import storybook.view.SbColumnFactory;
-import storybook.view.combo.StrandListCellRenderer;
+import storybook.ui.MainFrame;
+import storybook.ui.table.SbColumnFactory;
+import storybook.ui.combo.StrandListCellRenderer;
 
 /**
  * @author martin

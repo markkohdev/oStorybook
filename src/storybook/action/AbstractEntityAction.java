@@ -23,7 +23,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 import storybook.model.hbn.entity.AbstractEntity;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import storybook.model.hbn.entity.Scene;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  *

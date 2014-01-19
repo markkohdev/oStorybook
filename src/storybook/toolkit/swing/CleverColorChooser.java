@@ -40,7 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
-import storybook.view.interfaces.IRefreshable;
+import storybook.ui.interfaces.IRefreshable;
 
 import net.miginfocom.swing.MigLayout;
 

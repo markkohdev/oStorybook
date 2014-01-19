@@ -625,7 +625,7 @@
 			<empty />
 			<action idref="preferences-command" />
 		</action-list>
-		<action-list id="help-menu" name="Help" mnemonic="H"
+		<action-list id="help-menu" name="<i18n>msg.menu.help</i18n>" mnemonic="H"
 			desc="Help Operations">
 			<action idref="go-pro-command" />
 			<!-- <action idref="report-bug-command" /> -->

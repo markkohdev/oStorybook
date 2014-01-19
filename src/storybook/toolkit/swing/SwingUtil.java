@@ -95,7 +95,7 @@ import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.PrefUtil;
 import storybook.toolkit.swing.undo.UndoableTextArea;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 public class SwingUtil {
 

@@ -53,10 +53,10 @@ import storybook.toolkit.PrefUtil;
 import storybook.toolkit.net.Updater;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.toolkit.swing.splash.HourglassSplash;
-import storybook.view.MainFrame;
-import storybook.view.dialog.ExceptionDialog;
-import storybook.view.dialog.FirstStartDialog;
-import storybook.view.dialog.file.NewFileDialog;
+import storybook.ui.MainFrame;
+import storybook.ui.dialog.ExceptionDialog;
+import storybook.ui.dialog.FirstStartDialog;
+import storybook.ui.dialog.file.NewFileDialog;
 
 /**
  * Classe principale de l'application de type Component
@@ -67,6 +67,7 @@ public class StorybookApp extends Component {
 
 	private static boolean bTrace=false;
 	private static boolean bTraceHibernate=false;
+	private static boolean bNewUi=false;
 
 	private static StorybookApp instance;
 
@@ -647,6 +648,10 @@ public class StorybookApp extends Component {
 					app.bTraceHibernate=true;
 					app.trace("Hibernate in trace mode");
 				}
+				if (args[i].equalsIgnoreCase("--newUI")) {
+					app.bNewUi=true;
+					app.trace("Application with new UI");
+				}
 			}
 		}
 		SwingUtilities.invokeLater(new Runnable() {
@@ -713,6 +718,10 @@ public class StorybookApp extends Component {
 
 	public static void logErr(String str, Error er) {
 		System.err.println(str+er.getMessage());
+	}
+
+	public static boolean isNewUi() {
+		return(bNewUi);
 	}
 
 }

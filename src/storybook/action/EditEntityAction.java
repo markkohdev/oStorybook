@@ -26,7 +26,7 @@ import storybook.StorybookApp;
 import storybook.controller.DocumentController;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.toolkit.I18N;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

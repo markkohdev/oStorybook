@@ -27,7 +27,7 @@ import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.ViewUtil;
-import storybook.view.AbstractPanel;
+import storybook.ui.panel.AbstractPanel;
 
 /**
  * @author martin

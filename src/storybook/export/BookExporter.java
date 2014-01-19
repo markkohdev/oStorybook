@@ -18,7 +18,7 @@ import storybook.toolkit.I18N;
 import storybook.toolkit.LangUtil;
 import storybook.toolkit.html.HtmlSelection;
 import storybook.toolkit.html.HtmlUtil;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.util.ArrayList;

@@ -39,10 +39,10 @@ import storybook.SbConstants.PreferenceKey;
 import storybook.SbConstants.ViewName;
 import storybook.controller.DocumentController;
 import storybook.model.hbn.entity.Preference;
-import storybook.view.AbstractPanel;
-import storybook.view.MainFrame;
-import storybook.view.SbView;
-import storybook.view.ViewFactory;
+import storybook.ui.panel.AbstractPanel;
+import storybook.ui.MainFrame;
+import storybook.ui.SbView;
+import storybook.ui.ViewFactory;
 
 /**
  * @author martin

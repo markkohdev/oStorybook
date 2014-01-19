@@ -18,6 +18,7 @@
 package storybook.controller;
 
 import java.util.ArrayList;
+import storybook.StorybookApp;
 
 import storybook.model.DbFile;
 import storybook.model.hbn.entity.AbstractEntity;
@@ -37,15 +38,14 @@ import storybook.model.hbn.entity.Tag;
 import storybook.model.hbn.entity.TagLink;
 import storybook.model.state.SceneState;
 import storybook.model.state.SceneStateModel;
-import storybook.view.SbView;
+import storybook.ui.SbView;
 
 /**
  * @author martin
  *
  */
 public class DocumentController extends AbstractController {
-	private boolean trace=true;
-
+	
 	public enum CommonProps {
 
 		REFRESH("Refresh"),
@@ -518,10 +518,7 @@ public class DocumentController extends AbstractController {
 	};
 
 	public void updateEntity(AbstractEntity entity) {
-		if (trace) {
-			String n=entity.getClass().getName();
-			System.out.println("DocumentController.updateEntity("+n+")");
-		}
+		StorybookApp.trace("DocumentController.updateEntity("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				updateChapter((Chapter) entity);
@@ -581,11 +578,12 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			System.err.println("DocumentController.updateEntity(" + entity.getAbbr() + ")");
+			StorybookApp.logErr("DocumentController.updateEntity(" + entity.getAbbr() + ")",e);
 		}
 	}
 
 	public void deleteEntity(AbstractEntity entity) {
+		StorybookApp.trace("DocumentController.deleteEntity("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				deleteChapter((Chapter) entity);
@@ -645,12 +643,13 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			System.err.println("DocumentController.deleteEntity(" + entity.getClass().getName()
-				+ ") Exception:"+e.getMessage());
+			StorybookApp.logErr("DocumentController.deleteEntity(" + entity.getClass().getName()
+				+ ") Exception:",e);
 		}
 	}
 
 	public void newEntity(AbstractEntity entity) {
+		StorybookApp.trace("DocumentController.newEntity("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				newChapter((Chapter) entity);
@@ -710,16 +709,13 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			System.err.println("DocumentController.newEntity(" + entity.getClass().getName()
-				+ ") Exception:"+e.getMessage());
+			StorybookApp.logErr("DocumentController.newEntity(" + entity.getClass().getName()
+				+ ") Exception:",e);
 		}
 	}
 
 	public void setEntityToEdit(AbstractEntity entity) {
-		if (trace) {
-			String n=entity.getClass().getName();
-			System.out.println("DocumentController.setEntityToEdit("+n+")");
-		}
+		StorybookApp.trace("DocumentController.setEntityToEdit("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				setChapterToEdit((Chapter) entity);
@@ -779,8 +775,8 @@ public class DocumentController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			System.err.println("DocumentController.setEntityToEdit(" + entity.getClass().getName()
-				+ ") Exception:"+e.getMessage());
+			StorybookApp.logErr("DocumentController.setEntityToEdit(" + entity.getClass().getName()
+				+ ") Exception:",e);
 		}
 	}
 

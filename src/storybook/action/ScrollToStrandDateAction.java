@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import storybook.model.hbn.entity.Strand;
 import storybook.toolkit.I18N;
 import storybook.toolkit.ViewUtil;
-import storybook.view.AbstractPanel;
+import storybook.ui.panel.AbstractPanel;
 
 /**
  * @author martin

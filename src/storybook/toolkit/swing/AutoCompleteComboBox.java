@@ -28,7 +28,7 @@ import javax.swing.JComboBox;
 import net.miginfocom.swing.MigLayout;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import storybook.view.AbstractPanel;
+import storybook.ui.panel.AbstractPanel;
 
 /**
  * @author martin

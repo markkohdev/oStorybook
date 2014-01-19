@@ -70,7 +70,7 @@ public class SbConstants {
 
 	public enum Storybook {
 		PRODUCT_NAME("oStorybook"),
-		PRODUCT_VERSION("4.9.10"),
+		PRODUCT_VERSION("5.0.1"),
 		PRODUCT_FULL_NAME(PRODUCT_NAME + " " + PRODUCT_VERSION),
 		PRODUCT_RELEASE_DATE("2014-01-17"),
 		COPYRIGHT_YEAR("2012-2013"),

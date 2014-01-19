@@ -26,7 +26,7 @@ import java.io.InputStream;
 import storybook.StorybookApp;
 
 import storybook.model.hbn.entity.AbstractEntity;
-import storybook.view.MainFrame;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin

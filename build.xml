@@ -10,7 +10,7 @@
 <project name="Storybook" default="default" basedir=".">
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
-	<property name="sb.version" value="4.9.10" />
+	<property name="sb.version" value="4.9.11" />
 	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
     <!--
 
@@ -151,9 +151,9 @@ Description: Writing a book,novelist authoring.
 	</target>
 	<target name="distrib_lang">
 		<property name="langue" value="es" />
-		<zip destfile="language_all.zip">
-			<zipfileset dir="dicts.others" includes="dicts/**" />
-			<zipfileset dir="languagetool.others/" includes="languagetool/**" />
+		<zip destfile="${sb.distdir}/language_all.zip">
+			<zipfileset dir="dicts.all" includes="dicts/**" />
+			<zipfileset dir="languagetool.all/" includes="languagetool/**" />
 			<zipfileset dir="." includes="INSTALL_LANG.txt" />
 		</zip>
 	</target>
