@@ -33,6 +33,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import storybook.SbConstants;
+import storybook.toolkit.html.HtmlUtil;
 
 public abstract class AbstractExporter {
 
@@ -52,7 +53,40 @@ public abstract class AbstractExporter {
 		this.fileName = "";
 	}
 
-	public boolean exportToFile() {
+	public boolean exportToTxtFile() {
+		Internal internal = DocumentUtil.restoreInternal(this.mainFrame,
+			SbConstants.InternalKey.EXPORT_DIRECTORY,
+			EnvUtil.getDefaultExportDir(this.mainFrame));
+		File file1 = new File(internal.getStringValue());
+		JFileChooser chooser = new JFileChooser(file1);
+		chooser.setApproveButtonText(I18N.getMsg("msg.common.export"));
+		chooser.setSelectedFile(new File(getFileName()));
+		chooser.setFileFilter(new TextFileFilter());
+		int i = chooser.showOpenDialog(this.mainFrame);
+		if (i == 1) {
+			return false;
+		}
+		File outFile = chooser.getSelectedFile();
+		if (!outFile.getName().endsWith(".txt")) {
+			outFile = new File(outFile.getPath() + ".txt");
+		}
+		StringBuffer buffer = getContent();
+		try {
+			try (BufferedWriter outStream = new BufferedWriter(new FileWriter(outFile))) {
+				String str = buffer.toString();
+				outStream.write(HtmlUtil.htmlToText(str,true));
+			}
+		} catch (IOException e) {
+			return false;
+		}
+		JOptionPane.showMessageDialog(this.mainFrame,
+			I18N.getMsg("msg.common.export.success")
+			+ "\n"
+			+ outFile.getAbsolutePath(),
+			I18N.getMsg("msg.common.export"), 1);
+		return true;
+	}
+	public boolean exportToHtmlFile() {
 		boolean bool = DocumentUtil.isUseHtmlScenes(this.mainFrame);
 		if (this.onlyHtmlExport) {
 			bool = true;

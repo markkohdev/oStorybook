@@ -2,6 +2,12 @@ oStorybook
 --------------------------------------------------------------------------------
 
 Versions :
+4.9.12 : favdb 31/01/2014
+- nouvel empaquetage pour distributions Linux avec Makeself
+- restauration des fonctions export (avec séparation du code entre
+  TXT et HTML), reintroduction des JasperReports
+- restructuration du HtmlUtil pour uniformisation de l'export HTML
+- préparation en vue de la modification du dialogue pour l'export
 4.9.11  : favdb, 19/01/2014
 - essai pour forcer le panneau editor pour le cas où il apparaît vide
 - correction du action.xml (internationalisation du menu Help)
@@ -31,11 +37,3 @@ Versions :
 
 Next version:
 5.0.1
-- correction du action.xml (internationalisation du menu Help)
-- correction du dialogue d'options (fenêtre trop petite),
-  cadrage à gauche et wrap de chaque élément
-- restructuration du code (partie interface utilisateur)
-- introduction de la nouvelle interface utilisateur
-  (non fonctionnelle les actions ne sont pas opérationnelles)
-- ajout du paramètre d'exécution "--newUI" pour assurer la
-  compatibilité 4.x.x et 5.x.x et permettre le test de la nouvelle interface

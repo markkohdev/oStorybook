@@ -112,8 +112,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 		if (StorybookApp.getTrace()) {
 			System.out.println("AbstractController.printAttachedModels(): ");
 			for (AbstractModel model : attachedModels) {
-				System.out.println("AbstractController.printAttachedModels():"
-					+ " model:" + model);
+				System.out.println("AbstractController.printAttachedModels():" + " model:" + model);
 			}
 		}
 	}
@@ -150,22 +149,17 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	protected synchronized void setModelProperty(String propertyName, Object newValue) {
-		if (StorybookApp.getTrace()) {
-			System.out.println("AbstractControler.setModelProperty("
-				+ propertyName.toString() + "," + newValue.toString() + ")");
-		}
+		StorybookApp.trace("AbstractControler.setModelProperty(" + propertyName.toString() + "," + newValue.toString() + ")");
 		for (AbstractModel model : attachedModels) {
 			Method method = null;
 			Class<?>[] classes = null;
 			try {
 				if (newValue instanceof AbstractEntity) {
-					classes = new Class[]{EntityUtil
-						.getEntityClass((AbstractEntity) newValue)};
+					classes = new Class[]{EntityUtil.getEntityClass((AbstractEntity) newValue)};
 				} else if (newValue != null) {
 					classes = new Class[]{newValue.getClass()};
 				}
-				method = model.getClass().getMethod("set" + propertyName,
-					classes);
+				method = model.getClass().getMethod("set" + propertyName, classes);
 				if (newValue != null) {
 					method.invoke(model, newValue);
 				} else {
@@ -182,14 +176,10 @@ public abstract class AbstractController implements PropertyChangeListener {
 	}
 
 	protected synchronized void setModelProperty(String propertyName) {
-		if (StorybookApp.getTrace()) {
-			System.out.println("AbstractController.setModelProperty("
-				+ propertyName.toString() + ")");
-		}
+		StorybookApp.trace("AbstractController.setModelProperty(" + propertyName.toString() + ")");
 		for (AbstractModel model : attachedModels) {
 			try {
-				Method method = model.getClass()
-					.getMethod("set" + propertyName);
+				Method method = model.getClass().getMethod("set" + propertyName);
 				method.invoke(model);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException ex) {

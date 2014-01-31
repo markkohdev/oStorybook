@@ -40,7 +40,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants;
-import storybook.StorybookApp;
 import storybook.SbConstants.InternalKey;
 import storybook.SbConstants.ViewName;
 import storybook.controller.DocumentController;
@@ -239,42 +238,7 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 		exp.setExportTableOfContentsLink(true);
 		exp.setStrandIdsToExport(strandPanel.getStrandIds());
 		buf.append(exp.getContent());
-
-		// old
-//		for (Chapter chapter : chapters) {
-//			session = model.beginTransaction();
-//			dao = new ChapterDAOImpl(session);
-//			List<Scene> scenes = dao.findScenes(chapter);
-//			model.commit();
-//			buf.append("<h2><a name='" + chapter.getChapternoStr() + "'>");
-//			String no = chapter.getChapternoStr();
-//			buf.append(no + ": " + chapter.getTitle());
-//			buf.append("</a></h2>\n");
-//			for (Scene scene : scenes) {
-//				long strandId = scene.getStrand().getId();
-//				if (!strandPanel.getStrandIds().contains(strandId)) {
-//					continue;
-//				}
-//				buf.append("<p style='margin-top:10px;margin-bottom:4px;'>");
-//				buf.append("<span style='background-color:");
-//				Strand strand = scene.getStrand();
-//				String clr = strand.getHTMLColor();
-//				buf.append(clr + ";'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;");
-//				buf.append("<span><b>" + scene.getTitle() + "</b></span> \n");
-//				buf.append("</p>\n");
-//				buf.append("<p>\n");
-//				if (DocumentUtil.isUseHtmlScenes(mainFrame)) {
-//					buf.append(scene.getText());
-//				} else {
-//					buf.append(HtmlUtil.textToHTML(scene.getText()));
-//				}
-//				buf.append("</p>");
-//			}
-//			buf.append("<p style='font-size:8px;text-align:left;'><a href='#toc'>"
-//					+ I18N.getMsg("msg.table.of.contents") + "</a></p>");
-//		}
-
-		buf.append("<p>&nbsp;</body></html>\n");
+		buf.append("<p>&nbsp;</p></body></html>\n");
 
 		final int pos = scroller.getVerticalScrollBar().getValue();
 		tpText.setText(buf.toString());

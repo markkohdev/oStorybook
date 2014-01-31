@@ -10,7 +10,7 @@
 <project name="Storybook" default="default" basedir=".">
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
-	<property name="sb.version" value="4.9.11" />
+	<property name="sb.version" value="4.9.12" />
 	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
     <!--
 
@@ -105,7 +105,15 @@
 		<copy file="oStorybook-icon.ico" todir="${dist.dir}" />
 		<copy file="oStorybook-icon.png" todir="${dist.dir}" />
 		<copy file="oStorybook.bat" todir="${dist.dir}" />
-		<copy file="oStorybook.sh" todir="${dist.dir}" />
+		<copy file="deployment/linux/setup.sh" todir="${dist.dir}" />
+		<chmod file="${dist.dir}/setup.sh" perm="755" />
+		<copy file="deployment/linux/postinstall.sh" todir="${dist.dir}" />
+		<chmod file="${dist.dir}/postinstall.sh" perm="755" />
+		<mkdir dir="${dist.dir}/xdg" />
+		<copy todir="${dist.dir}/xdg" flatten="false">
+			<fileset dir="deployment/linux/xdg" />
+		</copy>
+
 <!--
 		<echo>Récupération du fichier de configuration Hibernate dans le classpath</echo>
 		<copy file="hibernate.cfg.xml" todir="${dist.dir}" />
@@ -122,7 +130,19 @@
 		<mkdir dir="${sb.distdir}" />
 		<zip destfile="${sb.distdir}/oStorybook-${sb.version}.zip" basedir="${basedir}/dist" />
 	</target>
+	<target name="distrib-linux" depends="jar" >
+		<mkdir dir="${sb.distdir}" />
+		<exec executable="sh">
+			<arg value="deployment/linux/makeself.sh" />
+			<arg value="${basedir}/dist" />
+			<arg value="${sb.distdir}/oStorybook-${sb.version}-linux.bin" />
+			<arg value="oStorybook" />
+			<arg value="./setup.sh" />
+		</exec>
+	</target>
 	<target name="distrib-deb" >
+		<echo>Warning !!! this target is not functional</echo>
+		<!--
 		<property name="deb" value="${sb.distdir}/debian-package" />
 		<mkdir dir="${deb}" />
 		<mkdir dir="${deb}/DEBIAN" />
@@ -132,11 +152,11 @@ Version: ${sb.version}
 Section: base
 Priority: optional
 Architecture: all
-Installed-Size: 49100
+Installed-Size: 69000
 Depends:
 Maintainer: favdb &lt;favdb@sourceforge.net&gt;
 Homepage: http://ostorybook.sourceforge.net
-Description: Writing a book,novelist authoring.
+Description: Writing a book, novelist authoring.
 </echo>
 		<mkdir dir="${deb}/opt" />
 		<mkdir dir="${deb}/opt/oStorybook" />
@@ -144,10 +164,11 @@ Description: Writing a book,novelist authoring.
 			<fileset dir="${basedir}/dist" />
 		</copy>
 		<exec executable="dpkg-deb">
-			<arg value="--build" />
+			<arg value="- - build" />
 			<arg value="${deb}" />
 			<arg value="${sb.distdir}/oStorybook-${sb.version}.deb" />
 		</exec>
+		-->
 	</target>
 	<target name="distrib_lang">
 		<property name="langue" value="es" />

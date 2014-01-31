@@ -19,7 +19,7 @@ public abstract interface ReportConstants
 {
   public static final String PARAM_TITLE = "PARAM_TITLE";
   public static final String PARAM_SUBREPORT_DIR = "SUBREPORT_DIR";
-  public static final String REPORT_DIR = "resources/reports";
+  public static final String REPORT_DIR = "jasperreports";
   public static final String KEY_PDF = "pdf";
   public static final String KEY_HTML = "html";
   public static final String KEY_CSV = "csv";

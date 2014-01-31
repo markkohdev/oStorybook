@@ -4,6 +4,7 @@
  */
 package storybook.export;
 
+import java.awt.HeadlessException;
 import storybook.model.DocumentModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.PartDAOImpl;
@@ -28,6 +29,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
+import storybook.StorybookApp;
 
 /**
  *
@@ -35,21 +37,33 @@ import org.hibernate.Session;
  */
 public class BookExporter extends AbstractExporter {
 
+	boolean isUseHtmlScenes;
+	boolean isExportChapterNumbers;
+	boolean isExportRomanNumerals;
+	boolean isExportChapterTitles;
+	boolean isExportChapterDatesLocations;
+	boolean isExportSceneTitle;
+	boolean isExportPartTitles;
+	boolean tHtml = true;
+
 	private boolean exportForOpenOffice = false;
 	private boolean exportOnlyCurrentPart = false;
 	private boolean exportTableOfContentsLink = false;
 	private HashSet<Long> strandIdsToExport = null;
-	private String bH1="<h1>",eH1="</h1>\n\n",
-		bH2="<h2>",eH2="</h2>\n",
-		bH3="<h3>",eH3="</h3>\n",
-		bH4="<h4>", eH4="</h4\n";
+	private String bH1 = "<h1>", eH1 = "</h1>\n\n",
+		bH2 = "<h2>", eH2 = "</h2>\n",
+		bH3 = "<h3>", eH3 = "</h3>\n",
+		bH4 = "<h4>", eH4 = "</h4\n",
+		bTx = "<p>", eTx = "</p";
 
 	public BookExporter(MainFrame m) {
 		super(m);
 		setFileName(m.getDbFile().getName());
+		StorybookApp.trace("BookExporter("+m.getName()+")");
 	}
 
 	public boolean exportToClipboard() {
+		StorybookApp.trace("BookExporter.exportToClipboard()");
 		try {
 			StringBuffer str = getContent();
 			HtmlSelection html = new HtmlSelection(str.toString());
@@ -58,7 +72,7 @@ public class BookExporter extends AbstractExporter {
 			JOptionPane.showMessageDialog(this.mainFrame,
 				I18N.getMsg("msg.book.copy.confirmation"),
 				I18N.getMsg("msg.copied.title"), 1);
-		} catch (Exception IOException) {
+		} catch (HeadlessException exc) {
 			return false;
 		}
 		return true;
@@ -66,177 +80,208 @@ public class BookExporter extends AbstractExporter {
 
 	@Override
 	public StringBuffer getContent() {
-		Part Part1 = this.mainFrame.getCurrentPart();
+		// warning : getContent ne retourne que le contenu du body en mode HTML
+		StorybookApp.trace("BookExporter.getContent()");
+		Part Part1 = mainFrame.getCurrentPart();
 		StringBuffer buf = new StringBuffer();
 		try {
-			boolean isUseHtmlScenes = DocumentUtil.isUseHtmlScenes(this.mainFrame);
-			boolean isExportChapterNumbers = DocumentUtil.isExportChapterNumbers(this.mainFrame);
-			boolean isExportRomanNumerals = DocumentUtil.isExportRomanNumerals(this.mainFrame);
-			boolean isExportChapterTitles = DocumentUtil.isExportChapterTitles(this.mainFrame);
-			boolean isExportChapterDatesLocations = DocumentUtil.isExportChapterDatesLocations(this.mainFrame);
-			boolean isExportSceneTitle = DocumentUtil.isExportSceneTitle(this.mainFrame);
-			boolean isExportPartTitles = DocumentUtil.isExportPartTitles(this.mainFrame);
-			int i = 1;
-			if ((!isUseHtmlScenes) && (this.exportForOpenOffice == true)) {
-				i = 0;
-				bH1="";eH1="\n\n";
-				bH2="";eH2="\n";
-				bH3="";eH3="\n";
-				bH4="";eH4="\n";
+			isUseHtmlScenes = DocumentUtil.isUseHtmlScenes(mainFrame);
+			isExportChapterNumbers = DocumentUtil.isExportChapterNumbers(mainFrame);
+			isExportRomanNumerals = DocumentUtil.isExportRomanNumerals(mainFrame);
+			isExportChapterTitles = DocumentUtil.isExportChapterTitles(mainFrame);
+			isExportChapterDatesLocations = DocumentUtil.isExportChapterDatesLocations(mainFrame);
+			isExportSceneTitle = DocumentUtil.isExportSceneTitle(mainFrame);
+			isExportPartTitles = DocumentUtil.isExportPartTitles(mainFrame);
+
+			if ((!isUseHtmlScenes) && (exportForOpenOffice == true)) {
+				tHtml = false;
 			} else {
-				bH1="<h1>";eH1="</h1>\n";
-				bH2="<h2>";eH2="</h2>\n";
-				bH3="<h3>";eH3="</h3>\n";
-				bH4="<h4>";eH4="</h4\n";
+				tHtml=true;
+				//buf.append(getHtmlHead());
 			}
-			if ((isUseHtmlScenes) && (this.exportForOpenOffice == true)) {
-				buf
-					.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n")
-					.append("<html>\n")
-					.append("<head>\n")
-					.append("<title>")
-					.append(this.mainFrame.getDbFile().getName())
-					.append("</title>\n")
-					.append("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>\n")
-					.append("</head>\n")
-					.append("<body>\n");
-			}
-			DocumentModel model = this.mainFrame.getDocumentModel();
+			DocumentModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			PartDAOImpl PartDAO = new PartDAOImpl(session);
 			ChapterDAOImpl ChapterDAO = new ChapterDAOImpl(session);
 			SceneDAOImpl SceneDAO = new SceneDAOImpl(session);
-			Object Object1;
-			if (this.exportOnlyCurrentPart) {
-				Object1 = new ArrayList();
-				((List) Object1).add(Part1);
+			List<Part> listParts;
+			if (exportOnlyCurrentPart) {
+				listParts = new ArrayList();
+				listParts.add(Part1);
 			} else {
-				Object1 = PartDAO.findAll();
+				listParts = PartDAO.findAll();
 			}
-			Iterator Iterator1 = ((List) Object1).iterator();
-			while (Iterator1.hasNext()) {
-				Part Part2 = (Part) Iterator1.next();
-				if (isExportPartTitles) {
-					buf.append(bH1);
-					buf.append(I18N.getMsg("msg.common.part"));
-					buf.append(": ");
-					buf.append(Part2.getNumber());
-					buf.append(eH1);
-				}
-				List chapters = ChapterDAO.findAll(Part2);
-				Iterator Iterator2 = chapters.iterator();
-				while (Iterator2.hasNext()) {
-					Chapter chapter = (Chapter) Iterator2.next();
-					buf.append(bH2);
-					if (i != 0) {
-						buf.append("<a name='")
-							.append(chapter.getChapternoStr())
-							.append("'>");
-					} else {
-						buf.append("\n");
-					}
-					if (isExportChapterNumbers) {
-						if (isExportRomanNumerals) {
-							buf.append((String) LangUtil.intToRoman(chapter.getChapterno().intValue()));
-						} else {
-							buf.append(chapter.getChapternoStr());
+			if (tHtml) {
+				// export en HTML
+				for (Part part : listParts) {
+					buf.append(getPartAsHtml(part));
+					List<Chapter> chapters = ChapterDAO.findAll(part);
+					for (Chapter chapter : chapters) {
+						buf.append(getChapterAsHtml(chapter, ChapterDAO));
+						List<Scene> scenes = SceneDAO.findByChapter(chapter);
+						for (Scene scene : scenes) {
+							buf.append(getSceneAsHtml(scene));
 						}
-					}
-					if (isExportChapterTitles) {
-						buf.append(": ").append(chapter.getTitle());
-					}
-					if (i != 0) {
-						buf.append("</a>\n");
-					}
-					buf.append(eH2);
-					if (isExportChapterDatesLocations) {
-						buf.append(bH3);
-						buf.append(DateUtil.getNiceDates((List) ChapterDAO.findDates(chapter)));
-						if (!((List) ChapterDAO.findLocations(chapter)).isEmpty()) {
-							buf.append(": ");
-							buf.append(StringUtils.join((Iterable) ChapterDAO.findLocations(chapter), ", "));
-						}
-						buf.append(eH3);
-					}
-					Object scenes = SceneDAO.findByChapter(chapter);
-					Iterator iterator = ((List) scenes).iterator();
-					boolean bx;
-					while ((iterator).hasNext()) {
-						Scene scene = (Scene) (iterator).next();
-						bx = true;
-						if (this.strandIdsToExport != null) {
-							long l = scene.getStrand().getId().longValue();
-							if (!this.strandIdsToExport.contains(Long.valueOf(l))) {
-								bx = false;
-							}
-						}
-						if (bx) {
-							if (!scene.getInformative().booleanValue()) {
-								if (isExportSceneTitle) {
-									buf.append(bH4)
-										.append(scene.getTitle())
-										.append(eH4);
-								}
-								String str = scene.getText();
-								if (isUseHtmlScenes) {
-									HtmlUtil.appendCleanHtml(buf, str);
-								} else {
-									buf.append(str);
-									if (!this.exportForOpenOffice) {
-										buf.append("<br>");
-									}
-								}
-								buf.append("\n");
-							}
-						}
-					}
-					if (this.exportTableOfContentsLink) {
-						buf.append("<p style='font-size:8px;text-align:left;'><a href='#toc'>")
-							.append(I18N.getMsg("msg.table.of.contents"))
-							.append("</a></p>");
 					}
 				}
+				// fin export HTML
+			} else {
+				// export en TXT
+				for (Part part : listParts) {
+					buf.append(getPartAsTxt(part));
+					List<Chapter> chapters = ChapterDAO.findAll(part);
+					for (Chapter chapter : chapters) {
+						buf.append(getChapterAsTxt(chapter, ChapterDAO));
+						List<Scene> scenes = SceneDAO.findByChapter(chapter);
+						for (Scene scene : scenes) {
+							buf.append(getSceneAsTxt(scene));
+						}
+					}
+				}
+				// fin export TXT
 			}
 			model.commit();
-			if ((isUseHtmlScenes) && (this.exportForOpenOffice == true)) {
-				buf.append("</body>\n")
-					.append("</html>\n")
-					.append("\n");
-			}
-		} catch (Exception exception) {
+		} catch (Exception exc) {
+			StorybookApp.logErr("BookExport.getContent()", exc);
 		}
+		StorybookApp.trace("getContent returns bufsize="+buf.length());
 		return buf;
 	}
 
 	public boolean isExportOnlyCurrentPart() {
-		return this.exportOnlyCurrentPart;
+		return exportOnlyCurrentPart;
 	}
 
 	public void setExportOnlyCurrentPart(boolean b) {
-		this.exportOnlyCurrentPart = b;
+		exportOnlyCurrentPart = b;
 	}
 
 	public boolean isExportTableOfContentsLink() {
-		return this.exportTableOfContentsLink;
+		return exportTableOfContentsLink;
 	}
 
 	public void setExportTableOfContentsLink(boolean b) {
-		this.exportTableOfContentsLink = b;
+		exportTableOfContentsLink = b;
 	}
 
 	public HashSet<Long> getStrandIdsToExport() {
-		return this.strandIdsToExport;
+		return strandIdsToExport;
 	}
 
 	public void setStrandIdsToExport(HashSet<Long> p) {
-		this.strandIdsToExport = p;
+		strandIdsToExport = p;
 	}
 
 	public boolean isExportForOpenOffice() {
-		return this.exportForOpenOffice;
+		return exportForOpenOffice;
 	}
 
 	public void setExportForOpenOffice(boolean b) {
-		this.exportForOpenOffice = b;
+		exportForOpenOffice = b;
+	}
+
+	public String getPartAsTxt(Part part) {
+		String buf = "";
+		if (isExportPartTitles) {
+			buf += I18N.getMsg("msg.common.part") + ": " + part.getNumber();
+		}
+		return (buf);
+	}
+
+	private String getChapterAsTxt(Chapter chapter, ChapterDAOImpl ChapterDAO) {
+		String buf = "";
+		buf += chapter.getChapternoStr() + "\n";
+		if (isExportChapterNumbers) {
+			if (isExportRomanNumerals) {
+				buf += (String) LangUtil.intToRoman(chapter.getChapterno().intValue());
+			} else {
+				buf += chapter.getChapternoStr();
+			}
+		}
+		if (isExportChapterTitles) {
+			buf += ": " + chapter.getTitle();
+		}
+		buf += "\n";
+		if (isExportChapterDatesLocations) {
+			buf += DateUtil.getNiceDates((List) ChapterDAO.findDates(chapter));
+			if (!((List) ChapterDAO.findLocations(chapter)).isEmpty()) {
+				buf += ": " + StringUtils.join((Iterable) ChapterDAO.findLocations(chapter), ", ");
+			}
+		}
+		return (buf);
+	}
+
+	private String getSceneAsTxt(Scene scene) {
+		String buf = "";
+		boolean bx = true;
+		if (strandIdsToExport != null) {
+			long l = scene.getStrand().getId().longValue();
+			if (!strandIdsToExport.contains(Long.valueOf(l))) {
+				return("");
+			}
+		}
+		if (bx) {
+			if (!scene.getInformative().booleanValue()) {
+				if (isExportSceneTitle) {
+					buf += scene.getTitle();
+				}
+				String str = scene.getText();
+				buf += str + "\n";
+			}
+		}
+		return (buf);
+	}
+
+	public String getPartAsHtml(Part part) {
+		String buf = "";
+		if (isExportPartTitles) {
+			buf = bH1 + I18N.getMsg("msg.common.part") + ": " + part.getNumber() + eH1;
+		}
+		return (buf);
+	}
+
+	private String getChapterAsHtml(Chapter chapter, ChapterDAOImpl ChapterDAO) {
+		String buf = "<a name='" + chapter.getChapternoStr() + "'>";
+		buf += bH2;
+		if (isExportChapterNumbers) {
+			if (isExportRomanNumerals) {
+				buf += (String) LangUtil.intToRoman(chapter.getChapterno().intValue());
+			}
+			if (isExportChapterTitles) {
+				buf += ": " + chapter.getTitle();
+			}
+		}
+		buf += eH2;
+		if (isExportChapterDatesLocations) {
+			buf += bH3;
+			buf += DateUtil.getNiceDates((List) ChapterDAO.findDates(chapter));
+			if (!((List) ChapterDAO.findLocations(chapter)).isEmpty()) {
+				buf += ": " + StringUtils.join((Iterable) ChapterDAO.findLocations(chapter), ", ");
+			}
+			buf += eH3;
+		}
+		return (buf);
+	}
+
+	private String getSceneAsHtml(Scene scene) {
+		String buf = "";
+		if (strandIdsToExport != null) {
+			long l = scene.getStrand().getId().longValue();
+			if (!strandIdsToExport.contains(Long.valueOf(l))) {
+				return ("");
+			}
+		}
+		if (!scene.getInformative().booleanValue()) {
+			if (isExportSceneTitle) {
+				buf += scene.getTitle();
+			}
+			buf += scene.getText() + "\n";
+		}
+		if (exportTableOfContentsLink) {
+			buf += "<p style='font-size:8px;text-align:left;'><a href='#toc'>"
+				+ I18N.getMsg("msg.table.of.contents")
+				+ "</a></p>";
+		}
+		return (buf);
 	}
 }

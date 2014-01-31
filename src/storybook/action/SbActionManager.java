@@ -280,9 +280,13 @@ public class SbActionManager implements PropertyChangeListener {
 			}
 		} else {
 			MainMenu newMainMenu=new MainMenu();
+			newMainMenu.setMainFrame(mainFrame);
 			mainFrame.setJMenuBar(newMainMenu.getJMenuBar());
+			reloadRecentMenu(newMainMenu.getJMenuBar());
 			MainToolBar newToolBar=new MainToolBar();
+			newToolBar.setMainFrame(mainFrame);
 			mainFrame.setMainToolBar(newToolBar.getToolBar());
+			reloadPartMenuNew(newToolBar);
 		}
 
 		mainFrame.invalidate();
@@ -320,10 +324,19 @@ public class SbActionManager implements PropertyChangeListener {
 		model.commit();
 	}
 
+	private int findRecent(JMenu menu) {
+		int rc=2;
+		for (int i=0;i<menu.getItemCount();i++) {
+			if (menu.getItem(i).getLabel().equals(I18N.getMsg("msg.file.open.recent"))) {
+				return(i);
+			}
+		}
+		return(rc);
+	}
 	private void reloadRecentMenu(JMenuBar menubar) {
 		StorybookApp.trace("SbActionManager.reloadRecentMenu(" + menubar.getName() + ")");
 		JMenu menu = menubar.getMenu(MENUBAR_INDEX_FILE);
-		JMenu miRecent = (JMenu) menu.getItem(2);
+		JMenu miRecent = (JMenu) menu.getItem(findRecent(menu));// original index 2
 		miRecent.removeAll();
 		List<DbFile> list = PrefUtil.getDbFileList();
 		for (DbFile dbFile : list) {
@@ -335,6 +348,32 @@ public class SbActionManager implements PropertyChangeListener {
 		miRecent.addSeparator();
 		JMenuItem item = new JMenuItem(new ClearRecentFilesAction(actionHandler));
 		miRecent.add(item);
+	}
+
+	private void reloadPartMenuNew(MainToolBar toolBar) {
+		StorybookApp.trace("SbActionManager.reloadPartMenuNew(" + toolBar.getName() + ")");
+		DocumentModel model = mainFrame.getDocumentModel();
+		if (model == null) {
+			return;
+		}
+		Part currentPart = mainFrame.getCurrentPart();
+		Session session = model.beginTransaction();
+		PartDAOImpl dao = new PartDAOImpl(session);
+		List<Part> parts = dao.findAll();
+		model.commit();
+		toolBar.removePartList();
+		int pos = 0;
+		ButtonGroup group = new ButtonGroup();
+		String sel="";
+		for (Part part : parts) {
+			String x = I18N.getMsg("msg.common.part") + " " + part.getNumberName();
+			if (currentPart.getId().equals(part.getId())) {
+				sel=x;
+			}
+			toolBar.addPartList(x);
+			++pos;
+		}
+		toolBar.selPartList(sel);
 	}
 
 	private void reloadPartMenu(JMenuBar menubar) {

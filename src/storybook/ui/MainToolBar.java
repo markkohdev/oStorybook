@@ -22,6 +22,7 @@ import javax.swing.JToolBar;
  * @author favdb
  */
 public class MainToolBar extends javax.swing.JFrame {
+	private MainFrame mainFrame;
 
 	/**
 	 * Creates new form MainToolBar
@@ -58,15 +59,15 @@ public class MainToolBar extends javax.swing.JFrame {
         btNewItem = new javax.swing.JButton();
         btNewIdea = new javax.swing.JButton();
         lbView = new javax.swing.JLabel();
-        btViewStrands = new javax.swing.JButton();
-        btViewParts = new javax.swing.JButton();
-        btViewChapters = new javax.swing.JButton();
-        btViewScenes = new javax.swing.JButton();
-        btViewCharacters = new javax.swing.JButton();
-        btViewLocations = new javax.swing.JButton();
-        btViewTags = new javax.swing.JButton();
-        btViewItems = new javax.swing.JButton();
-        btViewIdeas = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jToggleButton3 = new javax.swing.JToggleButton();
+        jToggleButton4 = new javax.swing.JToggleButton();
+        jToggleButton5 = new javax.swing.JToggleButton();
+        jToggleButton6 = new javax.swing.JToggleButton();
+        jToggleButton7 = new javax.swing.JToggleButton();
+        jToggleButton8 = new javax.swing.JToggleButton();
+        jToggleButton9 = new javax.swing.JToggleButton();
         jSeparator8 = new javax.swing.JToolBar.Separator();
         btManage = new javax.swing.JButton();
         btChrono = new javax.swing.JButton();
@@ -131,7 +132,6 @@ public class MainToolBar extends javax.swing.JFrame {
         lbPart.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 3));
         mainToolBar.add(lbPart);
 
-        cbPart.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbPart.setToolTipText(bundle.getString("msg.common.parts")); // NOI18N
         mainToolBar.add(cbPart);
         mainToolBar.add(jSeparator7);
@@ -272,131 +272,59 @@ public class MainToolBar extends javax.swing.JFrame {
         lbView.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 2));
         mainToolBar.add(lbView);
 
-        btViewStrands.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_strands.png"))); // NOI18N
-        btViewStrands.setToolTipText(bundle.getString("msg.common.strands")); // NOI18N
-        btViewStrands.setAlignmentX(0.5F);
-        btViewStrands.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 6, 3, 6));
-        btViewStrands.setFocusable(false);
-        btViewStrands.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewStrands.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewStrands.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewStrandsActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewStrands);
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/strand.png"))); // NOI18N
+        jToggleButton1.setFocusable(false);
+        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton1);
 
-        btViewParts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_parts.png"))); // NOI18N
-        btViewParts.setToolTipText(bundle.getString("msg.common.parts")); // NOI18N
-        btViewParts.setAlignmentX(0.5F);
-        btViewParts.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewParts.setFocusable(false);
-        btViewParts.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewParts.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewParts.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewPartsActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewParts);
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/part.png"))); // NOI18N
+        jToggleButton2.setFocusable(false);
+        jToggleButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton2);
 
-        btViewChapters.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_chapters.png"))); // NOI18N
-        btViewChapters.setToolTipText(bundle.getString("msg.common.chapters")); // NOI18N
-        btViewChapters.setAlignmentX(0.5F);
-        btViewChapters.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewChapters.setFocusable(false);
-        btViewChapters.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewChapters.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewChapters.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewChaptersActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewChapters);
+        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chapter.png"))); // NOI18N
+        jToggleButton3.setFocusable(false);
+        jToggleButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton3);
 
-        btViewScenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_scenes.png"))); // NOI18N
-        btViewScenes.setToolTipText(bundle.getString("msg.common.scenes")); // NOI18N
-        btViewScenes.setAlignmentX(0.5F);
-        btViewScenes.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewScenes.setFocusable(false);
-        btViewScenes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewScenes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewScenes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewScenesActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewScenes);
+        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/scene.png"))); // NOI18N
+        jToggleButton4.setFocusable(false);
+        jToggleButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton4);
 
-        btViewCharacters.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_persons.png"))); // NOI18N
-        btViewCharacters.setToolTipText(bundle.getString("msg.common.persons")); // NOI18N
-        btViewCharacters.setAlignmentX(0.5F);
-        btViewCharacters.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewCharacters.setFocusable(false);
-        btViewCharacters.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewCharacters.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewCharacters.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewCharactersActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewCharacters);
+        jToggleButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/person.png"))); // NOI18N
+        jToggleButton5.setFocusable(false);
+        jToggleButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton5);
 
-        btViewLocations.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_locations.png"))); // NOI18N
-        btViewLocations.setToolTipText(bundle.getString("msg.common.locations")); // NOI18N
-        btViewLocations.setAlignmentX(0.5F);
-        btViewLocations.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewLocations.setFocusable(false);
-        btViewLocations.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewLocations.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewLocations.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewLocationsActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewLocations);
+        jToggleButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/location.png"))); // NOI18N
+        jToggleButton6.setFocusable(false);
+        jToggleButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton6);
 
-        btViewTags.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_tags.png"))); // NOI18N
-        btViewTags.setToolTipText(bundle.getString("msg.common.tags")); // NOI18N
-        btViewTags.setAlignmentX(0.5F);
-        btViewTags.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewTags.setFocusable(false);
-        btViewTags.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewTags.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewTags.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewTagsActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewTags);
+        jToggleButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/tag.png"))); // NOI18N
+        jToggleButton7.setFocusable(false);
+        jToggleButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton7);
 
-        btViewItems.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_items.png"))); // NOI18N
-        btViewItems.setToolTipText(bundle.getString("msg.common.items")); // NOI18N
-        btViewItems.setAlignmentX(0.5F);
-        btViewItems.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewItems.setFocusable(false);
-        btViewItems.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewItems.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewItems.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewItemsActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewItems);
+        jToggleButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/item.png"))); // NOI18N
+        jToggleButton8.setFocusable(false);
+        jToggleButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton8);
 
-        btViewIdeas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_ideas.png"))); // NOI18N
-        btViewIdeas.setToolTipText(bundle.getString("msg.common.ideas")); // NOI18N
-        btViewIdeas.setAlignmentX(0.5F);
-        btViewIdeas.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btViewIdeas.setFocusable(false);
-        btViewIdeas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btViewIdeas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btViewIdeas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btViewIdeasActionPerformed(evt);
-            }
-        });
-        mainToolBar.add(btViewIdeas);
+        jToggleButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/idea.png"))); // NOI18N
+        jToggleButton9.setFocusable(false);
+        jToggleButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mainToolBar.add(jToggleButton9);
         mainToolBar.add(jSeparator8);
 
         btManage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/manage.png"))); // NOI18N
@@ -549,42 +477,6 @@ public class MainToolBar extends javax.swing.JFrame {
         // TODO
     }//GEN-LAST:event_btNewIdeaActionPerformed
 
-    private void btViewStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewStrandsActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewStrandsActionPerformed
-
-    private void btViewPartsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewPartsActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewPartsActionPerformed
-
-    private void btViewChaptersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewChaptersActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewChaptersActionPerformed
-
-    private void btViewScenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewScenesActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewScenesActionPerformed
-
-    private void btViewCharactersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewCharactersActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewCharactersActionPerformed
-
-    private void btViewLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewLocationsActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewLocationsActionPerformed
-
-    private void btViewTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewTagsActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewTagsActionPerformed
-
-    private void btViewItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewItemsActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewItemsActionPerformed
-
-    private void btViewIdeasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewIdeasActionPerformed
-        // TODO
-    }//GEN-LAST:event_btViewIdeasActionPerformed
-
     private void btManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManageActionPerformed
         // TODO
     }//GEN-LAST:event_btManageActionPerformed
@@ -662,20 +554,20 @@ public class MainToolBar extends javax.swing.JFrame {
     private javax.swing.JButton btNewTag;
     private javax.swing.JButton btOpen;
     private javax.swing.JButton btReading;
-    private javax.swing.JButton btViewChapters;
-    private javax.swing.JButton btViewCharacters;
-    private javax.swing.JButton btViewIdeas;
-    private javax.swing.JButton btViewItems;
-    private javax.swing.JButton btViewLocations;
-    private javax.swing.JButton btViewParts;
-    private javax.swing.JButton btViewScenes;
-    private javax.swing.JButton btViewStrands;
-    private javax.swing.JButton btViewTags;
     private javax.swing.JComboBox cbPart;
     private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JToolBar.Separator jSeparator9;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JToggleButton jToggleButton3;
+    private javax.swing.JToggleButton jToggleButton4;
+    private javax.swing.JToggleButton jToggleButton5;
+    private javax.swing.JToggleButton jToggleButton6;
+    private javax.swing.JToggleButton jToggleButton7;
+    private javax.swing.JToggleButton jToggleButton8;
+    private javax.swing.JToggleButton jToggleButton9;
     private javax.swing.JLabel lbFile;
     private javax.swing.JLabel lbHelp;
     private javax.swing.JLabel lbNew;
@@ -686,5 +578,19 @@ public class MainToolBar extends javax.swing.JFrame {
 
 	public JToolBar getToolBar() {
 		return mainToolBar;
+	}
+
+	public void setMainFrame(MainFrame m) {
+		mainFrame=m;
+	}
+
+	public void removePartList() {
+		cbPart.removeAllItems();
+	}
+	public void addPartList(String x) {
+		cbPart.addItem(x);
+	}
+	public void selPartList(String x) {
+		cbPart.setSelectedItem(x);
 	}
 }

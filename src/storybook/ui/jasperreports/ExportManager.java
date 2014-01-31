@@ -15,7 +15,6 @@
  */
 package storybook.ui.jasperreports;
 
-import storybook.model.DbFile;
 import storybook.model.DocumentModel;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -44,10 +42,10 @@ import org.hibernate.jdbc.Work;
 
 public class ExportManager implements ReportConstants {
 
-	private MainFrame mainFrame;
-	private List<ExportReport> reports;
+	private final MainFrame mainFrame;
+	private final List<ExportReport> reports;
 	private static JasperPrint jasperPrint;
-	private HashMap<String, String> formatMap;
+	private final HashMap<String, String> formatMap;
 
 	public ExportManager(MainFrame mainframe) {
 		mainFrame = mainframe;
@@ -89,7 +87,7 @@ public class ExportManager implements ReportConstants {
 			public void execute(Connection connection)
 				throws SQLException {
 				try {
-					String str = "resources/reports"
+					String str = "jasperreports"
 						+ File.separator
 						+ param.getJasperReportName()
 						+ ".jasper";
@@ -98,7 +96,7 @@ public class ExportManager implements ReportConstants {
 						param.getName()
 						+ " - " + I18N.getMsg("msg.common.project")
 						+ ": \"" + ExportManager.this.mainFrame.getDbFile().getName() + "\"");
-					localHashMap.put("SUBREPORT_DIR", "resources/reports" + File.separator);
+					localHashMap.put("SUBREPORT_DIR", "jasperreports" + File.separator);
 					/* TODO solve access$102
 					 ExportManager.access$102(JasperFillManager.fillReport(str, localHashMap, connection));
 					 */
@@ -172,7 +170,7 @@ public class ExportManager implements ReportConstants {
 					break;
 			}
 			return str;
-		} catch (Exception localException) {
+		} catch (JRException localException) {
 		}
 		return "";
 	}

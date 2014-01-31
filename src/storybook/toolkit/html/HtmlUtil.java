@@ -14,6 +14,8 @@ import org.jsoup.Jsoup;
 import storybook.toolkit.TextUtil;
 import storybook.toolkit.swing.ColorUtil;
 
+// TODO add external CSS possibility
+
 public class HtmlUtil {
 
 	public static String getCleanHtml(String html) {
@@ -23,23 +25,10 @@ public class HtmlUtil {
 	}
 
 	public static void appendCleanHtml(StringBuffer buf, String html) {
-		// doesn't work for plain text
-		/*
-		Document doc = Jsoup.parseBodyFragment(text);
-		Element body = doc.body();
-//		Elements content = body.getElementsContainingText("");
-		Elements content = body.getAllElements();
-		for(Element el:content){
-			buf.append(el.toString());
-			buf.append("\n");
-		}
-		*/
-
 		// remove new lines
 		html = html.replace("\n", "");
 		// replace empty div tags with paragraphs: "<div>\s*</div>"
 		html = html.replaceAll("<div>\\s*</div>", "<p></p>");
-
 		// body>(.*)</body
 		Pattern p = Pattern.compile("body>(.*)</body");
 		Matcher m = p.matcher(html);
@@ -47,7 +36,6 @@ public class HtmlUtil {
 			html = m.group(1);
 		}
 		html = html.trim();
-
 		// not in any tag at all, so build one
 		boolean addDiv = false;
 		if (!html.startsWith("<")) {
@@ -59,23 +47,6 @@ public class HtmlUtil {
 			buf.append("</div>");
 		}
 	}
-
-	// doesn't work
-//	public static String getContent(String htmlText) {
-//		try {
-//			StringReader reader = new StringReader(htmlText);
-//			HTMLEditorKit htmlKit = new HTMLEditorKit();
-//			HTMLDocument htmlDoc = (HTMLDocument) htmlKit
-//					.createDefaultDocument();
-//			HTMLEditorKit.Parser parser = new ParserDelegator();
-//			HTMLEditorKit.ParserCallback callback = htmlDoc.getReader(0);
-//			parser.parse(reader, callback, true);
-//			return getContent(htmlDoc);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return "";
-//	}
 
 	public static String getContent(HTMLDocument doc) {
 		try {
@@ -103,12 +74,11 @@ public class HtmlUtil {
 	}
 
 	public static String wrapIntoTable(String html, int width) {
-		StringBuffer ret = new StringBuffer();
-		ret.append("<html>");
-		ret.append("<table width='" + width + "'><tr><td>");
-		ret.append(html);
-		ret.append("<td></tr><table>");
-		return ret.toString();
+		String ret = "<html>"
+			+ "<table width='" + width + "'><tr><td>"
+			+ html
+			+ "<td></tr><table>";
+		return ret;
 	}
 
 	public static boolean equalsHtml(String html1, String html2) {
@@ -145,58 +115,58 @@ public class HtmlUtil {
 		}
 		int length = text.length();
 		boolean prevSlashR = false;
-		StringBuffer out = new StringBuffer();
+		String out = "";
 		for (int i = 0; i < length; i++) {
 			char ch = text.charAt(i);
 			switch (ch) {
 			case '\r':
 				if (prevSlashR) {
-					out.append("<br>");
+					out+="<br>";
 				}
 				prevSlashR = true;
 				break;
 			case '\n':
 				prevSlashR = false;
-				out.append("<br>");
+				out+="<br>";
 				break;
 			case '"':
 				if (prevSlashR) {
-					out.append("<br>");
+					out+="<br>";
 					prevSlashR = false;
 				}
-				out.append("&quot;");
+				out+="&quot;";
 				break;
 			case '<':
 				if (prevSlashR) {
-					out.append("<br>");
+					out+="<br>";
 					prevSlashR = false;
 				}
-				out.append("&lt;");
+				out+="&lt;";
 				break;
 			case '>':
 				if (prevSlashR) {
-					out.append("<br>");
+					out+="<br>";
 					prevSlashR = false;
 				}
-				out.append("&gt;");
+				out+="&gt;";
 				break;
 			case '&':
 				if (prevSlashR) {
-					out.append("<br>");
+					out+="<br>";
 					prevSlashR = false;
 				}
-				out.append("&amp;");
+				out+="&amp;";
 				break;
 			default:
 				if (prevSlashR) {
-					out.append("<br>");
+					out+="<br>";
 					prevSlashR = false;
 				}
-				out.append(ch);
+				out+=ch;
 				break;
 			}
 		}
-		return out.toString();
+		return(out);
 	}
 
 	public static String getRow2Cols(StringBuffer text1, String text2) {
@@ -216,48 +186,35 @@ public class HtmlUtil {
 	}
 
 	public static String getTitle(String title) {
-		StringBuffer buf = new StringBuffer();
-		buf.append("<div style='padding-top:2px;padding-bottom:2px;");
-		buf.append("padding-left:4px;padding-right:4px;");
-		buf.append("margin-bottom:2px;");
-		buf.append("'><b>");
-		buf.append(title);
-		buf.append("</b></div>");
-		return buf.toString();
+		String buf = "<div style='padding-top:2px;padding-bottom:2px;"
+			+ "padding-left:4px;padding-right:4px;"
+			+ "margin-bottom:2px;'><b>" + title + "</b></div>";
+		return(buf);
 	}
 
 	public static String getColorSpan(Color clr) {
 		String htmlClr = (clr == null ? "white" : ColorUtil.getHexName(clr));
-		StringBuffer buf = new StringBuffer();
-		buf.append("<span style='");
+		String buf = "<span style='";
 		if (clr != null) {
-			buf.append("background-color:");
-			buf.append(htmlClr);
-			buf.append(";");
+			buf+="background-color:" + htmlClr + ";";
 		}
-		buf.append("'>");
-		buf.append("&nbsp; &nbsp; &nbsp; &nbsp; </div>");
-		return buf.toString();
+		buf+="'>";
+		buf+="&nbsp; &nbsp; &nbsp; &nbsp; </div>";
+		return(buf);
 	}
 
 	public static String getColoredTitle(Color clr, String title) {
 		String htmlClr = (clr == null ? "white" : ColorUtil.getHexName(clr));
-		StringBuffer buf = new StringBuffer();
-		buf.append("<div style='padding-top:2px;padding-bottom:2px;");
-		buf.append("padding-left:4px;padding-right:4px;");
-		buf.append("margin-bottom:2px;");
+		String buf = "<div style='padding-top:2px;padding-bottom:2px;"
+			+ "padding-left:4px;padding-right:4px;margin-bottom:2px;";
 		if (clr != null) {
-			buf.append("background-color:");
-			buf.append(htmlClr);
-			buf.append(";");
+			buf+="background-color:"+htmlClr+";";
 		}
 		if (clr != null && ColorUtil.isDark(clr)) {
-			buf.append("color:white;");
+			buf+="color:white;";
 		}
-		buf.append("'><b>");
-		buf.append(title);
-		buf.append("</b></div>");
-		return buf.toString();
+		buf+="'><b>"+title+"</b></div>";
+		return(buf);
 	}
 
 	public static String getHeadWithCSS() {
@@ -265,64 +222,60 @@ public class HtmlUtil {
 	}
 
 	public static String getHeadWithCSS(int fontSize) {
-		StringBuffer buf = new StringBuffer();
-		buf.append("<head>");
-		buf.append("<style type='text/css'><!--\n");
+		String buf = "<head>"
+			+ "<style type='text/css'><!--\n";
 		// body
-		buf.append("body {");
-		buf.append("font-family:Arial,sans-serif;");
-		buf.append("font-size:" + fontSize + "px;");
-		buf.append("padding-left:2px;");
-		buf.append("padding-right:2px;");
-		buf.append("}\n");
-		// h1
-		buf.append("h1 {");
-		buf.append("font-family:Arial,sans-serif;");
-		buf.append("font-size:140%;");
-		buf.append("text-align:center;");
-		buf.append("margin-top:15px;");
-		buf.append("margin-bottom:15px;");
-		buf.append("}\n");
-		// h2
-		buf.append("h2 {");
-		buf.append("font-family:Arial,sans-serif;");
-		buf.append("font-size:120%;");
-		buf.append("margin-top:15px;");
-		buf.append("}\n");
-		// div
-		buf.append("p {");
-		buf.append("margin-top:2px;");
-		buf.append("}\n");
-		// div
-		buf.append("div {");
-		buf.append("padding-left:5px;");
-		buf.append("padding-right:5px;");
-		buf.append("}\n");
-		// unordered list
-		buf.append("ul {");
-		buf.append("margin-top:2px;");
-		buf.append("margin-left:15px;");
-		buf.append("margin-bottom:2px;");
-		buf.append("}\n");
+		buf+="body {"
+			+ "font-family:Arial,sans-serif;"
+			+ "font-size:" + fontSize + "px;"
+			+ "padding-left:2px;"
+			+ "padding-right:2px;"
+			+ "}\n";
+		//h1
+		buf+="h1 {"
+			+ "font-family:Arial,sans-serif;"
+			+ "font-size:140%;"
+			+ "text-align:center;"
+			+ "margin-top:15px;"
+			+ "margin-bottom:15px;"
+			+ "}\n";
+		//h2
+		buf+="h2 {"
+			+ "font-family:Arial,sans-serif;"
+			+ "font-size:120%;"
+			+ "margin-top:15px;"
+			+ "}\n";
+		//p
+		buf+="p {"
+			+ "margin-top:2px;"
+			+ "div {"
+			+ "padding-left:5px;"
+			+ "padding-right:5px;"
+			+ "}\n";
+		//ul
+		buf+="ul {"
+			+ "margin-top:2px;"
+			+ "margin-left:15px;"
+			+ "margin-bottom:2px;"
+			+ "}\n";
 		// ordered list
-		buf.append("ol {");
-		buf.append("margin-top:2px;");
-		buf.append("margin-left:15px;");
-		buf.append("margin-bottom:2px;");
-		buf.append("}\n");
+		buf+="ol {"
+			+ "margin-top:2px;"
+			+ "margin-left:15px;"
+			+ "margin-bottom:2px;"
+			+ "}\n";
 		// table
-		buf.append("table tr {");
-		// buf.append("border-width:1px;border-color:#000000;border-style:solid;");
-		buf.append("margin:0px;");
-		buf.append("padding:0px;");
-		buf.append("}\n");
-		buf.append("td {");
-		buf.append("margin-right:5px;");
-		buf.append("padding:2px;");
-		buf.append("}\n");
-		buf.append("--></style>");
-		buf.append("</head>\n");
-		return buf.toString();
+		buf+="table tr {"
+			+ "margin:0px;"
+			+ "padding:0px;"
+			+ "}\n"
+			+ "td {"
+			+ "margin-right:5px;"
+			+ "padding:2px;"
+			+ "}\n";
+		buf+="--></style>"
+			+ "</head>\n";
+		return(buf);
 	}
 
 	public static String getBold(String str) {
@@ -337,58 +290,47 @@ public class HtmlUtil {
 		return "<hr style='margin:10px' />";
 	}
 
-	public static void appendFormatedWarning(StringBuffer buf, String warning) {
+	public static String appendFormatedWarning(String buf, String warning) {
 		String str = warning.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
 		if (str.isEmpty()) {
-			return;
+			return(buf);
 		}
-		buf.append("<div style='color:red'>");
-		buf.append(str);
-		buf.append("</div>");
+		return("<div style='color:red'>"+str+"</div>");
 	}
 
-	public static void appendFormatedDescr(StringBuffer buf, String descr,
-			boolean shorten) {
+	public static String appendFormatedDescr(String buf, String descr, boolean shorten) {
 		String str = descr.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
 		if (str.isEmpty()) {
-			return;
+			return(buf);
 		}
+		String ret=buf;
 		if (shorten) {
-			buf.append("<div style='width:300px'>");
-			buf.append(TextUtil.truncateString(str, 300));
+			ret+="<div style='width:300px'>"+TextUtil.truncateString(str, 300);
 		} else {
-			buf.append("<div>");
-			buf.append(str);
+			ret+="<div>"+str;
 		}
-		buf.append("</div>");
+		return(ret+"</div>");
 	}
 
-	public static void appendFormatedNotes(StringBuffer buf, String notes,
-			boolean shorten) {
+	public static String appendFormatedNotes(String buf, String notes, boolean shorten) {
 		String str = notes.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
 		if (str.isEmpty()) {
-			return;
+			return(buf);
 		}
-		buf.append("<hr style='margin:5px'/>");
+		String ret="<hr style='margin:5px'/>";
 		if (shorten) {
-			buf.append("<div style='width:300px'>");
-			buf.append(TextUtil.truncateString(str, 300));
+			ret+="<div style='width:300px'>"+TextUtil.truncateString(str, 300);
 		} else {
-			buf.append("<div>");
-			buf.append(str);
+			ret+="<div>"+str;
 		}
-		buf.append("</div>");
+		return(ret+"</div>");
 	}
 
-	public static void appendFormatedMetaInfos(StringBuffer buf,
-			String metaInfos) {
+	public static String appendFormatedMetaInfos(String buf, String metaInfos) {
 		String str = metaInfos.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
 		if (str.isEmpty()) {
-			return;
+			return(buf);
 		}
-		buf.append("<hr style='margin:5px'/>");
-		buf.append("<div>");
-		buf.append(str);
-		buf.append("</div>");
+		return("<hr style='margin:5px'/>"+"<div>"+str+"</div>");
 	}
 }

@@ -15,7 +15,6 @@
  */
 package storybook.ui.jasperreports;
 
-import storybook.SbConstants.InternalKey;
 import storybook.model.hbn.entity.Internal;
 import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.EnvUtil;
@@ -25,7 +24,6 @@ import storybook.toolkit.swing.SwingUtil;
 import storybook.ui.MainFrame;
 import storybook.ui.dialog.AbstractDialog;
 import storybook.ui.interfaces.IPaintable;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,14 +32,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -87,80 +84,80 @@ public class ExportPrintDialog extends AbstractDialog
 		setTitle(I18N.getMsg("msg.dlg.export.title"));
 		setLayout(localMigLayout);
 		setPreferredSize(new Dimension(800, 800));
-		JLabel localJLabel1 = new JLabel(I18N.getMsgColon("msg.dlg.export.folder"));
-		this.tfDir = new JTextField(20);
-		Internal localInternal = DocumentUtil.restoreInternal(this.mainFrame, SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(this.mainFrame));
-		this.tfDir.setText(localInternal.getStringValue());
-		if (this.tfDir.getText().isEmpty()) {
-			this.tfDir.setText(FileUtils.getUserDirectoryPath());
+		JLabel lbFolder = new JLabel(I18N.getMsgColon("msg.dlg.export.folder"));
+		tfDir = new JTextField(20);
+		Internal internal = DocumentUtil.restoreInternal(mainFrame,
+			SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(mainFrame));
+		tfDir.setText(internal.getStringValue());
+		if (tfDir.getText().isEmpty()) {
+			tfDir.setText(FileUtils.getUserDirectoryPath());
 		}
-		JButton localJButton1 = new JButton();
-		localJButton1.setAction(getChooseFolderAction());
-		localJButton1.setText(I18N.getMsg("msg.common.choose.folder"));
-		JPanel localJPanel1 = new JPanel(new MigLayout("flowy"));
-		JPanel localJPanel2 = new JPanel(new MigLayout("flowy,fill"));
-		SwingUtil.setMaxPreferredSize(localJPanel2);
-		JLabel localJLabel2 = new JLabel(I18N.getMsgColon("msg.dlg.export.report"));
-		DefaultComboBoxModel localDefaultComboBoxModel = new DefaultComboBoxModel();
-		ExportManager localExportManager = new ExportManager(this.mainFrame);
-		Object localObject1 = localExportManager.getReportList().iterator();
-		while (((Iterator) localObject1).hasNext()) {
-			ExportReport localObject2 = (ExportReport) ((Iterator) localObject1).next();
-			localDefaultComboBoxModel.addElement(localObject2);
+		JButton btnChooseFolder = setButton(getChooseFolderAction(), "msg.common.choose.folder", null);
+		JPanel panel1 = new JPanel(new MigLayout("flowy"));
+		JPanel panel2 = new JPanel(new MigLayout("flowy,fill"));
+		SwingUtil.setMaxPreferredSize(panel2);
+		JLabel lblReport = new JLabel(I18N.getMsgColon("msg.dlg.export.report"));
+		DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
+		ExportManager xpManager = new ExportManager(mainFrame);
+		for (ExportReport xp : xpManager.getReportList()) {
+			cbModel.addElement(xp);
 		}
-		this.reportCombo = new JComboBox(localDefaultComboBoxModel);
-		this.reportCombo.setMaximumRowCount(15);
-		this.reportCombo.addActionListener(this);
-		localObject1 = new JLabel(I18N.getMsgColon("msg.dlg.export.format"));
-		this.formatList = new ArrayList();
-		Object localObject2 = localExportManager.getFormatMap();
-		ButtonGroup localButtonGroup = new ButtonGroup();
-		Object localObject3 = ((HashMap) localObject2).keySet().iterator();
-		while (((Iterator) localObject3).hasNext()) {
-			String localObject4 = (String) ((Iterator) localObject3).next();
-			JRadioButton localObject5 = new JRadioButton((String) ((HashMap) localObject2).get(localObject4));
-			((JRadioButton) localObject5).setActionCommand((String) localObject4);
-			((JRadioButton) localObject5).addActionListener(this);
-			if ("pdf".equals(localObject4)) {
-				((JRadioButton) localObject5).setSelected(true);
+		reportCombo = new JComboBox(cbModel);
+		reportCombo.setMaximumRowCount(15);
+		reportCombo.addActionListener(this);
+		JLabel lblFormat = new JLabel(I18N.getMsgColon("msg.dlg.export.format"));
+		formatList = new ArrayList();
+		Object mapFormat = xpManager.getFormatMap();
+		ButtonGroup buttonGroup = new ButtonGroup();
+		{
+			Iterator list = ((HashMap) mapFormat).keySet().iterator();
+			while (list.hasNext()) {
+				String str = (String) list.next();
+				JRadioButton rdButton = new JRadioButton((String) ((HashMap) mapFormat).get(str));
+				rdButton.setActionCommand((String) str);
+				rdButton.addActionListener(this);
+				if ("pdf".equals(str)) {
+					rdButton.setSelected(true);
+				}
+				formatList.add(rdButton);
+				buttonGroup.add((AbstractButton) rdButton);
 			}
-			this.formatList.add(localObject5);
-			localButtonGroup.add((AbstractButton) localObject5);
 		}
-		localObject3 = new JButton();
-		((JButton) localObject3).setAction(getExportAction());
-		((JButton) localObject3).setText(I18N.getMsg("msg.common.export"));
-		((JButton) localObject3).setIcon(I18N.getIcon("icon.small.export"));
-		SwingUtil.addEnterAction((JComponent) localObject3, getExportAction());
-		this.previewPanel = new ExportPreview(null);
-		Object localObject4 = new IconButton("icon.small.refresh", getPreviewAction());
-		((IconButton) localObject4).setToolTipText(I18N.getMsg("msg.dlg.export.refresh.preview"));
-		Object localObject5 = new JButton();
-		((JButton) localObject5).setAction(getEnlargeAction());
-		((JButton) localObject5).setText(I18N.getMsg("msg.dlg.export.enlarge.preview"));
-		JButton localJButton2 = new JButton();
-		localJButton2.setAction(getCloseAction());
-		localJButton2.setText(I18N.getMsg("msg.common.close"));
-		localJButton2.setIcon(I18N.getIcon("icon.small.close"));
-		SwingUtil.addEscAction(localJButton2, getCloseAction());
-		localJPanel1.add(localJLabel2);
-		localJPanel1.add(this.reportCombo, "gapbottom 20");
-		localJPanel1.add((Component) localObject1);
-		Iterator localIterator = this.formatList.iterator();
-		while (localIterator.hasNext()) {
-			JRadioButton localJRadioButton = (JRadioButton) localIterator.next();
-			localJPanel1.add(localJRadioButton);
+		JButton btnExport = setButton(getExportAction(), "msg.common.export", "icon.small.export");
+		SwingUtil.addEnterAction(btnExport, getExportAction());
+		previewPanel = new ExportPreview(null);
+		IconButton btnPreview = new IconButton("icon.small.refresh", getPreviewAction());
+		btnPreview.setToolTipText(I18N.getMsg("msg.dlg.export.refresh.preview"));
+		JButton btnEnlarge = setButton(getEnlargeAction(), "msg.dlg.export.enlarge.preview", null);
+		JButton btnClose = setButton(getCloseAction(), "msg.common.close", "icon.small.close");
+		SwingUtil.addEscAction(btnClose, getCloseAction());
+		panel1.add(lblReport);
+		panel1.add(this.reportCombo, "gapbottom 20");
+		panel1.add(lblFormat);
+		for (JRadioButton lRB : formatList) {
+			panel1.add(lRB);
 		}
-		localJPanel2.add(this.previewPanel, "grow");
-		add(localJLabel1, "span,split 3");
-		add(this.tfDir, "grow");
-		add(localJButton1);
-		add(localJPanel1, "gp 1");
-		add(localJPanel2, "grow,gp 200");
-		add((Component) localObject3, "span,split 4");
-		add((Component) localObject5);
-		add((Component) localObject4, "gap 20");
-		add(localJButton2, "gap push");
+		panel2.add(previewPanel, "grow");
+		add(lbFolder, "span,split 3");
+		add(tfDir, "grow");
+		add(btnChooseFolder);
+		add(panel1, "gp 1");
+		add(panel2, "grow,gp 200");
+		add(btnExport, "span,split 4");
+		add(btnEnlarge);
+		add(btnPreview, "gap 20");
+		add(btnClose, "gap push");
+	}
+
+	private JButton setButton(Action action, String text, String icon) {
+		JButton button = new JButton();
+		button.setAction(action);
+		button.setText(I18N.getMsg(text));
+		if (icon != null) {
+			button.setIcon(I18N.getIcon(icon));
+		}
+		SwingUtil.addEnterAction(button, action);
+		return button;
 	}
 
 	private JDialog getThis() {
@@ -170,15 +167,15 @@ public class ExportPrintDialog extends AbstractDialog
 	private AbstractAction getChooseFolderAction() {
 		return new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
-				JFileChooser localJFileChooser = new JFileChooser(ExportPrintDialog.this.tfDir.getText());
-				localJFileChooser.setFileSelectionMode(1);
-				int i = localJFileChooser.showOpenDialog(ExportPrintDialog.this.getThis());
+			public void actionPerformed(ActionEvent event) {
+				JFileChooser chooser = new JFileChooser(ExportPrintDialog.this.tfDir.getText());
+				chooser.setFileSelectionMode(1);
+				int i = chooser.showOpenDialog(ExportPrintDialog.this.getThis());
 				if (i != 0) {
 					return;
 				}
-				File localFile = localJFileChooser.getSelectedFile();
-				ExportPrintDialog.this.tfDir.setText(localFile.getAbsolutePath());
+				File file = chooser.getSelectedFile();
+				ExportPrintDialog.this.tfDir.setText(file.getAbsolutePath());
 			}
 		};
 	}
@@ -186,7 +183,7 @@ public class ExportPrintDialog extends AbstractDialog
 	private AbstractAction getExportAction() {
 		return new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
+			public void actionPerformed(ActionEvent event) {
 				SwingUtil.setWaitingCursor(ExportPrintDialog.this.getThis());
 				File localFile = new File(ExportPrintDialog.this.tfDir.getText());
 				ExportManager localExportManager = new ExportManager(ExportPrintDialog.this.mainFrame);
@@ -197,9 +194,9 @@ public class ExportPrintDialog extends AbstractDialog
 				if (str.isEmpty()) {
 					return;
 				}
-				 SwingUtil.showModalDialog(
-					 new ExportPrintDialog.ConfirmDialog(str),
-					 ExportPrintDialog.this.mainFrame);
+				SwingUtil.showModalDialog(
+					new ExportPrintDialog.ConfirmDialog(str),
+					ExportPrintDialog.this.mainFrame);
 			}
 		};
 	}
@@ -207,10 +204,10 @@ public class ExportPrintDialog extends AbstractDialog
 	private AbstractAction getEnlargeAction() {
 		return new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
+			public void actionPerformed(ActionEvent event) {
 				SwingUtil.setWaitingCursor(ExportPrintDialog.this.getThis());
-				ExportManager localExportManager = new ExportManager(ExportPrintDialog.this.mainFrame);
-				localExportManager.export(null, "preview", (ExportReport) ExportPrintDialog.this.reportCombo.getSelectedItem());
+				ExportManager xpManager = new ExportManager(ExportPrintDialog.this.mainFrame);
+				xpManager.export(null, "preview", (ExportReport) ExportPrintDialog.this.reportCombo.getSelectedItem());
 				SwingUtil.setDefaultCursor(ExportPrintDialog.this.getThis());
 			}
 		};
@@ -219,7 +216,7 @@ public class ExportPrintDialog extends AbstractDialog
 	private AbstractAction getPreviewAction() {
 		return new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
+			public void actionPerformed(ActionEvent event) {
 				ExportPrintDialog.this.preview();
 			}
 		};
@@ -228,7 +225,7 @@ public class ExportPrintDialog extends AbstractDialog
 	private AbstractAction getCloseAction() {
 		return new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
+			public void actionPerformed(ActionEvent event) {
 				DocumentUtil.storeInternal(ExportPrintDialog.this.mainFrame, SbConstants.InternalKey.EXPORT_DIRECTORY, ExportPrintDialog.this.tfDir.getText());
 				ExportPrintDialog.this.getThis().dispose();
 			}
@@ -236,11 +233,11 @@ public class ExportPrintDialog extends AbstractDialog
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent paramActionEvent) {
-		if ((paramActionEvent.getSource() instanceof JRadioButton)) {
-			this.formatKey = paramActionEvent.getActionCommand();
+	public void actionPerformed(ActionEvent event) {
+		if ((event.getSource() instanceof JRadioButton)) {
+			this.formatKey = event.getActionCommand();
 		}
-		if (paramActionEvent.getSource() == this.reportCombo) {
+		if (event.getSource() == this.reportCombo) {
 			preview();
 		}
 	}
@@ -248,12 +245,12 @@ public class ExportPrintDialog extends AbstractDialog
 	private void preview() {
 		try {
 			SwingUtil.setWaitingCursor(getThis());
-			ExportManager localExportManager = new ExportManager(this.mainFrame);
-			localExportManager.fillReport((ExportReport) this.reportCombo.getSelectedItem());
-			this.previewPanel.loadReport(localExportManager.getJasperPrint());
+			ExportManager xpManager = new ExportManager(this.mainFrame);
+			xpManager.fillReport((ExportReport) this.reportCombo.getSelectedItem());
+			this.previewPanel.loadReport(xpManager.getJasperPrint());
 			SwingUtil.setDefaultCursor(getThis());
 			this.timer.stop();
-		} catch (Exception localException) {
+		} catch (Exception exc) {
 		}
 	}
 
@@ -277,31 +274,31 @@ public class ExportPrintDialog extends AbstractDialog
 			MigLayout localMigLayout = new MigLayout("wrap");
 			setLayout(localMigLayout);
 			setTitle(I18N.getMsg("msg.dlg.export.done.title"));
-			JTextArea localJTextArea = new JTextArea(I18N.getMsg("msg.dlg.export.done.text", this.fileName));
-			localJTextArea.setEditable(false);
-			JButton localJButton1 = new JButton();
-			localJButton1.setAction(getOpenAction());
-			localJButton1.setText(I18N.getMsg("msg.common.open"));
-			localJButton1.setIcon(I18N.getIcon("icon.small.open"));
-			SwingUtil.addEnterAction(localJButton1, getOpenAction());
-			JButton localJButton2 = new JButton();
-			localJButton2.setAction(getCloseAction());
-			localJButton2.setText(I18N.getMsg("msg.common.close"));
-			localJButton2.setIcon(I18N.getIcon("icon.small.close"));
-			SwingUtil.addEscAction(localJButton2, getCloseAction());
-			add(localJTextArea);
-			add(localJButton1, "split 2,gap push,sg");
-			add(localJButton2, "sg");
+			JTextArea text = new JTextArea(I18N.getMsg("msg.dlg.export.done.text", this.fileName));
+			text.setEditable(false);
+			JButton btOpen = new JButton();
+			btOpen.setAction(getOpenAction());
+			btOpen.setText(I18N.getMsg("msg.common.open"));
+			btOpen.setIcon(I18N.getIcon("icon.small.open"));
+			SwingUtil.addEnterAction(btOpen, getOpenAction());
+			JButton btClose = new JButton();
+			btClose.setAction(getCloseAction());
+			btClose.setText(I18N.getMsg("msg.common.close"));
+			btClose.setIcon(I18N.getIcon("icon.small.close"));
+			SwingUtil.addEscAction(btClose, getCloseAction());
+			add(text);
+			add(btOpen, "split 2,gap push,sg");
+			add(btClose, "sg");
 		}
 
 		private AbstractAction getOpenAction() {
 			return new AbstractAction() {
 				@Override
-				public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
+				public void actionPerformed(ActionEvent event) {
 					try {
 						Desktop.open(new File(ExportPrintDialog.ConfirmDialog.this.fileName));
-						ExportPrintDialog.ConfirmDialog.this.getCloseAction().actionPerformed(paramAnonymousActionEvent);
-					} catch (DesktopException localDesktopException) {
+						ExportPrintDialog.ConfirmDialog.this.getCloseAction().actionPerformed(event);
+					} catch (DesktopException exc) {
 					}
 				}
 			};
@@ -310,7 +307,7 @@ public class ExportPrintDialog extends AbstractDialog
 		private AbstractAction getCloseAction() {
 			return new AbstractAction() {
 				@Override
-				public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
+				public void actionPerformed(ActionEvent event) {
 					ExportPrintDialog.ConfirmDialog.this.getThat().dispose();
 				}
 			};

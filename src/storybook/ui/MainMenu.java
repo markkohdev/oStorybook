@@ -15,11 +15,56 @@
  */
 package storybook.ui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import net.infonode.docking.View;
+import org.apache.commons.io.FileUtils;
+import storybook.SbConstants;
+import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.ViewName;
+import storybook.StorybookApp;
+import storybook.model.hbn.entity.Scene;
+import storybook.toolkit.I18N;
+import storybook.toolkit.net.Updater;
+import storybook.toolkit.swing.SwingUtil;
+import storybook.action.ActionHandler;
+import storybook.action.DisposeDialogAction;
+import storybook.action.OpenFileAction;
+import storybook.controller.DocumentController;
+import storybook.export.BookExporter;
+import storybook.model.DbFile;
+import storybook.model.hbn.entity.AbstractEntity;
+import storybook.model.hbn.entity.Chapter;
+import storybook.model.hbn.entity.Idea;
+import storybook.model.hbn.entity.Internal;
+import storybook.model.hbn.entity.Item;
+import storybook.model.hbn.entity.Location;
+import storybook.model.hbn.entity.Part;
+import storybook.model.hbn.entity.Person;
+import storybook.model.hbn.entity.Strand;
+import storybook.model.hbn.entity.Tag;
+import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.net.NetUtil;
+import storybook.ui.dialog.AboutDialog;
+import storybook.ui.dialog.BookPropertiesDialog;
+import storybook.ui.dialog.FoiDialog;
+import storybook.ui.dialog.PreferencesDialog;
+import storybook.ui.dialog.WaitDialog;
+import storybook.ui.dialog.file.SaveAsFileDialog;
+import storybook.ui.jasperreports.ExportPrintDialog;
+
 /**
  *
  * @author favdb
  */
 public class MainMenu extends javax.swing.JFrame {
+
+	MainFrame mainFrame;
 
 	/**
 	 * Creates new form MainMenu
@@ -59,25 +104,32 @@ public class MainMenu extends javax.swing.JFrame {
         editMenu = new javax.swing.JMenu();
         editCopyBook = new javax.swing.JMenuItem();
         editCopyBlurb = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JPopupMenu.Separator();
+        documentProperties = new javax.swing.JMenuItem();
         newMenu = new javax.swing.JMenu();
         newStrand = new javax.swing.JMenuItem();
         newPart = new javax.swing.JMenuItem();
         newChapter = new javax.swing.JMenuItem();
         newScene = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
         newCharacter = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        characterCategories = new javax.swing.JMenuItem();
+        Genders = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
         newLocation = new javax.swing.JMenuItem();
+        renameCity = new javax.swing.JMenuItem();
+        renameCountry = new javax.swing.JMenuItem();
         newItem = new javax.swing.JMenuItem();
+        jSeparator9 = new javax.swing.JPopupMenu.Separator();
         newTag = new javax.swing.JMenuItem();
         newIdea = new javax.swing.JMenuItem();
-        associationMenu = new javax.swing.JMenu();
-        associationsTag = new javax.swing.JMenuItem();
-        associationsIdea = new javax.swing.JMenuItem();
+        linksMenu = new javax.swing.JMenu();
+        tagsLinks = new javax.swing.JMenuItem();
+        itemsLinks = new javax.swing.JMenuItem();
         chartsMenu = new javax.swing.JMenu();
         chartsWiww = new javax.swing.JMenuItem();
-        chartsByDate = new javax.swing.JMenuItem();
-        chartsByScene = new javax.swing.JMenuItem();
+        chartsCharactersByDate = new javax.swing.JMenuItem();
+        chartsCharactersByScene = new javax.swing.JMenuItem();
         chartsUsageStrands = new javax.swing.JMenuItem();
         chartsGantt = new javax.swing.JMenuItem();
         jSeparator10 = new javax.swing.JPopupMenu.Separator();
@@ -202,7 +254,6 @@ public class MainMenu extends javax.swing.JFrame {
         fileMenu.add(fileExport);
 
         filePrint.setText(bundle.getString("msg.file.print")); // NOI18N
-        filePrint.setEnabled(false);
 
         filePrintBook.setText(bundle.getString("msg.file.print.book")); // NOI18N
         filePrintBook.addActionListener(new java.awt.event.ActionListener() {
@@ -260,6 +311,15 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         editMenu.add(editCopyBlurb);
+        editMenu.add(jSeparator6);
+
+        documentProperties.setText(bundle.getString("msg.common.preferences")); // NOI18N
+        documentProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                documentPropertiesActionPerformed(evt);
+            }
+        });
+        editMenu.add(documentProperties);
 
         jMenuBar1.add(editMenu);
 
@@ -300,6 +360,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         newMenu.add(newScene);
+        newMenu.add(jSeparator7);
 
         newCharacter.setText(bundle.getString("msg.common.person")); // NOI18N
         newCharacter.setToolTipText("");
@@ -310,21 +371,22 @@ public class MainMenu extends javax.swing.JFrame {
         });
         newMenu.add(newCharacter);
 
-        jMenuItem1.setText(bundle.getString("msg.common.genders")); // NOI18N
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        characterCategories.setText(bundle.getString("msg.persons.categories")); // NOI18N
+        characterCategories.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                characterCategoriesActionPerformed(evt);
             }
         });
-        newMenu.add(jMenuItem1);
+        newMenu.add(characterCategories);
 
-        jMenuItem2.setText(bundle.getString("msg.common.category")); // NOI18N
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        Genders.setText(bundle.getString("msg.common.genders")); // NOI18N
+        Genders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                GendersActionPerformed(evt);
             }
         });
-        newMenu.add(jMenuItem2);
+        newMenu.add(Genders);
+        newMenu.add(jSeparator8);
 
         newLocation.setText(bundle.getString("msg.common.location")); // NOI18N
         newLocation.addActionListener(new java.awt.event.ActionListener() {
@@ -334,6 +396,22 @@ public class MainMenu extends javax.swing.JFrame {
         });
         newMenu.add(newLocation);
 
+        renameCity.setText(bundle.getString("msg.location.rename.city")); // NOI18N
+        renameCity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                renameCityActionPerformed(evt);
+            }
+        });
+        newMenu.add(renameCity);
+
+        renameCountry.setText(bundle.getString("msg.location.rename.country")); // NOI18N
+        renameCountry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                renameCountryActionPerformed(evt);
+            }
+        });
+        newMenu.add(renameCountry);
+
         newItem.setText(bundle.getString("msg.common.item")); // NOI18N
         newItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,6 +419,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
         newMenu.add(newItem);
+        newMenu.add(jSeparator9);
 
         newTag.setText(bundle.getString("msg.common.tag")); // NOI18N
         newTag.addActionListener(new java.awt.event.ActionListener() {
@@ -360,25 +439,25 @@ public class MainMenu extends javax.swing.JFrame {
 
         jMenuBar1.add(newMenu);
 
-        associationMenu.setText(bundle.getString("msg.common.links")); // NOI18N
+        linksMenu.setText(bundle.getString("msg.common.links")); // NOI18N
 
-        associationsTag.setText(bundle.getString("msg.common.tag")); // NOI18N
-        associationsTag.addActionListener(new java.awt.event.ActionListener() {
+        tagsLinks.setText(bundle.getString("msg.common.tags.links")); // NOI18N
+        tagsLinks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                associationsTagActionPerformed(evt);
+                tagsLinksActionPerformed(evt);
             }
         });
-        associationMenu.add(associationsTag);
+        linksMenu.add(tagsLinks);
 
-        associationsIdea.setText(bundle.getString("msg.common.idea")); // NOI18N
-        associationsIdea.addActionListener(new java.awt.event.ActionListener() {
+        itemsLinks.setText(bundle.getString("msg.common.item.links")); // NOI18N
+        itemsLinks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                associationsIdeaActionPerformed(evt);
+                itemsLinksActionPerformed(evt);
             }
         });
-        associationMenu.add(associationsIdea);
+        linksMenu.add(itemsLinks);
 
-        jMenuBar1.add(associationMenu);
+        jMenuBar1.add(linksMenu);
 
         chartsMenu.setText(bundle.getString("msg.common.charts")); // NOI18N
 
@@ -390,21 +469,21 @@ public class MainMenu extends javax.swing.JFrame {
         });
         chartsMenu.add(chartsWiww);
 
-        chartsByDate.setText(bundle.getString("msg.menu.tools.charts.overall.character.date")); // NOI18N
-        chartsByDate.addActionListener(new java.awt.event.ActionListener() {
+        chartsCharactersByDate.setText(bundle.getString("msg.menu.tools.charts.overall.character.date")); // NOI18N
+        chartsCharactersByDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsByDateActionPerformed(evt);
+                chartsCharactersByDateActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsByDate);
+        chartsMenu.add(chartsCharactersByDate);
 
-        chartsByScene.setText(bundle.getString("msg.menu.tools.charts.part.character.scene")); // NOI18N
-        chartsByScene.addActionListener(new java.awt.event.ActionListener() {
+        chartsCharactersByScene.setText(bundle.getString("msg.menu.tools.charts.part.character.scene")); // NOI18N
+        chartsCharactersByScene.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsBySceneActionPerformed(evt);
+                chartsCharactersBySceneActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsByScene);
+        chartsMenu.add(chartsCharactersByScene);
 
         chartsUsageStrands.setText(bundle.getString("msg.menu.tools.charts.overall.strand.date")); // NOI18N
         chartsUsageStrands.addActionListener(new java.awt.event.ActionListener() {
@@ -680,38 +759,64 @@ public class MainMenu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 14, Short.MAX_VALUE)
+            .addGap(0, 26, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void fileNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileNewActionPerformed
-
+		StorybookApp.getInstance().createNewFile();
     }//GEN-LAST:event_fileNewActionPerformed
 
     private void fileOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileOpenActionPerformed
+		mainFrame.setWaitingCursor();
+		StorybookApp.getInstance().openFile();
+		mainFrame.setDefaultCursor();
 
     }//GEN-LAST:event_fileOpenActionPerformed
 
     private void fileSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveActionPerformed
+		WaitDialog dlg = new WaitDialog(mainFrame,I18N.getMsg("msg.file.saving"));
+		Timer timer = new Timer(500, new DisposeDialogAction(dlg));
+		timer.setRepeats(false);
+		timer.start();
+		SwingUtil.showModalDialog(dlg, mainFrame);
 
     }//GEN-LAST:event_fileSaveActionPerformed
 
     private void fileSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveAsActionPerformed
-
+		SaveAsFileDialog dlg = new SaveAsFileDialog(mainFrame);
+		SwingUtil.showModalDialog(dlg, mainFrame);
+		if (dlg.isCanceled()) {
+			return;
+		}
+		File file = dlg.getFile();
+		try {
+			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
+		} catch (IOException ioe) {
+			System.err.println("ActionHandler.handleSaveAs() IOex : "+ioe.getMessage());
+		}
+		DbFile dbFile = new DbFile(file);
+		OpenFileAction act = new OpenFileAction("", dbFile);
+		act.actionPerformed(null);
     }//GEN-LAST:event_fileSaveAsActionPerformed
 
     private void filePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePropertiesActionPerformed
-
+		BookPropertiesDialog dlg = new BookPropertiesDialog(mainFrame);
+		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_filePropertiesActionPerformed
 
     private void fileExportBookTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportBookTXTActionPerformed
-
+		BookExporter exp = new BookExporter(mainFrame);
+		exp.setExportForOpenOffice(false);
+		exp.exportToTxtFile();
     }//GEN-LAST:event_fileExportBookTXTActionPerformed
 
     private void fileExportBookHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportBookHTMLActionPerformed
-
+		BookExporter exp = new BookExporter(mainFrame);
+		exp.setExportForOpenOffice(true);
+		exp.exportToHtmlFile();
     }//GEN-LAST:event_fileExportBookHTMLActionPerformed
 
     private void fileExportObjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportObjectActionPerformed
@@ -719,7 +824,8 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_fileExportObjectActionPerformed
 
     private void filePrintBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintBookActionPerformed
-
+		ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
+		SwingUtil.showDialog(dlg, mainFrame);
     }//GEN-LAST:event_filePrintBookActionPerformed
 
     private void filePrintChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintChapterActionPerformed
@@ -731,91 +837,97 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_filePrintSceneActionPerformed
 
     private void fileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExitActionPerformed
-
+		StorybookApp.getInstance().exit();
     }//GEN-LAST:event_fileExitActionPerformed
 
     private void editCopyBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCopyBookActionPerformed
-
+		BookExporter exp = new BookExporter(mainFrame);
+		exp.setExportForOpenOffice(false);
+		exp.exportToClipboard();
     }//GEN-LAST:event_editCopyBookActionPerformed
 
     private void editCopyBlurbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCopyBlurbActionPerformed
-
+		Internal internal = DocumentUtil.restoreInternal(mainFrame,InternalKey.BLURB, "");
+		StringSelection selection = new StringSelection(internal.getStringValue() + "\n");
+		Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clbrd.setContents(selection, selection);
     }//GEN-LAST:event_editCopyBlurbActionPerformed
 
     private void newStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStrandActionPerformed
-
+		handleNewEntity(new Strand());
     }//GEN-LAST:event_newStrandActionPerformed
 
     private void newPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPartActionPerformed
-
+		handleNewEntity(new Part());
     }//GEN-LAST:event_newPartActionPerformed
 
     private void newChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newChapterActionPerformed
-
+		handleNewEntity(new Chapter());
     }//GEN-LAST:event_newChapterActionPerformed
 
     private void newSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSceneActionPerformed
-
+		handleNewEntity(new Scene());
     }//GEN-LAST:event_newSceneActionPerformed
 
     private void newCharacterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newCharacterActionPerformed
-
+		handleNewEntity(new Person());
     }//GEN-LAST:event_newCharacterActionPerformed
 
     private void newLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newLocationActionPerformed
-
+		handleNewEntity(new Location());
     }//GEN-LAST:event_newLocationActionPerformed
 
     private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
-
+		handleNewEntity(new Item());
     }//GEN-LAST:event_newItemActionPerformed
 
     private void newTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagActionPerformed
-
+		handleNewEntity(new Tag());
     }//GEN-LAST:event_newTagActionPerformed
 
     private void newIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newIdeaActionPerformed
-
+		handleNewEntity(new Idea());
     }//GEN-LAST:event_newIdeaActionPerformed
 
-    private void associationsTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_associationsTagActionPerformed
+    private void tagsLinksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagsLinksActionPerformed
 
-    }//GEN-LAST:event_associationsTagActionPerformed
+    }//GEN-LAST:event_tagsLinksActionPerformed
 
-    private void associationsIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_associationsIdeaActionPerformed
+    private void itemsLinksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemsLinksActionPerformed
 
-    }//GEN-LAST:event_associationsIdeaActionPerformed
+    }//GEN-LAST:event_itemsLinksActionPerformed
 
     private void chartsWiwwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsWiwwActionPerformed
-
+		showAndFocus(ViewName.CHART_WiWW);
     }//GEN-LAST:event_chartsWiwwActionPerformed
 
-    private void chartsByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsByDateActionPerformed
+    private void chartsCharactersByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsCharactersByDateActionPerformed
+		showAndFocus(ViewName.CHART_PERSONS_BY_DATE);
+    }//GEN-LAST:event_chartsCharactersByDateActionPerformed
 
-    }//GEN-LAST:event_chartsByDateActionPerformed
-
-    private void chartsBySceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsBySceneActionPerformed
-
-    }//GEN-LAST:event_chartsBySceneActionPerformed
+    private void chartsCharactersBySceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsCharactersBySceneActionPerformed
+		showAndFocus(ViewName.CHART_PERSONS_BY_SCENE);
+    }//GEN-LAST:event_chartsCharactersBySceneActionPerformed
 
     private void chartsUsageStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsUsageStrandsActionPerformed
-
+		showAndFocus(ViewName.CHART_STRANDS_BY_DATE);
     }//GEN-LAST:event_chartsUsageStrandsActionPerformed
 
     private void chartsGanttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsGanttActionPerformed
-
+		showAndFocus(SbConstants.ViewName.CHART_GANTT);
     }//GEN-LAST:event_chartsGanttActionPerformed
 
     private void chartsOccurrenceCharactersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsOccurrenceCharactersActionPerformed
-
+		showAndFocus(ViewName.CHART_OCCURRENCE_OF_PERSONS);
     }//GEN-LAST:event_chartsOccurrenceCharactersActionPerformed
 
     private void chartsOccurrenceLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsOccurrenceLocationsActionPerformed
-
+		showAndFocus(ViewName.CHART_OCCURRENCE_OF_LOCATIONS);
     }//GEN-LAST:event_chartsOccurrenceLocationsActionPerformed
 
     private void toolsTasksListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsTasksListActionPerformed
-
+		showAndFocus(ViewName.SCENES);
+		mainFrame.getDocumentController().showTaskList();
     }//GEN-LAST:event_toolsTasksListActionPerformed
 
     private void toolsLanguageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsLanguageActionPerformed
@@ -867,35 +979,35 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_viewTableIdeasActionPerformed
 
     private void viewManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewManageActionPerformed
-        // TODO add your handling code here:
+		showAndFocus(ViewName.MANAGE);
     }//GEN-LAST:event_viewManageActionPerformed
 
     private void viewChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewChronoActionPerformed
-        // TODO add your handling code here:
+		showAndFocus(ViewName.CHRONO);
     }//GEN-LAST:event_viewChronoActionPerformed
 
     private void viewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBookActionPerformed
-        // TODO add your handling code here:
+		showAndFocus(ViewName.BOOK);
     }//GEN-LAST:event_viewBookActionPerformed
 
     private void viewReadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReadingActionPerformed
-        // TODO add your handling code here:
+		showAndFocus(ViewName.READING);
     }//GEN-LAST:event_viewReadingActionPerformed
 
     private void viewMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMemoriaActionPerformed
-        // TODO add your handling code here:
+		showAndFocus(ViewName.MEMORIA);
     }//GEN-LAST:event_viewMemoriaActionPerformed
 
     private void helpDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpDocActionPerformed
-
+		NetUtil.openBrowser(SbConstants.URL.DOC.toString());
     }//GEN-LAST:event_helpDocActionPerformed
 
     private void helpFAQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpFAQActionPerformed
-
+		NetUtil.openBrowser(SbConstants.URL.FAQ.toString());
     }//GEN-LAST:event_helpFAQActionPerformed
 
     private void helpBugsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBugsActionPerformed
-
+		NetUtil.openBrowser(SbConstants.URL.REPORTBUG.toString());
     }//GEN-LAST:event_helpBugsActionPerformed
 
     private void helpContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContactActionPerformed
@@ -903,20 +1015,39 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_helpContactActionPerformed
 
     private void helpCheckUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpCheckUpdateActionPerformed
-
+		if (Updater.checkForUpdate()) {
+			JOptionPane.showMessageDialog(mainFrame,
+				I18N.getMsg("msg.update.no.text"),
+				I18N.getMsg("msg.update.no.title"),
+				JOptionPane.INFORMATION_MESSAGE);
+		}
     }//GEN-LAST:event_helpCheckUpdateActionPerformed
 
     private void helpAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpAboutActionPerformed
-
+		AboutDialog dlg = new AboutDialog(mainFrame);
+		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_helpAboutActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void GendersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GendersActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_GendersActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void characterCategoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_characterCategoriesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_characterCategoriesActionPerformed
+
+    private void documentPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentPropertiesActionPerformed
+		PreferencesDialog dlg = new PreferencesDialog();
+		SwingUtil.showModalDialog(dlg, mainFrame);
+    }//GEN-LAST:event_documentPropertiesActionPerformed
+
+    private void renameCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_renameCityActionPerformed
+
+    private void renameCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCountryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_renameCountryActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -953,17 +1084,17 @@ public class MainMenu extends javax.swing.JFrame {
 		});
 	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu associationMenu;
-    private javax.swing.JMenuItem associationsIdea;
-    private javax.swing.JMenuItem associationsTag;
-    private javax.swing.JMenuItem chartsByDate;
-    private javax.swing.JMenuItem chartsByScene;
+    private javax.swing.JMenuItem Genders;
+    private javax.swing.JMenuItem characterCategories;
+    private javax.swing.JMenuItem chartsCharactersByDate;
+    private javax.swing.JMenuItem chartsCharactersByScene;
     private javax.swing.JMenuItem chartsGantt;
     private javax.swing.JMenu chartsMenu;
     private javax.swing.JMenuItem chartsOccurrenceCharacters;
     private javax.swing.JMenuItem chartsOccurrenceLocations;
     private javax.swing.JMenuItem chartsUsageStrands;
     private javax.swing.JMenuItem chartsWiww;
+    private javax.swing.JMenuItem documentProperties;
     private javax.swing.JMenuItem editCopyBlurb;
     private javax.swing.JMenuItem editCopyBook;
     private javax.swing.JMenu editMenu;
@@ -989,16 +1120,20 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem helpDoc;
     private javax.swing.JMenuItem helpFAQ;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem itemsLinks;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
+    private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenu linksMenu;
     private javax.swing.JMenuItem newChapter;
     private javax.swing.JMenuItem newCharacter;
     private javax.swing.JMenuItem newIdea;
@@ -1009,6 +1144,9 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem newScene;
     private javax.swing.JMenuItem newStrand;
     private javax.swing.JMenuItem newTag;
+    private javax.swing.JMenuItem renameCity;
+    private javax.swing.JMenuItem renameCountry;
+    private javax.swing.JMenuItem tagsLinks;
     private javax.swing.JMenuItem toolsLanguage;
     private javax.swing.JMenu toolsMenu;
     private javax.swing.JMenuItem toolsTasksList;
@@ -1036,4 +1174,20 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenu windowMenu;
     private javax.swing.JMenuItem windowSaveLayout;
     // End of variables declaration//GEN-END:variables
+
+	public void setMainFrame(MainFrame m) {
+		mainFrame=m;
+	}
+
+	private void handleNewEntity(AbstractEntity entity) {
+		DocumentController ctrl = mainFrame.getDocumentController();
+		ctrl.setEntityToEdit(entity);
+		mainFrame.showView(SbConstants.ViewName.EDITOR);
+	}
+
+	private void showAndFocus(ViewName viewName) {
+		View view = mainFrame.getView(viewName);
+		view.restore();
+		view.restoreFocus();
+	}
 }
