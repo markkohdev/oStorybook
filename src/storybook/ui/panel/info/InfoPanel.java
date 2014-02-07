@@ -86,7 +86,7 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 				return;
 			}
 			if (newValue instanceof DbFile) {
-				StringBuffer buf = new StringBuffer();
+				StringBuilder buf = new StringBuilder();
 				buf.append("<p><b>\n");
 				buf.append(I18N.getMsgColon("msg.common.title"));
 				buf.append("</b></p><p>\n");
@@ -134,7 +134,6 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 			AbstractEntity updatedEntity = (AbstractEntity) newValue;
 			if (updatedEntity.getId().equals(entity.getId())) {
 				refreshInfo();
-				return;
 			}
 		}
 	}
@@ -164,8 +163,7 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 	private void refreshInfo() {
 		infoPane.setText(EntityUtil.getInfo(mainFrame, entity));
 		infoPane.setCaretPosition(0);
-		infoPane.setComponentPopupMenu(EntityUtil.createPopupMenu(mainFrame,
-				entity));
+		infoPane.setComponentPopupMenu(EntityUtil.createPopupMenu(mainFrame, entity));
 	}
 
 	@Override

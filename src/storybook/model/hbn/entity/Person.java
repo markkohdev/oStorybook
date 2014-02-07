@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import storybook.toolkit.swing.ColorUtil;
 
 /**
  * @hibernate.class
@@ -194,6 +195,10 @@ public class Person extends AbstractEntity implements Comparable<Person> {
 			return null;
 		}
 		return new Color(color);
+	}
+
+	public String getHTMLColor() {
+		return ColorUtil.getHTMLName(getJColor());
 	}
 
 	public void setColor(Integer color) {

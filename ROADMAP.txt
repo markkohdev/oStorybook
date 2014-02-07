@@ -1,0 +1,32 @@
+Plan de développement de oStorybook
+-----------------------------------
+
+Suggestions approuvées, réalisation non planifiée:
+16/01/2014 : possibilité de configurer un calendrier spécial
+             (genre année de base 5268, année de 8 mois de 28 jours,
+             avec des noms de mois particuliers).
+16/01/2014 : possibilité de déterminer des règles particulières d'enchainement
+             des scènes (genre commence 10 minutes après la fin d'une autre
+             scène, ou encore commence 1 jour après à 10h00 précise).
+16/01/2014 : possibilité d'avoir plusieurs instances de l'application,
+             à étudier en profondeur en particulier pour les conséquences sur
+             les ressources du système.
+27/01/2014 : remanier les modules export et impression.
+27/01/2014 : possibilité de faire du copier/coller, couper/coller d'un livre
+             à l'autre pour différents types d'élément (chapitre, scène, objet,
+             lieux, personnage).
+30/01/2014 : ajout d'une fonction chercher et chercher/remplacer avec options
+             d'application sur texte/description/notes de l'objet en cours
+             d'édition, ou de tous les objets
+30/01/2014 : ajout d'une fonction de création dynamique d'objets dépendants
+             de l'objet en cours d'édition
+30/01/2014 : ajout de la possibilité de créer des objets de même nature sans
+             quitter l'éditeur (par exemple création du personnage A puis du
+             personnage B, puis du personnage C)
+30/01/2014 : permettre d'avoir autant de fenêtre éditeur que l'on veut, au lieu
+             d'une seule
+31/01/2014 : ajouter en export au format LaTeX
+
+Suggestions/Demandes en cours de réalisation:
+22/01/2014 : résoudre les problèmes d'export TXT et HTML, ceux du presse-papier
+             et mettre en place un vrai module d'impression. Prioritaire.
