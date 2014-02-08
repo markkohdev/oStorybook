@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
 
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
@@ -45,7 +45,7 @@ public class ShowInMemoriaAction extends AbstractEntityAction {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				DocumentController ctrl = mainFrame.getDocumentController();
+				BookController ctrl = mainFrame.getDocumentController();
 				ctrl.showInMemoria(entity);
 			}
 		});

@@ -35,7 +35,7 @@ import storybook.toolkit.swing.SwingUtil;
 import storybook.action.ActionHandler;
 import storybook.action.DisposeDialogAction;
 import storybook.action.OpenFileAction;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.export.BookExporter;
 import storybook.model.DbFile;
 import storybook.model.hbn.entity.AbstractEntity;
@@ -1180,7 +1180,7 @@ public class MainMenu extends javax.swing.JFrame {
 	}
 
 	private void handleNewEntity(AbstractEntity entity) {
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		ctrl.setEntityToEdit(entity);
 		mainFrame.showView(SbConstants.ViewName.EDITOR);
 	}

@@ -21,8 +21,8 @@ package storybook.ui.dialog.rename;
 import java.util.List;
 
 import org.hibernate.Session;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ItemDAOImpl;
 import storybook.model.hbn.entity.Item;
 import storybook.toolkit.I18N;
@@ -37,7 +37,7 @@ public class RenameItemCategoryDialog extends AbstractRenameDialog {
 
 	@Override
 	protected List<String> getList() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl dao = new ItemDAOImpl(session);
 		List<String> ret = dao.findCategories();
@@ -47,8 +47,8 @@ public class RenameItemCategoryDialog extends AbstractRenameDialog {
 
 	@Override
 	protected void rename(String oldValue, String newValue) {
-		DocumentModel model = mainFrame.getDocumentModel();
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookModel model = mainFrame.getDocumentModel();
+		BookController ctrl = mainFrame.getDocumentController();
 		Session session = model.beginTransaction();
 		ItemDAOImpl dao = new ItemDAOImpl(session);
 		List<Item> items = dao.findByCategory(oldValue);

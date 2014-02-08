@@ -25,7 +25,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.toolkit.I18N;
@@ -67,7 +67,7 @@ public class BookInfoPanel extends AbstractPanel {
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			Strand newStrand = (Strand) newValue;
 			if (newStrand.getId().equals(scene.getStrand().getId())) {
 				lbStrand.setText(newStrand.toString());
@@ -77,7 +77,7 @@ public class BookInfoPanel extends AbstractPanel {
 			return;
 		}
 
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			Scene newScene = (Scene) newValue;
 			if (newScene.getId() != scene.getId()) {
 				return;

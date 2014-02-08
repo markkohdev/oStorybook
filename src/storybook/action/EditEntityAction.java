@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import storybook.SbConstants.ViewName;
 import storybook.StorybookApp;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
@@ -50,7 +50,7 @@ public class EditEntityAction extends AbstractEntityAction {
 		if (this.saveBeforeEdit) {
 			mainFrame.getActionController().handleSave();
 		}
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		ctrl.setEntityToEdit(entity);
 		mainFrame.showView(ViewName.EDITOR);
 	}

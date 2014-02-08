@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.hibernate.Session;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Scene;
@@ -48,8 +48,8 @@ public class ChapterOrderByTimestampAction extends AbstractEntityAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DocumentModel model = mainFrame.getDocumentModel();
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookModel model = mainFrame.getDocumentModel();
+		BookController ctrl = mainFrame.getDocumentController();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Scene> scenes = dao.findScenesOrderByTimestamp(chapter);

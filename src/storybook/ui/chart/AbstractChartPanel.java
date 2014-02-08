@@ -31,7 +31,7 @@ import javax.swing.JScrollPane;
 import net.infonode.docking.View;
 import net.miginfocom.swing.MigLayout;
 import storybook.SbConstants;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.Internal;
 import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.EnvUtil;
@@ -72,7 +72,7 @@ public abstract class AbstractChartPanel extends AbstractPanel
 		String str = paramPropertyChangeEvent.getPropertyName();
 		View localView1;
 		View localView2;
-		if (DocumentController.CommonProps.REFRESH.check(str)) {
+		if (BookController.CommonProps.REFRESH.check(str)) {
 			localView1 = (View) localObject;
 			localView2 = (View) getParent().getParent();
 			if (localView2 == localView1) {
@@ -80,7 +80,7 @@ public abstract class AbstractChartPanel extends AbstractPanel
 			}
 			return;
 		}
-		if ((this.partRelated) && (DocumentController.PartProps.CHANGE.check(str))) {
+		if ((this.partRelated) && (BookController.PartProps.CHANGE.check(str))) {
 			if (this.needsFullRefresh) {
 				refresh();
 			} else {
@@ -88,7 +88,7 @@ public abstract class AbstractChartPanel extends AbstractPanel
 			}
 			return;
 		}
-		if (DocumentController.CommonProps.EXPORT.check(str)) {
+		if (BookController.CommonProps.EXPORT.check(str)) {
 			localView1 = (View) localObject;
 			localView2 = (View) getParent().getParent();
 			if (localView2 == localView1) {
@@ -96,7 +96,7 @@ public abstract class AbstractChartPanel extends AbstractPanel
 			}
 			return;
 		}
-		if (DocumentController.CommonProps.PRINT.check(str)) {
+		if (BookController.CommonProps.PRINT.check(str)) {
 			localView1 = (View) localObject;
 			localView2 = (View) getParent().getParent();
 			if (localView2 == localView1) {

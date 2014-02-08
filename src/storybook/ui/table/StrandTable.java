@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Strand;
@@ -53,17 +53,17 @@ public class StrandTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.StrandProps.INIT.check(propName)) {
+			if (BookController.StrandProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.StrandProps.UPDATE.check(propName)) {
+			} else if (BookController.StrandProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.StrandProps.NEW.check(propName)) {
+			} else if (BookController.StrandProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.StrandProps.DELETE.check(propName)) {
+			} else if (BookController.StrandProps.DELETE.check(propName)) {
 				deleteEntity(evt);
-			} else if (DocumentController.StrandProps.ORDER_UP.check(propName)) {
+			} else if (BookController.StrandProps.ORDER_UP.check(propName)) {
 				orderUpEntity(evt);
-			} else if (DocumentController.StrandProps.ORDER_DOWN
+			} else if (BookController.StrandProps.ORDER_DOWN
 					.check(propName)) {
 				orderDownEntity(evt);
 			}
@@ -94,7 +94,7 @@ public class StrandTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Strand strand = (Strand)entity;
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
@@ -117,7 +117,7 @@ public class StrandTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Strand strand = (Strand)entity;
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
@@ -169,7 +169,7 @@ public class StrandTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		Strand strand = dao.find(id);

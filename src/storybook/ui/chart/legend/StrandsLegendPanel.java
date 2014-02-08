@@ -19,7 +19,7 @@ import java.awt.Dimension;
 import java.util.Iterator;
 import javax.swing.JLabel;
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.entity.Strand;
 import storybook.toolkit.I18N;
@@ -39,7 +39,7 @@ public class StrandsLegendPanel extends AbstractLegendPanel
   public void initUi()
   {
     setOpaque(false);
-    DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+    BookModel localDocumentModel = this.mainFrame.getDocumentModel();
     Session localSession = localDocumentModel.beginTransaction();
     StrandDAOImpl localStrandDAOImpl = new StrandDAOImpl(localSession);
     add(new JLabel(I18N.getMsg("msg.report.caption.strands")), "gapright 5");

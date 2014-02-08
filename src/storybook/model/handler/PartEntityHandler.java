@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package storybook.model.handler;
 
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Part;
@@ -39,7 +39,7 @@ public class PartEntityHandler extends AbstractEntityHandler {
 
 	@Override
 	public AbstractEntity createNewEntity() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		Integer nextNumber = dao.getNextPartNumber();

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.InternalDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Internal;
@@ -50,13 +50,13 @@ public class InternalTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.InternalProps.INIT.check(propName)) {
+			if (BookController.InternalProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.InternalProps.UPDATE.check(propName)) {
+			} else if (BookController.InternalProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.InternalProps.NEW.check(propName)) {
+			} else if (BookController.InternalProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.InternalProps.DELETE.check(propName)) {
+			} else if (BookController.InternalProps.DELETE.check(propName)) {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class InternalTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		InternalDAOImpl dao = new InternalDAOImpl(session);
 		Internal internal = dao.find(id);

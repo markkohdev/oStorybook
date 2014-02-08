@@ -29,8 +29,8 @@ import javax.swing.JLabel;
 import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Scene;
@@ -63,7 +63,7 @@ public class SceneTable extends AbstractTable {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<AbstractEntity> getAllEntities() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		SceneState state = (SceneState) sceneStateCombo.getSelectedItem();
@@ -112,23 +112,23 @@ public class SceneTable extends AbstractTable {
 			String propName = evt.getPropertyName();
 			Object newValue = evt.getNewValue();
 //			Object oldValue = evt.getOldValue();
-			if (DocumentController.SceneProps.INIT.check(propName)) {
+			if (BookController.SceneProps.INIT.check(propName)) {
 				initTableModel(evt);
 				return;
 			}
-			if (DocumentController.SceneProps.UPDATE.check(propName)) {
+			if (BookController.SceneProps.UPDATE.check(propName)) {
 				updateEntity(evt);
 				return;
 			}
-			if (DocumentController.SceneProps.NEW.check(propName)) {
+			if (BookController.SceneProps.NEW.check(propName)) {
 				newEntity(evt);
 				return;
 			}
-			if (DocumentController.SceneProps.DELETE.check(propName)) {
+			if (BookController.SceneProps.DELETE.check(propName)) {
 				deleteEntity(evt);
 				return;
 			}
-			if (DocumentController.SceneProps.FILTER.check(propName)) {
+			if (BookController.SceneProps.FILTER.check(propName)) {
 				initTableModel(evt);
 				if (newValue instanceof SceneState) {
 					sceneStateCombo.setSelectedItem((SceneState) newValue);
@@ -137,8 +137,8 @@ public class SceneTable extends AbstractTable {
 			}
 
 			// show only scenes from current part
-//			if (DocumentController.PartProps.CHANGE.check(propName)) {
-//				DocumentModel model = mainFrame.getDocumentModel();
+//			if (BookController.PartProps.CHANGE.check(propName)) {
+//				BookModel model = mainFrame.getDocumentModel();
 //				Session session = model.beginTransaction();
 //				SceneDAOImpl dao = new SceneDAOImpl(session);
 //				Part curPart = mainFrame.getCurrentPart();
@@ -187,7 +187,7 @@ public class SceneTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		Scene scene = dao.find(id);

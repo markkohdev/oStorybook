@@ -62,13 +62,11 @@ public class PostModelUpdateDialog extends AbstractDialog {
 		JLabel lbText = new JLabel(I18N.getMsg("msg.legacy.post.update.text"));
 
 		cbUseHtmlScenes = new JCheckBox();
-		cbUseHtmlScenes.setText(I18N
-				.getMsg("msg.document.preference.use.html.scenes"));
+		cbUseHtmlScenes.setText(I18N.getMsg("msg.document.preference.use.html.scenes"));
 		cbUseHtmlScenes.setSelected(true);
 
 		cbUseHtmlDescr = new JCheckBox();
-		cbUseHtmlDescr.setText(I18N
-				.getMsg("msg.document.preference.use.html.descr"));
+		cbUseHtmlDescr.setText(I18N.getMsg("msg.document.preference.use.html.descr"));
 		cbUseHtmlDescr.setSelected(true);
 
 		add(lbText);
@@ -83,12 +81,8 @@ public class PostModelUpdateDialog extends AbstractDialog {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.USE_HTML_SCENES,
-						cbUseHtmlScenes.isSelected());
-				DocumentUtil
-						.storeInternal(mainFrame, InternalKey.USE_HTML_DESCR,
-								cbUseHtmlDescr.isSelected());
+				DocumentUtil.storeInternal(mainFrame,InternalKey.USE_HTML_SCENES,cbUseHtmlScenes.isSelected());
+				DocumentUtil.storeInternal(mainFrame, InternalKey.USE_HTML_DESCR,cbUseHtmlDescr.isSelected());
 				mainFrame.setWaitingCursor();
 				EntityUtil.convertPlainTextToHtml(mainFrame);
 				mainFrame.setDefaultCursor();

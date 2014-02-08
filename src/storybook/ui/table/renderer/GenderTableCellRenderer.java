@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.hibernate.LazyInitializationException;
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Gender;
 import storybook.ui.MainFrame;
 
@@ -50,7 +50,7 @@ public class GenderTableCellRenderer extends DefaultTableCellRenderer {
 			lbText.setText(gender.toString());
 			lbText.setIcon(gender.getIcon());
 		} catch (LazyInitializationException lie) {
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			Gender gender = (Gender) value;
 			session.refresh(gender);

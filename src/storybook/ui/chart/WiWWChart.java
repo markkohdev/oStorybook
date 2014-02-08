@@ -1,6 +1,6 @@
 package storybook.ui.chart;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.LocationDAOImpl;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.dao.SceneDAOImpl;
@@ -90,7 +90,7 @@ public class WiWWChart extends AbstractPersonsChart
 
 	private JTable createTable() {
 		Part part = this.mainFrame.getCurrentPart();
-		DocumentModel documentModel = this.mainFrame.getDocumentModel();
+		BookModel documentModel = this.mainFrame.getDocumentModel();
 		Session session = documentModel.beginTransaction();
 		PersonDAOImpl personDAO = new PersonDAOImpl(session);
 		List localList1 = personDAO.findByCategories(this.selectedCategories);

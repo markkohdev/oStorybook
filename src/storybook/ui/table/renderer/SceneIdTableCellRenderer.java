@@ -29,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Scene;
 import storybook.ui.MainFrame;
 
@@ -51,7 +51,7 @@ public class SceneIdTableCellRenderer extends DefaultTableCellRenderer {
 		try {
 			MainFrame mainFrame = (MainFrame) table
 					.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			Long id = (Long) value;
 			Scene scene = (Scene) session.get(Scene.class, id);

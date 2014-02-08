@@ -20,10 +20,12 @@ package storybook;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 import java.text.DateFormat;
@@ -47,6 +49,7 @@ import storybook.controller.PreferenceController;
 import storybook.model.DbFile;
 import storybook.model.PreferenceModel;
 import storybook.model.hbn.entity.Preference;
+import storybook.model.oldModel.ModelMigration;
 import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.PrefUtil;
@@ -56,6 +59,7 @@ import storybook.toolkit.swing.splash.HourglassSplash;
 import storybook.ui.MainFrame;
 import storybook.ui.dialog.ExceptionDialog;
 import storybook.ui.dialog.FirstStartDialog;
+import storybook.ui.dialog.PostModelUpdateDialog;
 import storybook.ui.dialog.file.NewFileDialog;
 
 /**
@@ -73,7 +77,7 @@ public class StorybookApp extends Component {
 
 	private PreferenceModel preferenceModel;
 	private PreferenceController preferenceController;
-	private List<MainFrame> mainFrames;
+	private final List<MainFrame> mainFrames;
 	private Font defaultFont;
 
 	private StorybookApp() {
@@ -264,10 +268,8 @@ public class StorybookApp extends Component {
 			final MainFrame newMainFrame = new MainFrame();
 			newMainFrame.init(dbFile);
 			newMainFrame.getDocumentModel().initEntites();
-			DocumentUtil.storeInternal(newMainFrame,
-					InternalKey.USE_HTML_SCENES, dlg.getUseHtmlScenes());
-			DocumentUtil.storeInternal(newMainFrame,
-					InternalKey.USE_HTML_DESCR, dlg.getUseHtmlDescr());
+			DocumentUtil.storeInternal(newMainFrame, InternalKey.USE_HTML_SCENES, dlg.getUseHtmlScenes());
+			DocumentUtil.storeInternal(newMainFrame, InternalKey.USE_HTML_DESCR, dlg.getUseHtmlDescr());
 			newMainFrame.initUi();
 			newMainFrame.getDocumentController().fireAgain();
 
@@ -315,7 +317,7 @@ public class StorybookApp extends Component {
 			});
 			timer2.setRepeats(false);
 			timer2.start();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			error("StorybookApp.renameFile("+mainFrame.getName()+","+file.getName()+")", e);
 		}
 	}
@@ -375,7 +377,7 @@ public class StorybookApp extends Component {
 			}
 
 			// model update from Storybook 3.x to 4.0
-			/*final PersistenceManager oldPersMngr = PersistenceManager.getInstance();
+			final ModelMigration oldPersMngr = ModelMigration.getInstance();
 			oldPersMngr.open(dbFile);
 			try {
 				if (!oldPersMngr.checkAndAlterModel()) {
@@ -384,13 +386,13 @@ public class StorybookApp extends Component {
 				}
 			} catch (Exception e) {
 				oldPersMngr.closeConnection();
-				System.err.println("StorybookApp.openFile(): DB update failed");
+				StorybookApp.error("StorybookApp.openFile("+dbFile.getDbName()+")",e);
 				ExceptionDialog dlg = new ExceptionDialog(e);
 				SwingUtil.showModalDialog(dlg, null);
 				return false;
 			}
 
-			oldPersMngr.closeConnection();*/
+			oldPersMngr.closeConnection();
 			setWaitCursor();
 			String text = I18N.getMsg("msg.common.loading", dbFile.getName());
 			final HourglassSplash dlg = new HourglassSplash(text);
@@ -408,16 +410,15 @@ public class StorybookApp extends Component {
 						updateFilePref(dbFile);
 						reloadMenuBars();
 						setDefaultCursor();
-						/*if (oldPersMngr.hasAlteredDbModel()) {
-							PostModelUpdateDialog dlg2 = new PostModelUpdateDialog(
-									newMainFrame);
+						if (oldPersMngr.hasAlteredDbModel()) {
+							PostModelUpdateDialog dlg2 = new PostModelUpdateDialog(newMainFrame);
 							SwingUtil.showModalDialog(dlg2, newMainFrame);
-						}*/
+						}
 					} catch (Exception e) {
 					}
 				}
 			});
-		} catch (Exception e) {
+		} catch (HeadlessException e) {
 		}
 		return true;
 	}
@@ -508,22 +509,19 @@ public class StorybookApp extends Component {
 	}
 
 	public void restoreDefaultFont() {
-		Preference pref = PrefUtil.get(PreferenceKey.DEFAULT_FONT_NAME,
-				SbConstants.DEFAULT_FONT_NAME);
+		Preference pref = PrefUtil.get(PreferenceKey.DEFAULT_FONT_NAME, SbConstants.DEFAULT_FONT_NAME);
 		String name = SbConstants.DEFAULT_FONT_NAME;
 		if (pref != null && !pref.getStringValue().isEmpty()) {
 			name = pref.getStringValue();
 		}
 
-		pref = PrefUtil.get(PreferenceKey.DEFAULT_FONT_STYLE,
-				SbConstants.DEFAULT_FONT_STYLE);
+		pref = PrefUtil.get(PreferenceKey.DEFAULT_FONT_STYLE, SbConstants.DEFAULT_FONT_STYLE);
 		int style = 0;
 		if (pref != null) {
 			style = pref.getIntegerValue();
 		}
 
-		pref = PrefUtil.get(PreferenceKey.DEFAULT_FONT_SIZE,
-				SbConstants.DEFAULT_FONT_SIZE);
+		pref = PrefUtil.get(PreferenceKey.DEFAULT_FONT_SIZE, SbConstants.DEFAULT_FONT_SIZE);
 		int size = 0;
 		if (pref != null) {
 			size = pref.getIntegerValue();
@@ -637,20 +635,19 @@ public class StorybookApp extends Component {
 			}
 			return;
 		}
-		StorybookApp app = StorybookApp.getInstance();
 		if (args.length>0) {
-			for (int i=0;i<args.length;i++) {
-				if (args[i].equalsIgnoreCase("--trace")) {
-					app.bTrace=true;
-					app.trace("Storybook execution in trace mode");
+			for (String arg : args) {
+				if (arg.equalsIgnoreCase("--trace")) {
+					StorybookApp.bTrace=true;
+					StorybookApp.trace("Storybook execution in trace mode");
 				}
-				if (args[i].equalsIgnoreCase("--hibernate")) {
-					app.bTraceHibernate=true;
-					app.trace("Hibernate in trace mode");
+				if (arg.equalsIgnoreCase("--hibernate")) {
+					StorybookApp.bTraceHibernate=true;
+					StorybookApp.trace("Hibernate in trace mode");
 				}
-				if (args[i].equalsIgnoreCase("--newUI")) {
-					app.bNewUi=true;
-					app.trace("Application with new UI");
+				if (arg.equalsIgnoreCase("--newUI")) {
+					StorybookApp.bNewUi=true;
+					StorybookApp.trace("Application with new UI");
 				}
 			}
 		}
@@ -677,14 +674,14 @@ public class StorybookApp extends Component {
 							fileLock.release();
 							randomAccessFile.close();
 							file.delete();
-						} catch (Exception e) {
+						} catch (IOException e) {
 							System.err.println("Unable to remove lock file: "+ lockFile+"->"+e.getMessage());
 						}
 					}
 				});
 				return true;
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.err.println("Unable to create and/or lock file: " + lockFile+"->"+e.getMessage());
 		}
 		return false;

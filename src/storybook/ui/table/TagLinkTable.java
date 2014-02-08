@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.TagLinkDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.TagLink;
@@ -50,13 +50,13 @@ public class TagLinkTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.TagLinkProps.INIT.check(propName)) {
+			if (BookController.TagLinkProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.TagLinkProps.UPDATE.check(propName)) {
+			} else if (BookController.TagLinkProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.TagLinkProps.NEW.check(propName)) {
+			} else if (BookController.TagLinkProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.TagLinkProps.DELETE.check(propName)) {
+			} else if (BookController.TagLinkProps.DELETE.check(propName)) {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class TagLinkTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		TagLinkDAOImpl dao = new TagLinkDAOImpl(session);
 		TagLink tagLink = dao.find(id);

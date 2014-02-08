@@ -8,7 +8,7 @@ package storybook.ui.chart;
  *
  * @author favdb
  */
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.LocationDAOImpl;
 import storybook.model.hbn.dao.SceneDAOImpl;
@@ -113,7 +113,7 @@ public class OccurrenceOfLocationsChart extends AbstractChartPanel {
 	private CategoryDataset createDataset() {
 		DefaultCategoryDataset localDefaultCategoryDataset = new DefaultCategoryDataset();
 		try {
-			DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+			BookModel localDocumentModel = this.mainFrame.getDocumentModel();
 			Session localSession = localDocumentModel.beginTransaction();
 			LocationDAOImpl localLocationDAOImpl = new LocationDAOImpl(localSession);
 			SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);

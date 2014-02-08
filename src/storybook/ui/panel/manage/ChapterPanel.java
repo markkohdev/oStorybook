@@ -32,8 +32,8 @@ import net.miginfocom.swing.MigLayout;
 import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.SbConstants.InternalKey;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
@@ -73,17 +73,17 @@ public class ChapterPanel extends AbstractPanel implements
 		Object oldValue = evt.getOldValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.ManageViewProps.ZOOM.check(propName)) {
+		if (BookController.ManageViewProps.ZOOM.check(propName)) {
 			refresh();
 			return;
 		}
 
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			refresh();
 			return;
 		}
 
-		if (DocumentController.ChapterProps.UPDATE.check(propName)) {
+		if (BookController.ChapterProps.UPDATE.check(propName)) {
 			if(chapter == null){
 				return;
 			}
@@ -96,7 +96,7 @@ public class ChapterPanel extends AbstractPanel implements
 			return;
 		}
 
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			Chapter newSceneChapter = ((Scene) newValue).getChapter();
 			Chapter oldSceneChapter = ((Scene) oldValue).getChapter();
 			if (newSceneChapter == null && chapter == null) {
@@ -171,7 +171,7 @@ public class ChapterPanel extends AbstractPanel implements
 
 		sceneTransferHandler = new SceneTransferHandler(mainFrame);
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Scene> scenes = dao.findScenes(chapter);

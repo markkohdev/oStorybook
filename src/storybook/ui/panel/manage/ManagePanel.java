@@ -36,8 +36,8 @@ import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.SbConstants.InternalKey;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Internal;
@@ -88,7 +88,7 @@ public class ManagePanel extends AbstractScrollPanel {
 		String propName = evt.getPropertyName();
 		Object newValue = evt.getNewValue();
 
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			View newView = (View) evt.getNewValue();
 			View view = (View) getParent().getParent();
 			if (view == newView) {
@@ -98,7 +98,7 @@ public class ManagePanel extends AbstractScrollPanel {
 			return;
 		}
 
-		if (DocumentController.CommonProps.SHOW_OPTIONS.check(propName)) {
+		if (BookController.CommonProps.SHOW_OPTIONS.check(propName)) {
 			View view = (View) evt.getNewValue();
 			if (!view.getName().equals(ViewName.MANAGE.toString())) {
 				return;
@@ -108,7 +108,7 @@ public class ManagePanel extends AbstractScrollPanel {
 			return;
 		}
 
-		if (DocumentController.ManageViewProps.SHOW_ENTITY.check(propName)) {
+		if (BookController.ManageViewProps.SHOW_ENTITY.check(propName)) {
 			if (newValue instanceof Scene) {
 				Scene scene = (Scene) newValue;
 				ViewUtil.scrollToScene(this, panel, scene);
@@ -121,26 +121,26 @@ public class ManagePanel extends AbstractScrollPanel {
 			}
 		}
 
-		if (DocumentController.ManageViewProps.COLUMNS.check(propName)) {
+		if (BookController.ManageViewProps.COLUMNS.check(propName)) {
 			init();
 			refresh();
 			return;
 		}
 
-		if (DocumentController.PartProps.CHANGE.check(propName)) {
+		if (BookController.PartProps.CHANGE.check(propName)) {
 			refresh();
 			ViewUtil.scrollToTop(scroller);
 			return;
 		}
 
-		if (DocumentController.ChapterProps.DELETE.check(propName)
-				|| DocumentController.ChapterProps.DELETE_MULTI.check(propName)
-				|| DocumentController.ChapterProps.NEW.check(propName)) {
+		if (BookController.ChapterProps.DELETE.check(propName)
+				|| BookController.ChapterProps.DELETE_MULTI.check(propName)
+				|| BookController.ChapterProps.NEW.check(propName)) {
 			refresh();
 			return;
 		}
 
-		if (DocumentController.StrandProps.DELETE.check(propName)) {
+		if (BookController.StrandProps.DELETE.check(propName)) {
 			refresh();
 			return;
 		}
@@ -179,7 +179,7 @@ public class ManagePanel extends AbstractScrollPanel {
 	@Override
 	public void refresh() {
 		Part currentPart = mainFrame.getCurrentPart();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = dao.findAll(currentPart);

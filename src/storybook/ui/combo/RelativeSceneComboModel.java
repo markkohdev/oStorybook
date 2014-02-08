@@ -23,7 +23,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.entity.Scene;
 import storybook.ui.MainFrame;
@@ -46,7 +46,7 @@ public class RelativeSceneComboModel extends DefaultComboBoxModel implements
 		if (mainFrame == null) {
 			return;
 		}
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		List<Scene> scenes = dao.findAll();
@@ -60,7 +60,7 @@ public class RelativeSceneComboModel extends DefaultComboBoxModel implements
 	public void setSelectedItem(Object obj) {
 		Scene scene;
 		if (obj instanceof Long) {
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			scene = (Scene) session.get(Scene.class, (Long) obj);
 			model.commit();

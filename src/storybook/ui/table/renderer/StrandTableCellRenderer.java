@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.hibernate.LazyInitializationException;
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Strand;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.ui.MainFrame;
@@ -52,7 +52,7 @@ public class StrandTableCellRenderer extends DefaultTableCellRenderer {
 		} catch (LazyInitializationException lie) {
 			MainFrame mainFrame = (MainFrame) table
 					.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			session.refresh((Strand) value);
 			lbStrand = new StrandLabel((Strand) value);

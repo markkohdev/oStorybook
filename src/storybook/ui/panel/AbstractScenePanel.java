@@ -26,7 +26,7 @@ import javax.swing.AbstractAction;
 import storybook.SbConstants.ViewName;
 import storybook.action.DeleteEntityAction;
 import storybook.action.EditEntityAction;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.ColorUtil;
@@ -85,7 +85,7 @@ abstract public class AbstractScenePanel extends AbstractGradientPanel {
 			newAction = new AbstractAction() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					DocumentController ctrl = mainFrame.getDocumentController();
+					BookController ctrl = mainFrame.getDocumentController();
 					Scene newScene = new Scene();
 					newScene.setStrand(scene.getStrand());
 					newScene.setSceneTs(scene.getSceneTs());

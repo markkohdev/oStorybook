@@ -44,7 +44,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants.InternalKey;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.ItemDAOImpl;
 import storybook.model.hbn.dao.LocationDAOImpl;
@@ -202,7 +202,7 @@ public class BookPropertiesDialog extends AbstractDialog {
 		MigLayout layout = new MigLayout("wrap,fill", "[]", "[grow][]");
 		panel.setLayout(layout);
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 
 		int textLength = 0;

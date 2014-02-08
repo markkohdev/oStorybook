@@ -42,9 +42,9 @@ import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.SbConstants.InternalKey;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.export.BookExporter;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Internal;
@@ -81,12 +81,12 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 		String propName = evt.getPropertyName();
 		Object newValue = evt.getNewValue();
 
-		if (DocumentController.SceneProps.INIT.check(propName)) {
+		if (BookController.SceneProps.INIT.check(propName)) {
 			super.refresh();
 			return;
 		}
 
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			View newView = (View) evt.getNewValue();
 			View view = (View) getParent().getParent();
 			if (view == newView) {
@@ -96,14 +96,14 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 			return;
 		}
 
-		if (DocumentController.ChapterProps.INIT.check(propName)
-				|| DocumentController.ChapterProps.UPDATE.check(propName)
-				|| DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.ChapterProps.INIT.check(propName)
+				|| BookController.ChapterProps.UPDATE.check(propName)
+				|| BookController.SceneProps.UPDATE.check(propName)) {
 			refresh();
 			return;
 		}
 
-		if (DocumentController.CommonProps.SHOW_OPTIONS.check(propName)) {
+		if (BookController.CommonProps.SHOW_OPTIONS.check(propName)) {
 			View view = (View) evt.getNewValue();
 			if (!view.getName().equals(ViewName.READING.toString())) {
 				return;
@@ -113,7 +113,7 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 			return;
 		}
 
-		if (DocumentController.ReadingViewProps.ZOOM.check(propName)) {
+		if (BookController.ReadingViewProps.ZOOM.check(propName)) {
 			setZoomedSize((Integer) newValue);
 			scroller.setMaximumSize(new Dimension(scrollerWidth, 10000));
 			scroller.getParent().invalidate();
@@ -122,13 +122,13 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 			return;
 		}
 
-		if (DocumentController.ReadingViewProps.FONT_SIZE.check(propName)) {
+		if (BookController.ReadingViewProps.FONT_SIZE.check(propName)) {
 			setFontSize((Integer) newValue);
 			refresh();
 			return;
 		}
 
-		if (DocumentController.PartProps.CHANGE.check(propName)) {
+		if (BookController.PartProps.CHANGE.check(propName)) {
 			ViewUtil.scrollToTop(scroller);
 			// super.refresh();
 			refresh();
@@ -138,7 +138,7 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 
 		dispatchToStrandPanels(this, evt);
 
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			refresh();
 //			return;
 		}
@@ -202,7 +202,7 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 		boolean isUsehtmlText = DocumentUtil.isUseHtmlScenes(mainFrame);
 		boolean expPartTitles = DocumentUtil.isExportPartTitles(mainFrame);
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = dao

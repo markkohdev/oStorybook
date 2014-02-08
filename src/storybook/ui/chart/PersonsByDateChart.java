@@ -4,7 +4,7 @@
  */
 package storybook.ui.chart;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.entity.Chapter;
@@ -77,7 +77,7 @@ public class PersonsByDateChart extends AbstractPersonsChart
     try
     {
       Part localPart = this.mainFrame.getCurrentPart();
-      DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+      BookModel localDocumentModel = this.mainFrame.getDocumentModel();
       Session localSession = localDocumentModel.beginTransaction();
       PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
       List localList1 = localPersonDAOImpl.findByCategories(this.selectedCategories);

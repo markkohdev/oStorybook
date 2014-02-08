@@ -5,7 +5,7 @@
 package storybook.export;
 
 import java.awt.HeadlessException;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.dao.SceneDAOImpl;
@@ -99,7 +99,7 @@ public class BookExporter extends AbstractExporter {
 				tHtml=true;
 				//buf.append(getHtmlHead());
 			}
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			PartDAOImpl PartDAO = new PartDAOImpl(session);
 			ChapterDAOImpl ChapterDAO = new ChapterDAOImpl(session);

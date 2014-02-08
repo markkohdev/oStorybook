@@ -15,7 +15,7 @@
  */
 package storybook.ui.jasperreports;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.ui.MainFrame;
@@ -80,7 +80,7 @@ public class ExportManager implements ReportConstants {
 	}
 
 	public void fillReport(final ExportReport param) {
-		DocumentModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.doWork(new Work() {
 			@Override

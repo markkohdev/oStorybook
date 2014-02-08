@@ -12,8 +12,8 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import org.hibernate.UnresolvableObjectException;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Location;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.swing.SwingUtil;
@@ -42,7 +42,7 @@ public class LocationLinksPanel extends AbstractPanel {
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			if (((Scene) newValue).getId() != scene.getId()) {
 				// not this scene
 				return;
@@ -51,7 +51,7 @@ public class LocationLinksPanel extends AbstractPanel {
 			return;
 		}
 
-		if (DocumentController.LocationProps.UPDATE.check(propName)) {
+		if (BookController.LocationProps.UPDATE.check(propName)) {
 			refresh();
 			return;
 		}
@@ -68,7 +68,7 @@ public class LocationLinksPanel extends AbstractPanel {
 		ta.setLineWrap(true);
 		ta.setWrapStyleWord(true);
 		ta.setEditable(false);
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(scene);
 		List<Location> locations = scene.getLocations();

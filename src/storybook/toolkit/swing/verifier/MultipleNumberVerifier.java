@@ -25,7 +25,7 @@ import javax.swing.text.JTextComponent;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.SbGenericDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.toolkit.I18N;
@@ -48,7 +48,7 @@ public class MultipleNumberVerifier extends AbstractInputVerifier {
 			try {
 				JTextComponent tc = (JTextComponent) comp;
 
-				DocumentModel documentModel = (DocumentModel) tc
+				BookModel documentModel = (BookModel) tc
 						.getClientProperty(ClientPropertyName.DOCUMENT_MODEL
 								.toString());
 				if (documentModel == null) {

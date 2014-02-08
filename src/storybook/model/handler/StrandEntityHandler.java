@@ -23,7 +23,7 @@ import java.awt.Color;
 import javax.swing.ListCellRenderer;
 
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Strand;
@@ -43,7 +43,7 @@ public class StrandEntityHandler extends AbstractEntityHandler {
 
 	@Override
 	public AbstractEntity createNewEntity() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		Integer nextSort = dao.getNextSort();

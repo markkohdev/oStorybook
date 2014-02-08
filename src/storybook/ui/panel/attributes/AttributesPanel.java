@@ -29,7 +29,7 @@ import javax.swing.JButton;
 import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.AttributeDAOImpl;
 import storybook.model.hbn.entity.Attribute;
 import storybook.toolkit.I18N;
@@ -65,7 +65,7 @@ public class AttributesPanel extends AbstractPanel {
 	public void initUi() {
 		setLayout(new MigLayout("wrap 2,fillx", "[grow][]", ""));
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		AttributeDAOImpl dao = new AttributeDAOImpl(session);
 		keys = dao.findKeys();

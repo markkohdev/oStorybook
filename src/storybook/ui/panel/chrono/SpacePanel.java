@@ -31,7 +31,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
@@ -63,7 +63,7 @@ public class SpacePanel extends AbstractPanel implements MouseListener {
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
 		String propName = evt.getPropertyName();
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			EntityUtil.refresh(mainFrame, strand);
 			refresh();
 		}
@@ -100,7 +100,7 @@ public class SpacePanel extends AbstractPanel implements MouseListener {
 			newSceneAction = new AbstractAction() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					DocumentController ctrl = mainFrame.getDocumentController();
+					BookController ctrl = mainFrame.getDocumentController();
 					Scene scene = new Scene();
 					scene.setStrand(strand);
 					scene.setDate(date);

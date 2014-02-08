@@ -44,7 +44,7 @@ import storybook.ui.SbView;
  * @author martin
  *
  */
-public class DocumentController extends AbstractController {
+public class BookController extends AbstractController {
 	
 	public enum CommonProps {
 

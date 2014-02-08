@@ -36,7 +36,7 @@ import javax.swing.Timer;
 
 import org.hibernate.Session;
 import storybook.action.ScrollToEntityAction;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Part;
@@ -135,7 +135,7 @@ public class ViewUtil {
 
 		// chrono and book view
 		MainFrame mainFrame = container.getMainFrame();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		Scene scene = dao.findFirstScene(chapter);

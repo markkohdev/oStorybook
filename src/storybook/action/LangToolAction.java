@@ -24,7 +24,7 @@ import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.I18N;
 import storybook.toolkit.html.HtmlUtil;
@@ -61,7 +61,7 @@ public class LangToolAction extends AbstractAction {
 					try {
 						String text = "";
 						if (scene != null) {
-							DocumentModel model = mainFrame.getDocumentModel();
+							BookModel model = mainFrame.getDocumentModel();
 							Session session = model.beginTransaction();
 							session.refresh(scene);
 							text = HtmlUtil.htmlToText(scene.getText(), true);

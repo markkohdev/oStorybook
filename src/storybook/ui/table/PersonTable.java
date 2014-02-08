@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Category;
@@ -52,17 +52,17 @@ public class PersonTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.PersonProps.INIT.check(propName)) {
+			if (BookController.PersonProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.PersonProps.UPDATE.check(propName)) {
+			} else if (BookController.PersonProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.PersonProps.NEW.check(propName)) {
+			} else if (BookController.PersonProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.PersonProps.DELETE.check(propName)) {
+			} else if (BookController.PersonProps.DELETE.check(propName)) {
 				deleteEntity(evt);
-			} else if (DocumentController.GenderProps.UPDATE.check(propName)) {
+			} else if (BookController.GenderProps.UPDATE.check(propName)) {
 				updateGenders(evt);
-			} else if (DocumentController.CategoryProps.UPDATE.check(propName)) {
+			} else if (BookController.CategoryProps.UPDATE.check(propName)) {
 				updateCategories(evt);
 			}
 
@@ -124,7 +124,7 @@ public class PersonTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl dao = new PersonDAOImpl(session);
 		Person person = dao.find(id);

@@ -31,7 +31,7 @@ import javax.swing.text.JTextComponent;
 import storybook.SbConstants;
 import storybook.SbConstants.InternalKey;
 import storybook.action.EditEntityAction;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.DocumentUtil;
@@ -77,7 +77,7 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			Scene newScene = (Scene) newValue;
 			if (newScene.getId() != scene.getId()) {
 				return;
@@ -92,10 +92,10 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 			return;
 		}
 
-		if (DocumentController.BookViewProps.ZOOM.check(propName)) {
+		if (BookController.BookViewProps.ZOOM.check(propName)) {
 			setZoomedSize((Integer) newValue);
 			refresh();
-		} else if (DocumentController.BookViewProps.HEIGHT_FACTOR.check(propName)) {
+		} else if (BookController.BookViewProps.HEIGHT_FACTOR.check(propName)) {
 			heightFactor = (Integer) newValue;
 			refresh();
 		}

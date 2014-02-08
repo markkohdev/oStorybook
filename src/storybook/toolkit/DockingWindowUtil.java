@@ -37,7 +37,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import storybook.StorybookApp;
 import storybook.SbConstants.PreferenceKey;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.Preference;
 import storybook.ui.panel.AbstractPanel;
 import storybook.ui.MainFrame;
@@ -101,7 +101,7 @@ public class DockingWindowUtil {
 	public static void unloadHiddenViews(MainFrame mainFrame) {
 		ViewFactory viewFactory = mainFrame.getViewFactory();
 		StringViewMap viewMap = viewFactory.getViewMap();
-		DocumentController documentCtrl = mainFrame.getDocumentController();
+		BookController documentCtrl = mainFrame.getDocumentController();
 		int c = viewMap.getViewCount();
 		for (int i = 0; i < c; ++i) {
 			View view = viewMap.getViewAtIndex(i);

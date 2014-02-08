@@ -15,7 +15,7 @@
  */
 package storybook.ui.chart;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.LocationDAOImpl;
 import storybook.model.hbn.entity.Location;
 import storybook.model.hbn.entity.Person;
@@ -52,7 +52,7 @@ public class WiWWContainer
     while (localIterator.hasNext())
     {
       Person localPerson = (Person)localIterator.next();
-      DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+      BookModel localDocumentModel = this.mainFrame.getDocumentModel();
       Session localSession = localDocumentModel.beginTransaction();
       LocationDAOImpl localLocationDAOImpl = new LocationDAOImpl(localSession);
       long l = localLocationDAOImpl.countByPersonLocationDate(localPerson, this.location, this.date);

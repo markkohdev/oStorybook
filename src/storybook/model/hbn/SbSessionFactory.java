@@ -1,42 +1,37 @@
 /*
-Storybook: Open Source software for novelists and authors.
-Copyright (C) 2008 - 2012 Martin Mustun
+ Storybook: Open Source software for novelists and authors.
+ Copyright (C) 2008 - 2012 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package storybook.model.hbn;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import storybook.model.hbn.entity.AbstractEntity;
 
 import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
+import com.mchange.v2.log.MLevel;
+import static com.mchange.v2.log.MLevel.OFF;
 import java.util.logging.Level;
 import org.hibernate.HibernateException;
 import storybook.StorybookApp;
 
 public class SbSessionFactory {
-
-	private boolean trace=false;
-
-	private static final Log log = LogFactory.getLog(SbSessionFactory.class);
 
 	private SessionFactory sessionFactory;
 
@@ -45,24 +40,24 @@ public class SbSessionFactory {
 
 	public SessionFactory getSessionFactory() {
 		if (sessionFactory == null) {
-			log.fatal("Call init() first.");
+			StorybookApp.trace("*** Call init() first.");
 		}
 		return sessionFactory;
 	}
 
 	public Session getSession() {
 		if (sessionFactory == null) {
-			log.fatal("Call init() first.");
+			StorybookApp.trace("*** Call init() first.");
 		}
 		return sessionFactory.getCurrentSession();
 	}
 
 	public void init(String filename, String configFile) {
-		if (StorybookApp.getTrace()) {
-			System.out.println("SbSessionFactory.init()");
-		}
-		if (!StorybookApp.getTraceHibernate()) {
-			java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+		StorybookApp.trace("SbSessionFactory.init()");
+		if (StorybookApp.getTraceHibernate()) {
+			java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.INFO);
+		} else {
+			java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 		}
 		try {
 			// create the SessionFactory from given config file
@@ -73,11 +68,24 @@ public class SbSessionFactory {
 			config.setProperty("hibernate.show_sql", "false");
 			config.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 			config.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
-			config.setProperty("hibernate.connection.url", "jdbc:h2:" + filename);
+			String dbURL = "jdbc:h2:" + filename;
+			if (StorybookApp.getTraceHibernate()) {
+				dbURL += ";TRACE_LEVEL_FILE=3;TRACE_LEVEL_SYSTEM_OUT=3";
+			} else {
+				dbURL += ";TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0";
+			}
+			config.setProperty("hibernate.connection.url", dbURL);
 			config.setProperty("hibernate.connection.username", "sa");
 			config.setProperty("hibernate.connection.password", "");
 			config.setProperty("hibernate.hbm2ddl.auto", "update");
+			if (StorybookApp.getTraceHibernate()) {
+				java.util.Properties p = new java.util.Properties(System.getProperties());
+				p.put("com.mchange.v2.log.MLog", "com.mchange.v2.log.FallbackMLog");
+				p.put("com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL", "OFF");
+				System.setProperties(p);
+			}
 			config.setProperty("connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+			config.setProperty("hibernate.c3p0.debug", "0");
 			config.setProperty("hibernate.c3p0.min_size", "0");
 			config.setProperty("hibernate.c3p0.max_size", "1");
 			config.setProperty("hibernate.c3p0.timeout", "5000");
@@ -115,7 +123,7 @@ public class SbSessionFactory {
 	}
 
 	public void query(GenericDAOImpl<? extends AbstractEntity, ?> dao) {
-		if (trace) {
+		if (StorybookApp.getTrace()) {
 			System.out.println("SbSessionFactory.query(): "
 				+ dao.getClass().getSimpleName());
 			List<? extends AbstractEntity> entities = dao.findAll();

@@ -22,7 +22,7 @@ import java.beans.PropertyChangeEvent;
 
 import javax.swing.JTabbedPane;
 
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.toolkit.I18N;
 import storybook.ui.panel.AbstractPanel;
 import storybook.ui.MainFrame;
@@ -49,7 +49,7 @@ public class NavigationPanel extends AbstractPanel {
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			View newView = (View) newValue;
 			View view = (View) getParent().getParent();
 			if (view == newView) {

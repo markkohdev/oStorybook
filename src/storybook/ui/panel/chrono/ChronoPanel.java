@@ -45,8 +45,8 @@ import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.SbConstants.InternalKey;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.dao.StrandDAOImpl;
@@ -120,12 +120,12 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.SceneProps.INIT.check(propName)) {
+		if (BookController.SceneProps.INIT.check(propName)) {
 			refresh();
 			return;
 		}
 
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			SbView newView = (SbView) newValue;
 			SbView view = (SbView) getParent().getParent();
 			if (view == newView) {
@@ -134,7 +134,7 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 			return;
 		}
 
-		if (DocumentController.CommonProps.PRINT.check(propName)) {
+		if (BookController.CommonProps.PRINT.check(propName)) {
 			View newView = (View) newValue;
 			View view = (View) getParent().getParent();
 			if (view == newView) {
@@ -151,20 +151,20 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 			return;
 		}
 
-		if (DocumentController.ChronoViewProps.LAYOUT_DIRECTION.check(propName)) {
+		if (BookController.ChronoViewProps.LAYOUT_DIRECTION.check(propName)) {
 			layoutDirection = (Boolean) evt.getNewValue();
 			refresh();
 			return;
 		}
 
-		if (DocumentController.ChronoViewProps.SHOW_DATE_DIFFERENCE
+		if (BookController.ChronoViewProps.SHOW_DATE_DIFFERENCE
 				.check(propName)) {
 			showDateDiff = (Boolean) evt.getNewValue();
 			refresh();
 			return;
 		}
 
-		if (DocumentController.CommonProps.SHOW_OPTIONS.check(propName)) {
+		if (BookController.CommonProps.SHOW_OPTIONS.check(propName)) {
 			View view = (View) evt.getNewValue();
 			if (!view.getName().equals(ViewName.CHRONO.toString())) {
 				return;
@@ -174,7 +174,7 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 			return;
 		}
 
-		if (DocumentController.ChronoViewProps.SHOW_ENTITY.check(propName)) {
+		if (BookController.ChronoViewProps.SHOW_ENTITY.check(propName)) {
 			if (newValue instanceof Scene) {
 				Scene scene = (Scene) newValue;
 				ViewUtil.scrollToScene(this, panel, scene);
@@ -188,22 +188,22 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 		}
 
 		// deleted strand, strand order changed
-		if (DocumentController.StrandProps.DELETE.check(propName)
-				|| DocumentController.StrandProps.ORDER_DOWN.check(propName)
-				|| DocumentController.StrandProps.ORDER_UP.check(propName)) {
+		if (BookController.StrandProps.DELETE.check(propName)
+				|| BookController.StrandProps.ORDER_DOWN.check(propName)
+				|| BookController.StrandProps.ORDER_UP.check(propName)) {
 			refresh();
 			return;
 		}
 
 		// new scene, deleted scene
-		if (DocumentController.SceneProps.NEW.check(propName)
-				|| DocumentController.SceneProps.DELETE.check(propName)) {
+		if (BookController.SceneProps.NEW.check(propName)
+				|| BookController.SceneProps.DELETE.check(propName)) {
 			refresh();
 			return;
 		}
 
-		if (DocumentController.PartProps.CHANGE.check(propName)
-				|| DocumentController.PartProps.DELETE.check(propName)) {
+		if (BookController.PartProps.CHANGE.check(propName)
+				|| BookController.PartProps.DELETE.check(propName)) {
 			ViewUtil.scrollToTop(scroller);
 			refresh();
 			return;
@@ -215,7 +215,7 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 		dispatchToLocationLinksPanels(this, evt);
 		dispatchToSpacePanels(this, evt);
 
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			for (JLabel lb : strandLabels) {
 				long id = (Long) lb
 						.getClientProperty(CLIENT_PROPERTY_STRAND_ID);
@@ -227,13 +227,13 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 		}
 
 		// edit scene
-		if (DocumentController.SceneProps.EDIT.check(propName)) {
+		if (BookController.SceneProps.EDIT.check(propName)) {
 			// TODO handle text fields if same scene is edited in editor
 			return;
 		}
 
 		// scene update
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			if (oldValue == null) {
 				return;
 			}
@@ -314,7 +314,7 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable,
 		// must be done before the session is opened
 		Part currentPart = mainFrame.getCurrentPart();
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 
 		SceneDAOImpl sceneDao = new SceneDAOImpl(session);

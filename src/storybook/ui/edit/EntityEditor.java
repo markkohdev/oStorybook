@@ -63,7 +63,7 @@ import storybook.SbConstants;
 import storybook.SbConstants.ClientPropertyName;
 import storybook.SbConstants.ComponentName;
 import storybook.SbConstants.InternalKey;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.EntityUtil;
 import storybook.model.handler.AbstractEntityHandler;
 import storybook.model.handler.CategoryEntityHandler;
@@ -142,7 +142,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	private AbstractEntityHandler entityHandler;
 
 //	private MainFrame mainFrame;
-	private DocumentController ctrl;
+	private BookController ctrl;
 
 	private AbstractEntity entity;
 
@@ -539,33 +539,33 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			}
 		}
 
-		if (DocumentController.SceneProps.EDIT.check(propName)) {
+		if (BookController.SceneProps.EDIT.check(propName)) {
 			entityHandler = new SceneEntityHandler(mainFrame);
-		} else if (DocumentController.ChapterProps.EDIT.check(propName)) {
+		} else if (BookController.ChapterProps.EDIT.check(propName)) {
 			entityHandler = new ChapterEntityHandler(mainFrame);
-		} else if (DocumentController.PartProps.EDIT.check(propName)) {
+		} else if (BookController.PartProps.EDIT.check(propName)) {
 			entityHandler = new PartEntityHandler(mainFrame);
-		} else if (DocumentController.LocationProps.EDIT.check(propName)) {
+		} else if (BookController.LocationProps.EDIT.check(propName)) {
 			entityHandler = new LocationEntityHandler(mainFrame);
-		} else if (DocumentController.PersonProps.EDIT.check(propName)) {
+		} else if (BookController.PersonProps.EDIT.check(propName)) {
 			entityHandler = new PersonEntityHandler(mainFrame);
-		} else if (DocumentController.GenderProps.EDIT.check(propName)) {
+		} else if (BookController.GenderProps.EDIT.check(propName)) {
 			entityHandler = new GenderEntityHandler(mainFrame);
-		} else if (DocumentController.CategoryProps.EDIT.check(propName)) {
+		} else if (BookController.CategoryProps.EDIT.check(propName)) {
 			entityHandler = new CategoryEntityHandler(mainFrame);
-		} else if (DocumentController.StrandProps.EDIT.check(propName)) {
+		} else if (BookController.StrandProps.EDIT.check(propName)) {
 			entityHandler = new StrandEntityHandler(mainFrame);
-		} else if (DocumentController.IdeaProps.EDIT.check(propName)) {
+		} else if (BookController.IdeaProps.EDIT.check(propName)) {
 			entityHandler = new IdeaEntityHandler(mainFrame);
-		} else if (DocumentController.TagProps.EDIT.check(propName)) {
+		} else if (BookController.TagProps.EDIT.check(propName)) {
 			entityHandler = new TagEntityHandler(mainFrame);
-		} else if (DocumentController.ItemProps.EDIT.check(propName)) {
+		} else if (BookController.ItemProps.EDIT.check(propName)) {
 			entityHandler = new ItemEntityHandler(mainFrame);
-		} else if (DocumentController.TagLinkProps.EDIT.check(propName)) {
+		} else if (BookController.TagLinkProps.EDIT.check(propName)) {
 			entityHandler = new TagLinkEntityHandler(mainFrame);
-		} else if (DocumentController.ItemLinkProps.EDIT.check(propName)) {
+		} else if (BookController.ItemLinkProps.EDIT.check(propName)) {
 			entityHandler = new ItemLinkEntityHandler(mainFrame);
-		} else if (DocumentController.InternalProps.EDIT.check(propName)) {
+		} else if (BookController.InternalProps.EDIT.check(propName)) {
 			entityHandler = new InternalEntityHandler(mainFrame);
 		}
 

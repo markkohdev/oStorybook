@@ -28,7 +28,7 @@ import storybook.SbConstants;
 import storybook.SbConstants.InternalKey;
 import storybook.SbConstants.PreferenceKey;
 import storybook.model.DbFile;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.InternalDAOImpl;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Preference;
@@ -105,7 +105,7 @@ public class DocumentUtil {
 
 	public static void storeInternal(MainFrame mainFrame, InternalKey key,
 			Object val) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		InternalDAOImpl dao = new InternalDAOImpl(session);
 		dao.saveOrUpdate(key.toString(), val);
@@ -114,7 +114,7 @@ public class DocumentUtil {
 
 	public static void storeInternal(MainFrame mainFrame, String strKey,
 			Object val) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		InternalDAOImpl dao = new InternalDAOImpl(session);
 		dao.saveOrUpdate(strKey, val);
@@ -123,7 +123,7 @@ public class DocumentUtil {
 
 	public static Internal restoreInternal(MainFrame mainFrame,
 			InternalKey key, Object defaultValue) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		InternalDAOImpl dao = new InternalDAOImpl(session);
 		Internal internal = dao.findByKey(key.toString());
@@ -137,7 +137,7 @@ public class DocumentUtil {
 
 	public static Internal restoreInternal(MainFrame mainFrame, String strKey,
 			Object defaultValue) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		InternalDAOImpl dao = new InternalDAOImpl(session);
 		Internal internal = dao.findByKey(strKey);

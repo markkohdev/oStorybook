@@ -4,7 +4,7 @@
  */
 package storybook.ui.chart;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.entity.Part;
@@ -95,7 +95,7 @@ public class PersonsBySceneChart extends AbstractPersonsChart
 
 	private JTable createTable() {
 		Part part = mainFrame.getCurrentPart();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl personDAO = new PersonDAOImpl(session);
 		List persons = personDAO.findByCategories(selectedCategories);

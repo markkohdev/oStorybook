@@ -21,7 +21,7 @@ package storybook.ui.panel.chrono;
 import java.beans.PropertyChangeEvent;
 import java.util.Date;
 
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.hbn.entity.Strand;
 import storybook.ui.panel.AbstractPanel;
 import storybook.ui.MainFrame;
@@ -43,8 +43,8 @@ public abstract class AbstractStrandDatePanel extends AbstractPanel {
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
 		String propName = evt.getPropertyName();
-		if (DocumentController.SceneProps.NEW.check(propName)
-				|| DocumentController.SceneProps.DELETE.check(propName)) {
+		if (BookController.SceneProps.NEW.check(propName)
+				|| BookController.SceneProps.DELETE.check(propName)) {
 			refresh();
 			if (getParent() != null) {
 				getParent().validate();

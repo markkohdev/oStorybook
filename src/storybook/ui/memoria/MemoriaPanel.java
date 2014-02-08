@@ -1,6 +1,6 @@
 package storybook.ui.memoria;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.ItemDAOImpl;
 import storybook.model.hbn.dao.ItemLinkDAOImpl;
 import storybook.model.hbn.dao.LocationDAOImpl;
@@ -85,7 +85,7 @@ import org.apache.commons.collections15.Transformer;
 import org.hibernate.Session;
 import org.jdesktop.swingx.icon.EmptyIcon;
 import storybook.SbConstants;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 
 public class MemoriaPanel extends AbstractPanel
 	implements ActionListener, IRefreshable {
@@ -151,7 +151,7 @@ public class MemoriaPanel extends AbstractPanel
 			}
 			Object localObject2;
 			Object localObject3;
-			if (DocumentController.CommonProps.REFRESH.check(str)) {
+			if (BookController.CommonProps.REFRESH.check(str)) {
 				localObject2 = (View) localObject1;
 				localObject3 = (View) getParent().getParent();
 				if (localObject3 == localObject2) {
@@ -159,12 +159,12 @@ public class MemoriaPanel extends AbstractPanel
 				}
 				return;
 			}
-			if (DocumentController.CommonProps.SHOW_IN_MEMORIA.check(str)) {
+			if (BookController.CommonProps.SHOW_IN_MEMORIA.check(str)) {
 				localObject2 = (AbstractEntity) localObject1;
 				refresh((AbstractEntity) localObject2);
 				return;
 			}
-			if (DocumentController.CommonProps.SHOW_OPTIONS.check(str)) {
+			if (BookController.CommonProps.SHOW_OPTIONS.check(str)) {
 				localObject2 = (View) evt.getNewValue();
 				if (!((View) localObject2).getName().equals(SbConstants.ViewName.MEMORIA.toString())) {
 					return;
@@ -173,7 +173,7 @@ public class MemoriaPanel extends AbstractPanel
 				SwingUtil.showModalDialog((JDialog) localObject3, this);
 				return;
 			}
-			if (DocumentController.MemoriaViewProps.BALLOON.check(str)) {
+			if (BookController.MemoriaViewProps.BALLOON.check(str)) {
 				this.showBalloonLayout = ((Boolean) localObject1).booleanValue();
 				makeLayoutTransition();
 				return;
@@ -182,7 +182,7 @@ public class MemoriaPanel extends AbstractPanel
 				refresh();
 				return;
 			}
-			if (DocumentController.CommonProps.EXPORT.check(str)) {
+			if (BookController.CommonProps.EXPORT.check(str)) {
 				localObject2 = (View) localObject1;
 				localObject3 = (View) getParent().getParent();
 				if (localObject3 == localObject2) {
@@ -233,7 +233,7 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void refreshEntityCombo(EntityTypeCbItem.Type type) {
-		DocumentModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		Object object;
 		List list;
@@ -271,7 +271,7 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void refreshControlPanel() {
-		DocumentModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		List scenes = dao.findAll();
@@ -554,7 +554,7 @@ public class MemoriaPanel extends AbstractPanel
 
 	private void createSceneGraph() {
 		this.graphIndex = 0L;
-		DocumentModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl daoScene = new SceneDAOImpl(session);
 		Scene scene = (Scene) daoScene.find(Long.valueOf(this.entityId));
@@ -771,7 +771,7 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void createTagGraph() {
-		DocumentModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl localTagDAOImpl = new TagDAOImpl(session);
 		Tag tag = (Tag) localTagDAOImpl.find(Long.valueOf(this.entityId));
@@ -903,7 +903,7 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void createItemGraph() {
-		DocumentModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl localItemDAOImpl = new ItemDAOImpl(session);
 		Item localItem = (Item) localItemDAOImpl.find(Long.valueOf(this.entityId));
@@ -1069,7 +1069,7 @@ public class MemoriaPanel extends AbstractPanel
 
 	private void createLocationGraph() {
 		try {
-			DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+			BookModel localDocumentModel = this.mainFrame.getDocumentModel();
 			Session localSession = localDocumentModel.beginTransaction();
 			LocationDAOImpl localLocationDAOImpl = new LocationDAOImpl(localSession);
 			Location localLocation = (Location) localLocationDAOImpl.find(Long.valueOf(this.entityId));
@@ -1260,7 +1260,7 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void createPersonGraph() {
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+		BookModel localDocumentModel = this.mainFrame.getDocumentModel();
 		Session localSession = localDocumentModel.beginTransaction();
 		PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
 		Person localPerson = (Person) localPersonDAOImpl.find(Long.valueOf(this.entityId));

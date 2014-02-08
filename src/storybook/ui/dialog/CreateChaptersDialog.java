@@ -26,7 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.EntityUtil;
 import storybook.model.handler.ChapterEntityHandler;
 import storybook.model.handler.PartEntityHandler;
@@ -110,7 +110,7 @@ public class CreateChaptersDialog extends AbstractDialog {
 		for (int i = 0; i < quant; ++i) {
 			Chapter ch = (Chapter) handler.createNewEntity();
 			ch.setPart(part);
-			DocumentController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getDocumentController();
 			ctrl.newChapter(ch);
 		}
 	}

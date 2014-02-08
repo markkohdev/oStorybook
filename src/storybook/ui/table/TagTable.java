@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.TagDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Tag;
@@ -51,13 +51,13 @@ public class TagTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.TagProps.INIT.check(propName)) {
+			if (BookController.TagProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.TagProps.UPDATE.check(propName)) {
+			} else if (BookController.TagProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.TagProps.NEW.check(propName)) {
+			} else if (BookController.TagProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.TagProps.DELETE.check(propName)) {
+			} else if (BookController.TagProps.DELETE.check(propName)) {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ public class TagTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl dao = new TagDAOImpl(session);
 		Tag tag = dao.find(id);

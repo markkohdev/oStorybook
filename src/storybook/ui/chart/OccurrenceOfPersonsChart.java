@@ -18,7 +18,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.Layer;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.entity.Person;
@@ -78,7 +78,7 @@ public class OccurrenceOfPersonsChart extends AbstractPersonsChart {
 	private CategoryDataset createDataset() {
 		DefaultCategoryDataset setCategory = new DefaultCategoryDataset();
 		try {
-			DocumentModel model = this.mainFrame.getDocumentModel();
+			BookModel model = this.mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			PersonDAOImpl dao = new PersonDAOImpl(session);
 			List categories = dao.findByCategories(this.selectedCategories);

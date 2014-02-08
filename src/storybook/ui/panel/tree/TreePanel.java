@@ -50,8 +50,8 @@ import net.miginfocom.swing.MigLayout;
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
 import storybook.action.EditEntityAction;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.CategoryDAOImpl;
 import storybook.model.hbn.dao.ChapterDAOImpl;
@@ -136,7 +136,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			View newView = (View) newValue;
 			View view = (View) getParent().getParent();
 			if (view == newView) {
@@ -145,7 +145,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			return;
 		}
 
-		if (DocumentController.CommonProps.SHOW_INFO.check(propName)) {
+		if (BookController.CommonProps.SHOW_INFO.check(propName)) {
 			return;
 		}
 
@@ -393,7 +393,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshStrands() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		List<Strand> strands = dao.findAll();
@@ -405,7 +405,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshParts() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -417,7 +417,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshIdeas() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		IdeaDAOImpl dao = new IdeaDAOImpl(session);
 		IdeaStateModel stateModel = new IdeaStateModel();
@@ -434,7 +434,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshPersonsByCategory() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl categroyDao = new CategoryDAOImpl(session);
 		List<Category> categories = categroyDao.findAll();
@@ -454,7 +454,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshPersonsByGender() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		GenderDAOImpl genderDao = new GenderDAOImpl(session);
 		List<Gender> genders = genderDao.findAll();
@@ -473,7 +473,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshLocations() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl locationDao = new LocationDAOImpl(session);
 		List<String> countries = locationDao.findCountries();
@@ -509,7 +509,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshScenes() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 
 		ChapterDAOImpl chapterDao = new ChapterDAOImpl(session);
@@ -546,7 +546,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshTags() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl tagDao = new TagDAOImpl(session);
 		TagLinkDAOImpl tagLinkDao = new TagLinkDAOImpl(session);
@@ -576,7 +576,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshItems() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl itemDao = new ItemDAOImpl(session);
 		ItemLinkDAOImpl itemLinkDao = new ItemLinkDAOImpl(session);
@@ -618,7 +618,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			return;
 		}
 		if (node.isRoot()) {
-			DocumentController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getDocumentController();
 			ctrl.showInfo(mainFrame.getDbFile());
 		}
 		if (!(value instanceof AbstractEntity)) {
@@ -627,7 +627,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		SbView view = mainFrame.getView(ViewName.INFO);
 		view.cleverRestoreFocus();
 		AbstractEntity entity = (AbstractEntity) value;
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		ctrl.showInfo(entity);
 	}
 

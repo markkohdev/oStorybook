@@ -29,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Category;
 import storybook.ui.MainFrame;
 
@@ -47,7 +47,7 @@ public class CategoryTableCellRenderer extends DefaultTableCellRenderer {
 		panel.setOpaque(true);
 		panel.setBackground(lbText.getBackground());
 		if (value instanceof Category) {
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			Long id = ((Category) value).getId();
 			Category category = (Category) session.get(Category.class, id);

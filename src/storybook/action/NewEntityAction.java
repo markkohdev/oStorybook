@@ -22,7 +22,7 @@ package storybook.action;
 import java.awt.event.ActionEvent;
 
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.EntityUtil;
 import storybook.model.handler.AbstractEntityHandler;
 import storybook.model.hbn.entity.AbstractEntity;
@@ -44,7 +44,7 @@ public class NewEntityAction extends AbstractEntityAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		AbstractEntityHandler entityHandler = EntityUtil.getEntityHandler(
 				mainFrame, entity);
 		ctrl.setEntityToEdit(entityHandler.createNewEntity());

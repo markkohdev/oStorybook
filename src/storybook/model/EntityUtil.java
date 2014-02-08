@@ -67,7 +67,7 @@ import storybook.action.ShowInManageViewAction;
 import storybook.action.ShowInMemoriaAction;
 import storybook.action.ShowInfoAction;
 
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 
 import storybook.model.handler.AbstractEntityHandler;
 import storybook.model.handler.CategoryEntityHandler;
@@ -189,7 +189,7 @@ public class EntityUtil {
 		if (!useHtmlScenes && !useHtmlDescr) {
 			return;
 		}
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 
 		// scenes
@@ -277,7 +277,7 @@ public class EntityUtil {
 		if (!usePlainTextScenes && !usePlainTextDescr) {
 			return;
 		}
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 
 		// scenes
@@ -378,7 +378,7 @@ public class EntityUtil {
 	}
 
 	public static Date findFirstDate(MainFrame mainFrame) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		Date date = dao.findFirstDate();
@@ -387,7 +387,7 @@ public class EntityUtil {
 	}
 
 	public static Date findLastDate(MainFrame mainFrame) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		Date date = dao.findLastDate();
@@ -420,7 +420,7 @@ public class EntityUtil {
 		}
 	}
 
-	public static void deleteTagAndItemLinks(DocumentModel model,
+	public static void deleteTagAndItemLinks(BookModel model,
 			AbstractEntity entity) {
 		Session session = model.beginTransaction();
 		TagLinkDAOImpl tagLinkDao = new TagLinkDAOImpl(session);
@@ -486,7 +486,7 @@ public class EntityUtil {
 	public static void copyEntity(MainFrame mainFrame,AbstractEntity entity) {
 		AbstractEntityHandler handler = getEntityHandler(mainFrame, entity);
 		AbstractEntity newEntity = handler.createNewEntity();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
 		copyEntityProperties(mainFrame, entity, newEntity);
@@ -513,7 +513,7 @@ public class EntityUtil {
 			attributes = person.getAttributes();
 		}
 		model.commit();
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		ctrl.newEntity(newEntity);
 
 		// re-set "stolen" bag links
@@ -749,7 +749,7 @@ public class EntityUtil {
 			return new ArrayList<Attribute>();
 		}
 		if (entity instanceof Person) {
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			Person person = (Person) entity;
 			session.refresh(person);
@@ -768,7 +768,7 @@ public class EntityUtil {
 		if (entity instanceof Person) {
 			try {
 				Person person = (Person) entity;
-				DocumentModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getDocumentModel();
 
 				// delete attributes
 				Session session = model.beginTransaction();
@@ -893,7 +893,7 @@ public class EntityUtil {
 	public static List<JCheckBox> createCategoryCheckBoxes(MainFrame mainFrame,
 			ActionListener comp) {
 		List<JCheckBox> list = new ArrayList<JCheckBox>();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
 		List<Category> categories = dao.findAllOrderBySort();
@@ -913,7 +913,7 @@ public class EntityUtil {
 	public static List<JCheckBox> createCountryCheckBoxes(MainFrame mainFrame,
 			ActionListener comp) {
 		List<JCheckBox> list = new ArrayList<JCheckBox>();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl dao = new LocationDAOImpl(session);
 		List<String> countries = dao.findCountries();
@@ -931,7 +931,7 @@ public class EntityUtil {
 	public static List<JCheckBox> createPersonCheckBoxes(MainFrame mainFrame,
 			List<JCheckBox> cbCategoryList, ActionListener comp) {
 		List<JCheckBox> list = new ArrayList<JCheckBox>();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl dao = new PersonDAOImpl(session);
 		for (JCheckBox cb : cbCategoryList) {
@@ -954,8 +954,8 @@ public class EntityUtil {
 	}
 
 	public static void renumberScenes(MainFrame mainFrame, Chapter chapter) {
-		DocumentModel model = mainFrame.getDocumentModel();
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookModel model = mainFrame.getDocumentModel();
+		BookController ctrl = mainFrame.getDocumentController();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Scene> scenes = dao.findScenes(chapter);
@@ -988,7 +988,7 @@ public class EntityUtil {
 				// nothing to do for a new entity
 				return;
 			}
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.getSession();
 			if (session != null && session.isOpen()) {
 				Transaction transaction = session.beginTransaction();
@@ -1096,7 +1096,7 @@ public class EntityUtil {
 
 	private static boolean addDeletionInfo(MainFrame mainFrame,
 			AbstractEntity entity, StringBuffer buf) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		boolean warnings = false;
 
@@ -1270,7 +1270,7 @@ public class EntityUtil {
 			buf.append(HtmlUtil.getBold(col.toString()));
 			buf.append(": ");
 			try {
-				DocumentModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getDocumentModel();
 				Session session = model.beginTransaction();
 				session.refresh(entity);
 				Method method = clazz.getMethod(methodName);
@@ -1332,7 +1332,7 @@ public class EntityUtil {
 
 	public static AbstractEntity get(MainFrame mainFrame,
 			Class<? extends AbstractEntity> c, Long entityId) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		AbstractEntity entity = (AbstractEntity) session.get(c, entityId);
 		model.commit();
@@ -1340,7 +1340,7 @@ public class EntityUtil {
 	}
 
 	public static void refresh(MainFrame mainFrame, AbstractEntity entity) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
 		model.commit();
@@ -1433,7 +1433,7 @@ public class EntityUtil {
 		try {
 			JComboBox combo = autoCombo.getJComboBox();
 			combo.removeAllItems();
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			SbGenericDAOImpl<?, ?> dao = entityHandler.createDAO();
 			dao.setSession(session);
@@ -1471,7 +1471,7 @@ public class EntityUtil {
 			combo.addItem("");
 		}
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SbGenericDAOImpl<?, ?> dao = entityHandler.createDAO();
 		dao.setSession(session);

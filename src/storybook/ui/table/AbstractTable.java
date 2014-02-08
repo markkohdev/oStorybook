@@ -46,8 +46,8 @@ import storybook.SbConstants.ActionCommand;
 import storybook.SbConstants.ClientPropertyName;
 import storybook.SbConstants.ComponentName;
 import storybook.action.DeleteEntityAction;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.handler.AbstractEntityHandler;
 import storybook.model.hbn.dao.SbGenericDAOImpl;
@@ -83,7 +83,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	protected Vector<SbColumn> columns;
 
 //	protected MainFrame mainFrame;
-	protected DocumentController ctrl;
+	protected BookController ctrl;
 
 	protected JPanel optionsPanel;
 
@@ -132,7 +132,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	protected List<AbstractEntity> getAllEntities() {
 		AbstractEntityHandler handler = EntityUtil.getEntityHandler(mainFrame,
 				getNewEntity());
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SbGenericDAOImpl<?, ?> dao = handler.createDAO();
 		dao.setSession(session);
@@ -144,7 +144,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
 		String propName = evt.getPropertyName();
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			View newView = (View) evt.getNewValue();
 			View view = (View) getParent().getParent();
 			if (view == newView) {
@@ -381,7 +381,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	}
 
 	protected Vector<Object> getRow(AbstractEntity entity) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
 		Vector<Object> cols = new Vector<Object>();

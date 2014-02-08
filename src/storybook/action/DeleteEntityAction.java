@@ -26,8 +26,8 @@ import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
@@ -87,11 +87,11 @@ public class DeleteEntityAction extends AbstractEntityAction {
 		if (dlg.isCanceled()) {
 			return;
 		}
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		if (entity instanceof Part) {
 			if (mainFrame.getCurrentPart().getId().equals(entity.getId())) {
 				// current part will be delete, change to first part
-				DocumentModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getDocumentModel();
 				Session session = model.beginTransaction();
 				PartDAOImpl dao = new PartDAOImpl(session);
 				Part firstPart = dao.findFirst();

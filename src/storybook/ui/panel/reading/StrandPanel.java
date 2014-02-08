@@ -17,8 +17,8 @@ import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.entity.Strand;
 import storybook.toolkit.I18N;
@@ -42,7 +42,7 @@ public class StrandPanel extends AbstractPanel implements ItemListener {
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
 		String propName = evt.getPropertyName();
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			refresh();
 		}
 	}
@@ -60,7 +60,7 @@ public class StrandPanel extends AbstractPanel implements ItemListener {
 		setBackground(Color.white);
 		setBorder(SwingUtil.getBorderDefault());
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		List<Strand> list = dao.findAll();
@@ -118,7 +118,7 @@ public class StrandPanel extends AbstractPanel implements ItemListener {
 	}
 
 	private void addAllStrands() {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		List<Strand> list = dao.findAll();

@@ -4,7 +4,7 @@
  */
 package storybook.ui.chart;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.dao.SceneDAOImpl;
@@ -120,7 +120,7 @@ public class GanttChart extends AbstractPersonsChart {
 		JFreeChart localJFreeChart = ChartFactory.createGanttChart(I18N.getMsg("msg.chart.gantt.characters.title"), I18N.getMsg("msg.common.person"), I18N.getMsg("msg.common.date"), paramIntervalCategoryDataset, true, true, false);
 		CategoryPlot localCategoryPlot = (CategoryPlot) localJFreeChart.getPlot();
 		GanttRenderer localGanttRenderer = (GanttRenderer) localCategoryPlot.getRenderer();
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+		BookModel localDocumentModel = this.mainFrame.getDocumentModel();
 		Session localSession = localDocumentModel.beginTransaction();
 		SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);
 		Date localDate1 = localSceneDAOImpl.findFirstDate();
@@ -132,7 +132,7 @@ public class GanttChart extends AbstractPersonsChart {
 	}
 
 	private IntervalCategoryDataset createDataset() {
-		DocumentModel localDocumentModel = this.mainFrame.getDocumentModel();
+		BookModel localDocumentModel = this.mainFrame.getDocumentModel();
 		Session localSession = localDocumentModel.beginTransaction();
 		PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
 		List localList1 = localPersonDAOImpl.findByCategories(this.selectedCategories);

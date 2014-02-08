@@ -42,9 +42,9 @@ import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.StorybookApp;
 import storybook.SbConstants.PreferenceKey;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.DbFile;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.PreferenceModel;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.dao.PreferenceDAOImpl;
@@ -352,7 +352,7 @@ public class SbActionManager implements PropertyChangeListener {
 
 	private void reloadPartMenuNew(MainToolBar toolBar) {
 		StorybookApp.trace("SbActionManager.reloadPartMenuNew(" + toolBar.getName() + ")");
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		if (model == null) {
 			return;
 		}
@@ -378,7 +378,7 @@ public class SbActionManager implements PropertyChangeListener {
 
 	private void reloadPartMenu(JMenuBar menubar) {
 		StorybookApp.trace("SbActionManager.reloadPartMenu(" + menubar.getName() + ")");
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		if (model == null) {
 			return;
 		}
@@ -479,13 +479,13 @@ public class SbActionManager implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		StorybookApp.trace("SbActionManager.propertyChange(" + evt.toString() + ")");
 		String propName = evt.getPropertyName();
-		if (DocumentController.PartProps.NEW.check(propName)
-			|| DocumentController.PartProps.UPDATE.check(propName)
-			|| DocumentController.PartProps.DELETE.check(propName)) {
+		if (BookController.PartProps.NEW.check(propName)
+			|| BookController.PartProps.UPDATE.check(propName)
+			|| BookController.PartProps.DELETE.check(propName)) {
 			reloadMenuToolbar();
 			return;
 		}
-		if (DocumentController.PartProps.CHANGE.check(propName)) {
+		if (BookController.PartProps.CHANGE.check(propName)) {
 			selectPartMenu(mainFrame.getJMenuBar());
 			//return;
 		}

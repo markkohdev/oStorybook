@@ -12,8 +12,8 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import org.hibernate.UnresolvableObjectException;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.Person;
 import storybook.model.hbn.entity.Scene;
@@ -44,7 +44,7 @@ public class PersonLinksPanel extends AbstractPanel {
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			if (((Scene) newValue).getId() != scene.getId()) {
 				// not this scene
 				return;
@@ -53,7 +53,7 @@ public class PersonLinksPanel extends AbstractPanel {
 			return;
 		}
 
-		if (DocumentController.PersonProps.UPDATE.check(propName)) {
+		if (BookController.PersonProps.UPDATE.check(propName)) {
 			refresh();
 			return;
 		}
@@ -72,7 +72,7 @@ public class PersonLinksPanel extends AbstractPanel {
 			setMaximumSize(new Dimension(170, 50));
 		}
 		setOpaque(false);
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(scene);
 		List<Person> list = scene.getPersons();

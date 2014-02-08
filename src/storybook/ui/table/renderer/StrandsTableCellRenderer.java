@@ -30,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.LazyInitializationException;
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Strand;
 import storybook.ui.MainFrame;
 
@@ -55,7 +55,7 @@ public class StrandsTableCellRenderer extends DefaultTableCellRenderer {
 				abbrList.add(strand.getAbbr());
 			}
 		} catch (LazyInitializationException lie) {
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			@SuppressWarnings("unchecked")
 			List<Strand> list = (List<Strand>) value;

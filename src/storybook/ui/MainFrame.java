@@ -78,10 +78,10 @@ import storybook.SbConstants.Storybook;
 import storybook.SbConstants.ViewName;
 import storybook.action.ActionHandler;
 import storybook.action.SbActionManager;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.BlankModel;
 import storybook.model.DbFile;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Part;
@@ -105,8 +105,8 @@ import storybook.ui.interfaces.IPaintable;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements IPaintable {
 
-	private DocumentModel documentModel;
-	private DocumentController documentController;
+	private BookModel documentModel;
+	private BookController documentController;
 
 	private SbActionManager sbActionManager;
 	private ViewFactory viewFactory;
@@ -131,7 +131,7 @@ public class MainFrame extends JFrame implements IPaintable {
 		viewFactory = new ViewFactory(this);
 		sbActionManager = new SbActionManager(this);
 		sbActionManager.init();
-		documentController = new DocumentController();
+		documentController = new BookController();
 		BlankModel model = new BlankModel();
 		documentController.attachModel(model);
 		setIconImage(I18N.getIconImage("icon.sb"));
@@ -148,8 +148,8 @@ public class MainFrame extends JFrame implements IPaintable {
 			sbActionManager.init();
 
 			// model and controller
-			documentController = new DocumentController();
-			documentModel = new DocumentModel();
+			documentController = new BookController();
+			documentModel = new BookModel();
 			if (!dbFile.getDbName().isEmpty()) {
 				documentModel.initSession(dbFile.getDbName());
 			}
@@ -553,11 +553,11 @@ public class MainFrame extends JFrame implements IPaintable {
 		return dbFile == null;
 	}
 
-	public DocumentController getDocumentController() {
+	public BookController getDocumentController() {
 		return documentController;
 	}
 
-	public DocumentModel getDocumentModel() {
+	public BookModel getDocumentModel() {
 		return documentModel;
 	}
 

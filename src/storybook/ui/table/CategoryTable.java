@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.CategoryDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Category;
@@ -52,18 +52,18 @@ public class CategoryTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.CategoryProps.INIT.check(propName)) {
+			if (BookController.CategoryProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.CategoryProps.UPDATE.check(propName)) {
+			} else if (BookController.CategoryProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.CategoryProps.NEW.check(propName)) {
+			} else if (BookController.CategoryProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.CategoryProps.DELETE.check(propName)) {
+			} else if (BookController.CategoryProps.DELETE.check(propName)) {
 				deleteEntity(evt);
-			} else if (DocumentController.CategoryProps.ORDER_UP
+			} else if (BookController.CategoryProps.ORDER_UP
 					.check(propName)) {
 				orderUpEntity(evt);
-			} else if (DocumentController.CategoryProps.ORDER_DOWN
+			} else if (BookController.CategoryProps.ORDER_DOWN
 					.check(propName)) {
 				orderDownEntity(evt);
 			}
@@ -94,7 +94,7 @@ public class CategoryTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Category category = (Category)entity;
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
@@ -117,7 +117,7 @@ public class CategoryTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Category category = (Category)entity;
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
@@ -169,7 +169,7 @@ public class CategoryTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
 		Category category = dao.find(id);

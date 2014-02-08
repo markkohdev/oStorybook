@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.handler.AbstractEntityHandler;
 import storybook.model.hbn.dao.SbGenericDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
@@ -50,7 +50,7 @@ public class CheckBoxPanel extends AbstractPanel implements IRefreshable {
 	public void init() {
 		cbMap.clear();
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SbGenericDAOImpl<?, ?> dao = entityHandler.createDAO();
 		dao.setSession(session);

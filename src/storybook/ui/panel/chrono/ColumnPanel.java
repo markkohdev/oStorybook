@@ -26,7 +26,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
@@ -58,7 +58,7 @@ public class ColumnPanel extends AbstractStrandDatePanel {
 			add(lbDate, "cell 0 0,growy");
 
 			// scenes by strand and date
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			SceneDAOImpl sceneDao = new SceneDAOImpl(session);
 			List<Scene> sceneList = sceneDao.findByStrandAndDate(strand, date);

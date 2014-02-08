@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.ui.MainFrame;
 import storybook.ui.interfaces.IPaintable;
 
@@ -66,7 +66,7 @@ public class DebugInfoPanel extends JPanel implements IPaintable,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		int n = ctrl.getNumberOfAttachedViews();
 		lbAttachedViews.setText("Attached Views: " + Integer.toString(n));
 		lbAttachedViews.setToolTipText("<html>"+ctrl.getInfoAttachedViews(true));

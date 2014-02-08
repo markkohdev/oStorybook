@@ -39,9 +39,9 @@ import storybook.SbConstants;
 import storybook.StorybookApp;
 import storybook.SbConstants.InternalKey;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.DbFile;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
@@ -229,7 +229,7 @@ public class ActionHandler {
 	public void handleNewIdea()		{handleNewEntity(new Idea());}//new OK
 
 	private void handleNewEntity(AbstractEntity entity) {//new OK
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		ctrl.setEntityToEdit(entity);
 		mainFrame.showView(ViewName.EDITOR);
 	}
@@ -279,7 +279,7 @@ public class ActionHandler {
 
 	public void handlePreviousPart() {
 		Part currentPart = mainFrame.getCurrentPart();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -294,7 +294,7 @@ public class ActionHandler {
 
 	public void handleNextPart() {
 		Part currentPart = mainFrame.getCurrentPart();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -357,7 +357,7 @@ public class ActionHandler {
 	}
 
 	public void handleDumpAttachedViews() {
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		ctrl.printAttachedViews();
 	}
 	/* suppression du garbage collector

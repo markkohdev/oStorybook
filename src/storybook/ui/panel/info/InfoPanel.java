@@ -30,9 +30,9 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants.InternalKey;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.DbFile;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Internal;
@@ -63,7 +63,7 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			View newView = (View) newValue;
 			View view = (View) getParent().getParent();
 			if (view == newView) {
@@ -72,13 +72,13 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 			return;
 		}
 
-		if (DocumentController.CommonProps.SHOW_INFO.check(propName)) {
+		if (BookController.CommonProps.SHOW_INFO.check(propName)) {
 			if (newValue instanceof AbstractEntity) {
 				entity = (AbstractEntity) newValue;
 				if (entity.isTransient()) {
 					return;
 				}
-				DocumentModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getDocumentModel();
 				Session session = model.beginTransaction();
 				session.refresh(entity);
 				model.commit();

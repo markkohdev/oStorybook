@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.GenderDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Gender;
@@ -50,13 +50,13 @@ public class GenderTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.GenderProps.INIT.check(propName)) {
+			if (BookController.GenderProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.GenderProps.UPDATE.check(propName)) {
+			} else if (BookController.GenderProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.GenderProps.NEW.check(propName)) {
+			} else if (BookController.GenderProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.GenderProps.DELETE.check(propName)) {
+			} else if (BookController.GenderProps.DELETE.check(propName)) {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class GenderTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		GenderDAOImpl dao = new GenderDAOImpl(session);
 		Gender gender = dao.find(id);

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.LocationDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Location;
@@ -50,13 +50,13 @@ public class LocationTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.LocationProps.INIT.check(propName)) {
+			if (BookController.LocationProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.LocationProps.UPDATE.check(propName)) {
+			} else if (BookController.LocationProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.LocationProps.NEW.check(propName)) {
+			} else if (BookController.LocationProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.LocationProps.DELETE.check(propName)) {
+			} else if (BookController.LocationProps.DELETE.check(propName)) {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class LocationTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl dao = new LocationDAOImpl(session);
 		Location location = dao.find(id);

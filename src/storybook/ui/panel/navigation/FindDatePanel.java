@@ -37,7 +37,7 @@ import net.miginfocom.swing.MigLayout;
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
 import storybook.action.ScrollToStrandDateAction;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.handler.StrandEntityHandler;
 import storybook.model.hbn.dao.SceneDAOImpl;
@@ -125,7 +125,7 @@ public class FindDatePanel extends AbstractPanel implements ItemListener {
 
 	private void refreshDateCombo() {
 		Strand strand = (Strand) strandCombo.getSelectedItem();
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		List<Date> dates = dao.findDistinctDatesByStrand(strand);

@@ -30,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.LazyInitializationException;
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Person;
 import storybook.ui.MainFrame;
 
@@ -58,7 +58,7 @@ public class PersonsTableCellRenderer extends DefaultTableCellRenderer {
 		} catch (LazyInitializationException lie) {
 			MainFrame mainFrame = (MainFrame) table
 					.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			for (Person person : list) {
 				session.refresh(person);

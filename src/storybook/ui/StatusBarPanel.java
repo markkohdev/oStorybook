@@ -35,7 +35,7 @@ import storybook.SbConstants;
 import storybook.StorybookApp;
 import storybook.SbConstants.PreferenceKey;
 import storybook.action.LoadDockingLayoutAction;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.PreferenceModel;
 import storybook.model.hbn.dao.PreferenceDAOImpl;
 import storybook.model.hbn.entity.Preference;
@@ -64,13 +64,13 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 		// Object newValue = evt.getNewValue();
 		// Object oldValue = evt.getOldValue();
 
-		if (DocumentController.PartProps.CHANGE.check(propName)
-				|| DocumentController.PartProps.UPDATE.check(propName)) {
+		if (BookController.PartProps.CHANGE.check(propName)
+				|| BookController.PartProps.UPDATE.check(propName)) {
 			refresh();
 			return;
 		}
 
-		if (DocumentController.CommonProps.REFRESH.check(propName)) {
+		if (BookController.CommonProps.REFRESH.check(propName)) {
 			refresh();
 //			return;
 		}

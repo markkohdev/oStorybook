@@ -4,7 +4,7 @@
  */
 package storybook.ui.chart;
 
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.entity.Part;
@@ -63,7 +63,7 @@ public class StrandsByDateChart extends AbstractChartPanel {
 		JFreeChart chart = ChartFactory.createBarChart(this.chartTitle, "", "", setCategory, PlotOrientation.VERTICAL, true, true, false);
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		plot.addRangeMarker(ChartUtil.getAverageMarker(this.average), Layer.FOREGROUND);
-		DocumentModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl daoStrand = new StrandDAOImpl(session);
 		List strands = daoStrand.findAll();
@@ -88,7 +88,7 @@ public class StrandsByDateChart extends AbstractChartPanel {
 		DefaultCategoryDataset setCategory = new DefaultCategoryDataset();
 		try {
 			Part part = this.mainFrame.getCurrentPart();
-			DocumentModel model = this.mainFrame.getDocumentModel();
+			BookModel model = this.mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
 			StrandDAOImpl daoStrand = new StrandDAOImpl(session);
 			List strands = daoStrand.findAll();

@@ -28,8 +28,8 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import org.hibernate.Session;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
@@ -80,9 +80,9 @@ public class SceneTransferHandler extends TransferHandler {
 
 	private boolean unassignScene(long sourceSceneId) {
 		try {
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
-			DocumentController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getDocumentController();
 			Scene scene = (Scene) session.get(Scene.class, sourceSceneId);
 			// detach scene from session
 			session.close();
@@ -100,9 +100,9 @@ public class SceneTransferHandler extends TransferHandler {
 					.getParent();
 			Chapter destChapter = destChapterPanel.getChapter();
 			int sceneNo = destDtScene.getPreviousNumber() + 1;
-			DocumentModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getDocumentModel();
 			Session session = model.beginTransaction();
-			DocumentController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getDocumentController();
 			Scene scene = (Scene) session.get(Scene.class, sourceSceneId);
 			// detach scene from session
 			session.close();
@@ -145,9 +145,9 @@ public class SceneTransferHandler extends TransferHandler {
 		ChapterPanel destChapterPanel = (ChapterPanel) destDtScene.getParent();
 		Chapter destChapter = destChapterPanel.getChapter();
 
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		Scene scene = (Scene) session.get(Scene.class, sourceSceneId);
 		session.close();
 		if (destChapter != null) {
@@ -160,9 +160,9 @@ public class SceneTransferHandler extends TransferHandler {
 	}
 
 	private boolean swapScenes(long sourceSceneId, DTScenePanel destDtScene) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		Scene sourceScene = (Scene) session.get(Scene.class, sourceSceneId);
 		Scene destScene = destDtScene.getScene();
 		session.close();

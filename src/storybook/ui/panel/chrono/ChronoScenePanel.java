@@ -35,7 +35,7 @@ import javax.swing.text.JTextComponent;
 import storybook.SbConstants;
 import storybook.SbConstants.InternalKey;
 import storybook.action.EditEntityAction;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Scene;
@@ -83,14 +83,14 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			EntityUtil.refresh(mainFrame, scene.getStrand());
 			setEndBgColor(scene.getStrand().getJColor());
 			repaint();
 			return;
 		}
 
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			Scene newScene = (Scene) newValue;
 			if (newScene.getId() != scene.getId()) {
 				// not this scene
@@ -115,7 +115,7 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 			return;
 		}
 
-		if (DocumentController.ChronoViewProps.ZOOM.check(propName)) {
+		if (BookController.ChronoViewProps.ZOOM.check(propName)) {
 			setZoomedSize((Integer) newValue);
 			refresh();
 		}

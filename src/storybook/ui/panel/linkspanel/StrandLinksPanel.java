@@ -28,8 +28,8 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import org.hibernate.UnresolvableObjectException;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
@@ -55,7 +55,7 @@ public class StrandLinksPanel extends AbstractPanel {
 		Object newValue = evt.getNewValue();
 		String propName = evt.getPropertyName();
 
-		if (DocumentController.SceneProps.UPDATE.check(propName)) {
+		if (BookController.SceneProps.UPDATE.check(propName)) {
 			if (((Scene) newValue).getId() != scene.getId()) {
 				// not this scene
 				return;
@@ -64,7 +64,7 @@ public class StrandLinksPanel extends AbstractPanel {
 			return;
 		}
 
-		if (DocumentController.StrandProps.UPDATE.check(propName)) {
+		if (BookController.StrandProps.UPDATE.check(propName)) {
 			EntityUtil.refresh(mainFrame, scene.getStrand());
 			refresh();
 		}
@@ -83,7 +83,7 @@ public class StrandLinksPanel extends AbstractPanel {
 		} else {
 			setOpaque(false);
 		}
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(scene);
 		List<Strand> list = scene.getStrands();

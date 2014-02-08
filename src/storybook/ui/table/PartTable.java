@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
-import storybook.model.DocumentModel;
+import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Part;
@@ -51,13 +51,13 @@ public class PartTable extends AbstractTable {
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
 		try {
 			String propName = evt.getPropertyName();
-			if (DocumentController.PartProps.INIT.check(propName)) {
+			if (BookController.PartProps.INIT.check(propName)) {
 				initTableModel(evt);
-			} else if (DocumentController.PartProps.UPDATE.check(propName)) {
+			} else if (BookController.PartProps.UPDATE.check(propName)) {
 				updateEntity(evt);
-			} else if (DocumentController.PartProps.NEW.check(propName)) {
+			} else if (BookController.PartProps.NEW.check(propName)) {
 				newEntity(evt);
-			} else if (DocumentController.PartProps.DELETE.check(propName)) {
+			} else if (BookController.PartProps.DELETE.check(propName)) {
 				deleteEntity(evt);
 			}
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ public class PartTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		Part part = dao.find(id);

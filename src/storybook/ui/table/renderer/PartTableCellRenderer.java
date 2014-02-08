@@ -29,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants.ClientPropertyName;
-import storybook.model.DocumentModel;
+import storybook.model.BookModel;
 import storybook.model.hbn.entity.Part;
 import storybook.ui.MainFrame;
 
@@ -41,7 +41,7 @@ public class PartTableCellRenderer extends DefaultTableCellRenderer {
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		MainFrame mainFrame = (MainFrame) table
 				.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-		DocumentModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		Long id = ((Part) value).getId();
 		Part part = (Part) session.get(Part.class, id);

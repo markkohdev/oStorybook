@@ -27,7 +27,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import storybook.SbConstants.ViewName;
-import storybook.controller.DocumentController;
+import storybook.controller.BookController;
 import storybook.model.EntityUtil;
 import storybook.model.handler.ChapterEntityHandler;
 import storybook.model.hbn.entity.Chapter;
@@ -140,7 +140,7 @@ public class FindChapterPanel extends AbstractPanel {
 
 	private void scrollToChapter() {
 		Chapter chapter = (Chapter) chapterCombo.getSelectedItem();
-		DocumentController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getDocumentController();
 		if (viewsRbPanel.isChronoSelected()) {
 			mainFrame.showView(ViewName.CHRONO);
 			ctrl.chronoShowEntity(chapter);
