@@ -37,6 +37,7 @@ import storybook.action.DisposeDialogAction;
 import storybook.action.OpenFileAction;
 import storybook.controller.BookController;
 import storybook.export.BookExporter;
+import storybook.export.Printing;
 import storybook.model.DbFile;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Chapter;
@@ -824,8 +825,15 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_fileExportObjectActionPerformed
 
     private void filePrintBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintBookActionPerformed
-		ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
-		SwingUtil.showDialog(dlg, mainFrame);
+		//ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
+		//SwingUtil.showDialog(dlg, mainFrame);
+		Printing p=new Printing(mainFrame);
+		p.setInteractive(true);
+		BookExporter exp=new BookExporter(mainFrame);
+		exp.setExportForOpenOffice(true);
+		StringBuffer str = exp.getContent();
+		p.init(str.toString());
+		p.doPrint();
     }//GEN-LAST:event_filePrintBookActionPerformed
 
     private void filePrintChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintChapterActionPerformed
