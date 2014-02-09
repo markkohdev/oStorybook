@@ -33,9 +33,9 @@ import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Part;
 import storybook.toolkit.I18N;
-import storybook.toolkit.swing.SwingUtil;
+import static storybook.toolkit.swing.SwingUtil.showModalDialog;
 import storybook.ui.MainFrame;
-import storybook.ui.dialog.ConfirmDeletionDialog;
+import storybook.ui.dialog.dlgConfirmDelete;
 import storybook.ui.edit.EntityEditor;
 
 /**
@@ -82,8 +82,8 @@ public class DeleteEntityAction extends AbstractEntityAction {
 			}
 		}
 
-		ConfirmDeletionDialog dlg = new ConfirmDeletionDialog(mainFrame, entity);
-		SwingUtil.showModalDialog(dlg, mainFrame);
+		dlgConfirmDelete dlg = new dlgConfirmDelete(mainFrame, entity);
+		showModalDialog(dlg, mainFrame, true);
 		if (dlg.isCanceled()) {
 			return;
 		}

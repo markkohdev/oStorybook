@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.DefaultRowSorter;
@@ -45,6 +44,7 @@ import storybook.SbConstants;
 import storybook.SbConstants.ActionCommand;
 import storybook.SbConstants.ClientPropertyName;
 import storybook.SbConstants.ComponentName;
+import storybook.StorybookApp;
 import storybook.action.DeleteEntityAction;
 import storybook.controller.BookController;
 import storybook.model.BookModel;
@@ -65,12 +65,13 @@ import storybook.toolkit.comparator.SafeDateComparator;
 import storybook.toolkit.comparator.StringIntegerComparator;
 import storybook.toolkit.swing.IconButton;
 import storybook.toolkit.swing.SwingUtil;
+import static storybook.toolkit.swing.SwingUtil.showModalDialog;
 import storybook.toolkit.swing.verifier.IntegerVerifier;
 import storybook.toolkit.swing.verifier.VerifierGroup;
 import storybook.ui.panel.AbstractPanel;
 import storybook.ui.MainFrame;
 import storybook.ui.table.SbColumn.InputType;
-import storybook.ui.dialog.ConfirmMultiDeletionDlg;
+import storybook.ui.dialog.dlgConfirmDelete;
 import storybook.ui.table.renderer.ColorTableCellRenderer;
 import storybook.ui.table.renderer.DateTableCellRenderer;
 
@@ -78,21 +79,13 @@ import storybook.ui.table.renderer.DateTableCellRenderer;
 public abstract class AbstractTable extends AbstractPanel implements
 		ActionListener, ListSelectionListener {
 
-	private boolean trace=false;
-
-	protected Vector<SbColumn> columns;
-
-//	protected MainFrame mainFrame;
+	protected List<SbColumn> columns;
 	protected BookController ctrl;
-
 	protected JPanel optionsPanel;
-
 	protected JXTable table;
 	protected DefaultTableModel tableModel;
-
 	protected boolean hasOrder = false;
 	protected boolean allowMultiDelete = true;
-
 	private JButton btNew;
 	private JButton btDelete;
 	private JButton btEdit;
@@ -148,7 +141,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 			View newView = (View) evt.getNewValue();
 			View view = (View) getParent().getParent();
 			if (view == newView) {
-				HashMap<Integer, Boolean> visible = new HashMap<Integer, Boolean>();
+				HashMap<Integer, Boolean> visible = new HashMap<>();
 				for (SbColumn col : getColumns()) {
 					TableColumnExt ext = table.getColumnExt(col.toString());
 					if (ext != null) {
@@ -185,8 +178,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 		optionsPanel = new JPanel(new MigLayout("flowx"));
 		initOptionsPanel();
 
-		Vector<String> colNames = getColumnNames();
-		tableModel = new DefaultTableModel(colNames, 0);
+		List<String> colNames = getColumnNames();
+		tableModel = new DefaultTableModel(colNames.toArray(), 0);
 		table = new JXTable();
 		table.setModel(tableModel);
 
@@ -359,8 +352,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 				// }
 				// }
 				// }
-				Vector<Object> cols = getRow(entity);
-				tableModel.addRow(cols);
+				List<Object> cols = getRow(entity);
+				tableModel.addRow(cols.toArray());
 			}
 		} catch (ClassCastException e) {
 		}
@@ -372,19 +365,19 @@ public abstract class AbstractTable extends AbstractPanel implements
 		return columns;
 	}
 
-	private Vector<String> getColumnNames() {
-		Vector<String> cols = new Vector<String>();
+	private List<String> getColumnNames() {
+		List<String> cols = new ArrayList<>();
 		for (SbColumn col : getColumns()) {
 			cols.add(col.toString());
 		}
 		return cols;
 	}
 
-	protected Vector<Object> getRow(AbstractEntity entity) {
+	protected List<Object> getRow(AbstractEntity entity) {
 		BookModel model = mainFrame.getDocumentModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
-		Vector<Object> cols = new Vector<Object>();
+		List<Object> cols = new ArrayList<>();
 		for (SbColumn col : getColumns()) {
 			try {
 				String methodName = "get" + col.getMethodName();
@@ -430,7 +423,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 			if (!id.equals(entity.getId())) {
 				continue;
 			}
-			Vector<Object> rowVector = getRow(entity);
+			List<Object> rowVector = getRow(entity);
 			int col = 0;
 			for (Object val : rowVector) {
 				tableModel.setValueAt(val, row, col);
@@ -448,7 +441,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	protected void sortByColumn(int col) {
 		DefaultRowSorter<?, ?> sorter = ((DefaultRowSorter<?, ?>) table
 				.getRowSorter());
-		ArrayList<SortKey> list = new ArrayList<SortKey>();
+		ArrayList<SortKey> list = new ArrayList<>();
 		list.add(new RowSorter.SortKey(col, SortOrder.ASCENDING));
 		sorter.setSortKeys(list);
 		sorter.sort();
@@ -456,8 +449,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	protected void newEntity(PropertyChangeEvent evt) {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
-		Vector<Object> cols = getRow(entity);
-		tableModel.addRow(cols);
+		List<Object> cols = getRow(entity);
+		tableModel.addRow(cols.toArray());
 		tableModel.fireTableDataChanged();
 	}
 
@@ -480,59 +473,48 @@ public abstract class AbstractTable extends AbstractPanel implements
 		try {
 			int modelIndex = table.getRowSorter().convertRowIndexToModel(row);
 			@SuppressWarnings("unchecked")
-			Vector<Vector<String>> dataVector = tableModel.getDataVector();
+			List<List<String>> dataVector = tableModel.getDataVector();
 			Long id = Long.parseLong(dataVector.get(modelIndex).get(0));
 			return getEntity(id);
-		} catch (Exception ex) {
+		} catch (NumberFormatException ex) {
+			StorybookApp.error("AbstractTable.getEntityFromRow("+row+")", ex);
 		}
 		return null;
 	}
 
 	@Override
 	public synchronized void actionPerformed(ActionEvent e) {
-		if (trace) {System.out.println("AbstractTable.actionPerformed("+e.toString());}
+		StorybookApp.trace("AbstractTable.actionPerformed("+e.toString()+")");
 		String actCmd = e.getActionCommand();
 		Component comp = (Component) e.getSource();
 		String compName = comp.getName();
 		int row = table.getSelectedRow();
-		if (trace) {
-			System.out.println("actCmd="+actCmd
-				+",comp="+compName
-				+",row="+row);}
-
-		if (ComponentName.BT_EDIT.check(compName)
-				|| ActionCommand.EDIT.check(actCmd)) {
+		StorybookApp.trace("actCmd=" + actCmd + ",comp="+compName + ",row="+row);
+		if (ComponentName.BT_EDIT.check(compName) || ActionCommand.EDIT.check(actCmd)) {
 			sendSetEntityToEdit(row);
 			return;
 		}
-
-		if (ComponentName.BT_NEW.check(compName)
-				|| ActionCommand.NEW.check(actCmd)) {
+		if (ComponentName.BT_NEW.check(compName) || ActionCommand.NEW.check(actCmd)) {
 			table.clearSelection();
 			sendSetNewEntityToEdit(getNewEntity());
 			return;
 		}
-
-		if (ComponentName.BT_COPY.check(compName)
-				|| ActionCommand.COPY.check(actCmd)) {
+		if (ComponentName.BT_COPY.check(compName) || ActionCommand.COPY.check(actCmd)) {
 			AbstractEntity entity = (AbstractEntity) getEntityFromRow(row);
 			EntityUtil.copyEntity(mainFrame, entity);
 			return;
 		}
-
-		if (ComponentName.BT_DELETE.check(compName)
-				|| ActionCommand.DELETE.check(actCmd)) {
+		if (ComponentName.BT_DELETE.check(compName) || ActionCommand.DELETE.check(actCmd)) {
 			if (table.getSelectedRowCount() == 1) {
 				// delete one entity
 				AbstractEntity entity = (AbstractEntity) getEntityFromRow(row);
-				DeleteEntityAction act = new DeleteEntityAction(mainFrame,
-						entity);
+				DeleteEntityAction act = new DeleteEntityAction(mainFrame, entity);
 				act.actionPerformed(null);
 				return;
 			}
 			if (table.getSelectedRowCount() > 1) {
 				// delete multiple entities
-				List<AbstractEntity> entities = new ArrayList<AbstractEntity>();
+				List<AbstractEntity> entities = new ArrayList<>();
 				int[] rows = table.getSelectedRows();
 				for (int row2 : rows) {
 					AbstractEntity entity = getEntityFromRow(row2);
@@ -541,9 +523,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 						entities.add(entity);
 					}
 				}
-				ConfirmMultiDeletionDlg dlg = new ConfirmMultiDeletionDlg(
-						mainFrame, entities);
-				SwingUtil.showModalDialog(dlg, mainFrame);
+				dlgConfirmDelete dlg = new dlgConfirmDelete(mainFrame, entities);
+				showModalDialog(dlg, mainFrame, true);
 				if (dlg.isCanceled()) {
 					return;
 				}
@@ -565,11 +546,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) e
-				.getSource();
-		int count = selectionModel.getMaxSelectionIndex()
-				- selectionModel.getMinSelectionIndex() + 1;
-
+		DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) e.getSource();
+		int count = selectionModel.getMaxSelectionIndex() - selectionModel.getMinSelectionIndex() + 1;
 		if (count > 1) {
 			btEdit.setEnabled(false);
 			btCopy.setEnabled(false);
@@ -580,7 +558,6 @@ public abstract class AbstractTable extends AbstractPanel implements
 			}
 			return;
 		}
-
 		int row = selectionModel.getMinSelectionIndex();
 		AbstractEntity entity = getEntityFromRow(row);
 		if (entity == null) {
@@ -593,7 +570,6 @@ public abstract class AbstractTable extends AbstractPanel implements
 			}
 			return;
 		}
-
 		btEdit.setEnabled(true);
 		btCopy.setEnabled(true);
 		btDelete.setEnabled(true);
@@ -607,10 +583,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 2) {
-				DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) table
-						.getSelectionModel();
-				int count = selectionModel.getMaxSelectionIndex()
-						- selectionModel.getMinSelectionIndex() + 1;
+				DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) table.getSelectionModel();
+				int count = selectionModel.getMaxSelectionIndex() - selectionModel.getMinSelectionIndex() + 1;
 				if (count > 1) {
 					return;
 				}

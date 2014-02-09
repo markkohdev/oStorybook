@@ -33,7 +33,7 @@
 	</category>
 
 	<category name="org.hibernate">
-		<priority value="DEBUG" />
+		<priority value="FATAL" />
         <appender-ref ref="STDOUT" />
 	</category>
 
