@@ -21,9 +21,11 @@ import javax.swing.JList;
 import org.hibernate.Session;
 import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
+import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Location;
+import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Person;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
@@ -82,6 +84,24 @@ public class CommonBox {
 
 	public static void loadLbLocations(JList lbLocations, Scene scene) {
 		// TODO loadLbLocations
+	}
+
+	public static void loadCbParts(MainFrame mainFrame,JComboBox cb, Chapter chapter) {
+		BookModel model = mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		PartDAOImpl dao = new PartDAOImpl(session);
+		List<Part> parts = dao.findAll();
+		cb.removeAllItems();
+		int ix=-1,i=0;
+		for (Part part : parts) {
+			cb.addItem(part.getNumberName());
+			if ((chapter.hasPart()) && (chapter.getPart().equals(part))) {
+				ix=i;
+			}
+			i++;
+		}
+		cb.setSelectedIndex(ix);
+		model.commit();
 	}
 
 }

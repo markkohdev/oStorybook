@@ -18,8 +18,17 @@ package storybook.ui.dialog.edit;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.ResourceBundle;
+import storybook.model.hbn.entity.Chapter;
+import storybook.model.hbn.entity.Idea;
+import storybook.model.hbn.entity.Item;
+import storybook.model.hbn.entity.ItemLink;
+import storybook.model.hbn.entity.Location;
 import storybook.model.hbn.entity.Part;
+import storybook.model.hbn.entity.Person;
+import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
+import storybook.model.hbn.entity.Tag;
+import storybook.model.hbn.entity.TagLink;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
 
@@ -31,8 +40,8 @@ public class Editor extends javax.swing.JPanel {
 	MainFrame parent;
 	String currentView="NONE";
 	String[] typeEdit={
-		"NONE","STRAND","PART","CHAPTER","SCENE","PERSON",
-		"LOCATION","ITEM","ITEMLINKS","TAG","TAGLINKS","IDEA"
+		"NONE","strand","part","chapter","scene","person",
+		"location","item","itemlink","tag","taglink","idea"
 	};
 	ResourceBundle bundle;
 	private CardLayout card = new CardLayout(0, 0);
@@ -76,7 +85,17 @@ public class Editor extends javax.swing.JPanel {
 		//setEdit("NONE",null);
 	}
 
-	public void setEdit(String v, Object obj) {
+	public Editor(MainFrame m, Object obj) {
+		initComponents();
+		parent=m;
+		bundle = ResourceBundle.getBundle("storybook/resources/messages");
+		editorPane.setLayout(card);
+		currentView="NONE";
+		modified=false;
+		card.show(editorPane, currentView);
+	}
+
+	public final void setEdit(String v, Object obj) {
 		if (currentView.equals(v)) {
 			return;
 		}
@@ -89,50 +108,52 @@ public class Editor extends javax.swing.JPanel {
 			editorPane.remove(0);
 		}
 		switch(v) {
-			case "STRAND":
-				currentView="STRAND";
+			case "strand":
+				currentView="strand";
 				editStrand=new EditStrand(this,(Strand) obj);
 				editorPane.add(editStrand,currentView);
 				break;
-			case "PART":
-				currentView="PART";
-				editPart.set((Part) obj);
+			case "part":
+				currentView="part";
+				editPart=new EditPart(this,(Part) obj);
 				editorPane.add(editPart,currentView);
 				break;
-			case "CHAPTER":
-				currentView="CHAPTER";
+			case "chapter":
+				currentView="chapter";
+				editChapter=new EditChapter(this,(Chapter)obj);
 				editorPane.add(editChapter,currentView);
 				break;
-			case "SCENE":
-				currentView="SCENE";
+			case "scene":
+				currentView="scene";
+				editScene.set((Scene)obj);
 				editorPane.add(editScene,"Scene");
 				break;
-			case "PERSON":
-				currentView="PERSON";
+			case "person":
+				currentView="person";
 				editorPane.add(editPerson,currentView);
 				break;
-			case "LOCATION":
-				currentView="LOCATION";
+			case "location":
+				currentView="location";
 				editorPane.add(editLocation,currentView);
 				break;
 			case "Item":
 				currentView="Item";
 				editorPane.add(editItem,currentView);
 				break;
-			case "ITEMLINKS":
-				currentView="ITEMLINKS";
+			case "itemlink":
+				currentView="itemlink";
 				editorPane.add(editItemLinks,currentView);
 				break;
-			case "TAG":
-				currentView="TAG";
+			case "tag":
+				currentView="tag";
 				editorPane.add(editTag,currentView);
 				break;
-			case "TAGLINKS":
-				currentView="TAGLINKS";
+			case "taglink":
+				currentView="taglinks";
 				editorPane.add(editTagLinks,currentView);
 				break;
-			case "IDEA":
-				currentView="IDEA";
+			case "idea":
+				currentView="idea";
 				editorPane.add(editIdea,currentView);
 				break;
 			case "NONE":
@@ -140,7 +161,7 @@ public class Editor extends javax.swing.JPanel {
 				editorPane.add(editBlank,currentView);
 		}
 		card.show(editorPane, currentView);
-		lbEditor.setText(I18N.getMsg(currentView));
+		lbEditor.setText(I18N.getMsg("msg.common."+currentView));
 	}
 
 	public void removeEdit() {
@@ -168,18 +189,18 @@ public class Editor extends javax.swing.JPanel {
         editorPane.setLayout(editorPaneLayout);
         editorPaneLayout.setHorizontalGroup(
             editorPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 398, Short.MAX_VALUE)
+            .addGap(0, 516, Short.MAX_VALUE)
         );
         editorPaneLayout.setVerticalGroup(
             editorPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 336, Short.MAX_VALUE)
+            .addGap(0, 430, Short.MAX_VALUE)
         );
 
         editorScrollPane.setViewportView(editorPane);
 
-        btSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/file-save.png"))); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/storybook/i18n/messages"); // NOI18N
-        btSave.setText(bundle.getString("SAVE")); // NOI18N
+        btSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-save.png"))); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        btSave.setText(bundle.getString("msg.common.save")); // NOI18N
         btSave.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,8 +208,8 @@ public class Editor extends javax.swing.JPanel {
             }
         });
 
-        btCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/error.png"))); // NOI18N
-        btCancel.setText(bundle.getString("CANCEL")); // NOI18N
+        btCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/cancel.png"))); // NOI18N
+        btCancel.setText(bundle.getString("msg.common.cancel")); // NOI18N
         btCancel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,37 +218,38 @@ public class Editor extends javax.swing.JPanel {
         });
 
         lbEditor.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
-        lbEditor.setText(bundle.getString("NONE")); // NOI18N
+        lbEditor.setText(bundle.getString("msg.common.none")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(editorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(lbError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 82, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btSave, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
-            .addComponent(lbError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addComponent(editorScrollPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lbEditor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(editorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(editorScrollPane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btSave)
-                    .addComponent(btCancel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btCancel, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btSave, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap())))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -16,7 +16,14 @@
 package storybook.ui.dialog.edit;
 
 import java.awt.CardLayout;
+import javax.swing.JComboBox;
+import org.hibernate.Session;
+import storybook.model.BookModel;
+import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
+import storybook.toolkit.I18N;
+import storybook.ui.MainFrame;
+import static storybook.ui.dialog.CommonBox.loadCbParts;
 
 /**
  *
@@ -24,33 +31,35 @@ import storybook.model.hbn.entity.Chapter;
  */
 public class EditChapter extends javax.swing.JPanel {
 	Editor parent;
+	MainFrame mainFrame;
 	Chapter chapter;
-	private CardLayout cardDescription = new CardLayout(0, 0);
-	private CardLayout cardNotes = new CardLayout(0, 0);
-	private HtmlEditorPane description=new HtmlEditorPane();
-	private HtmlEditorPane notes=new HtmlEditorPane();
+	private final CardLayout cardDescription = new CardLayout(0, 0);
+	private final CardLayout cardNotes = new CardLayout(0, 0);
+	private final HtmlEditorPane description=new HtmlEditorPane();
+	private final HtmlEditorPane notes=new HtmlEditorPane();
 
 	/**
 	 * Creates new form EditChapter
 	 */
 	public EditChapter() {
 		initComponents();
+	}
+
+	public EditChapter(Editor m, Chapter c) {
+		initComponents();
+		parent=m;
+		mainFrame=parent.parent;
+		chapter=c;
+		initUI();
+	}
+
+	private void initUI() {
 		paneDescription.setLayout(cardDescription);
 		paneDescription.add(description,"description");
 		cardDescription.show(paneDescription, "description");
 		paneNotes.setLayout(cardNotes);
 		paneNotes.add(notes);
 		cardNotes.show(paneNotes, "notes");
-	}
-
-	public EditChapter(Editor m, Chapter c) {
-		initComponents();
-		parent=m;
-		chapter=c;
-		initUI();
-	}
-
-	private void initUI() {
 		if (chapter!=null) {
 			txtId.setText(Long.toString(chapter.getId()));
 			txtNumber.setText(chapter.getChapternoStr());
@@ -58,14 +67,14 @@ public class EditChapter extends javax.swing.JPanel {
 			description.setText(chapter.getDescription());
 			notes.setText(chapter.getNotes());
 		} else {
-			chapter=new Chapter();
-			chapter.setId(-1L);
+			chapter=createNewChapter();
 			txtId.setText(Long.toString(chapter.getId()));
 			txtNumber.setText("");
 			txtTitle.setText("");
 			description.setText("");
 			notes.setText("");
 		}
+		loadCbParts(parent.parent,cbPart, chapter);
 	}
 
 	/**
@@ -90,22 +99,22 @@ public class EditChapter extends javax.swing.JPanel {
         paneDescription = new javax.swing.JPanel();
         paneNotes = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/storybook/i18n/messages"); // NOI18N
-        lbId.setText(bundle.getString("ID")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        lbId.setText(bundle.getString("msg.common.id")); // NOI18N
 
         txtId.setEditable(false);
 
-        lbPart.setText(bundle.getString("PART")); // NOI18N
+        lbPart.setText(bundle.getString("msg.common.part")); // NOI18N
 
         cbPart.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        lbNumber.setText(bundle.getString("NUMBER")); // NOI18N
+        lbNumber.setText(bundle.getString("msg.common.number")); // NOI18N
 
         txtNumber.setText(" ");
 
-        lbTitle.setText(bundle.getString("TITLE")); // NOI18N
+        lbTitle.setText(bundle.getString("msg.common.title")); // NOI18N
 
-        lbDescription.setText(bundle.getString("DESCRIPTION")); // NOI18N
+        lbDescription.setText(bundle.getString("msg.common.description")); // NOI18N
 
         paneDescription.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -142,7 +151,7 @@ public class EditChapter extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lbPart)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbPart, 0, 261, Short.MAX_VALUE))
+                                .addComponent(cbPart, 0, 296, Short.MAX_VALUE))
                             .addComponent(txtTitle))))
                 .addGap(12, 12, 12))
             .addComponent(paneDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -170,7 +179,7 @@ public class EditChapter extends javax.swing.JPanel {
                 .addComponent(paneDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab(bundle.getString("COMMON"), paneCommon); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("msg.common"), paneCommon); // NOI18N
 
         javax.swing.GroupLayout paneNotesLayout = new javax.swing.GroupLayout(paneNotes);
         paneNotes.setLayout(paneNotesLayout);
@@ -183,7 +192,7 @@ public class EditChapter extends javax.swing.JPanel {
             .addGap(0, 358, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab(bundle.getString("NOTES"), paneNotes); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("msg.common.notes"), paneNotes); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -226,4 +235,18 @@ public class EditChapter extends javax.swing.JPanel {
 		return(rc);
 	}
 
+	private Chapter createNewChapter() {
+		BookModel model = mainFrame.getDocumentModel();
+		Session session = model.beginTransaction();
+		ChapterDAOImpl dao = new ChapterDAOImpl(session);
+		Integer nextNumber = dao.getNextChapterNumber();
+		model.commit();
+
+		Chapter chapter = new Chapter();
+		chapter.setChapterno(nextNumber);
+		chapter.setDescription("");
+		chapter.setNotes("");
+		chapter.setTitle(I18N.getMsg("msg.common.chapter") + " " + nextNumber);
+		return chapter;
+	}
 }

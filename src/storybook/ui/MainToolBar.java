@@ -16,6 +16,18 @@
 package storybook.ui;
 
 import javax.swing.JToolBar;
+import storybook.model.hbn.entity.Chapter;
+import storybook.model.hbn.entity.Idea;
+import storybook.model.hbn.entity.Item;
+import storybook.model.hbn.entity.Location;
+import storybook.model.hbn.entity.Part;
+import storybook.model.hbn.entity.Person;
+import storybook.model.hbn.entity.Scene;
+import storybook.model.hbn.entity.Strand;
+import storybook.model.hbn.entity.Tag;
+import static storybook.toolkit.swing.SwingUtil.showModalDialog;
+import storybook.ui.dialog.edit.Editor;
+import storybook.ui.dialog.edit.EditorDlg;
 
 /**
  *
@@ -41,8 +53,8 @@ public class MainToolBar extends javax.swing.JFrame {
 
         mainToolBar = new javax.swing.JToolBar();
         lbFile = new javax.swing.JLabel();
-        btNew = new javax.swing.JButton();
-        btOpen = new javax.swing.JButton();
+        btNewFile = new javax.swing.JButton();
+        btOpenFile = new javax.swing.JButton();
         btExit = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JToolBar.Separator();
         lbPart = new javax.swing.JLabel();
@@ -89,33 +101,33 @@ public class MainToolBar extends javax.swing.JFrame {
         lbFile.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
         mainToolBar.add(lbFile);
 
-        btNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-new.png"))); // NOI18N
-        btNew.setToolTipText(bundle.getString("msg.file.new")); // NOI18N
-        btNew.setAlignmentX(0.5F);
-        btNew.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btNew.setFocusable(false);
-        btNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btNew.addActionListener(new java.awt.event.ActionListener() {
+        btNewFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-new.png"))); // NOI18N
+        btNewFile.setToolTipText(bundle.getString("msg.file.new")); // NOI18N
+        btNewFile.setAlignmentX(0.5F);
+        btNewFile.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        btNewFile.setFocusable(false);
+        btNewFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNewFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNewFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btNewActionPerformed(evt);
+                btNewFileActionPerformed(evt);
             }
         });
-        mainToolBar.add(btNew);
+        mainToolBar.add(btNewFile);
 
-        btOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
-        btOpen.setToolTipText(bundle.getString("msg.menu.file.new")); // NOI18N
-        btOpen.setAlignmentX(0.5F);
-        btOpen.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        btOpen.setFocusable(false);
-        btOpen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btOpen.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btOpen.addActionListener(new java.awt.event.ActionListener() {
+        btOpenFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
+        btOpenFile.setToolTipText(bundle.getString("msg.menu.file.new")); // NOI18N
+        btOpenFile.setAlignmentX(0.5F);
+        btOpenFile.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        btOpenFile.setFocusable(false);
+        btOpenFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btOpenFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btOpenFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btOpenActionPerformed(evt);
+                btOpenFileActionPerformed(evt);
             }
         });
-        mainToolBar.add(btOpen);
+        mainToolBar.add(btOpenFile);
 
         btExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/exit.png"))); // NOI18N
         btExit.setToolTipText(bundle.getString("msg.common.exit")); // NOI18N
@@ -433,52 +445,70 @@ public class MainToolBar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewActionPerformed
+    private void btNewFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewFileActionPerformed
         // TODO
-    }//GEN-LAST:event_btNewActionPerformed
+    }//GEN-LAST:event_btNewFileActionPerformed
 
-    private void btOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenActionPerformed
+    private void btOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenFileActionPerformed
         // TODO
-    }//GEN-LAST:event_btOpenActionPerformed
+    }//GEN-LAST:event_btOpenFileActionPerformed
 
     private void btNewStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewStrandActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Strand)null);
+		e.setEdit("strand", (Strand)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewStrandActionPerformed
 
     private void btNewPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewPartActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Part)null);
+		e.setEdit("part", (Part)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewPartActionPerformed
 
     private void btNewChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewChapterActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Chapter)null);
+		e.setEdit("chapter", (Chapter)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewChapterActionPerformed
 
     private void btNewSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewSceneActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Scene)null);
+		e.setEdit("scene", (Scene)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewSceneActionPerformed
 
     private void btNewCharacterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewCharacterActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Person)null);
+		e.setEdit("person", (Person)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewCharacterActionPerformed
 
     private void btNewLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewLocationActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Location)null);
+		e.setEdit("location", (Location)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewLocationActionPerformed
 
     private void btNewTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewTagActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Tag)null);
+		e.setEdit("tag", (Tag)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewTagActionPerformed
 
     private void btNewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewItemActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Item)null);
+		e.setEdit("item", (Item)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewItemActionPerformed
 
     private void btNewIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewIdeaActionPerformed
-        // TODO
+        Editor e=new Editor(mainFrame,(Idea)null);
+		e.setEdit("idea", (Idea)null);
+		startEditNew(mainFrame,e);
     }//GEN-LAST:event_btNewIdeaActionPerformed
 
     private void btManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManageActionPerformed
-        // TODO
+        // TODOStrand
     }//GEN-LAST:event_btManageActionPerformed
 
     private void btChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btChronoActionPerformed
@@ -542,9 +572,9 @@ public class MainToolBar extends javax.swing.JFrame {
     private javax.swing.JButton btHelpDoc;
     private javax.swing.JButton btManage;
     private javax.swing.JButton btMemoria;
-    private javax.swing.JButton btNew;
     private javax.swing.JButton btNewChapter;
     private javax.swing.JButton btNewCharacter;
+    private javax.swing.JButton btNewFile;
     private javax.swing.JButton btNewIdea;
     private javax.swing.JButton btNewItem;
     private javax.swing.JButton btNewLocation;
@@ -552,7 +582,7 @@ public class MainToolBar extends javax.swing.JFrame {
     private javax.swing.JButton btNewScene;
     private javax.swing.JButton btNewStrand;
     private javax.swing.JButton btNewTag;
-    private javax.swing.JButton btOpen;
+    private javax.swing.JButton btOpenFile;
     private javax.swing.JButton btReading;
     private javax.swing.JComboBox cbPart;
     private javax.swing.JToolBar.Separator jSeparator6;
@@ -592,5 +622,14 @@ public class MainToolBar extends javax.swing.JFrame {
 	}
 	public void selPartList(String x) {
 		cbPart.setSelectedItem(x);
+	}
+
+	private void startEditNew(MainFrame mainFrame, Editor e) {
+		EditorDlg dlg=new EditorDlg(mainFrame);
+		dlg.setPanel(e);
+		showModalDialog(dlg, mainFrame, true);
+		if (dlg.isModified) {
+
+		}
 	}
 }

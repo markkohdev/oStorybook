@@ -18,6 +18,7 @@ package storybook.ui.dialog.edit;
 import java.awt.CardLayout;
 import java.awt.Color;
 import storybook.model.hbn.entity.Strand;
+import storybook.ui.MainFrame;
 import storybook.ui.dialog.chooser.DlgColorChooser;
 
 /**
@@ -41,12 +42,13 @@ public class EditStrand extends javax.swing.JPanel {
 		initComponents();
 		parent=m;
 		strand=s;
-		paneNotes.setLayout(card);
-		paneNotes.add(notes,"Notes");
-		card.show(paneNotes, "notes");
+		initUI();
 	}
 
 	private void initUI() {
+		paneNotes.setLayout(card);
+		paneNotes.add(notes,"Notes");
+		card.show(paneNotes, "Notes");
 		if (strand==null) {
 			strand=new Strand();
 			strand.setId(-1l);
@@ -57,6 +59,7 @@ public class EditStrand extends javax.swing.JPanel {
 		txAbbreviation.setText(strand.getAbbreviation());
 		txColor.setBackground(strand.getJColor());
 		txOrder.setText((Integer.toString(strand.getSort())));
+		notes.setText(strand.getNotes());
 	}
 
 	/**
@@ -67,24 +70,49 @@ public class EditStrand extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lbOrder = new javax.swing.JLabel();
-        paneNotes = new javax.swing.JPanel();
-        txColor = new javax.swing.JTextField();
-        btColor = new javax.swing.JButton();
-        lbColor = new javax.swing.JLabel();
+        lbId = new javax.swing.JLabel();
+        txtID = new javax.swing.JTextField();
         lbName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         lbAbbreviation = new javax.swing.JLabel();
         txAbbreviation = new javax.swing.JTextField();
-        lbNotes = new javax.swing.JLabel();
+        lbColor = new javax.swing.JLabel();
+        txColor = new javax.swing.JTextField();
+        btColor = new javax.swing.JButton();
+        lbOrder = new javax.swing.JLabel();
         txOrder = new javax.swing.JTextField();
-        txtID = new javax.swing.JTextField();
-        lbId = new javax.swing.JLabel();
+        lbNotes = new javax.swing.JLabel();
+        paneNotes = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/storybook/i18n/messages"); // NOI18N
-        lbOrder.setText(bundle.getString("ORDER")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        lbId.setText(bundle.getString("msg.common.id")); // NOI18N
+
+        txtID.setEditable(false);
+        txtID.setText(" ");
+
+        lbName.setText(bundle.getString("msg.common.name")); // NOI18N
+
+        lbAbbreviation.setText(bundle.getString("msg.common.abbreviation")); // NOI18N
+
+        txAbbreviation.setText(" ");
+
+        lbColor.setText(bundle.getString("msg.common.color")); // NOI18N
+
+        txColor.setEditable(false);
+
+        btColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/palette.png"))); // NOI18N
+        btColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btColorActionPerformed(evt);
+            }
+        });
+
+        lbOrder.setText(bundle.getString("msg.common.order")); // NOI18N
+
+        lbNotes.setText(bundle.getString("msg.common.notes")); // NOI18N
 
         paneNotes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        paneNotes.setPreferredSize(new java.awt.Dimension(418, 312));
 
         javax.swing.GroupLayout paneNotesLayout = new javax.swing.GroupLayout(paneNotes);
         paneNotes.setLayout(paneNotesLayout);
@@ -94,32 +122,8 @@ public class EditStrand extends javax.swing.JPanel {
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 110, Short.MAX_VALUE)
+            .addGap(0, 308, Short.MAX_VALUE)
         );
-
-        txColor.setEditable(false);
-
-        btColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/palette.png"))); // NOI18N
-        btColor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btColorActionPerformed(evt);
-            }
-        });
-
-        lbColor.setText(bundle.getString("COLOR")); // NOI18N
-
-        lbName.setText(bundle.getString("NAME")); // NOI18N
-
-        lbAbbreviation.setText(bundle.getString("ABBREVIATION")); // NOI18N
-
-        txAbbreviation.setText(" ");
-
-        lbNotes.setText(bundle.getString("NOTES")); // NOI18N
-
-        txtID.setEditable(false);
-        txtID.setText(" ");
-
-        lbId.setText(bundle.getString("ID")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -147,12 +151,12 @@ public class EditStrand extends javax.swing.JPanel {
                                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txAbbreviation, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 165, Short.MAX_VALUE))))
+                                .addGap(0, 232, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbNotes)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(paneNotes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(paneNotes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
