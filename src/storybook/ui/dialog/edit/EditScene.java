@@ -32,6 +32,10 @@ public class EditScene extends javax.swing.JPanel {
 	private DateFixed dateChooser;
 	private DateRelative dateRelative;
 	private Scene scene;
+	private final CardLayout cardText = new CardLayout(0, 0);
+	private final CardLayout cardNotes = new CardLayout(0, 0);
+	private final HtmlEditorPane text=new HtmlEditorPane();
+	private final HtmlEditorPane notes=new HtmlEditorPane();
 
 	/**
 	 * Creates new form EditScene
@@ -42,6 +46,7 @@ public class EditScene extends javax.swing.JPanel {
 
 	public EditScene(Editor m, Scene s) {
 		parent=m;
+		scene=s;
 		dateChooser=new DateFixed(this);
 		dateRelative=new DateRelative(this);
 		initComponents();
@@ -49,19 +54,27 @@ public class EditScene extends javax.swing.JPanel {
 		jPanel1.add(new JPanel(),"none");
 		jPanel1.add(dateChooser,"dateFixed");
 		jPanel1.add(dateRelative,"dateRelative");
-		scene=s;
-		if ((scene==null) || (scene.getId()==-1L)) {
+		paneNotes.setLayout(cardNotes);
+		paneNotes.add(notes);
+		cardNotes.show(paneNotes, "notes");
+		paneText.setLayout(cardText);
+		paneText.add(text);
+		cardText.show(paneText, "text");
+		initUI();
+		/*if ((scene==null) || (scene.getId()==-1L)) {
 			card.show(jPanel1, "none");
 		} else {
 			initUI();
-		}
+		}*/
 	}
+
 	private void initUI() {
-		if (scene!=null) {
-			txtID.setText(Long.toString(scene.getId()));
-			txtNumber.setText(scene.getChapterSceneNo());
-			txtTitle.setText(scene.getTitle());
+		if (scene==null) {
+			scene=createNewScene();
 		}
+		txtID.setText(Long.toString(scene.getId()));
+		txtNumber.setText(scene.getChapterSceneNo());
+		txtTitle.setText(scene.getTitle());
 		CommonBox.loadCbChapters(parent.parent,cbChapters, scene);
 		CommonBox.loadCbStatus(cbStatus, scene);
 		CommonBox.loadLbStrands(lbStrands, scene);
@@ -96,18 +109,18 @@ public class EditScene extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lbStrands = new javax.swing.JList();
-        bAddStrand = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lbPersons = new javax.swing.JList();
-        bAddPerson = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         lbLocations = new javax.swing.JList();
-        bAddLocation = new javax.swing.JButton();
         lbChapter = new javax.swing.JLabel();
         cbChapters = new javax.swing.JComboBox();
-        panNotes = new javax.swing.JPanel();
+        bAddStrand = new javax.swing.JButton();
+        bAddLocation = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        paneNotes = new javax.swing.JPanel();
         paneText = new javax.swing.JPanel();
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
@@ -176,26 +189,15 @@ public class EditScene extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(lbStrands);
 
-        bAddStrand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
-        bAddStrand.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAddStrandActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-            .addComponent(bAddStrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAddStrand))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.persons"))); // NOI18N
@@ -207,30 +209,15 @@ public class EditScene extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(lbPersons);
 
-        bAddPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
-        bAddPerson.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAddPersonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(bAddPerson, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addGap(0, 200, Short.MAX_VALUE)
-                    .addComponent(bAddPerson)))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.locations"))); // NOI18N
@@ -243,6 +230,28 @@ public class EditScene extends javax.swing.JPanel {
         lbLocations.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(lbLocations);
 
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+        );
+
+        lbChapter.setText(bundle.getString("msg.common.chapter")); // NOI18N
+
+        cbChapters.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        bAddStrand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
+        bAddStrand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAddStrandActionPerformed(evt);
+            }
+        });
+
         bAddLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
         bAddLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,24 +259,7 @@ public class EditScene extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
-            .addComponent(bAddLocation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAddLocation))
-        );
-
-        lbChapter.setText(bundle.getString("msg.common.chapter")); // NOI18N
-
-        cbChapters.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
 
         javax.swing.GroupLayout paneCommonLayout = new javax.swing.GroupLayout(paneCommon);
         paneCommon.setLayout(paneCommonLayout);
@@ -311,11 +303,17 @@ public class EditScene extends javax.swing.JPanel {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(paneCommonLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bAddStrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bAddLocation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         paneCommonLayout.setVerticalGroup(
@@ -346,10 +344,17 @@ public class EditScene extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(bAddStrand)
+                        .addComponent(bAddLocation))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -357,18 +362,18 @@ public class EditScene extends javax.swing.JPanel {
 
         jTabbedPane1.addTab(bundle.getString("msg.common"), paneCommon); // NOI18N
 
-        javax.swing.GroupLayout panNotesLayout = new javax.swing.GroupLayout(panNotes);
-        panNotes.setLayout(panNotesLayout);
-        panNotesLayout.setHorizontalGroup(
-            panNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout paneNotesLayout = new javax.swing.GroupLayout(paneNotes);
+        paneNotes.setLayout(paneNotesLayout);
+        paneNotesLayout.setHorizontalGroup(
+            paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 411, Short.MAX_VALUE)
         );
-        panNotesLayout.setVerticalGroup(
-            panNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        paneNotesLayout.setVerticalGroup(
+            paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 488, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab(bundle.getString("msg.common.notes"), panNotes); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("msg.common.notes"), paneNotes); // NOI18N
 
         javax.swing.GroupLayout paneTextLayout = new javax.swing.GroupLayout(paneText);
         paneText.setLayout(paneTextLayout);
@@ -413,21 +418,17 @@ public class EditScene extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_bAddStrandActionPerformed
 
-    private void bAddPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddPersonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bAddPersonActionPerformed
-
     private void bAddLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddLocationActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bAddLocationActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAddLocation;
-    private javax.swing.JButton bAddPerson;
     private javax.swing.JButton bAddStrand;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbChapters;
     private javax.swing.JComboBox cbStatus;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -445,8 +446,8 @@ public class EditScene extends javax.swing.JPanel {
     private javax.swing.JLabel lbStatus;
     private javax.swing.JList lbStrands;
     private javax.swing.JLabel lbTitle;
-    private javax.swing.JPanel panNotes;
     private javax.swing.JPanel paneCommon;
+    private javax.swing.JPanel paneNotes;
     private javax.swing.JPanel paneText;
     private javax.swing.JRadioButton rbFixed;
     private javax.swing.JRadioButton rbNone;
