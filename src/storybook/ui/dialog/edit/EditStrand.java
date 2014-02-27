@@ -18,7 +18,7 @@ package storybook.ui.dialog.edit;
 import java.awt.CardLayout;
 import java.awt.Color;
 import storybook.model.hbn.entity.Strand;
-import storybook.ui.MainFrame;
+import storybook.toolkit.swing.htmleditor.HtmlEditor;
 import storybook.ui.dialog.chooser.DlgColorChooser;
 
 /**
@@ -29,7 +29,7 @@ public class EditStrand extends javax.swing.JPanel {
 	Editor parent;
 	Strand strand;
 	private final CardLayout card = new CardLayout(0, 0);
-	private final HtmlEditorPane notes=new HtmlEditorPane();
+	private final HtmlEditor notes=new HtmlEditor();
 
 	/**
 	 * Creates new form EditStrand
@@ -81,7 +81,6 @@ public class EditStrand extends javax.swing.JPanel {
         btColor = new javax.swing.JButton();
         lbOrder = new javax.swing.JLabel();
         txOrder = new javax.swing.JTextField();
-        lbNotes = new javax.swing.JLabel();
         paneNotes = new javax.swing.JPanel();
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
@@ -109,9 +108,7 @@ public class EditStrand extends javax.swing.JPanel {
 
         lbOrder.setText(bundle.getString("msg.common.order")); // NOI18N
 
-        lbNotes.setText(bundle.getString("msg.common.notes")); // NOI18N
-
-        paneNotes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        paneNotes.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.notes"))); // NOI18N
         paneNotes.setPreferredSize(new java.awt.Dimension(418, 312));
 
         javax.swing.GroupLayout paneNotesLayout = new javax.swing.GroupLayout(paneNotes);
@@ -122,7 +119,7 @@ public class EditStrand extends javax.swing.JPanel {
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 308, Short.MAX_VALUE)
+            .addGap(0, 310, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -132,29 +129,24 @@ public class EditStrand extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbName)
+                    .addComponent(lbId)
+                    .addComponent(lbAbbreviation)
+                    .addComponent(lbColor)
+                    .addComponent(lbOrder))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtName)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbName)
-                            .addComponent(lbId)
-                            .addComponent(lbAbbreviation)
-                            .addComponent(lbColor)
-                            .addComponent(lbOrder))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtName)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txColor, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btColor))
-                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txAbbreviation, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 232, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbNotes)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(txColor, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btColor))
+                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txAbbreviation, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 232, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(paneNotes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
         );
@@ -183,9 +175,7 @@ public class EditStrand extends javax.swing.JPanel {
                     .addComponent(lbOrder)
                     .addComponent(txOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbNotes)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paneNotes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(paneNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -201,7 +191,6 @@ public class EditStrand extends javax.swing.JPanel {
     private javax.swing.JLabel lbColor;
     private javax.swing.JLabel lbId;
     private javax.swing.JLabel lbName;
-    private javax.swing.JLabel lbNotes;
     private javax.swing.JLabel lbOrder;
     private javax.swing.JPanel paneNotes;
     private javax.swing.JTextField txAbbreviation;

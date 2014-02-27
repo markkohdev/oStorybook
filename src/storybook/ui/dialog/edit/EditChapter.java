@@ -16,12 +16,12 @@
 package storybook.ui.dialog.edit;
 
 import java.awt.CardLayout;
-import javax.swing.JComboBox;
 import org.hibernate.Session;
 import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.toolkit.I18N;
+import storybook.toolkit.swing.htmleditor.HtmlEditor;
 import storybook.ui.MainFrame;
 import static storybook.ui.dialog.CommonBox.loadCbParts;
 
@@ -35,8 +35,8 @@ public class EditChapter extends javax.swing.JPanel {
 	Chapter chapter;
 	private final CardLayout cardDescription = new CardLayout(0, 0);
 	private final CardLayout cardNotes = new CardLayout(0, 0);
-	private final HtmlEditorPane description=new HtmlEditorPane();
-	private final HtmlEditorPane notes=new HtmlEditorPane();
+	private final HtmlEditor description=new HtmlEditor();
+	private final HtmlEditor notes=new HtmlEditor();
 
 	/**
 	 * Creates new form EditChapter
@@ -95,7 +95,6 @@ public class EditChapter extends javax.swing.JPanel {
         txtNumber = new javax.swing.JTextField();
         lbTitle = new javax.swing.JLabel();
         txtTitle = new javax.swing.JTextField();
-        lbDescription = new javax.swing.JLabel();
         paneDescription = new javax.swing.JPanel();
         paneNotes = new javax.swing.JPanel();
 
@@ -114,9 +113,7 @@ public class EditChapter extends javax.swing.JPanel {
 
         lbTitle.setText(bundle.getString("msg.common.title")); // NOI18N
 
-        lbDescription.setText(bundle.getString("msg.common.description")); // NOI18N
-
-        paneDescription.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        paneDescription.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.description"))); // NOI18N
 
         javax.swing.GroupLayout paneDescriptionLayout = new javax.swing.GroupLayout(paneDescription);
         paneDescription.setLayout(paneDescriptionLayout);
@@ -126,7 +123,7 @@ public class EditChapter extends javax.swing.JPanel {
         );
         paneDescriptionLayout.setVerticalGroup(
             paneDescriptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 232, Short.MAX_VALUE)
+            .addGap(0, 252, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout paneCommonLayout = new javax.swing.GroupLayout(paneCommon);
@@ -136,23 +133,20 @@ public class EditChapter extends javax.swing.JPanel {
             .addGroup(paneCommonLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbDescription)
+                    .addComponent(lbNumber)
+                    .addComponent(lbTitle)
+                    .addComponent(lbId))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(paneCommonLayout.createSequentialGroup()
-                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbNumber)
-                            .addComponent(lbTitle)
-                            .addComponent(lbId))
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtId, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(paneCommonLayout.createSequentialGroup()
-                                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbPart)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbPart, 0, 296, Short.MAX_VALUE))
-                            .addComponent(txtTitle))))
+                        .addComponent(lbPart)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbPart, 0, 296, Short.MAX_VALUE))
+                    .addComponent(txtTitle))
                 .addGap(12, 12, 12))
             .addComponent(paneDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -174,8 +168,6 @@ public class EditChapter extends javax.swing.JPanel {
                     .addComponent(lbTitle)
                     .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbDescription)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paneDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -189,7 +181,7 @@ public class EditChapter extends javax.swing.JPanel {
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 358, Short.MAX_VALUE)
+            .addGap(0, 377, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(bundle.getString("msg.common.notes"), paneNotes); // NOI18N
@@ -208,7 +200,6 @@ public class EditChapter extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbPart;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JLabel lbDescription;
     private javax.swing.JLabel lbId;
     private javax.swing.JLabel lbNumber;
     private javax.swing.JLabel lbPart;

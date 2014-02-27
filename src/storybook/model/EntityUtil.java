@@ -1393,8 +1393,7 @@ public class EntityUtil {
 				return new SceneEntityHandler(mainFrame);
 			}
 		}
-		if ((obj != null && obj instanceof List)
-				|| method.getReturnType() == List.class) {
+		if ((obj != null && obj instanceof List) || method.getReturnType() == List.class) {
 			if (method.getName().endsWith("Persons")) {
 				return new PersonEntityHandler(mainFrame);
 			}
@@ -1405,10 +1404,8 @@ public class EntityUtil {
 				return new StrandEntityHandler(mainFrame);
 			}
 		}
-		if ((obj != null && obj instanceof String)
-				|| method.getReturnType() == String.class) {
-			if (method.getName().endsWith("City")
-					|| method.getName().endsWith("Country")) {
+		if ((obj != null && obj instanceof String) || method.getReturnType() == String.class) {
+			if (method.getName().endsWith("City") || method.getName().endsWith("Country")) {
 				return new LocationEntityHandler(mainFrame);
 			}
 			if (method.getName().endsWith("Category")) {

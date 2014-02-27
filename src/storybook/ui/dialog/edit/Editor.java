@@ -125,15 +125,17 @@ public class Editor extends javax.swing.JPanel {
 				break;
 			case "scene":
 				currentView="scene";
-				editScene.set((Scene)obj);
-				editorPane.add(editScene,"Scene");
+				editScene=new EditScene(this,(Scene)obj);
+				editorPane.add(editScene,currentView);
 				break;
 			case "person":
 				currentView="person";
+				editPerson=new EditPerson(this,(Person)obj);
 				editorPane.add(editPerson,currentView);
 				break;
 			case "location":
 				currentView="location";
+				editLocation=new EditLocation(this,(Location)obj);
 				editorPane.add(editLocation,currentView);
 				break;
 			case "Item":
@@ -184,6 +186,10 @@ public class Editor extends javax.swing.JPanel {
         lbError = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        editorScrollPane.setBorder(null);
+
+        editorPane.setBorder(null);
 
         javax.swing.GroupLayout editorPaneLayout = new javax.swing.GroupLayout(editorPane);
         editorPane.setLayout(editorPaneLayout);

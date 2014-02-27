@@ -49,10 +49,10 @@ public class DateRelative extends javax.swing.JPanel {
         lbAfter = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/storybook/i18n/messages"); // NOI18N
-        lbOccurs.setText(bundle.getString("OCCURS")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        lbOccurs.setText(bundle.getString("msg.common.occurs")); // NOI18N
 
-        lbAfter.setText(bundle.getString("AFTER_DAYS")); // NOI18N
+        lbAfter.setText(bundle.getString("msg.common.afterdays")); // NOI18N
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -71,7 +71,7 @@ public class DateRelative extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbAfter)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, 189, Short.MAX_VALUE)))
+                        .addComponent(jComboBox1, 0, 217, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

@@ -18,6 +18,7 @@ package storybook.ui.dialog.edit;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import storybook.model.hbn.entity.Scene;
+import storybook.toolkit.swing.htmleditor.HtmlEditor;
 import storybook.ui.dialog.chooser.DateFixed;
 import storybook.ui.dialog.chooser.DateRelative;
 import storybook.ui.dialog.CommonBox;
@@ -34,8 +35,8 @@ public class EditScene extends javax.swing.JPanel {
 	private Scene scene;
 	private final CardLayout cardText = new CardLayout(0, 0);
 	private final CardLayout cardNotes = new CardLayout(0, 0);
-	private final HtmlEditorPane text=new HtmlEditorPane();
-	private final HtmlEditorPane notes=new HtmlEditorPane();
+	private final HtmlEditor notes=new HtmlEditor();
+	private final HtmlEditor text=new HtmlEditor();
 
 	/**
 	 * Creates new form EditScene
@@ -54,12 +55,14 @@ public class EditScene extends javax.swing.JPanel {
 		jPanel1.add(new JPanel(),"none");
 		jPanel1.add(dateChooser,"dateFixed");
 		jPanel1.add(dateRelative,"dateRelative");
+		notes.setMaxLength(150);
 		paneNotes.setLayout(cardNotes);
 		paneNotes.add(notes);
 		cardNotes.show(paneNotes, "notes");
 		paneText.setLayout(cardText);
+		text.setMaxLength(150);
 		paneText.add(text);
-		cardText.show(paneText, "text");
+		cardText.show(paneText,"text");
 		initUI();
 		/*if ((scene==null) || (scene.getId()==-1L)) {
 			card.show(jPanel1, "none");
@@ -77,9 +80,9 @@ public class EditScene extends javax.swing.JPanel {
 		txtTitle.setText(scene.getTitle());
 		CommonBox.loadCbChapters(parent.parent,cbChapters, scene);
 		CommonBox.loadCbStatus(cbStatus, scene);
-		CommonBox.loadLbStrands(lbStrands, scene);
-		CommonBox.loadLbPersons(lbPersons, scene);
-		CommonBox.loadLbLocations(lbLocations, scene);
+		CommonBox.loadLbStrands(parent.parent,lbStrands, scene);
+		CommonBox.loadLbPersons(parent.parent,lbPersons, scene);
+		CommonBox.loadLbLocations(parent.parent,lbLocations, scene);
 	}
 
 	/**

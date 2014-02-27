@@ -44,41 +44,41 @@ public class DateFixed extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lbDate = new javax.swing.JLabel();
-        dateSpinner = new javax.swing.JSpinner();
-        btClearDate = new javax.swing.JButton();
         btFirst = new javax.swing.JButton();
         btPrevious = new javax.swing.JButton();
         btNext = new javax.swing.JButton();
         btLast = new javax.swing.JButton();
+        lbDate = new javax.swing.JLabel();
+        dateSpinner = new javax.swing.JSpinner();
+        btClearDate = new javax.swing.JButton();
+        lbTime = new javax.swing.JLabel();
         timeSpinner = new javax.swing.JSpinner();
         btClearTime = new javax.swing.JButton();
-        lbTime = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/storybook/i18n/messages"); // NOI18N
-        lbDate.setText(bundle.getString("DATE")); // NOI18N
+        btFirst.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/first.png"))); // NOI18N
+        btFirst.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        btClearDate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/clear.png"))); // NOI18N
-        btClearDate.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        btPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/previous.png"))); // NOI18N
+        btPrevious.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        btFirst.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/first.png"))); // NOI18N
-        btFirst.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        btNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/next.png"))); // NOI18N
+        btNext.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        btPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/previous.png"))); // NOI18N
-        btPrevious.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        btLast.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/last.png"))); // NOI18N
+        btLast.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        btNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/next.png"))); // NOI18N
-        btNext.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        lbDate.setText(bundle.getString("msg.common.date")); // NOI18N
 
-        btLast.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/last.png"))); // NOI18N
-        btLast.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        btClearDate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/clear.png"))); // NOI18N
+        btClearDate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        btClearTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/storybook/resources/icons/16x16/clear.png"))); // NOI18N
-        btClearTime.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        lbTime.setText(bundle.getString("msg.common.time")); // NOI18N
 
-        lbTime.setText(bundle.getString("TIME")); // NOI18N
+        btClearTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/clear.png"))); // NOI18N
+        btClearTime.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

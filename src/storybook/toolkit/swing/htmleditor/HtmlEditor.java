@@ -764,7 +764,7 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private String deleteOccurance(String text, String word) {
-		// if(text == null)return "";
+		if (text == null) return "";
 		StringBuilder sb = new StringBuilder(text);
 		int p;
 		while ((p = sb.toString().toLowerCase().indexOf(word.toLowerCase())) != -1) {

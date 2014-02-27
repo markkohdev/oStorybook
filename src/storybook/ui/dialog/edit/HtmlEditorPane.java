@@ -20,6 +20,7 @@ package storybook.ui.dialog.edit;
  * @author favdb
  */
 public class HtmlEditorPane extends javax.swing.JPanel {
+	private static final String INVALID_TAGS[] = {"html", "head", "body", "title"};
 
 	/**
 	 * Creates new form HtmlEditorPane
