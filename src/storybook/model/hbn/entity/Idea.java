@@ -30,8 +30,6 @@ import storybook.toolkit.html.HtmlUtil;
  */
 public class Idea extends AbstractEntity {
 
-	private static final long serialVersionUID = 9048322676339638246L;
-
 	private Integer status;
 	private String note;
 	private String category;

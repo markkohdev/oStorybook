@@ -17,6 +17,7 @@ package storybook.ui.dialog.edit;
 
 import storybook.model.hbn.entity.Part;
 import storybook.toolkit.I18N;
+import static storybook.ui.dialog.edit.DlgErrorMessage.mandatoryField;
 
 /**
  *
@@ -76,19 +77,8 @@ public class EditPart extends javax.swing.JPanel {
         lbName.setText(bundle.getString("mag.common.name")); // NOI18N
 
         txName.setText(" ");
-        txName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txNameKeyTyped(evt);
-            }
-        });
 
         lbNumber.setText(bundle.getString("msg.common.number")); // NOI18N
-
-        txNumber.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txNumberKeyTyped(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -129,14 +119,6 @@ public class EditPart extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txNumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txNumberKeyTyped
-		parent.setModified();
-    }//GEN-LAST:event_txNumberKeyTyped
-
-    private void txNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txNameKeyTyped
-		parent.setModified();
-    }//GEN-LAST:event_txNameKeyTyped
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lbId;
     private javax.swing.JLabel lbName;
@@ -149,11 +131,6 @@ public class EditPart extends javax.swing.JPanel {
 	public void set(Part p) {
 		part=p;
 		initUI();
-	}
-
-	public void get() {
-		part.setName(txName.getText());
-		part.setNumber(Integer.getInteger(txNumber.getText()));
 	}
 
 	public boolean isOK() {
@@ -174,4 +151,25 @@ public class EditPart extends javax.swing.JPanel {
 		}
 		return(rc);
 	}
+
+	boolean isModified() {
+		if (!txName.getText().equals(part.getName())) return(true);
+		if (!txNumber.getText().equals(Integer.toString(part.getNumber()))) return(true);
+		return(false);
+	}
+
+	public String getData() {
+		String rt=ctrlData();
+		if (!"".equals(rt)) return(rt);
+		part.setName(txName.getText());
+		part.setNumber(Integer.getInteger(txNumber.getText()));
+		return("");
+	}
+
+	private String ctrlData() {
+		if ("".equals(txName.getText())) return(mandatoryField("msg.common.name"));
+		if ("".equals(txNumber.getText())) return(mandatoryField("msg.common.number"));
+		return("");
+	}
+
 }

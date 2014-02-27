@@ -58,6 +58,7 @@ import storybook.ui.dialog.PreferencesDialog;
 import storybook.ui.dialog.WaitDialog;
 import storybook.ui.dialog.file.SaveAsFileDialog;
 import storybook.ui.jasperreports.ExportPrintDialog;
+import storybook.ui.jasperreports.dlgExportPrint;
 
 /**
  *
@@ -114,8 +115,8 @@ public class MainMenu extends javax.swing.JFrame {
         newScene = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         newCharacter = new javax.swing.JMenuItem();
-        characterCategories = new javax.swing.JMenuItem();
-        Genders = new javax.swing.JMenuItem();
+        newCharacterCategory = new javax.swing.JMenuItem();
+        newGender = new javax.swing.JMenuItem();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
         newLocation = new javax.swing.JMenuItem();
         renameCity = new javax.swing.JMenuItem();
@@ -372,21 +373,21 @@ public class MainMenu extends javax.swing.JFrame {
         });
         newMenu.add(newCharacter);
 
-        characterCategories.setText(bundle.getString("msg.persons.categories")); // NOI18N
-        characterCategories.addActionListener(new java.awt.event.ActionListener() {
+        newCharacterCategory.setText(bundle.getString("msg.persons.category")); // NOI18N
+        newCharacterCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                characterCategoriesActionPerformed(evt);
+                newCharacterCategoryActionPerformed(evt);
             }
         });
-        newMenu.add(characterCategories);
+        newMenu.add(newCharacterCategory);
 
-        Genders.setText(bundle.getString("msg.common.genders")); // NOI18N
-        Genders.addActionListener(new java.awt.event.ActionListener() {
+        newGender.setText(bundle.getString("msg.common.gender")); // NOI18N
+        newGender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GendersActionPerformed(evt);
+                newGenderActionPerformed(evt);
             }
         });
-        newMenu.add(Genders);
+        newMenu.add(newGender);
         newMenu.add(jSeparator8);
 
         newLocation.setText(bundle.getString("msg.common.location")); // NOI18N
@@ -778,7 +779,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_fileOpenActionPerformed
 
     private void fileSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveActionPerformed
-		WaitDialog dlg = new WaitDialog(mainFrame,I18N.getMsg("msg.file.saving"));
+		WaitDialog dlg = new WaitDialog(mainFrame, I18N.getMsg("msg.file.saving"));
 		Timer timer = new Timer(500, new DisposeDialogAction(dlg));
 		timer.setRepeats(false);
 		timer.start();
@@ -789,14 +790,13 @@ public class MainMenu extends javax.swing.JFrame {
     private void fileSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveAsActionPerformed
 		SaveAsFileDialog dlg = new SaveAsFileDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
-		if (dlg.isCanceled()) {
+		if (dlg.isCanceled())
 			return;
-		}
 		File file = dlg.getFile();
 		try {
 			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
 		} catch (IOException ioe) {
-			System.err.println("ActionHandler.handleSaveAs() IOex : "+ioe.getMessage());
+			System.err.println("ActionHandler.handleSaveAs() IOex : " + ioe.getMessage());
 		}
 		DbFile dbFile = new DbFile(file);
 		OpenFileAction act = new OpenFileAction("", dbFile);
@@ -809,9 +809,11 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_filePropertiesActionPerformed
 
     private void fileExportBookTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportBookTXTActionPerformed
-		BookExporter exp = new BookExporter(mainFrame);
+		/*BookExporter exp = new BookExporter(mainFrame);
 		exp.setExportForOpenOffice(false);
-		exp.exportToTxtFile();
+		exp.exportToTxtFile();*/
+		dlgExportPrint dlg=new dlgExportPrint(mainFrame);
+		dlg.setVisible(true);
     }//GEN-LAST:event_fileExportBookTXTActionPerformed
 
     private void fileExportBookHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportBookHTMLActionPerformed
@@ -825,11 +827,11 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_fileExportObjectActionPerformed
 
     private void filePrintBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintBookActionPerformed
-		//ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
+	//ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
 		//SwingUtil.showDialog(dlg, mainFrame);
-		Printing p=new Printing(mainFrame);
+		Printing p = new Printing(mainFrame);
 		p.setInteractive(true);
-		BookExporter exp=new BookExporter(mainFrame);
+		BookExporter exp = new BookExporter(mainFrame);
 		exp.setExportForOpenOffice(true);
 		StringBuffer str = exp.getContent();
 		p.init(str.toString());
@@ -855,7 +857,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_editCopyBookActionPerformed
 
     private void editCopyBlurbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCopyBlurbActionPerformed
-		Internal internal = DocumentUtil.restoreInternal(mainFrame,InternalKey.BLURB, "");
+		Internal internal = DocumentUtil.restoreInternal(mainFrame, InternalKey.BLURB, "");
 		StringSelection selection = new StringSelection(internal.getStringValue() + "\n");
 		Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clbrd.setContents(selection, selection);
@@ -939,51 +941,51 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_toolsTasksListActionPerformed
 
     private void toolsLanguageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsLanguageActionPerformed
-
+		// TODO toolsLanguageActionPerformed
     }//GEN-LAST:event_toolsLanguageActionPerformed
 
     private void viewTableStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableStrandsActionPerformed
-        // TODO add your handling code here:
+		viewTable("Strands");
     }//GEN-LAST:event_viewTableStrandsActionPerformed
 
     private void viewTablePartsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTablePartsActionPerformed
-        // TODO add your handling code here:
+		viewTable("Parts");
     }//GEN-LAST:event_viewTablePartsActionPerformed
 
     private void viewTableChaptersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableChaptersActionPerformed
-        // TODO add your handling code here:
+		viewTable("Chapters");
     }//GEN-LAST:event_viewTableChaptersActionPerformed
 
     private void viewTableScenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableScenesActionPerformed
-        // TODO add your handling code here:
+		viewTable("Scenes");
     }//GEN-LAST:event_viewTableScenesActionPerformed
 
     private void viewTableCharactersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableCharactersActionPerformed
-        // TODO add your handling code here:
+		viewTable("Persons");
     }//GEN-LAST:event_viewTableCharactersActionPerformed
 
     private void viewTableLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableLocationsActionPerformed
-        // TODO add your handling code here:
+		viewTable("Locations");
     }//GEN-LAST:event_viewTableLocationsActionPerformed
 
     private void viewTableItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableItemsActionPerformed
-        // TODO add your handling code here:
+		viewTable("Items");
     }//GEN-LAST:event_viewTableItemsActionPerformed
 
     private void viewTableItemsAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableItemsAssociationsActionPerformed
-        // TODO add your handling code here:
+		viewTable("ItemAssociations");
     }//GEN-LAST:event_viewTableItemsAssociationsActionPerformed
 
     private void viewTableTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableTagsActionPerformed
-        // TODO add your handling code here:
+		viewTable("Tags");
     }//GEN-LAST:event_viewTableTagsActionPerformed
 
     private void viewTableTagsAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableTagsAssociationsActionPerformed
-        // TODO add your handling code here:
+		viewTable("TagAssociations");
     }//GEN-LAST:event_viewTableTagsAssociationsActionPerformed
 
     private void viewTableIdeasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableIdeasActionPerformed
-        // TODO add your handling code here:
+		viewTable("Ideas");
     }//GEN-LAST:event_viewTableIdeasActionPerformed
 
     private void viewManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewManageActionPerformed
@@ -1023,12 +1025,11 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_helpContactActionPerformed
 
     private void helpCheckUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpCheckUpdateActionPerformed
-		if (Updater.checkForUpdate()) {
+		if (Updater.checkForUpdate())
 			JOptionPane.showMessageDialog(mainFrame,
-				I18N.getMsg("msg.update.no.text"),
-				I18N.getMsg("msg.update.no.title"),
-				JOptionPane.INFORMATION_MESSAGE);
-		}
+					I18N.getMsg("msg.update.no.text"),
+					I18N.getMsg("msg.update.no.title"),
+					JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_helpCheckUpdateActionPerformed
 
     private void helpAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpAboutActionPerformed
@@ -1036,13 +1037,13 @@ public class MainMenu extends javax.swing.JFrame {
 		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_helpAboutActionPerformed
 
-    private void GendersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GendersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_GendersActionPerformed
+    private void newGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGenderActionPerformed
+		// TODO newGenderActionPerformed
+    }//GEN-LAST:event_newGenderActionPerformed
 
-    private void characterCategoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_characterCategoriesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_characterCategoriesActionPerformed
+    private void newCharacterCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newCharacterCategoryActionPerformed
+		// TODO newCharacterCategoryActionPerformed
+    }//GEN-LAST:event_newCharacterCategoryActionPerformed
 
     private void documentPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentPropertiesActionPerformed
 		PreferencesDialog dlg = new PreferencesDialog();
@@ -1050,11 +1051,11 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_documentPropertiesActionPerformed
 
     private void renameCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCityActionPerformed
-        // TODO add your handling code here:
+		// TODO renameCityActionPerformed
     }//GEN-LAST:event_renameCityActionPerformed
 
     private void renameCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCountryActionPerformed
-        // TODO add your handling code here:
+		// TODO renameCityActionPerformed
     }//GEN-LAST:event_renameCountryActionPerformed
 
 	/**
@@ -1062,7 +1063,7 @@ public class MainMenu extends javax.swing.JFrame {
 	 */
 	public static void main(String args[]) {
 		/* Set the Nimbus look and feel */
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+	//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
 		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
 		 */
@@ -1082,7 +1083,7 @@ public class MainMenu extends javax.swing.JFrame {
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		//</editor-fold>
+	//</editor-fold>
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1092,8 +1093,6 @@ public class MainMenu extends javax.swing.JFrame {
 		});
 	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Genders;
-    private javax.swing.JMenuItem characterCategories;
     private javax.swing.JMenuItem chartsCharactersByDate;
     private javax.swing.JMenuItem chartsCharactersByScene;
     private javax.swing.JMenuItem chartsGantt;
@@ -1144,6 +1143,8 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenu linksMenu;
     private javax.swing.JMenuItem newChapter;
     private javax.swing.JMenuItem newCharacter;
+    private javax.swing.JMenuItem newCharacterCategory;
+    private javax.swing.JMenuItem newGender;
     private javax.swing.JMenuItem newIdea;
     private javax.swing.JMenuItem newItem;
     private javax.swing.JMenuItem newLocation;
@@ -1184,7 +1185,7 @@ public class MainMenu extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 	public void setMainFrame(MainFrame m) {
-		mainFrame=m;
+		mainFrame = m;
 	}
 
 	private void handleNewEntity(AbstractEntity entity) {
@@ -1197,5 +1198,20 @@ public class MainMenu extends javax.swing.JFrame {
 		View view = mainFrame.getView(viewName);
 		view.restore();
 		view.restoreFocus();
+	}
+
+	private void viewTable(String str) {
+		switch (str) {
+			case "Strands":
+				break; // TODO view Strands
+			case "Parts":
+				break; // TODO view Parts
+			case "Chapters":
+				break; // TODO view Chapters
+			case "Scenes":
+				break; // TODO view Scenes
+			default:
+				break;
+		}
 	}
 }

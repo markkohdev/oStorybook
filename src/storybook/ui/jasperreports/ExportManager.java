@@ -39,6 +39,7 @@ import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
+import storybook.StorybookApp;
 
 public class ExportManager implements ReportConstants {
 
@@ -47,8 +48,8 @@ public class ExportManager implements ReportConstants {
 	private static JasperPrint jasperPrint;
 	private final HashMap<String, String> formatMap;
 
-	public ExportManager(MainFrame mainframe) {
-		mainFrame = mainframe;
+	public ExportManager(MainFrame param) {
+		mainFrame = param;
 		reports = new ArrayList();
 		reports.add(new ExportReport("person_list", "msg.jasper.person.list"));
 		reports.add(new ExportReport("location_list", "msg.jasper.location.list"));
@@ -84,18 +85,12 @@ public class ExportManager implements ReportConstants {
 		Session session = model.beginTransaction();
 		session.doWork(new Work() {
 			@Override
-			public void execute(Connection connection)
-				throws SQLException {
+			public void execute(Connection connection) throws SQLException {
 				try {
-					String str = "jasperreports"
-						+ File.separator
-						+ param.getJasperReportName()
-						+ ".jasper";
+					String str = "jasperreports" + File.separator + param.getJasperReportName() + ".jasper";
 					HashMap localHashMap = new HashMap();
-					localHashMap.put("PARAM_TITLE",
-						param.getName()
-						+ " - " + I18N.getMsg("msg.common.project")
-						+ ": \"" + ExportManager.this.mainFrame.getDbFile().getName() + "\"");
+					localHashMap.put("PARAM_TITLE", param.getName() + " - " + I18N.getMsg("msg.common.project")
+							+ ": \"" +mainFrame.getDbFile().getName() + "\"");
 					localHashMap.put("SUBREPORT_DIR", "jasperreports" + File.separator);
 					/* TODO solve access$102
 					 ExportManager.access$102(JasperFillManager.fillReport(str, localHashMap, connection));
@@ -103,7 +98,7 @@ public class ExportManager implements ReportConstants {
 					JasperFillManager.fillReport(str, localHashMap, connection);
 					/* TODO solve access$102 end */
 				} catch (JRException e) {
-					System.err.println("ExportManager.fillReport(param)" + e.getMessage());
+					StorybookApp.error("ExportManager.fillReport("+param.getName()+")", e);
 				}
 			}
 		});
@@ -114,57 +109,54 @@ public class ExportManager implements ReportConstants {
 		return jasperPrint;
 	}
 
-	public String export(File paramFile, String paramString, ExportReport paramExportReport) {
+	public String export(File file, String type, ExportReport exportReport) {
 		try {
 			String str = "";
-			if (!"preview".equals(paramString)) {
-				paramFile.mkdirs();
-			}
-			fillReport(paramExportReport);
-			switch (paramString) {
+			if (!"preview".equals(type)) file.mkdirs();
+			fillReport(exportReport);
+			switch (type) {
 				case "pdf":
-					str = getExportFileName(paramFile, paramExportReport.getName(), "pdf");
+					str = getExportFileName(file, exportReport.getName(), "pdf");
 					JasperExportManager.exportReportToPdfFile(jasperPrint, str);
 					break;
 				case "preview":
 					JasperViewer.viewReport(jasperPrint, false);
 					break;
 				case "html":
-					str = getExportFileName(paramFile, paramExportReport.getName(), "html");
+					str = getExportFileName(file, exportReport.getName(), "html");
 					JasperExportManager.exportReportToHtmlFile(jasperPrint, str);
 					break;
 				default:
-					Object localObject;
-					switch (paramString) {
+					switch (type) {
 						case "csv":
-							str = getExportFileName(paramFile, paramExportReport.getName(), "csv");
-							localObject = new JRCsvExporter();
-							((JRCsvExporter) localObject).setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-							((JRCsvExporter) localObject).setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
-							((JRCsvExporter) localObject).exportReport();
+							str = getExportFileName(file, exportReport.getName(), "csv");
+							JRCsvExporter objCsv = new JRCsvExporter();
+							objCsv.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+							objCsv.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
+							objCsv.exportReport();
 							break;
 						case "text":
-							str = getExportFileName(paramFile, paramExportReport.getName(), "txt");
-							localObject = new JRTextExporter();
-							((JRTextExporter) localObject).setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-							((JRTextExporter) localObject).setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
-							((JRTextExporter) localObject).setParameter(JRTextExporterParameter.PAGE_WIDTH, new Integer(80));
-							((JRTextExporter) localObject).setParameter(JRTextExporterParameter.PAGE_HEIGHT, new Integer(100));
-							((JRTextExporter) localObject).exportReport();
+							str = getExportFileName(file, exportReport.getName(), "txt");
+							JRTextExporter objTxt = new JRTextExporter();
+							objTxt.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+							objTxt.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
+							objTxt.setParameter(JRTextExporterParameter.PAGE_WIDTH, new Integer(80));
+							objTxt.setParameter(JRTextExporterParameter.PAGE_HEIGHT, new Integer(100));
+							objTxt.exportReport();
 							break;
 						case "rtf":
-							str = getExportFileName(paramFile, paramExportReport.getName(), "rtf");
-							localObject = new JRRtfExporter();
-							((JRRtfExporter) localObject).setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-							((JRRtfExporter) localObject).setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
-							((JRRtfExporter) localObject).exportReport();
+							str = getExportFileName(file, exportReport.getName(), "rtf");
+							JRRtfExporter objRtf = new JRRtfExporter();
+							objRtf.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+							objRtf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
+							objRtf.exportReport();
 							break;
 						case "odt":
-							str = getExportFileName(paramFile, paramExportReport.getName(), "odt");
-							localObject = new JROdtExporter();
-							((JROdtExporter) localObject).setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-							((JROdtExporter) localObject).setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
-							((JROdtExporter) localObject).exportReport();
+							str = getExportFileName(file, exportReport.getName(), "odt");
+							JROdtExporter objOdt = new JROdtExporter();
+							objOdt.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+							objOdt.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, str);
+							objOdt.exportReport();
 							break;
 					}
 					break;
@@ -175,15 +167,15 @@ public class ExportManager implements ReportConstants {
 		return "";
 	}
 
-	private String getExportFileName(File paramFile, String paramString1, String paramString2) {
-		StringBuilder localStringBuffer = new StringBuilder();
-		localStringBuffer.append(paramFile);
-		localStringBuffer.append(File.separator);
-		localStringBuffer.append(paramString1);
-		localStringBuffer.append("_");
-		localStringBuffer.append(SwingUtil.getTimestamp(new Date()));
-		localStringBuffer.append(".");
-		localStringBuffer.append(paramString2);
-		return localStringBuffer.toString();
+	private String getExportFileName(File file, String str1, String str2) {
+		StringBuilder str = new StringBuilder();
+		str.append(file);
+		str.append(File.separator);
+		str.append(str1);
+		str.append("_");
+		str.append(SwingUtil.getTimestamp(new Date()));
+		str.append(".");
+		str.append(str2);
+		return str.toString();
 	}
 }

@@ -18,18 +18,21 @@ package storybook.ui.jasperreports;
 import java.awt.Dimension;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
+import storybook.StorybookApp;
 
 public class ExportPreview extends JRViewer {
 
-	public ExportPreview(JasperPrint paramJasperPrint) {
-		super(paramJasperPrint);
+	public ExportPreview(JasperPrint param) {
+		super(param);
 		super.setPreferredSize(new Dimension(420, 600));
+		StorybookApp.trace("ExportPreview("+(param!=null?param.getName():"null")+")");
 	}
 
 	@Override
-	public void loadReport(JasperPrint paramJasperPrint) {
-		super.loadReport(paramJasperPrint);
-		if (paramJasperPrint == null) {
+	public void loadReport(JasperPrint param) {
+		super.loadReport(param);
+		StorybookApp.trace("ExportPreview.loadReport("+(param!=null?param.getName():"null")+")");
+		if (param == null) {
 			return;
 		}
 		super.forceRefresh();

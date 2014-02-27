@@ -58,6 +58,7 @@ import storybook.ui.MainFrame;
 
 import com.sun.jaf.ui.ActionManager;
 import com.sun.jaf.ui.UIFactory;
+import java.io.IOException;
 import storybook.ui.MainMenu;
 import storybook.ui.MainToolBar;
 
@@ -67,432 +68,433 @@ import storybook.ui.MainToolBar;
  */
 public class SbActionManager implements PropertyChangeListener {
 
-	private final static int MENUBAR_INDEX_FILE = 0;
-	private final static int MENUBAR_INDEX_PARTS = 6;
-	private final static int MENUBAR_INDEX_WINDOW = 9;
-	private ActionHandler actionHandler;
-	private ActionManager actionManager;
-	private MainFrame mainFrame;
+    private final static int MENUBAR_INDEX_FILE = 0;
+    private final static int MENUBAR_INDEX_PARTS = 6;
+    private final static int MENUBAR_INDEX_WINDOW = 9;
+    private ActionHandler actionHandler;
+    private ActionManager actionManager;
+    private final MainFrame mainFrame;
 
-	public SbActionManager(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
+    public SbActionManager(MainFrame mainFrame) {
+	this.mainFrame = mainFrame;
+    }
+
+    public void init() {
+	StorybookApp.trace("SbActionManager.init()");
+	initActions();
+	initUiFactory();
+	if (mainFrame.isBlank()) {
+	    disableActionsForBlank(mainFrame.getJMenuBar());
+	}
+    }
+
+    private void initActions() {
+	StorybookApp.trace("SbActionManager.initActions()");
+	try {
+	    actionManager = new ActionManager();
+	    ActionManager.setInstance(actionManager);
+
+	    File file = new File("actions.xml");
+	    String str = IOUtil.readFileAsString(file.getAbsolutePath());
+
+	    // i18n replacements
+	    Pattern patt = Pattern.compile("<i18n>([^<]*)</i18n>");
+	    Matcher m = patt.matcher(str);
+	    StringBuffer sb = new StringBuffer(str.length());
+	    while (m.find()) {
+		String text = I18N.getMsg(m.group(1));
+		m.appendReplacement(sb, Matcher.quoteReplacement(text));
+	    }
+	    m.appendTail(sb);
+	    str = sb.toString();
+
+	    patt = Pattern.compile("<i18ndot>([^<]*)</i18ndot>");
+	    m = patt.matcher(str);
+	    sb = new StringBuffer(str.length());
+	    while (m.find()) {
+		String text = I18N.getMsgDot(m.group(1));
+		m.appendReplacement(sb, Matcher.quoteReplacement(text));
+	    }
+	    m.appendTail(sb);
+	    str = sb.toString();
+
+	    InputStream is = IOUtil.stringToInputStream(str);
+	    actionManager.loadActions(is);
+
+	    // actionManager.loadActions(xmlFile);
+	} catch (IOException e) {
+	    StorybookApp.logErr("SbActionManager.initActions(): Exception:", e);
 	}
 
-	public void init() {
-		StorybookApp.trace("SbActionManager.init()");
-		initActions();
-		initUiFactory();
-		if (mainFrame.isBlank()) {
-			disableActionsForBlank(mainFrame.getJMenuBar());
-		}
-	}
+	registerActions();
+    }
 
-	private void initActions() {
-		StorybookApp.trace("SbActionManager.initActions()");
-		try {
-			actionManager = new ActionManager();
-			ActionManager.setInstance(actionManager);
+    private void registerActions() {
+	StorybookApp.trace("SbActionManager.registerActions()");
+	actionHandler = new ActionHandler(mainFrame);
 
-			File file = new File("actions.xml");
-			String str = IOUtil.readFileAsString(file.getAbsolutePath());
+	// file
+	actionManager.registerCallback("new-command", actionHandler, "handleNewFile");
+	actionManager.registerCallback("open-command", actionHandler, "handleOpenFile");
+	actionManager.registerCallback("recent-clear-command", actionHandler, "handleRecentClear");
+	actionManager.registerCallback("save-command", actionHandler, "handleSave");
+	actionManager.registerCallback("save-as-command", actionHandler, "handleSaveAs");
+	actionManager.registerCallback("rename-command", actionHandler, "handleRenameFile");
+	actionManager.registerCallback("close-command", actionHandler, "handleClose");
+	actionManager.registerCallback("export-book-text-command", actionHandler, "handleExportBookText");
+	actionManager.registerCallback("export-print-command", actionHandler, "handleExportPrint");
+	actionManager.registerCallback("open-export-folder-command", actionHandler, "handleOpenExportFolder");
+	actionManager.registerCallback("document-preferences-command", actionHandler, "handleDocumentPreferences");
+	actionManager.registerCallback("exit-command", actionHandler, "handleExit");
 
-			// i18n replacements
-			Pattern patt = Pattern.compile("<i18n>([^<]*)</i18n>");
-			Matcher m = patt.matcher(str);
-			StringBuffer sb = new StringBuffer(str.length());
-			while (m.find()) {
-				String text = I18N.getMsg(m.group(1));
-				m.appendReplacement(sb, Matcher.quoteReplacement(text));
-			}
-			m.appendTail(sb);
-			str = sb.toString();
+	// edit
+	actionManager.registerCallback("copy-book-text-command", actionHandler, "handleCopyBookText");
+	actionManager.registerCallback("copy-blurb-command", actionHandler, "handleCopyBlurb");
 
-			patt = Pattern.compile("<i18ndot>([^<]*)</i18ndot>");
-			m = patt.matcher(str);
-			sb = new StringBuffer(str.length());
-			while (m.find()) {
-				String text = I18N.getMsgDot(m.group(1));
-				m.appendReplacement(sb, Matcher.quoteReplacement(text));
-			}
-			m.appendTail(sb);
-			str = sb.toString();
+	// views
+	actionManager.registerCallback("view-chrono-command", actionHandler, "handleShowChronoView");
+	actionManager.registerCallback("view-book-command", actionHandler, "handleShowBookView");
+	actionManager.registerCallback("view-manage-command", actionHandler, "handleShowManageView");
+	actionManager.registerCallback("view-reading-command", actionHandler, "handleShowReadingView");
+	actionManager.registerCallback("view-memoria-command", actionHandler, "handleShowMemoria");
+	actionManager.registerCallback("view-editor-command", actionHandler, "handleShowEditor");
+	actionManager.registerCallback("view-tree-command", actionHandler, "handleShowTree");
+	actionManager.registerCallback("view-info-command", actionHandler, "handleShowInfo");
+	actionManager.registerCallback("view-navigation-command", actionHandler, "handleShowNavigation");
 
-			InputStream is = IOUtil.stringToInputStream(str);
-			actionManager.loadActions(is);
+	// main entities
+	actionManager.registerCallback("entity-scenes-command", actionHandler, "handleShowScenes");
+	actionManager.registerCallback("entity-chapters-command", actionHandler, "handleShowChapters");
+	actionManager.registerCallback("entity-parts-command", actionHandler, "handleShowParts");
+	actionManager.registerCallback("entity-strands-command", actionHandler, "handleShowStrands");
+	actionManager.registerCallback("entity-persons-command", actionHandler, "handleShowPersons");
+	actionManager.registerCallback("entity-genders-command", actionHandler, "handleShowGenders");
+	actionManager.registerCallback("entity-categories-command", actionHandler, "handleShowCategories");
+	actionManager.registerCallback("entity-locations-command", actionHandler, "handleShowLocations");
+	actionManager.registerCallback("rename-city-command", actionHandler, "handleRenameCity");
+	actionManager.registerCallback("rename-country-command", actionHandler, "handleRenameCountry");
 
-			// actionManager.loadActions(xmlFile);
-		} catch (Exception e) {
-			System.err.println("SbActionManager.initActions(): Exception:" + e);
-		}
+	// secondary entities
+	actionManager.registerCallback("entity-tags-command", actionHandler, "handleShowTags");
+	actionManager.registerCallback("entity-taglinks-command", actionHandler, "handleShowTagLinks");
+	actionManager.registerCallback("rename-tag-category-command", actionHandler, "handleRenameTagCategory");
+	actionManager.registerCallback("entity-items-command", actionHandler, "handleShowItems");
+	actionManager.registerCallback("entity-itemlinks-command", actionHandler, "handleShowItemLinks");
+	actionManager.registerCallback("rename-item-category-command", actionHandler, "handleRenameItemCategory");
+	actionManager.registerCallback("entity-ideas-command", actionHandler, "handleShowIdeas");
+	actionManager.registerCallback("entity-internals-command", actionHandler, "handleShowInternals");
 
-		registerActions();
-	}
+	// create new entity
+	actionManager.registerCallback("new-scene-command", actionHandler, "handleNewScene");
+	actionManager.registerCallback("new-chapter-command", actionHandler, "handleNewChapter");
+	actionManager.registerCallback("create-chapters-command", actionHandler, "handleCreateChapters");
+	actionManager.registerCallback("new-part-command", actionHandler, "handleNewPart");
+	actionManager.registerCallback("new-part-command", actionHandler, "handleNewPart");
+	actionManager.registerCallback("new-strand-command", actionHandler, "handleNewStrand");
+	actionManager.registerCallback("new-person-command", actionHandler, "handleNewPerson");
+	actionManager.registerCallback("new-category-command", actionHandler, "handleNewCategory");
+	actionManager.registerCallback("new-gender-command", actionHandler, "handleNewGender");
+	actionManager.registerCallback("new-location-command", actionHandler, "handleNewLocation");
+	actionManager.registerCallback("new-tag-command", actionHandler, "handleNewTag");
+	actionManager.registerCallback("new-taglink-command", actionHandler, "handleNewTagLink");
+	actionManager.registerCallback("new-item-command", actionHandler, "handleNewItem");
+	actionManager.registerCallback("new-itemlink-command", actionHandler, "handleNewItemLink");
+	actionManager.registerCallback("new-idea-command", actionHandler, "handleNewIdea");
 
-	private void registerActions() {
-		StorybookApp.trace("SbActionManager.registerActions()");
-		actionHandler = new ActionHandler(mainFrame);
+	// parts
+	actionManager.registerCallback("part-previous-command", actionHandler, "handlePreviousPart");
+	actionManager.registerCallback("part-next-command", actionHandler, "handleNextPart");
 
-		// file
-		actionManager.registerCallback("new-command", actionHandler, "handleNewFile");
-		actionManager.registerCallback("open-command", actionHandler, "handleOpenFile");
-		actionManager.registerCallback("recent-clear-command", actionHandler, "handleRecentClear");
-		actionManager.registerCallback("save-command", actionHandler, "handleSave");
-		actionManager.registerCallback("save-as-command", actionHandler, "handleSaveAs");
-		actionManager.registerCallback("rename-command", actionHandler, "handleRenameFile");
-		actionManager.registerCallback("close-command", actionHandler, "handleClose");
-		actionManager.registerCallback("export-book-text-command", actionHandler, "handleExportBookText");
-		actionManager.registerCallback("export-print-command", actionHandler, "handleExportPrint");
-		actionManager.registerCallback("open-export-folder-command", actionHandler, "handleOpenExportFolder");
-		actionManager.registerCallback("document-preferences-command", actionHandler, "handleDocumentPreferences");
-		actionManager.registerCallback("exit-command", actionHandler, "handleExit");
+	// charts
+	actionManager.registerCallback("chart-persons-by-date-command", actionHandler, "handleChartPersonsByDate");
+	actionManager.registerCallback("chart-persons-by-scene-command", actionHandler, "handleChartPersonsByScene");
+	actionManager.registerCallback("chart-wiww-command", actionHandler, "handleChartWiWW");
+	actionManager.registerCallback("chart-strands-by-date-command", actionHandler, "handleChartStrandsByDate");
+	actionManager.registerCallback("chart-occurrence-of-persons-command", actionHandler, "handleChartOccurrenceOfPersons");
+	actionManager.registerCallback("chart-occurrence-of-locations-command", actionHandler, "handleChartOccurrenceOfLocations");
+	actionManager.registerCallback("chart-gantt-command", actionHandler, "handleChartGantt");
 
-		// edit
-		actionManager.registerCallback("copy-book-text-command", actionHandler, "handleCopyBookText");
-		actionManager.registerCallback("copy-blurb-command", actionHandler, "handleCopyBlurb");
+	// tools
+	actionManager.registerCallback("tasklist-command", actionHandler, "handleTaskList");
+	actionManager.registerCallback("flashofinspiration-command", actionHandler, "handleFlashOfInspiration");
+	actionManager.registerCallback("langtool-command", actionHandler, "handleLangTool");
+	actionManager.registerCallback("text2html-command", actionHandler, "handleText2Html");
+	actionManager.registerCallback("html2text-command", actionHandler, "handleHtml2Text");
 
-		// views
-		actionManager.registerCallback("view-chrono-command", actionHandler, "handleShowChronoView");
-		actionManager.registerCallback("view-book-command", actionHandler, "handleShowBookView");
-		actionManager.registerCallback("view-manage-command", actionHandler, "handleShowManageView");
-		actionManager.registerCallback("view-reading-command", actionHandler, "handleShowReadingView");
-		actionManager.registerCallback("view-memoria-command", actionHandler, "handleShowMemoria");
-		actionManager.registerCallback("view-editor-command", actionHandler, "handleShowEditor");
-		actionManager.registerCallback("view-tree-command", actionHandler, "handleShowTree");
-		actionManager.registerCallback("view-info-command", actionHandler, "handleShowInfo");
-		actionManager.registerCallback("view-navigation-command", actionHandler, "handleShowNavigation");
-
-		// main entities
-		actionManager.registerCallback("entity-scenes-command", actionHandler, "handleShowScenes");
-		actionManager.registerCallback("entity-chapters-command", actionHandler, "handleShowChapters");
-		actionManager.registerCallback("entity-parts-command", actionHandler, "handleShowParts");
-		actionManager.registerCallback("entity-strands-command", actionHandler, "handleShowStrands");
-		actionManager.registerCallback("entity-persons-command", actionHandler, "handleShowPersons");
-		actionManager.registerCallback("entity-genders-command", actionHandler, "handleShowGenders");
-		actionManager.registerCallback("entity-categories-command", actionHandler, "handleShowCategories");
-		actionManager.registerCallback("entity-locations-command", actionHandler, "handleShowLocations");
-		actionManager.registerCallback("rename-city-command", actionHandler, "handleRenameCity");
-		actionManager.registerCallback("rename-country-command", actionHandler, "handleRenameCountry");
-
-		// secondary entities
-		actionManager.registerCallback("entity-tags-command", actionHandler, "handleShowTags");
-		actionManager.registerCallback("entity-taglinks-command", actionHandler, "handleShowTagLinks");
-		actionManager.registerCallback("rename-tag-category-command", actionHandler, "handleRenameTagCategory");
-		actionManager.registerCallback("entity-items-command", actionHandler, "handleShowItems");
-		actionManager.registerCallback("entity-itemlinks-command", actionHandler, "handleShowItemLinks");
-		actionManager.registerCallback("rename-item-category-command", actionHandler, "handleRenameItemCategory");
-		actionManager.registerCallback("entity-ideas-command", actionHandler, "handleShowIdeas");
-		actionManager.registerCallback("entity-internals-command", actionHandler, "handleShowInternals");
-
-		// create new entity
-		actionManager.registerCallback("new-scene-command", actionHandler, "handleNewScene");
-		actionManager.registerCallback("new-chapter-command", actionHandler, "handleNewChapter");
-		actionManager.registerCallback("create-chapters-command", actionHandler, "handleCreateChapters");
-		actionManager.registerCallback("new-part-command", actionHandler, "handleNewPart");
-		actionManager.registerCallback("new-part-command", actionHandler, "handleNewPart");
-		actionManager.registerCallback("new-strand-command", actionHandler, "handleNewStrand");
-		actionManager.registerCallback("new-person-command", actionHandler, "handleNewPerson");
-		actionManager.registerCallback("new-category-command", actionHandler, "handleNewCategory");
-		actionManager.registerCallback("new-gender-command", actionHandler, "handleNewGender");
-		actionManager.registerCallback("new-location-command", actionHandler, "handleNewLocation");
-		actionManager.registerCallback("new-tag-command", actionHandler, "handleNewTag");
-		actionManager.registerCallback("new-taglink-command", actionHandler, "handleNewTagLink");
-		actionManager.registerCallback("new-item-command", actionHandler, "handleNewItem");
-		actionManager.registerCallback("new-itemlink-command", actionHandler, "handleNewItemLink");
-		actionManager.registerCallback("new-idea-command", actionHandler, "handleNewIdea");
-
-		// parts
-		actionManager.registerCallback("part-previous-command", actionHandler, "handlePreviousPart");
-		actionManager.registerCallback("part-next-command", actionHandler, "handleNextPart");
-
-		// charts
-		actionManager.registerCallback("chart-persons-by-date-command", actionHandler, "handleChartPersonsByDate");
-		actionManager.registerCallback("chart-persons-by-scene-command", actionHandler, "handleChartPersonsByScene");
-		actionManager.registerCallback("chart-wiww-command", actionHandler, "handleChartWiWW");
-		actionManager.registerCallback("chart-strands-by-date-command", actionHandler, "handleChartStrandsByDate");
-		actionManager.registerCallback("chart-occurrence-of-persons-command", actionHandler, "handleChartOccurrenceOfPersons");
-		actionManager.registerCallback("chart-occurrence-of-locations-command", actionHandler, "handleChartOccurrenceOfLocations");
-		actionManager.registerCallback("chart-gantt-command", actionHandler, "handleChartGantt");
-
-		// tools
-		actionManager.registerCallback("tasklist-command", actionHandler, "handleTaskList");
-		actionManager.registerCallback("flashofinspiration-command", actionHandler, "handleFlashOfInspiration");
-		actionManager.registerCallback("langtool-command", actionHandler, "handleLangTool");
-		actionManager.registerCallback("text2html-command", actionHandler, "handleText2Html");
-		actionManager.registerCallback("html2text-command", actionHandler, "handleHtml2Text");
-
-		// window
-		actionManager.registerCallback("save-layout-command", actionHandler, "handleSaveLayout");
-		actionManager.registerCallback("manage-layouts-command", actionHandler, "handleManageLayouts");
-		actionManager.registerCallback("reset-layout-command", actionHandler, "handleResetLayout");
-		actionManager.registerCallback("default-layout-command", actionHandler, "handleDefaultLayout");
-		actionManager.registerCallback("persons-locations-layout-command", actionHandler, "handlePersonsLocationsLayout");
-		actionManager.registerCallback("tags-items-layout-command", actionHandler, "handleTagsItemsLayout");
-		actionManager.registerCallback("chrono-only-layout-command", actionHandler, "handleChronoOnlyLayout");
-		actionManager.registerCallback("book-only-layout-command", actionHandler, "handleBookOnlyLayout");
-		actionManager.registerCallback("manage-only-layout-command", actionHandler, "handleManageOnlyLayout");
-		actionManager.registerCallback("reading-only-layout-command", actionHandler, "handleReadingOnlyLayout");
-		actionManager.registerCallback("refresh-command", actionHandler, "handleRefresh");
-		actionManager.registerCallback("preferences-command", actionHandler, "handlePreferences");
+	// window
+	actionManager.registerCallback("save-layout-command", actionHandler, "handleSaveLayout");
+	actionManager.registerCallback("manage-layouts-command", actionHandler, "handleManageLayouts");
+	actionManager.registerCallback("reset-layout-command", actionHandler, "handleResetLayout");
+	actionManager.registerCallback("default-layout-command", actionHandler, "handleDefaultLayout");
+	actionManager.registerCallback("persons-locations-layout-command", actionHandler, "handlePersonsLocationsLayout");
+	actionManager.registerCallback("tags-items-layout-command", actionHandler, "handleTagsItemsLayout");
+	actionManager.registerCallback("chrono-only-layout-command", actionHandler, "handleChronoOnlyLayout");
+	actionManager.registerCallback("book-only-layout-command", actionHandler, "handleBookOnlyLayout");
+	actionManager.registerCallback("manage-only-layout-command", actionHandler, "handleManageOnlyLayout");
+	actionManager.registerCallback("reading-only-layout-command", actionHandler, "handleReadingOnlyLayout");
+	actionManager.registerCallback("refresh-command", actionHandler, "handleRefresh");
+	actionManager.registerCallback("preferences-command", actionHandler, "handlePreferences");
 
 		// help
-		//actionManager.registerCallback("go-pro-command", actionHandler, "handleGoPro");
-		actionManager.registerCallback("report-bug-command", actionHandler, "handleReportBug");
-		actionManager.registerCallback("doc-command", actionHandler, "handleDoc");
-		actionManager.registerCallback("faq-command", actionHandler, "handleFAQ");
-		actionManager.registerCallback("homepage-command", actionHandler, "handleHomepage");
-		actionManager.registerCallback("facebook-command", actionHandler, "handleFacebook");
-		actionManager.registerCallback("check-update-command", actionHandler, "handleCheckUpdate");
-		actionManager.registerCallback("about-command", actionHandler, "handleAbout");
+	//actionManager.registerCallback("go-pro-command", actionHandler, "handleGoPro");
+	actionManager.registerCallback("report-bug-command", actionHandler, "handleReportBug");
+	actionManager.registerCallback("doc-command", actionHandler, "handleDoc");
+	actionManager.registerCallback("faq-command", actionHandler, "handleFAQ");
+	actionManager.registerCallback("homepage-command", actionHandler, "handleHomepage");
+	actionManager.registerCallback("facebook-command", actionHandler, "handleFacebook");
+	actionManager.registerCallback("check-update-command", actionHandler, "handleCheckUpdate");
+	actionManager.registerCallback("about-command", actionHandler, "handleAbout");
 
-		// development
-		actionManager.registerCallback("run-gc-command", actionHandler, "handleRunGC");
-		actionManager.registerCallback("dump-attached-views-command", actionHandler, "handleDumpAttachedViews");
-		actionManager.registerCallback("dummy-command", actionHandler, "handleDummy");
+	// development
+	actionManager.registerCallback("run-gc-command", actionHandler, "handleRunGC");
+	actionManager.registerCallback("dump-attached-views-command", actionHandler, "handleDumpAttachedViews");
+	actionManager.registerCallback("dummy-command", actionHandler, "handleDummy");
+    }
+
+    private void initUiFactory() {
+	StorybookApp.trace("SbActionManager.initUiFactory()");
+	UIFactory.setActionManager(ActionManager.getInstance());
+	UIFactory factory = UIFactory.getInstance();
+	if (!StorybookApp.isNewUi()) {
+	    JMenuBar menubar = factory.createMenuBar("main-menu");
+	    menubar.addPropertyChangeListener(this);
+	    if (menubar != null) {
+		reloadRecentMenu(menubar);
+		reloadPartMenu(menubar);
+		reloadWindowMenu(menubar);
+		JMenuBar oldMenubar = mainFrame.getJMenuBar();
+		if (oldMenubar != null) {
+		    mainFrame.remove(oldMenubar);
+		}
+		Preference pref = PrefUtil
+			.get(PreferenceKey.TRANSLATOR_MODE, false);
+		if (pref != null && pref.getBooleanValue()) {
+		    JMenuItem item = new JMenuItem(new RunAttesoroAction());
+		    menubar.add(item);
+		}
+		mainFrame.setJMenuBar(menubar);
+	    }
+	    JToolBar toolBar = factory.createToolBar("main-toolbar");
+	    if (toolBar != null) {
+		toolBar.setName(SbConstants.ComponentName.TB_MAIN.toString());
+		mainFrame.setMainToolBar(toolBar);
+	    }
+	} else {
+	    MainMenu newMainMenu = new MainMenu();
+	    newMainMenu.setMainFrame(mainFrame);
+	    mainFrame.setJMenuBar(newMainMenu.getJMenuBar());
+	    reloadRecentMenu(newMainMenu.getJMenuBar());
+	    MainToolBar newToolBar = new MainToolBar();
+	    newToolBar.setMainFrame(mainFrame);
+	    mainFrame.setMainToolBar(newToolBar.getToolBar());
+	    reloadPartMenuNew(newToolBar);
 	}
 
-	private void initUiFactory() {
-		StorybookApp.trace("SbActionManager.initUiFactory()");
-		UIFactory.setActionManager(ActionManager.getInstance());
-		UIFactory factory = UIFactory.getInstance();
-		if (!StorybookApp.isNewUi()) {
-			JMenuBar menubar = factory.createMenuBar("main-menu");
-			menubar.addPropertyChangeListener(this);
-			if (menubar != null) {
-				reloadRecentMenu(menubar);
-				reloadPartMenu(menubar);
-				reloadWindowMenu(menubar);
-				JMenuBar oldMenubar = mainFrame.getJMenuBar();
-				if (oldMenubar != null) {
-					mainFrame.remove(oldMenubar);
-				}
-				Preference pref = PrefUtil
-					.get(PreferenceKey.TRANSLATOR_MODE, false);
-				if (pref != null && pref.getBooleanValue()) {
-					JMenuItem item = new JMenuItem(new RunAttesoroAction());
-					menubar.add(item);
-				}
-				mainFrame.setJMenuBar(menubar);
-			}
-			JToolBar toolBar = factory.createToolBar("main-toolbar");
-			if (toolBar != null) {
-				toolBar.setName(SbConstants.ComponentName.TB_MAIN.toString());
-				mainFrame.setMainToolBar(toolBar);
-			}
-		} else {
-			MainMenu newMainMenu=new MainMenu();
-			newMainMenu.setMainFrame(mainFrame);
-			mainFrame.setJMenuBar(newMainMenu.getJMenuBar());
-			reloadRecentMenu(newMainMenu.getJMenuBar());
-			MainToolBar newToolBar=new MainToolBar();
-			newToolBar.setMainFrame(mainFrame);
-			mainFrame.setMainToolBar(newToolBar.getToolBar());
-			reloadPartMenuNew(newToolBar);
-		}
-
-		mainFrame.invalidate();
-		mainFrame.validate();
+	mainFrame.invalidate();
+	mainFrame.validate();
 		// old
-		// mainFrame.pack();
-		mainFrame.repaint();
+	// mainFrame.pack();
+	mainFrame.repaint();
+    }
+
+    private void reloadWindowMenu(JMenuBar menubar) {
+	StorybookApp.trace("SbActionManager.reloadWindowMenu(" + menubar.getName() + ")");
+	JMenu menu = menubar.getMenu(MENUBAR_INDEX_WINDOW);
+
+	JMenu miLoad = (JMenu) menu.getItem(0);
+	miLoad.removeAll();
+
+	PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+	Session session = model.beginTransaction();
+	PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
+	List<Preference> pref = dao.findAll();
+	for (Preference preference : pref) {
+	    if (preference.getKey().startsWith(
+		    PreferenceKey.DOCKING_LAYOUT.toString())) {
+		String name = preference.getStringValue();
+		if (SbConstants.InternalKey.LAST_USED_LAYOUT.toString().equals(
+			name)) {
+		    continue;
+		}
+		LoadDockingLayoutAction act = new LoadDockingLayoutAction(
+			mainFrame, name);
+		JMenuItem item = new JMenuItem(act);
+		miLoad.add(item);
+	    }
 	}
+	model.commit();
+    }
 
-	private void reloadWindowMenu(JMenuBar menubar) {
-		StorybookApp.trace("SbActionManager.reloadWindowMenu(" + menubar.getName() + ")");
-		JMenu menu = menubar.getMenu(MENUBAR_INDEX_WINDOW);
-
-		JMenu miLoad = (JMenu) menu.getItem(0);
-		miLoad.removeAll();
-
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
-		Session session = model.beginTransaction();
-		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
-		List<Preference> pref = dao.findAll();
-		for (Preference preference : pref) {
-			if (preference.getKey().startsWith(
-				PreferenceKey.DOCKING_LAYOUT.toString())) {
-				String name = preference.getStringValue();
-				if (SbConstants.InternalKey.LAST_USED_LAYOUT.toString().equals(
-					name)) {
-					continue;
-				}
-				LoadDockingLayoutAction act = new LoadDockingLayoutAction(
-					mainFrame, name);
-				JMenuItem item = new JMenuItem(act);
-				miLoad.add(item);
-			}
-		}
-		model.commit();
+    private int findRecent(JMenu menu) {
+	int rc = 2;
+	for (int i = 0; i < menu.getItemCount(); i++) {
+	    if (menu.getItem(i).getLabel().equals(I18N.getMsg("msg.file.open.recent"))) {
+		return (i);
+	    }
 	}
+	return (rc);
+    }
 
-	private int findRecent(JMenu menu) {
-		int rc=2;
-		for (int i=0;i<menu.getItemCount();i++) {
-			if (menu.getItem(i).getLabel().equals(I18N.getMsg("msg.file.open.recent"))) {
-				return(i);
-			}
-		}
-		return(rc);
+    private void reloadRecentMenu(JMenuBar menubar) {
+	StorybookApp.trace("SbActionManager.reloadRecentMenu(" + menubar.getName() + ")");
+	JMenu menu = menubar.getMenu(MENUBAR_INDEX_FILE);
+	JMenu miRecent = (JMenu) menu.getItem(findRecent(menu));// original index 2
+	miRecent.removeAll();
+	List<DbFile> list = PrefUtil.getDbFileList();
+	for (DbFile dbFile : list) {
+	    OpenFileAction act = new OpenFileAction(dbFile.getName() + " ["
+		    + dbFile.toString() + "]", dbFile);
+	    JMenuItem item = new JMenuItem(act);
+	    miRecent.add(item);
 	}
-	private void reloadRecentMenu(JMenuBar menubar) {
-		StorybookApp.trace("SbActionManager.reloadRecentMenu(" + menubar.getName() + ")");
-		JMenu menu = menubar.getMenu(MENUBAR_INDEX_FILE);
-		JMenu miRecent = (JMenu) menu.getItem(findRecent(menu));// original index 2
-		miRecent.removeAll();
-		List<DbFile> list = PrefUtil.getDbFileList();
-		for (DbFile dbFile : list) {
-			OpenFileAction act = new OpenFileAction(dbFile.getName() + " ["
-				+ dbFile.toString() + "]", dbFile);
-			JMenuItem item = new JMenuItem(act);
-			miRecent.add(item);
-		}
-		miRecent.addSeparator();
-		JMenuItem item = new JMenuItem(new ClearRecentFilesAction(actionHandler));
-		miRecent.add(item);
-	}
+	miRecent.addSeparator();
+	JMenuItem item = new JMenuItem(new ClearRecentFilesAction(actionHandler));
+	miRecent.add(item);
+    }
 
-	private void reloadPartMenuNew(MainToolBar toolBar) {
-		StorybookApp.trace("SbActionManager.reloadPartMenuNew(" + toolBar.getName() + ")");
-		BookModel model = mainFrame.getDocumentModel();
-		if (model == null) {
-			return;
-		}
-		Part currentPart = mainFrame.getCurrentPart();
-		Session session = model.beginTransaction();
-		PartDAOImpl dao = new PartDAOImpl(session);
-		List<Part> parts = dao.findAll();
-		model.commit();
-		toolBar.removePartList();
-		int pos = 0;
-		ButtonGroup group = new ButtonGroup();
-		String sel="";
-		for (Part part : parts) {
-			String x = I18N.getMsg("msg.common.part") + " " + part.getNumberName();
-			if (currentPart.getId().equals(part.getId())) {
-				sel=x;
-			}
-			toolBar.addPartList(x);
-			++pos;
-		}
-		toolBar.selPartList(sel);
+    private void reloadPartMenuNew(MainToolBar toolBar) {
+	StorybookApp.trace("SbActionManager.reloadPartMenuNew(" + toolBar.getName() + ")");
+	BookModel model = mainFrame.getDocumentModel();
+	if (model == null) {
+	    return;
 	}
-
-	private void reloadPartMenu(JMenuBar menubar) {
-		StorybookApp.trace("SbActionManager.reloadPartMenu(" + menubar.getName() + ")");
-		BookModel model = mainFrame.getDocumentModel();
-		if (model == null) {
-			return;
-		}
-		JMenu menu = menubar.getMenu(MENUBAR_INDEX_PARTS);
-		JMenuItem miPreviousPart = menu.getItem(0);
-		JMenuItem miNextPart = menu.getItem(1);
-		JMenuItem miParts = menu.getItem(2);
-		Part currentPart = mainFrame.getCurrentPart();
-		Session session = model.beginTransaction();
-		PartDAOImpl dao = new PartDAOImpl(session);
-		List<Part> parts = dao.findAll();
-		model.commit();
-		menu.removeAll();
-		int pos = 0;
-		ButtonGroup group = new ButtonGroup();
-		for (Part part : parts) {
-			Action action = new ChangePartAction(I18N.getMsg("msg.common.part")
-				+ " " + part.getNumberName(), actionHandler, part);
-			JRadioButtonMenuItem rbmi = new JRadioButtonMenuItem(action);
-			SwingUtil.setAccelerator(rbmi, KeyEvent.VK_0 + part.getNumber(),
-				Event.ALT_MASK);
-			if (currentPart.getId().equals(part.getId())) {
-				rbmi.setSelected(true);
-			}
-			group.add(rbmi);
-			menu.insert(rbmi, pos);
-			++pos;
-		}
-		menu.insertSeparator(pos++);
-		menu.insert(miPreviousPart, pos++);
-		menu.insert(miNextPart, pos++);
-		menu.insertSeparator(pos++);
-		menu.insert(miParts, pos++);
+	Part currentPart = mainFrame.getCurrentPart();
+	Session session = model.beginTransaction();
+	PartDAOImpl dao = new PartDAOImpl(session);
+	List<Part> parts = dao.findAll();
+	model.commit();
+	toolBar.removePartList();
+	int pos = 0;
+	ButtonGroup group = new ButtonGroup();
+	String sel = "";
+	for (Part part : parts) {
+	    String x = I18N.getMsg("msg.common.part") + " " + part.getNumberName();
+	    if (currentPart.getId().equals(part.getId())) {
+		sel = x;
+	    }
+	    toolBar.addPartList(x);
+	    ++pos;
 	}
+	toolBar.selPartList(sel);
+    }
 
-	private void selectPartMenu(JMenuBar menubar) {
-		StorybookApp.trace("SbActionManager.selectPartMenu(" + menubar.getName() + ")");
-		JMenu menu = menubar.getMenu(MENUBAR_INDEX_PARTS);
-		Component[] comps = menu.getMenuComponents();
-		for (Component comp : comps) {
-			if (comp instanceof JRadioButtonMenuItem) {
-				JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) comp;
-				ChangePartAction action = (ChangePartAction) rbmi.getAction();
-				if (action.getPart().getId()
-					.equals(mainFrame.getCurrentPart().getId())) {
-					rbmi.setSelected(true);
-					return;
-				}
-			}
-		}
+    private void reloadPartMenu(JMenuBar menubar) {
+	StorybookApp.trace("SbActionManager.reloadPartMenu(" + menubar.getName() + ")");
+	BookModel model = mainFrame.getDocumentModel();
+	if (model == null) {
+	    return;
 	}
+	JMenu menu = menubar.getMenu(MENUBAR_INDEX_PARTS);
+	JMenuItem miPreviousPart = menu.getItem(0);
+	JMenuItem miNextPart = menu.getItem(1);
+	JMenuItem miParts = menu.getItem(2);
+	Part currentPart = mainFrame.getCurrentPart();
+	Session session = model.beginTransaction();
+	PartDAOImpl dao = new PartDAOImpl(session);
+	List<Part> parts = dao.findAll();
+	model.commit();
+	menu.removeAll();
+	int pos = 0;
+	ButtonGroup group = new ButtonGroup();
+	for (Part part : parts) {
+	    Action action = new ChangePartAction(I18N.getMsg("msg.common.part")
+		    + " " + part.getNumberName(), actionHandler, part);
+	    JRadioButtonMenuItem rbmi = new JRadioButtonMenuItem(action);
+	    SwingUtil.setAccelerator(rbmi, KeyEvent.VK_0 + part.getNumber(),
+		    Event.ALT_MASK);
+	    if (currentPart.getId().equals(part.getId())) {
+		rbmi.setSelected(true);
+	    }
+	    group.add(rbmi);
+	    menu.insert(rbmi, pos);
+	    ++pos;
+	}
+	menu.insertSeparator(pos++);
+	menu.insert(miPreviousPart, pos++);
+	menu.insert(miNextPart, pos++);
+	menu.insertSeparator(pos++);
+	menu.insert(miParts, pos++);
+    }
 
-	public void reloadMenuToolbar() {
+    private void selectPartMenu(JMenuBar menubar) {
+	StorybookApp.trace("SbActionManager.selectPartMenu(" + menubar.getName() + ")");
+	JMenu menu = menubar.getMenu(MENUBAR_INDEX_PARTS);
+	Component[] comps = menu.getMenuComponents();
+	for (Component comp : comps) {
+	    if (comp instanceof JRadioButtonMenuItem) {
+		JRadioButtonMenuItem rbmi = (JRadioButtonMenuItem) comp;
+		ChangePartAction action = (ChangePartAction) rbmi.getAction();
+		if (action.getPart().getId()
+			.equals(mainFrame.getCurrentPart().getId())) {
+		    rbmi.setSelected(true);
+		    return;
+		}
+	    }
+	}
+    }
+
+    public void reloadMenuToolbar() {
 //		boolean maximized = mainFrame.isMaximized();
 //		int width = mainFrame.getWidth();
 //		int height = mainFrame.getHeight();
-		init();
+	init();
 //		if (maximized) {
 //			mainFrame.setMaximized();
 //		} else {
 //			mainFrame.setSize(width, height);
 //		}
-	}
+    }
 
-	public void disableActionsForBlank(JMenuBar menubar) {
-		StorybookApp.trace("SbActionManager.disableActionsForBlank(" + menubar.getName() + ")");
-		String[] actionNames = {"file-menu-command", "new-command",
-			"open-command", "recent-menu-command", "recent-clear-command",
-			"exit-command", "edit-menu-command", "view-menu-command",
-			"main-entities-menu-command",
-			"secondary-entities-menu-command", "new-entity-menu-command",
-			"parts-menu-command", "charts-menu-command",
-			"tools-menu-command", "langtool-command",
-			"window-menu-command", "preferences-command", "help-menu",
-			/*"go-pro-command",*/ "report-bug-command", "doc-command", "faq-command",
-			"homepage-command", "facebook-command", "check-update-command", "about-command"};
-		List<String> list = Arrays.asList(actionNames);
-		@SuppressWarnings("unchecked")
-		Set<String> ids = actionManager.getActionIDs();
-		for (String id : ids) {
-			if (!list.contains(id)) {
-				actionManager.getAction(id).setEnabled(false);
-			}
-		}
+    public void disableActionsForBlank(JMenuBar menubar) {
+	StorybookApp.trace("SbActionManager.disableActionsForBlank(" + menubar.getName() + ")");
+	String[] actionNames = {"file-menu-command", "new-command",
+	    "open-command", "recent-menu-command", "recent-clear-command",
+	    "exit-command", "edit-menu-command", "view-menu-command",
+	    "main-entities-menu-command",
+	    "secondary-entities-menu-command", "new-entity-menu-command",
+	    "parts-menu-command", "charts-menu-command",
+	    "tools-menu-command", "langtool-command",
+	    "window-menu-command", "preferences-command", "help-menu",
+	    /*"go-pro-command",*/ "report-bug-command", "doc-command", "faq-command",
+	    "homepage-command", "facebook-command", "check-update-command", "about-command"};
+	List<String> list = Arrays.asList(actionNames);
+	@SuppressWarnings("unchecked")
+	Set<String> ids = actionManager.getActionIDs();
+	for (String id : ids) {
+	    if (!list.contains(id)) {
+		actionManager.getAction(id).setEnabled(false);
+	    }
 	}
+    }
 
-	public ActionHandler getActionController() {
-		StorybookApp.trace("SbActionManager.getActionController()");
-		return actionHandler;
-	}
+    public ActionHandler getActionController() {
+	StorybookApp.trace("SbActionManager.getActionController()");
+	return actionHandler;
+    }
 
-	public ActionManager getActionManager() {
-		StorybookApp.trace("SbActionManager.getActionManager()");
-		return actionManager;
-	}
+    public ActionManager getActionManager() {
+	StorybookApp.trace("SbActionManager.getActionManager()");
+	return actionManager;
+    }
 
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		StorybookApp.trace("SbActionManager.propertyChange(" + evt.toString() + ")");
-		String propName = evt.getPropertyName();
-		if (BookController.PartProps.NEW.check(propName)
-			|| BookController.PartProps.UPDATE.check(propName)
-			|| BookController.PartProps.DELETE.check(propName)) {
-			reloadMenuToolbar();
-			return;
-		}
-		if (BookController.PartProps.CHANGE.check(propName)) {
-			selectPartMenu(mainFrame.getJMenuBar());
-			//return;
-		}
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+	StorybookApp.trace("SbActionManager.propertyChange(" + evt.toString() + ")");
+	String propName = evt.getPropertyName();
+	if (BookController.PartProps.NEW.check(propName)
+		|| BookController.PartProps.UPDATE.check(propName)
+		|| BookController.PartProps.DELETE.check(propName)) {
+	    reloadMenuToolbar();
+	    return;
 	}
+	if (BookController.PartProps.CHANGE.check(propName)) {
+	    selectPartMenu(mainFrame.getJMenuBar());
+	    //return;
+	}
+    }
 
-	public ActionHandler getActionHandler() {
-		StorybookApp.trace("SbActionManager.getActionHandler()");
-		return actionHandler;
-	}
+    public ActionHandler getActionHandler() {
+	StorybookApp.trace("SbActionManager.getActionHandler()");
+	return actionHandler;
+    }
 }

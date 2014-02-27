@@ -21,22 +21,23 @@ import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.swing.htmleditor.HtmlEditor;
 import storybook.ui.dialog.chooser.DateFixed;
 import storybook.ui.dialog.chooser.DateRelative;
-import storybook.ui.dialog.CommonBox;
+import static storybook.ui.dialog.edit.DlgErrorMessage.mandatoryField;
 
 /**
  *
  * @author favdb
  */
 public class EditScene extends javax.swing.JPanel {
+
 	private Editor parent;
 	private final CardLayout card = new CardLayout(0, 0);
-	private DateFixed dateChooser;
+	private DateFixed dateFixed;
 	private DateRelative dateRelative;
 	private Scene scene;
 	private final CardLayout cardText = new CardLayout(0, 0);
 	private final CardLayout cardNotes = new CardLayout(0, 0);
-	private final HtmlEditor notes=new HtmlEditor();
-	private final HtmlEditor text=new HtmlEditor();
+	private final HtmlEditor notes = new HtmlEditor();
+	private final HtmlEditor text = new HtmlEditor();
 
 	/**
 	 * Creates new form EditScene
@@ -46,43 +47,41 @@ public class EditScene extends javax.swing.JPanel {
 	}
 
 	public EditScene(Editor m, Scene s) {
-		parent=m;
-		scene=s;
-		dateChooser=new DateFixed(this);
-		dateRelative=new DateRelative(this);
+		parent = m;
+		scene = s;
+		dateFixed = new DateFixed(this);
+		dateRelative = new DateRelative(this);
 		initComponents();
-		jPanel1.setLayout(card);
-		jPanel1.add(new JPanel(),"none");
-		jPanel1.add(dateChooser,"dateFixed");
-		jPanel1.add(dateRelative,"dateRelative");
+		paneDate.setLayout(card);
+		paneDate.add(new JPanel(), "none");
+		paneDate.add(dateFixed, "dateFixed");
+		paneDate.add(dateRelative, "dateRelative");
 		notes.setMaxLength(150);
 		paneNotes.setLayout(cardNotes);
 		paneNotes.add(notes);
 		cardNotes.show(paneNotes, "notes");
-		paneText.setLayout(cardText);
 		text.setMaxLength(150);
+		paneText.setLayout(cardText);
 		paneText.add(text);
-		cardText.show(paneText,"text");
+		cardText.show(paneText, "text");
 		initUI();
-		/*if ((scene==null) || (scene.getId()==-1L)) {
-			card.show(jPanel1, "none");
-		} else {
-			initUI();
-		}*/
 	}
 
 	private void initUI() {
-		if (scene==null) {
-			scene=createNewScene();
-		}
-		txtID.setText(Long.toString(scene.getId()));
-		txtNumber.setText(scene.getChapterSceneNo());
-		txtTitle.setText(scene.getTitle());
-		CommonBox.loadCbChapters(parent.parent,cbChapters, scene);
+		if (scene == null)
+			scene = createNewScene();
+		txID.setText(Long.toString(scene.getId()));
+		txNumber.setText(scene.getChapterSceneNo());
+		txTitle.setText(scene.getTitle());
+		CommonBox.loadCbChapters(parent.parent, cbChapters, scene);
 		CommonBox.loadCbStatus(cbStatus, scene);
-		CommonBox.loadLbStrands(parent.parent,lbStrands, scene);
-		CommonBox.loadLbPersons(parent.parent,lbPersons, scene);
-		CommonBox.loadLbLocations(parent.parent,lbLocations, scene);
+		CommonBox.loadCbLocations(parent.parent, cbLocations, scene);
+		CommonBox.loadLbStrands(parent.parent, lbStrands, scene);
+		CommonBox.loadLbPersons(parent.parent, lbPersons, scene);
+		CommonBox.loadLbItems(parent.parent, lbItems, scene);
+		//TODO date fixed or relative
+		notes.setText(scene.getNotes());
+		text.setText(scene.getText());
 	}
 
 	/**
@@ -97,50 +96,63 @@ public class EditScene extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         paneCommon = new javax.swing.JPanel();
         lbId = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
+        txID = new javax.swing.JTextField();
+        lbChapter = new javax.swing.JLabel();
+        cbChapters = new javax.swing.JComboBox();
         lbNumber = new javax.swing.JLabel();
-        txtNumber = new javax.swing.JTextField();
-        lbTitle = new javax.swing.JLabel();
-        txtTitle = new javax.swing.JTextField();
+        txNumber = new javax.swing.JTextField();
         lbStatus = new javax.swing.JLabel();
         cbStatus = new javax.swing.JComboBox();
+        lbTitle = new javax.swing.JLabel();
+        txTitle = new javax.swing.JTextField();
+        lbLocation = new javax.swing.JLabel();
+        cbLocations = new javax.swing.JComboBox();
         lbDate = new javax.swing.JLabel();
         rbNone = new javax.swing.JRadioButton();
         rbFixed = new javax.swing.JRadioButton();
         rbRelative = new javax.swing.JRadioButton();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        paneDate = new javax.swing.JPanel();
+        paneStrands = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lbStrands = new javax.swing.JList();
-        jPanel3 = new javax.swing.JPanel();
+        panePersons = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lbPersons = new javax.swing.JList();
-        jPanel4 = new javax.swing.JPanel();
+        paneItems = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        lbLocations = new javax.swing.JList();
-        lbChapter = new javax.swing.JLabel();
-        cbChapters = new javax.swing.JComboBox();
+        lbItems = new javax.swing.JList();
         bAddStrand = new javax.swing.JButton();
+        bAddPersons = new javax.swing.JButton();
+        bAddItem = new javax.swing.JButton();
         bAddLocation = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btClearChapter = new javax.swing.JButton();
+        btClearLocation = new javax.swing.JButton();
         paneNotes = new javax.swing.JPanel();
         paneText = new javax.swing.JPanel();
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
         lbId.setText(bundle.getString("msg.common.id")); // NOI18N
 
-        txtID.setEditable(false);
-        txtID.setText(" ");
+        txID.setEditable(false);
+        txID.setText(" ");
+
+        lbChapter.setText(bundle.getString("msg.common.chapter")); // NOI18N
+
+        cbChapters.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         lbNumber.setText(bundle.getString("msg.common.number")); // NOI18N
 
-        txtNumber.setText(" ");
-
-        lbTitle.setText(bundle.getString("msg.common.title")); // NOI18N
+        txNumber.setText(" ");
 
         lbStatus.setText(bundle.getString("msg.common.status")); // NOI18N
 
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        lbTitle.setText(bundle.getString("msg.common.title")); // NOI18N
+
+        lbLocation.setText(bundle.getString("msg.common.location")); // NOI18N
+
+        cbLocations.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         lbDate.setText(bundle.getString("msg.common.date")); // NOI18N
 
@@ -169,41 +181,42 @@ public class EditScene extends javax.swing.JPanel {
             }
         });
 
-        jPanel1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.highlight"));
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        paneDate.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.highlight"));
+        paneDate.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout paneDateLayout = new javax.swing.GroupLayout(paneDate);
+        paneDate.setLayout(paneDateLayout);
+        paneDateLayout.setHorizontalGroup(
+            paneDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 88, Short.MAX_VALUE)
+        paneDateLayout.setVerticalGroup(
+            paneDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 68, Short.MAX_VALUE)
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.strands"))); // NOI18N
+        paneStrands.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.strands"))); // NOI18N
 
         lbStrands.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        lbStrands.setMaximumSize(new java.awt.Dimension(32000, 32000));
         jScrollPane1.setViewportView(lbStrands);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout paneStrandsLayout = new javax.swing.GroupLayout(paneStrands);
+        paneStrands.setLayout(paneStrandsLayout);
+        paneStrandsLayout.setHorizontalGroup(
+            paneStrandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+        paneStrandsLayout.setVerticalGroup(
+            paneStrandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.persons"))); // NOI18N
+        panePersons.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.persons"))); // NOI18N
 
         lbPersons.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -212,41 +225,37 @@ public class EditScene extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(lbPersons);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+        javax.swing.GroupLayout panePersonsLayout = new javax.swing.GroupLayout(panePersons);
+        panePersons.setLayout(panePersonsLayout);
+        panePersonsLayout.setHorizontalGroup(
+            panePersonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panePersonsLayout.setVerticalGroup(
+            panePersonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.locations"))); // NOI18N
+        paneItems.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.items"))); // NOI18N
 
-        lbLocations.setModel(new javax.swing.AbstractListModel() {
+        lbItems.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        lbLocations.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(lbLocations);
+        lbItems.setToolTipText("");
+        jScrollPane3.setViewportView(lbItems);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3)
+        javax.swing.GroupLayout paneItemsLayout = new javax.swing.GroupLayout(paneItems);
+        paneItems.setLayout(paneItemsLayout);
+        paneItemsLayout.setHorizontalGroup(
+            paneItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+        paneItemsLayout.setVerticalGroup(
+            paneItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
         );
-
-        lbChapter.setText(bundle.getString("msg.common.chapter")); // NOI18N
-
-        cbChapters.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         bAddStrand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
         bAddStrand.addActionListener(new java.awt.event.ActionListener() {
@@ -255,14 +264,38 @@ public class EditScene extends javax.swing.JPanel {
             }
         });
 
+        bAddPersons.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
+
+        bAddItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
+        bAddItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAddItemActionPerformed(evt);
+            }
+        });
+
         bAddLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
+        bAddLocation.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bAddLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bAddLocationActionPerformed(evt);
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
+        btClearChapter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/clear.png"))); // NOI18N
+        btClearChapter.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btClearChapter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btClearChapterActionPerformed(evt);
+            }
+        });
+
+        btClearLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/clear.png"))); // NOI18N
+        btClearLocation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btClearLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btClearLocationActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout paneCommonLayout = new javax.swing.GroupLayout(paneCommon);
         paneCommon.setLayout(paneCommonLayout);
@@ -275,13 +308,21 @@ public class EditScene extends javax.swing.JPanel {
                         .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbNumber)
                             .addComponent(lbTitle)
-                            .addComponent(lbId))
+                            .addComponent(lbId)
+                            .addComponent(lbLocation))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txTitle, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, paneCommonLayout.createSequentialGroup()
+                                .addComponent(cbLocations, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btClearLocation)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bAddLocation))
                             .addGroup(paneCommonLayout.createSequentialGroup()
                                 .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                                    .addComponent(txtNumber))
+                                    .addComponent(txID, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                                    .addComponent(txNumber))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbStatus)
@@ -290,78 +331,99 @@ public class EditScene extends javax.swing.JPanel {
                                 .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(paneCommonLayout.createSequentialGroup()
                                         .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 91, Short.MAX_VALUE))
-                                    .addComponent(cbChapters, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(txtTitle)))
-                    .addGroup(paneCommonLayout.createSequentialGroup()
-                        .addComponent(lbDate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(paneCommonLayout.createSequentialGroup()
-                                .addComponent(rbNone)
+                                        .addGap(0, 88, Short.MAX_VALUE))
+                                    .addComponent(cbChapters, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbFixed)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbRelative)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(paneCommonLayout.createSequentialGroup()
-                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bAddStrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bAddLocation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(btClearChapter))))
+                    .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(paneCommonLayout.createSequentialGroup()
+                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(paneStrands, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bAddStrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(bAddPersons, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                .addComponent(panePersons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(paneItems, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bAddItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(paneCommonLayout.createSequentialGroup()
+                            .addComponent(lbDate)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(rbNone)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(paneCommonLayout.createSequentialGroup()
+                                    .addComponent(rbFixed)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(rbRelative)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(paneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         paneCommonLayout.setVerticalGroup(
             paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneCommonLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbId)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbChapter)
-                    .addComponent(cbChapters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNumber)
-                    .addComponent(txtNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbStatus)
-                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbTitle)
-                    .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbDate)
-                    .addComponent(rbNone)
-                    .addComponent(rbFixed)
-                    .addComponent(rbRelative))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(paneCommonLayout.createSequentialGroup()
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbChapters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btClearChapter))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbNumber)
+                            .addComponent(txNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbStatus)
+                            .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbTitle)
+                            .addComponent(txTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(cbLocations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btClearLocation)
+                            .addComponent(bAddLocation))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbDate)
+                            .addComponent(rbNone)
+                            .addComponent(rbFixed)
+                            .addComponent(rbRelative))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(paneDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(paneItems, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(paneStrands, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panePersons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(lbChapter))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(txID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(lbId))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(lbLocation)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneCommonLayout.createSequentialGroup()
                         .addComponent(bAddStrand)
-                        .addComponent(bAddLocation))
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                        .addGap(23, 23, 23))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bAddPersons)
+                            .addComponent(bAddItem))
+                        .addContainerGap())))
         );
 
-        jPanel2.getAccessibleContext().setAccessibleName(bundle.getString("msg.common.strand")); // NOI18N
+        paneStrands.getAccessibleContext().setAccessibleName(bundle.getString("msg.common.strand")); // NOI18N
 
         jTabbedPane1.addTab(bundle.getString("msg.common"), paneCommon); // NOI18N
 
@@ -369,7 +431,7 @@ public class EditScene extends javax.swing.JPanel {
         paneNotes.setLayout(paneNotesLayout);
         paneNotesLayout.setHorizontalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
+            .addGap(0, 438, Short.MAX_VALUE)
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,7 +444,7 @@ public class EditScene extends javax.swing.JPanel {
         paneText.setLayout(paneTextLayout);
         paneTextLayout.setHorizontalGroup(
             paneTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
+            .addGap(0, 438, Short.MAX_VALUE)
         );
         paneTextLayout.setVerticalGroup(
             paneTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,43 +461,53 @@ public class EditScene extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void rbNoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNoneActionPerformed
-        card.show(jPanel1, "none");
+		card.show(paneDate, "none");
     }//GEN-LAST:event_rbNoneActionPerformed
 
     private void rbFixedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbFixedActionPerformed
-        card.show(jPanel1, "dateFixed");
+		card.show(paneDate, "dateFixed");
     }//GEN-LAST:event_rbFixedActionPerformed
 
     private void rbRelativeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbRelativeActionPerformed
-        card.show(jPanel1,"dateRelative");
+		card.show(paneDate, "dateRelative");
     }//GEN-LAST:event_rbRelativeActionPerformed
 
     private void bAddStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddStrandActionPerformed
-        // TODO add your handling code here:
+		// TODO bAddStrandActionPerformed
     }//GEN-LAST:event_bAddStrandActionPerformed
 
+    private void bAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddItemActionPerformed
+		// TODO bAddItemActionPerformed
+    }//GEN-LAST:event_bAddItemActionPerformed
+
     private void bAddLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddLocationActionPerformed
-        // TODO add your handling code here:
+		// TODO bAddLocationActionPerformed
     }//GEN-LAST:event_bAddLocationActionPerformed
 
+    private void btClearChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearChapterActionPerformed
+        // TODO btClearChapterActionPerformed
+    }//GEN-LAST:event_btClearChapterActionPerformed
+
+    private void btClearLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearLocationActionPerformed
+        // TODO btClearChapterActionPerformed
+    }//GEN-LAST:event_btClearLocationActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bAddItem;
     private javax.swing.JButton bAddLocation;
+    private javax.swing.JButton bAddPersons;
     private javax.swing.JButton bAddStrand;
+    private javax.swing.JButton btClearChapter;
+    private javax.swing.JButton btClearLocation;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbChapters;
+    private javax.swing.JComboBox cbLocations;
     private javax.swing.JComboBox cbStatus;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -443,41 +515,70 @@ public class EditScene extends javax.swing.JPanel {
     private javax.swing.JLabel lbChapter;
     private javax.swing.JLabel lbDate;
     private javax.swing.JLabel lbId;
-    private javax.swing.JList lbLocations;
+    private javax.swing.JList lbItems;
+    private javax.swing.JLabel lbLocation;
     private javax.swing.JLabel lbNumber;
     private javax.swing.JList lbPersons;
     private javax.swing.JLabel lbStatus;
     private javax.swing.JList lbStrands;
     private javax.swing.JLabel lbTitle;
     private javax.swing.JPanel paneCommon;
+    private javax.swing.JPanel paneDate;
+    private javax.swing.JPanel paneItems;
     private javax.swing.JPanel paneNotes;
+    private javax.swing.JPanel panePersons;
+    private javax.swing.JPanel paneStrands;
     private javax.swing.JPanel paneText;
     private javax.swing.JRadioButton rbFixed;
     private javax.swing.JRadioButton rbNone;
     private javax.swing.JRadioButton rbRelative;
-    private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtNumber;
-    private javax.swing.JTextField txtTitle;
+    private javax.swing.JTextField txID;
+    private javax.swing.JTextField txNumber;
+    private javax.swing.JTextField txTitle;
     // End of variables declaration//GEN-END:variables
 
 	void set(Scene scene) {
-		this.scene=scene;
+		this.scene = scene;
 		initUI();
 	}
 
 	public Scene createNewScene() {
-		Scene scene = new Scene();
-		return scene;
+		Scene s = new Scene();
+		s.setStatus(0);
+		return s;
 	}
 
 	public Scene addNewScene(Scene orig) {
-		Scene scene = new Scene();
-		if (orig.getStrand() != null) {
-			scene.setStrand(orig.getStrand());
+		Scene s = new Scene();
+		if (orig.getStrand() != null)
+			s.setStrand(orig.getStrand());
+		if (orig.getSceneTs() != null)
+			s.setSceneTs(orig.getSceneTs());
+		return s;
+	}
+
+	boolean isModified() {
+		if (!scene.getChapterSceneNo().equals(txNumber.getText()))
+			return (true);
+		if (!scene.getTitle().equals(txTitle.getText()))
+			return (true);
+		return (false);
+	}
+
+	public String saveData() {
+		String rt = ctrlData();
+		if ("".equals(rt)) {
+			// TODO EditScene.saveData
 		}
-		if (orig.getSceneTs() != null) {
-			scene.setSceneTs(orig.getSceneTs());
-		}
-		return scene;
+		return (rt);
+	}
+
+	private String ctrlData() {
+		if ("".equals(txNumber.getText()))
+			return (mandatoryField("msg.common.number"));
+		if ("".equals(txTitle.getText()))
+			return (mandatoryField("msg.common.title"));
+		// TODO EditScene.ctrlData date
+		return ("");
 	}
 }

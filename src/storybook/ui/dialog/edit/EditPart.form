@@ -86,9 +86,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value=" "/>
       </Properties>
-      <Events>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txNameKeyTyped"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lbNumber">
       <Properties>
@@ -98,9 +95,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txNumber">
-      <Events>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txNumberKeyTyped"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

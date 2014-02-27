@@ -22,20 +22,20 @@ public class ExportReport {
 	private String jasperReportName;
 	private String resourceKey;
 
-	public ExportReport(String paramString1, String paramString2) {
-		this.jasperReportName = paramString1;
-		this.resourceKey = paramString2;
+	public ExportReport(String reportName, String key) {
+		jasperReportName = reportName;
+		resourceKey = key;
 	}
 
 	public ExportReport() {
 	}
 
-	public void setReportName(String paramString) {
-		this.jasperReportName = paramString;
+	public void setReportName(String reportName) {
+		jasperReportName = reportName;
 	}
 
-	public void setResourceKey(String paramString) {
-		this.resourceKey = paramString;
+	public void setResourceKey(String key) {
+		resourceKey = key;
 	}
 
 	@Override
@@ -44,10 +44,10 @@ public class ExportReport {
 	}
 
 	public String getJasperReportName() {
-		return this.jasperReportName;
+		return jasperReportName;
 	}
 
 	public String getName() {
-		return I18N.getMsg(this.resourceKey);
+		return I18N.getMsg(resourceKey);
 	}
 }

@@ -52,9 +52,9 @@ import org.apache.commons.io.FileUtils;
 import org.jdesktop.jdic.desktop.Desktop;
 import org.jdesktop.jdic.desktop.DesktopException;
 import storybook.SbConstants;
+import storybook.StorybookApp;
 
-public class ExportPrintDialog extends AbstractDialog
-	implements ActionListener {
+public class ExportPrintDialog extends AbstractDialog implements ActionListener {
 
 	private JTextField tfDir;
 	private ExportPreview previewPanel;
@@ -63,13 +63,13 @@ public class ExportPrintDialog extends AbstractDialog
 	private JComboBox reportCombo;
 	private Timer timer = new Timer(50, new ActionListener() {
 		@Override
-		public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
+		public void actionPerformed(ActionEvent param) {
 			ExportPrintDialog.this.preview();
 		}
 	});
 
-	public ExportPrintDialog(MainFrame paramMainFrame) {
-		super(paramMainFrame);
+	public ExportPrintDialog(MainFrame param) {
+		super(param);
 		timer.start();
 		initAll();
 	}
@@ -80,6 +80,7 @@ public class ExportPrintDialog extends AbstractDialog
 
 	@Override
 	public void initUi() {
+		StorybookApp.trace("ExportPrintDialog.initUi()");
 		MigLayout localMigLayout = new MigLayout("fill,wrap 2", "", "20[]20[top]");
 		setTitle(I18N.getMsg("msg.dlg.export.title"));
 		setLayout(localMigLayout);
@@ -87,11 +88,10 @@ public class ExportPrintDialog extends AbstractDialog
 		JLabel lbFolder = new JLabel(I18N.getMsgColon("msg.dlg.export.folder"));
 		tfDir = new JTextField(20);
 		Internal internal = DocumentUtil.restoreInternal(mainFrame,
-			SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(mainFrame));
+				SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(mainFrame));
 		tfDir.setText(internal.getStringValue());
-		if (tfDir.getText().isEmpty()) {
+		if (tfDir.getText().isEmpty())
 			tfDir.setText(FileUtils.getUserDirectoryPath());
-		}
 		JButton btnChooseFolder = setButton(getChooseFolderAction(), "msg.common.choose.folder", null);
 		JPanel panel1 = new JPanel(new MigLayout("flowy"));
 		JPanel panel2 = new JPanel(new MigLayout("flowy,fill"));
@@ -116,9 +116,8 @@ public class ExportPrintDialog extends AbstractDialog
 				JRadioButton rdButton = new JRadioButton((String) ((HashMap) mapFormat).get(str));
 				rdButton.setActionCommand((String) str);
 				rdButton.addActionListener(this);
-				if ("pdf".equals(str)) {
+				if ("pdf".equals(str))
 					rdButton.setSelected(true);
-				}
 				formatList.add(rdButton);
 				buttonGroup.add((AbstractButton) rdButton);
 			}
@@ -153,9 +152,8 @@ public class ExportPrintDialog extends AbstractDialog
 		JButton button = new JButton();
 		button.setAction(action);
 		button.setText(I18N.getMsg(text));
-		if (icon != null) {
+		if (icon != null)
 			button.setIcon(I18N.getIcon(icon));
-		}
 		SwingUtil.addEnterAction(button, action);
 		return button;
 	}
@@ -171,9 +169,8 @@ public class ExportPrintDialog extends AbstractDialog
 				JFileChooser chooser = new JFileChooser(ExportPrintDialog.this.tfDir.getText());
 				chooser.setFileSelectionMode(1);
 				int i = chooser.showOpenDialog(ExportPrintDialog.this.getThis());
-				if (i != 0) {
+				if (i != 0)
 					return;
-				}
 				File file = chooser.getSelectedFile();
 				ExportPrintDialog.this.tfDir.setText(file.getAbsolutePath());
 			}
@@ -188,15 +185,11 @@ public class ExportPrintDialog extends AbstractDialog
 				File localFile = new File(ExportPrintDialog.this.tfDir.getText());
 				ExportManager localExportManager = new ExportManager(ExportPrintDialog.this.mainFrame);
 				String str = localExportManager.export(
-					localFile, ExportPrintDialog.this.formatKey,
-					(ExportReport) ExportPrintDialog.this.reportCombo.getSelectedItem());
+						localFile, ExportPrintDialog.this.formatKey,
+						(ExportReport) ExportPrintDialog.this.reportCombo.getSelectedItem());
 				SwingUtil.setDefaultCursor(ExportPrintDialog.this.getThis());
-				if (str.isEmpty()) {
-					return;
-				}
-				SwingUtil.showModalDialog(
-					new ExportPrintDialog.ConfirmDialog(str),
-					ExportPrintDialog.this.mainFrame);
+				if (str.isEmpty()) return;
+				SwingUtil.showModalDialog(new ExportPrintDialog.ConfirmDialog(str), ExportPrintDialog.this.mainFrame);
 			}
 		};
 	}
@@ -234,28 +227,26 @@ public class ExportPrintDialog extends AbstractDialog
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if ((event.getSource() instanceof JRadioButton)) {
+		if ((event.getSource() instanceof JRadioButton))
 			this.formatKey = event.getActionCommand();
-		}
-		if (event.getSource() == this.reportCombo) {
+		if (event.getSource() == this.reportCombo)
 			preview();
-		}
 	}
 
 	private void preview() {
 		try {
 			SwingUtil.setWaitingCursor(getThis());
-			ExportManager xpManager = new ExportManager(this.mainFrame);
-			xpManager.fillReport((ExportReport) this.reportCombo.getSelectedItem());
-			this.previewPanel.loadReport(xpManager.getJasperPrint());
+			ExportManager xpManager = new ExportManager(mainFrame);
+			xpManager.fillReport((ExportReport) reportCombo.getSelectedItem());
+			previewPanel.loadReport(xpManager.getJasperPrint());
 			SwingUtil.setDefaultCursor(getThis());
-			this.timer.stop();
+			timer.stop();
 		} catch (Exception exc) {
+			StorybookApp.error("ExportPrintDialog.preview()", exc);
 		}
 	}
 
-	private class ConfirmDialog extends JDialog
-		implements IPaintable {
+	private class ConfirmDialog extends JDialog implements IPaintable {
 
 		String fileName;
 
@@ -299,6 +290,7 @@ public class ExportPrintDialog extends AbstractDialog
 						Desktop.open(new File(ExportPrintDialog.ConfirmDialog.this.fileName));
 						ExportPrintDialog.ConfirmDialog.this.getCloseAction().actionPerformed(event);
 					} catch (DesktopException exc) {
+						StorybookApp.error("ExportPrintDialog.getOpenAction()",exc);
 					}
 				}
 			};

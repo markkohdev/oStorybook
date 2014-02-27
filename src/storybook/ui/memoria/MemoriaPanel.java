@@ -85,6 +85,7 @@ import org.apache.commons.collections15.Transformer;
 import org.hibernate.Session;
 import org.jdesktop.swingx.icon.EmptyIcon;
 import storybook.SbConstants;
+import storybook.StorybookApp;
 import storybook.controller.BookController;
 
 public class MemoriaPanel extends AbstractPanel
@@ -209,7 +210,7 @@ public class MemoriaPanel extends AbstractPanel
 				this.showBalloonLayout = true;
 			}
 		} catch (Exception exc2) {
-			System.err.println("MemoriaPanel.init() Exception"+exc2.getMessage());
+			StorybookApp.error("MemoriaPanel.init()",exc2);
 		}
 	}
 
@@ -228,7 +229,7 @@ public class MemoriaPanel extends AbstractPanel
 			add(this.controlPanel, "alignx center");
 			add(this.graphPanel, "grow");
 		} catch (Exception exc) {
-			System.err.println("MemoriaPanel.modelPropertyChange() Exception"+exc.getMessage());
+			StorybookApp.error("MemoriaPanel.modelPropertyChange()",exc);
 		}
 	}
 
@@ -427,7 +428,7 @@ public class MemoriaPanel extends AbstractPanel
 			ScreenImage.createImage(this.graphPanel, file2.toString());
 			JOptionPane.showMessageDialog(getThis(), I18N.getMsg("msg.common.export.success") + "\n" + file2.getAbsolutePath(), I18N.getMsg("msg.common.export"), 1);
 		} catch (IOException exc) {
-			System.err.println("MemoriaPanel.export() Exception"+exc.getMessage());
+			StorybookApp.error("MemoriaPanel.export()",exc);
 		}
 	}
 
@@ -444,9 +445,8 @@ public class MemoriaPanel extends AbstractPanel
 			}
 			this.processActionListener = true;
 		} catch (Exception exc) {
-			System.err.println("MemoriaPanel.refreshCombo("
-				+pEntity.toString()+", list"+", "+b
-				+") Exception : "+exc.getMessage());
+			StorybookApp.error("MemoriaPanel.refreshCombo("
+				+pEntity.toString()+", list"+", "+b +")",exc);
 		}
 	}
 
@@ -478,7 +478,7 @@ public class MemoriaPanel extends AbstractPanel
 			vv.getRenderContext().setVertexShapeTransformer(transformer);
 			vv.getRenderContext().setVertexIconTransformer(iconTransformer);
 		} catch (Exception exc) {
-			System.err.println("MemoriaPanel.initGraph() Exception : "+exc.getMessage());
+			StorybookApp.error("MemoriaPanel.initGraph()",exc);
 		}
 	}
 
