@@ -10,7 +10,7 @@
 <project name="Storybook" default="default" basedir=".">
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
-	<property name="sb.version" value="4.9.12" />
+	<property name="sb.version" value="4.9.13" />
 	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
     <!--
 

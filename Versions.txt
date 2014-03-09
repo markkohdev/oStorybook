@@ -2,10 +2,12 @@ oStorybook
 --------------------------------------------------------------------------------
 
 Versions :
-4.9.13 : favdb ??/??/????
+4.9.13 : favdb 09/03/2014
+- ré-écriture du module d'exportation (suppression future de JasperReport),
+  avec actualisation de la library iText à sa dernière version (5.5.0)
 - amorce du module d'impression
 - remplacement du dialogue de confirmation d'une suppression par un modèle
-  Netbeans (un seul dialogue aulieu du ConfirmDelete et ConfirmMultiDelete)
+  Netbeans (un seul dialogue au lieu du ConfirmDelete et ConfirmMultiDelete)
 - mise en place des éditeurs dédiés, sous Netbeans
 4.9.12 : favdb 31/01/2014
 - nouvel empaquetage pour distributions Linux avec Makeself
