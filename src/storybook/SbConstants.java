@@ -530,7 +530,15 @@ public class SbConstants {
 	COPYRIGHT("Copyright"),
 	BLURB("Blurb"),
 	NOTES("Notes"),
-	LAST_USED_LAYOUT("_internal_last_used_layout_");
+	LAST_USED_LAYOUT("_internal_last_used_layout_"),
+	CSV_QUOTES("CSV quotes"),
+	CSV_COMMA("CSV comma separator"),
+	TXT_TAB("TXT tab separator"),
+	TXT_OTHER("TXT other separator"),
+	HTML_USE_CSS("HTML use CSS"),
+	HTML_CSS_FILE("HTLM css file"),
+	PDF_PAGE_SIZE("PDF page size"),
+	PDF_LANDSCAPE("PDF landscape");
 	final private String text;
 
 	private InternalKey(String text) {

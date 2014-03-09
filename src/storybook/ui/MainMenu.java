@@ -58,7 +58,7 @@ import storybook.ui.dialog.PreferencesDialog;
 import storybook.ui.dialog.WaitDialog;
 import storybook.ui.dialog.file.SaveAsFileDialog;
 import storybook.ui.jasperreports.ExportPrintDialog;
-import storybook.ui.jasperreports.dlgExportPrint;
+import storybook.export.DlgExport;
 
 /**
  *
@@ -93,10 +93,7 @@ public class MainMenu extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         fileProperties = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        fileExport = new javax.swing.JMenu();
-        fileExportBookTXT = new javax.swing.JMenuItem();
-        fileExportBookHTML = new javax.swing.JMenuItem();
-        fileExportObject = new javax.swing.JMenuItem();
+        fileExport = new javax.swing.JMenuItem();
         filePrint = new javax.swing.JMenu();
         filePrintBook = new javax.swing.JMenuItem();
         filePrintChapter = new javax.swing.JMenuItem();
@@ -227,32 +224,12 @@ public class MainMenu extends javax.swing.JFrame {
         fileMenu.add(fileProperties);
         fileMenu.add(jSeparator4);
 
-        fileExport.setText(bundle.getString("msg.menu.file.export")); // NOI18N
-
-        fileExportBookTXT.setText(bundle.getString("msg.export.file.txt")); // NOI18N
-        fileExportBookTXT.addActionListener(new java.awt.event.ActionListener() {
+        fileExport.setText(bundle.getString("msg.export")); // NOI18N
+        fileExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileExportBookTXTActionPerformed(evt);
+                fileExportActionPerformed(evt);
             }
         });
-        fileExport.add(fileExportBookTXT);
-
-        fileExportBookHTML.setText(bundle.getString("msg.export.file.html")); // NOI18N
-        fileExportBookHTML.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileExportBookHTMLActionPerformed(evt);
-            }
-        });
-        fileExport.add(fileExportBookHTML);
-
-        fileExportObject.setText(bundle.getString("msg.export.file.object")); // NOI18N
-        fileExportObject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileExportObjectActionPerformed(evt);
-            }
-        });
-        fileExport.add(fileExportObject);
-
         fileMenu.add(fileExport);
 
         filePrint.setText(bundle.getString("msg.file.print")); // NOI18N
@@ -808,27 +785,12 @@ public class MainMenu extends javax.swing.JFrame {
 		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_filePropertiesActionPerformed
 
-    private void fileExportBookTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportBookTXTActionPerformed
-		/*BookExporter exp = new BookExporter(mainFrame);
-		exp.setExportForOpenOffice(false);
-		exp.exportToTxtFile();*/
-		dlgExportPrint dlg=new dlgExportPrint(mainFrame);
+    private void fileExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportActionPerformed
+		DlgExport dlg=new DlgExport(mainFrame);
 		dlg.setVisible(true);
-    }//GEN-LAST:event_fileExportBookTXTActionPerformed
-
-    private void fileExportBookHTMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportBookHTMLActionPerformed
-		BookExporter exp = new BookExporter(mainFrame);
-		exp.setExportForOpenOffice(true);
-		exp.exportToHtmlFile();
-    }//GEN-LAST:event_fileExportBookHTMLActionPerformed
-
-    private void fileExportObjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportObjectActionPerformed
-
-    }//GEN-LAST:event_fileExportObjectActionPerformed
+    }//GEN-LAST:event_fileExportActionPerformed
 
     private void filePrintBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintBookActionPerformed
-	//ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
-		//SwingUtil.showDialog(dlg, mainFrame);
 		Printing p = new Printing(mainFrame);
 		p.setInteractive(true);
 		BookExporter exp = new BookExporter(mainFrame);
@@ -1106,10 +1068,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem editCopyBook;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem fileExit;
-    private javax.swing.JMenu fileExport;
-    private javax.swing.JMenuItem fileExportBookHTML;
-    private javax.swing.JMenuItem fileExportBookTXT;
-    private javax.swing.JMenuItem fileExportObject;
+    private javax.swing.JMenuItem fileExport;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem fileNew;
     private javax.swing.JMenuItem fileOpen;

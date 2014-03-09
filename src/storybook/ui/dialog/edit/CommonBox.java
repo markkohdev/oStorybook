@@ -76,14 +76,15 @@ public class CommonBox {
 		model.commit();
 	}
 
-	public static void loadCbStatus(JComboBox cb, Scene scene) {
-		String[] lbStatus = {
+	public static String[] lbStatus = {
 			I18N.getMsg("msg.status.outline"),
 			I18N.getMsg("msg.status.draft"),
 			I18N.getMsg("msg.status.1st.edit"),
 			I18N.getMsg("msg.status.2nd.edit"),
 			I18N.getMsg("msg.status.done")
 		};
+
+	public static void loadCbStatus(JComboBox cb, Scene scene) {
 		cb.removeAllItems();
 		for (String x : lbStatus) {
 			cb.addItem(x);

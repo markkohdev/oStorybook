@@ -97,6 +97,7 @@ public class ExportManager implements ReportConstants {
 					 */
 					JasperFillManager.fillReport(str, localHashMap, connection);
 					/* TODO solve access$102 end */
+					System.out.println("fillReport()");
 				} catch (JRException e) {
 					StorybookApp.error("ExportManager.fillReport("+param.getName()+")", e);
 				}

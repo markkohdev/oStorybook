@@ -84,6 +84,7 @@ import storybook.ui.jasperreports.ExportPrintDialog;
 
 import com.sun.jaf.ui.ActionManager;
 import storybook.export.BookExporter;
+import storybook.export.DlgExport;
 import storybook.ui.SbView;
 
 /**
@@ -565,9 +566,13 @@ public class ActionHandler {
 	}
 
 	public void handleExportBookText() {//new OK
+		DlgExport export=new DlgExport(mainFrame);
+		export.setVisible(true);
+		/* old
 		BookExporter exp = new BookExporter(mainFrame);
 		exp.setExportForOpenOffice(true);
 		exp.exportToHtmlFile();
+				*/
 	}
 
 	public void handleExportBookHtml() {//new OK

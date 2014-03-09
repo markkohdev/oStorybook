@@ -4,27 +4,17 @@
  * and open the template in the editor.
  */
 
-package storybook.ui.jasperreports;
+package storybook.export;
 
 import java.awt.event.ItemEvent;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.swing.JFileChooser;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.Session;
-import org.hibernate.jdbc.Work;
 
 import storybook.SbConstants;
-import storybook.StorybookApp;
-import storybook.model.BookModel;
 import storybook.model.hbn.entity.Internal;
 import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.EnvUtil;
@@ -36,74 +26,60 @@ import storybook.ui.MainFrame;
  *
  * @author favdb
  */
-public class dlgExportPrint extends javax.swing.JDialog {
-	private MainFrame mainFrame;
-	private static List<ExportReport> reports;
-	private static JasperPrint jasperPrint;
-	private static HashMap<String, String> formatMap;
-	private Object format;
-	private ExportPreview previewPanel;
-	private ExportReport report=null;
-	private boolean initialisation=true;
+public class DlgExport extends javax.swing.JDialog {
+	public MainFrame mainFrame;
+	public List<ExportData> exports;
+	private static String[] formats={"csv","txt","html","pdf","odf"};
+	public ParamExport paramExport;
 
 	/**
 	 * Creates new form dlgExportPrint
 	 * @param parent : parent frame
 	 * @param modal : true or false
 	 */
-	public dlgExportPrint(java.awt.Frame parent, boolean modal) {
+	public DlgExport(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
 		initUI();
 	}
 	
-	public dlgExportPrint(MainFrame parent) {
+	public DlgExport(MainFrame parent) {
 		super(parent, true);
-		reports = new ArrayList();
-		reports.add(new ExportReport("person_list", "msg.jasper.person.list"));
-		reports.add(new ExportReport("location_list", "msg.jasper.location.list"));
-		reports.add(new ExportReport("tag_list", "msg.jasper.tag.list"));
-		reports.add(new ExportReport("item_list", "msg.jasper.item.list"));
-		reports.add(new ExportReport("idea_list", "msg.jasper.idea.list"));
-		reports.add(new ExportReport("summary", "msg.jasper.book.summary"));
-		reports.add(new ExportReport("csv_person_list", "msg.jasper.csv.person.list"));
-		reports.add(new ExportReport("csv_location_list", "msg.jasper.csv.location.list"));
-		reports.add(new ExportReport("csv_tag_list", "msg.jasper.csv.tag.list"));
-		reports.add(new ExportReport("csv_item_list", "msg.jasper.csv.item.list"));
-		reports.add(new ExportReport("csv_idea_list", "msg.jasper.csv.idea.list"));
-		reports.add(new ExportReport("csv_summary", "msg.jasper.csv.book.summary"));
-		formatMap = new HashMap();
-		formatMap.put("pdf", "PDF");
-		formatMap.put("html", "HTML");
-		formatMap.put("csv", "CSV (comma-separated values)");
-		formatMap.put("text", "Text (UTF-8)");
-		formatMap.put("rtf", "RTF (Rich Text Format)");
-		formatMap.put("odt", "ODT (OpenDocument Text)");
+		exports = new ArrayList();
+		exports.add(new ExportData("summary", "msg.export.book.summary"));
+		exports.add(new ExportData("part", "msg.export.part.list"));
+		exports.add(new ExportData("chapter", "msg.export.chapter.list"));
+		exports.add(new ExportData("scene", "msg.export.scene.list"));
+		exports.add(new ExportData("person", "msg.export.person.list"));
+		exports.add(new ExportData("location", "msg.export.location.list"));
+		exports.add(new ExportData("tag", "msg.export.tag.list"));
+		exports.add(new ExportData("item", "msg.export.item.list"));
+		exports.add(new ExportData("idea", "msg.export.idea.list"));
+		exports.add(new ExportData("all", "msg.export.all.list"));
+		exports.add(new ExportData("book", "msg.export.book.text"));
 		initComponents();
 		mainFrame=parent;
 		initUI();
-		initialisation=false;
 	}
 	
 	private void initUI() {
+		paramExport = new ParamExport(mainFrame);
+		paramExport.load();
 		Internal internal = DocumentUtil.restoreInternal(mainFrame,
 				SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(mainFrame));
 		txFolder.setText(internal.getStringValue());
 		if (txFolder.getText().isEmpty())
 			txFolder.setText(FileUtils.getUserDirectoryPath());
 		cbReport.removeAllItems();
-		for (ExportReport zreport : reports) {
-			cbReport.addItem(zreport);
+		for (ExportData export : exports) {
+			cbReport.addItem(export);
 		}
 		cbReport.setSelectedIndex(0);
-		//String []formatMap = {"pdf","html","csv","text","rtf","odt"};
 		cbFormat.removeAllItems();
-		for (String zformat : formatMap.keySet()) {
+		for (String zformat : formats) {
 			cbFormat.addItem(zformat);
 		}
-		cbFormat.setSelectedIndex(0);
-		previewPanel=new ExportPreview(null);
-		panePreview.add(previewPanel);
+		cbFormat.setSelectedItem("html");
 	}
 
 	/**
@@ -121,11 +97,12 @@ public class dlgExportPrint extends javax.swing.JDialog {
         cbReport = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         cbFormat = new javax.swing.JComboBox();
-        panePreview = new javax.swing.JPanel();
-        btEnlarge = new javax.swing.JButton();
         btExport = new javax.swing.JButton();
         btClose = new javax.swing.JButton();
-        btRefresh = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txOptions = new javax.swing.JTextPane();
+        btOptions = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
@@ -134,8 +111,7 @@ public class dlgExportPrint extends javax.swing.JDialog {
 
         jLabel1.setText(bundle.getString("msg.dlg.export.folder")); // NOI18N
 
-        txFolder.setText("jTextField1");
-
+        btFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/open.png"))); // NOI18N
         btFolder.setText(bundle.getString("msg.common.choose.folder")); // NOI18N
         btFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,8 +119,9 @@ public class dlgExportPrint extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText(bundle.getString("msg.dlg.export.report")); // NOI18N
+        jLabel2.setText(bundle.getString("msg.dlg.export.type")); // NOI18N
 
+        cbReport.setMaximumRowCount(12);
         cbReport.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbReportItemStateChanged(evt);
@@ -160,26 +137,6 @@ public class dlgExportPrint extends javax.swing.JDialog {
             }
         });
 
-        panePreview.setBackground(new java.awt.Color(248, 155, 61));
-
-        javax.swing.GroupLayout panePreviewLayout = new javax.swing.GroupLayout(panePreview);
-        panePreview.setLayout(panePreviewLayout);
-        panePreviewLayout.setHorizontalGroup(
-            panePreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 349, Short.MAX_VALUE)
-        );
-        panePreviewLayout.setVerticalGroup(
-            panePreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        btEnlarge.setText(bundle.getString("msg.dlg.export.enlarge.preview")); // NOI18N
-        btEnlarge.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btEnlargeActionPerformed(evt);
-            }
-        });
-
         btExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/export.png"))); // NOI18N
         btExport.setText(bundle.getString("msg.common.export")); // NOI18N
         btExport.addActionListener(new java.awt.event.ActionListener() {
@@ -189,19 +146,43 @@ public class dlgExportPrint extends javax.swing.JDialog {
         });
 
         btClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/close.png"))); // NOI18N
-        btClose.setText(bundle.getString("msg.common.close")); // NOI18N
+        btClose.setText(bundle.getString("msg.common.cancel")); // NOI18N
         btClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btCloseActionPerformed(evt);
             }
         });
 
-        btRefresh.setText(bundle.getString("msg.dlg.export.refresh.preview")); // NOI18N
-        btRefresh.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.options"))); // NOI18N
+
+        txOptions.setContentType("text/html"); // NOI18N
+        jScrollPane2.setViewportView(txOptions);
+
+        btOptions.setText(bundle.getString("msg.common.change")); // NOI18N
+        btOptions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btRefreshActionPerformed(evt);
+                btOptionsActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btOptions))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -210,6 +191,13 @@ public class dlgExportPrint extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btFolder))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -220,21 +208,10 @@ public class dlgExportPrint extends javax.swing.JDialog {
                         .addComponent(cbFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txFolder))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 51, Short.MAX_VALUE)
-                                .addComponent(panePreview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btFolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btEnlarge, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btExport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btClose, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btExport, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -243,7 +220,8 @@ public class dlgExportPrint extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(txFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(btFolder))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -251,21 +229,12 @@ public class dlgExportPrint extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(cbFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btEnlarge)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btRefresh)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btExport)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btClose))
-                    .addComponent(panePreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btExport)
+                    .addComponent(btClose))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(btFolder)
-                .addGap(473, 473, 473))
         );
 
         pack();
@@ -281,12 +250,22 @@ public class dlgExportPrint extends javax.swing.JDialog {
 		txFolder.setText(file.getAbsolutePath());
     }//GEN-LAST:event_btFolderActionPerformed
 
-    private void btEnlargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnlargeActionPerformed
-        // TODO btEnlargeActionPerformed
-    }//GEN-LAST:event_btEnlargeActionPerformed
-
     private void btExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExportActionPerformed
-        // TODO btExportActionPerformed
+        String format=cbFormat.getSelectedItem().toString();
+		Export exp=new Export(this,format,12);
+		ExportData report=(ExportData)cbReport.getSelectedItem();
+		SwingUtil.setWaitingCursor(this);
+		String str="";
+		if (report.getExportName().equals("all")) {
+			for (int i=1;i<cbReport.getItemCount()-1;i++) {
+				ExportData data=(ExportData)cbReport.getItemAt(i);
+				str=exp.fill(txFolder.getText(), data, null,true);
+			}
+			if ("html".equals(format)) exp.createHtmlIndex(txFolder.getText());
+		} else str=exp.fill(txFolder.getText(), report, null,false);
+		SwingUtil.setDefaultCursor(this);
+		if (str.isEmpty()) return;
+		dispose();
     }//GEN-LAST:event_btExportActionPerformed
 
     private void btCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCloseActionPerformed
@@ -296,23 +275,21 @@ public class dlgExportPrint extends javax.swing.JDialog {
 
     private void cbReportItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbReportItemStateChanged
 		if (evt.getStateChange()==ItemEvent.SELECTED) {
-			ExportReport xrep=(ExportReport)evt.getItem();
-			report=xrep;
-			//refreshReport(report);
-			System.out.println(evt.getItem().toString());
+			// TODO change export report
 		}
-		
     }//GEN-LAST:event_cbReportItemStateChanged
 
     private void cbFormatItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbFormatItemStateChanged
 		if (evt.getStateChange()==ItemEvent.SELECTED) {
-			// TODO change export format
+			setOptions(evt.getItem().toString());
 		}
     }//GEN-LAST:event_cbFormatItemStateChanged
 
-    private void btRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRefreshActionPerformed
-
-    }//GEN-LAST:event_btRefreshActionPerformed
+    private void btOptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOptionsActionPerformed
+        // TODO add your handling code here:
+		DlgExportOptions expo=new DlgExportOptions(this,true);
+		expo.setVisible(true);
+    }//GEN-LAST:event_btOptionsActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -332,7 +309,7 @@ public class dlgExportPrint extends javax.swing.JDialog {
 			}
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException 
 				| javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(dlgExportPrint.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(DlgExport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
         //</editor-fold>
 
@@ -340,7 +317,7 @@ public class dlgExportPrint extends javax.swing.JDialog {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				dlgExportPrint dialog = new dlgExportPrint(new javax.swing.JFrame(), true);
+				DlgExport dialog = new DlgExport(new javax.swing.JFrame(), true);
 				dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 					@Override
 					public void windowClosing(java.awt.event.WindowEvent e) {
@@ -354,66 +331,102 @@ public class dlgExportPrint extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btClose;
-    private javax.swing.JButton btEnlarge;
     private javax.swing.JButton btExport;
     private javax.swing.JButton btFolder;
-    private javax.swing.JButton btRefresh;
+    private javax.swing.JButton btOptions;
     private javax.swing.JComboBox cbFormat;
     private javax.swing.JComboBox cbReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel panePreview;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txFolder;
+    private javax.swing.JTextPane txOptions;
     // End of variables declaration//GEN-END:variables
 
-	public void fillReport(final ExportReport param) {
-		BookModel model = mainFrame.getDocumentModel();
-		Session session = model.beginTransaction();
-		session.doWork(new Work() {
-			@Override
-			public void execute(Connection connection) throws SQLException {
-				try {
-					String str = "jasperreports" + File.separator + param.getJasperReportName() + ".jasper";
-					HashMap localHashMap = new HashMap();
-					localHashMap.put("PARAM_TITLE", param.getName() 
-							+ " - " 
-							+ I18N.getMsg("msg.common.project")
-							+ ": \"" +mainFrame.getDbFile().getName() + "\"");
-					localHashMap.put("SUBREPORT_DIR", "jasperreports" + File.separator);
-					JasperFillManager.fillReport(str, localHashMap, connection);
-				} catch (JRException e) {
-					StorybookApp.error("ExportManager.fillReport("+param.getName()+")", e);
-				}
-			}
-		});
-		model.commit();
+	private void setOptions(String f) {
+		String str="<html><body>";
+		switch(f) {
+			case "pdf":
+				str+=getOptionsPdf();
+				break;
+			case "html":
+				str+=getOptionsHtml();
+				break;
+			case "csv":
+				str+=getOptionsCsv();
+				break;
+			case "txt":
+				str+=getOptionsTxt();
+				break;
+			case "odf":
+				str+=getOptionsOdf();
+				break;
+		}
+		str+="</body></html>";
+		txOptions.setText(str);
 	}
 
-	private void preview() {
-		try {
-			SwingUtil.setWaitingCursor(this);
-			ExportManager xpManager = new ExportManager(mainFrame);
-			xpManager.fillReport((ExportReport) cbReport.getSelectedItem());
-			previewPanel.loadReport(xpManager.getJasperPrint());
-			SwingUtil.setDefaultCursor(this);
-		} catch (Exception exc) {
-			StorybookApp.error("dlgExportPrint.preview()", exc);
-		}
+	private String getOptionsPdf() {
+		String str="";
+		str+="<p>"+I18N.getMsg("msg.export.current_options_for")+" PDF :</p>";
+		str+="<ul>";
+		str+="<li>"+I18N.getMsg("msg.export.options.pdf.pagesize",paramExport.pdfPageSize)+"</li>";
+		str+="<li>"+I18N.getMsg("msg.export.options.pdf.orientation")+" : "
+				+(paramExport.pdfLandscape?I18N.getMsg("msg.export.options.pdf.orientation.landscape")
+						:I18N.getMsg("msg.export.options.pdf.orientation.portrait"))+"</li>";
+		str+="</ul>";
+		return(str);
 	}
-	
-	private void refreshReport(ExportReport xreport) {
-		if (xreport==null) return;
-		try {
-			SwingUtil.setWaitingCursor(this);
-			ExportManager xpManager = new ExportManager(mainFrame);
-			xpManager.fillReport(xreport);
-			previewPanel.loadReport(xpManager.getJasperPrint());
-			SwingUtil.setDefaultCursor(this);
-		} catch (Exception exc) {
-			StorybookApp.error("dlgExportPrint.refresh()", exc);
-		}
 
+	private String getOptionsHtml() {
+		String str="";
+		str+="<p>"+I18N.getMsg("msg.export.current_options_for")+" HTML :</p>";
+		str+="<ul>";
+		str+="<li>"+I18N.getMsg("msg.export.html_use_css")+" : "
+				+(paramExport.htmlUseCss?I18N.getMsg("msg.common.yes"):I18N.getMsg("msg.common.no"))+"</li>";
+		if (paramExport.htmlUseCss)
+			str+="<li>"+I18N.getMsg("msg.export.html_css_file")+" : "+paramExport.htmlCssFile+"</li>";
+		str+="</ul>";
+		str+="<p>"+I18N.getMsg("msg.export.html_add_index")+"</p>";
+		return(str);
+	}
+
+	private String getOptionsCsv() {
+		String str="";
+		str+="<p>"+I18N.getMsg("msg.export.current_options_for")+ " CSV :</p>";
+		str+="<ul>";
+		if (paramExport.csvNoQuotes) str+="<li>"+I18N.getMsg("msg.export.not_quoted")+"</li>";
+		else str+="<li>"+I18N.getMsg("msg.export.csv_quoted_by",
+				(paramExport.csvSingleQuotes?I18N.getMsg("msg.export.options.csv.quoted.single")
+						:I18N.getMsg("msg.export.options.csv.quoted.double")))+"</li>";
+		str+="<li>"+I18N.getMsg("msg.export.csv_separator_is")+" "
+				+(paramExport.csvComma?I18N.getMsg("msg.export.options.csv.separate.comma")
+				:I18N.getMsg("msg.export.options.csv.separate.semicolon"))+"</li>";
+		str+="</ul>";
+		str+=I18N.getMsg("msg.export.csv_not_book");
+		return(str);
+	}
+
+	private String getOptionsTxt() {
+		String str="";
+		str+="<p>"+I18N.getMsg("msg.export.current_options_for")+" TXT :</p>";
+		str+="<ul>";
+		str+="<li>"+I18N.getMsg("msg.export.txt_separator",
+				(paramExport.txtTab?"'tab'":"'"+paramExport.txtSeparator+"'"))+"</li>";
+		str+="<li>"+I18N.getMsg("msg.export.txt_EOL")+"</li>";
+		str+="</ul>";
+		return(str);
+	}
+
+	private String getOptionsOdf() {
+		String str="";
+		str+="<p>"+I18N.getMsg("msg.export.current_options_for")+" ODF :</p>";
+		str+="<ul>";
+		str+="<li>"+I18N.getMsg("msg.export.odf.no_options")+"</li>";
+		str+="</ul>";
+		return(str);
 	}
 
 }
