@@ -1,0 +1,593 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" >
+<head>
+
+<script type="text/javascript" src="/static/js/analytics.js" ></script>
+<link type="text/css" rel="stylesheet" href="/static/css/banner-styles.css"/>
+
+
+
+
+  <base href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="'novel writing software', 'writing software', 'story writing', 'how to write book', 'program download', 'novel writing', 'book writing', 'write book', 'writing software', 'story writing software', 'book writing software', 'creative writing software', writing, 'novel writing', 'creative writing', 'write story', 'free download', writer, idea, creative, story, author, bestseller, novel, novelist, plot, help, planning, plotting, brainstorm, storyline, 'write a bestseller', 'how to write a romance novel', 'fiction software', 'how to start writing a novel', 'fiction planning', 'story planning software'" />
+  <meta name="title" content="Is Storybook a replacement for a word processor?" />
+  <meta name="description" content="Storybook is a free, open source novel-writing software for creative writers, novelists and authors which will help you to keep an overview of multiple plot-lines while writing books, novels or other written works." />
+  <meta name="generator" content="Joomla! 1.5 - Open Source Content Management" />
+  <title>Is Storybook a replacement for a word processor?</title>
+  <link rel="stylesheet" href="/web/20130517201818cs_/http://www.novelist.ch/joomla/modules/mod_jflanguageselection/tmpl/mod_jflanguageselection.css" type="text/css" />
+  <style type="text/css">
+    <!--
+
+.osolCaptchaBlock{
+	width:100%;
+}
+.osolCaptchaBlock label{
+	
+}
+.osolCaptchaBlock table td{
+	
+	text-align:center;
+}
+
+        a.flag {font-size:16px;padding:1px 0;background-repeat:no-repeat;background-image:url('/joomla/modules/mod_gtranslate/tmpl/lang/16a.png');}
+        a.flag:hover {background-image:url('/joomla/modules/mod_gtranslate/tmpl/lang/16.png');}
+        a.flag img {border:0;}
+        a.alt_flag {font-size:16px;padding:1px 0;background-repeat:no-repeat;background-image:url('/joomla/modules/mod_gtranslate/tmpl/lang/alt_flagsa.png');}
+        a.alt_flag:hover {background-image:url('/joomla/modules/mod_gtranslate/tmpl/lang/alt_flags.png');}
+        a.alt_flag img {border:0;}
+    
+    -->
+  </style>
+  <script type="text/javascript" src="/web/20130517201818js_/http://www.novelist.ch/joomla/media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="/web/20130517201818js_/http://www.novelist.ch/joomla/media/system/js/caption.js"></script>
+
+
+<link rel="stylesheet" href="/web/20130517201818cs_/http://www.novelist.ch/joomla/templates/system/css/system.css" type="text/css" />
+<link rel="stylesheet" href="/web/20130517201818cs_/http://www.novelist.ch/joomla/templates/siteground-j15-59/css/template.css" type="text/css" />
+<link rel="shortcut icon" type="image/x-icon" href="/web/20130517201818im_/http://www.novelist.ch/images/favicon.ico">
+
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="/joomla/templates/siteground-j15-59/css/ie7.css" type="text/css" />
+<![endif]-->
+
+</head>
+<body class="body_bg">
+<!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script> if (window.archive_analytics) { window.archive_analytics.values['server_name']="wwwb-app2.us.archive.org";}; </script>
+
+<script type="text/javascript" src="/static/js/disclaim-element.js" ></script>
+<script type="text/javascript" src="/static/js/graph-calc.js" ></script>
+<script type="text/javascript" src="/static/jflot/jquery.min.js" ></script>
+<script type="text/javascript">
+//<![CDATA[
+var firstDate = 820454400000;
+var lastDate = 1420070399999;
+var wbPrefix = "/web/";
+var wbCurrentUrl = "http:\/\/www.novelist.ch\/joomla\/index.php\/en\/faq\/31-general\/66-is-storybook-a-replacement-for-a-word-processor";
+
+var curYear = -1;
+var curMonth = -1;
+var yearCount = 18;
+var firstYear = 1996;
+var imgWidth = 475;
+var yearImgWidth = 25;
+var monthImgWidth = 2;
+var trackerVal = "none";
+var displayDay = "17";
+var displayMonth = "mai";
+var displayYear = "2013";
+var prettyMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function showTrackers(val) {
+	if(val == trackerVal) {
+		return;
+	}
+	if(val == "inline") {
+		document.getElementById("displayYearEl").style.color = "#ec008c";
+		document.getElementById("displayMonthEl").style.color = "#ec008c";
+		document.getElementById("displayDayEl").style.color = "#ec008c";		
+	} else {
+		document.getElementById("displayYearEl").innerHTML = displayYear;
+		document.getElementById("displayYearEl").style.color = "#ff0";
+		document.getElementById("displayMonthEl").innerHTML = displayMonth;
+		document.getElementById("displayMonthEl").style.color = "#ff0";
+		document.getElementById("displayDayEl").innerHTML = displayDay;
+		document.getElementById("displayDayEl").style.color = "#ff0";
+	}
+   document.getElementById("wbMouseTrackYearImg").style.display = val;
+   document.getElementById("wbMouseTrackMonthImg").style.display = val;
+   trackerVal = val;
+}
+function getElementX2(obj) {
+	var thing = jQuery(obj);
+	if((thing == undefined) 
+			|| (typeof thing == "undefined") 
+			|| (typeof thing.offset == "undefined")) {
+		return getElementX(obj);
+	}
+	return Math.round(thing.offset().left);
+}
+function trackMouseMove(event,element) {
+
+   var eventX = getEventX(event);
+   var elementX = getElementX2(element);
+   var xOff = eventX - elementX;
+	if(xOff < 0) {
+		xOff = 0;
+	} else if(xOff > imgWidth) {
+		xOff = imgWidth;
+	}
+   var monthOff = xOff % yearImgWidth;
+
+   var year = Math.floor(xOff / yearImgWidth);
+	var yearStart = year * yearImgWidth;
+   var monthOfYear = Math.floor(monthOff / monthImgWidth);
+   if(monthOfYear > 11) {
+       monthOfYear = 11;
+   }
+   // 1 extra border pixel at the left edge of the year:
+   var month = (year * 12) + monthOfYear;
+   var day = 1;
+	if(monthOff % 2 == 1) {
+		day = 15;
+	}
+	var dateString = 
+		zeroPad(year + firstYear) + 
+		zeroPad(monthOfYear+1,2) +
+		zeroPad(day,2) + "000000";
+
+	var monthString = prettyMonths[monthOfYear];
+	document.getElementById("displayYearEl").innerHTML = year + 1996;
+	document.getElementById("displayMonthEl").innerHTML = monthString;
+	// looks too jarring when it changes..
+	//document.getElementById("displayDayEl").innerHTML = zeroPad(day,2);
+
+	var url = wbPrefix + dateString + '/' +  wbCurrentUrl;
+	document.getElementById('wm-graph-anchor').href = url;
+
+   //document.getElementById("wmtbURL").value="evX("+eventX+") elX("+elementX+") xO("+xOff+") y("+year+") m("+month+") monthOff("+monthOff+") DS("+dateString+") Moy("+monthOfYear+") ms("+monthString+")";
+   if(curYear != year) {
+       var yrOff = year * yearImgWidth;
+       document.getElementById("wbMouseTrackYearImg").style.left = yrOff + "px";
+       curYear = year;
+   }
+   if(curMonth != month) {
+       var mtOff = year + (month * monthImgWidth) + 1;
+       document.getElementById("wbMouseTrackMonthImg").style.left = mtOff + "px";
+       curMonth = month;
+   }
+}
+//]]>
+</script>
+
+<style type="text/css">body{margin-top:0!important;padding-top:0!important;min-width:800px!important;}#wm-ipp a:hover{text-decoration:underline!important;}</style>
+<div id="wm-ipp" lang="en" class="__wb_banner_div" style="display:none; position:relative;padding:0 5px;min-height:70px;min-width:800px">
+
+
+<div id="wm-ipp-inside" class="__wb_banner_div" style="position:fixed;padding:0!important;margin:0!important;width:97%;min-width:780px;border:5px solid #000;border-top:none;background-image:url(/static/images/toolbar/wm_tb_bk_trns.png);text-align:center;-moz-box-shadow:1px 1px 3px #333;-webkit-box-shadow:1px 1px 3px #333;box-shadow:1px 1px 3px #333;font-size:11px!important;font-family:'Lucida Grande','Arial',sans-serif!important;">
+   <table style="border-collapse:collapse;margin:0;padding:0;width:100%;"><tbody><tr>
+   <td style="padding:10px;vertical-align:top;min-width:110px;">
+   <a href="/web/" title="Wayback Machine home page" style="background-color:transparent;border:none;"><img src="/static/images/toolbar/wayback-toolbar-logo.png" alt="Wayback Machine" width="110" height="39" border="0"/></a>
+   </td>
+   <td style="padding:0!important;text-align:center;vertical-align:top;width:100%;">
+
+       <table style="border-collapse:collapse;margin:0 auto;padding:0;width:570px;"><tbody><tr>
+       <td style="padding:3px 0;" colspan="2">
+       <form target="_top" method="get" action="/web/form-submit.jsp" name="wmtb" id="wmtb" style="margin:0!important;padding:0!important;"><input type="text" name="url" id="wmtbURL" value="http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor" style="width:400px;font-size:11px;font-family:'Lucida Grande','Arial',sans-serif;" onfocus="javascript:this.focus();this.select();" /><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20130517201818" /><input type="submit" value="Go" style="font-size:11px;font-family:'Lucida Grande','Arial',sans-serif;margin-left:5px;width: inherit !important" /><span id="wm_tb_options" style="display:block;"></span></form>
+       </td>
+       <td style="vertical-align:bottom;padding:5px 0 0 0!important;" rowspan="2">
+           <table style="border-collapse:collapse;width:110px;color:#99a;font-family:'Helvetica','Lucida Grande','Arial',sans-serif;"><tbody>
+			
+           <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+           <tr style="width:110px;height:16px;font-size:10px!important;">
+           	<td style="padding-right:9px;font-size:11px!important;font-weight:bold;text-transform:uppercase;text-align:right;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+		                <a href="/web/20130416223447/http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor" style="text-decoration:none;color:#33f;font-weight:bold;background-color:transparent;border:none;" title="16 avr. 2013"><strong>AVR.</strong></a>
+		                
+               </td>
+               <td id="displayMonthEl" style="background:#000;color:#ff0;font-size:11px!important;font-weight:bold;text-transform:uppercase;width:34px;height:15px;padding-top:1px;text-align:center;" title="You are here: 20:18:18 mai 17, 2013">MAI</td>
+				<td style="padding-left:9px;font-size:11px!important;font-weight:bold;text-transform:uppercase;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+                       juin
+                       
+               </td>
+           </tr>
+
+           <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+           <tr>
+               <td style="padding-right:9px;white-space:nowrap;overflow:visible;text-align:right!important;vertical-align:middle!important;" nowrap="nowrap">
+               
+		                <a href="/web/20130416223447/http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor" title="22:34:47 avr. 16, 2013" style="background-color:transparent;border:none;"><img src="/static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a>
+		                
+               </td>
+               <td id="displayDayEl" style="background:#000;color:#ff0;width:34px;height:24px;padding:2px 0 0 0;text-align:center;font-size:24px;font-weight: bold;" title="You are here: 20:18:18 mai 17, 2013">17</td>
+				<td style="padding-left:9px;white-space:nowrap;overflow:visible;text-align:left!important;vertical-align:middle!important;" nowrap="nowrap">
+               
+                       <img src="/static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0"/>
+                       
+			    </td>
+           </tr>
+
+           <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+           <tr style="width:110px;height:13px;font-size:9px!important;">
+				<td style="padding-right:9px;font-size:11px!important;font-weight: bold;text-align:right;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+		                <a href="/web/20120404025646/http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor" style="text-decoration:none;color:#33f;font-weight:bold;background-color:transparent;border:none;" title="4 avr. 2012"><strong>2012</strong></a>
+		                
+               </td>
+               <td id="displayYearEl" style="background:#000;color:#ff0;font-size:11px!important;font-weight: bold;padding-top:1px;width:34px;height:13px;text-align:center;" title="You are here: 20:18:18 mai 17, 2013">2013</td>
+				<td style="padding-left:9px;font-size:11px!important;font-weight: bold;white-space:nowrap;overflow:visible;" nowrap="nowrap">
+               
+                       2014
+                       
+				</td>
+           </tr>
+           </tbody></table>
+       </td>
+
+       </tr>
+       <tr>
+       <td style="vertical-align:middle;padding:0!important;">
+           <a href="/web/20130517201818*/http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor" style="color:#33f;font-size:11px;font-weight:bold;background-color:transparent;border:none;" title="See a list of every capture for this URL"><strong>7 captures</strong></a>
+           <div class="__wb_banner_div" style="margin:0!important;padding:0!important;color:#666;font-size:9px;padding-top:2px!important;white-space:nowrap;" title="Timespan for captures of this URL">23 oct. 11 - 17 mai 13</div>
+       </td>
+       <td style="padding:0!important;">
+       <a style="position:relative; white-space:nowrap; width:475px;height:27px;" href="" id="wm-graph-anchor">
+       <div class="__wb_banner_div" id="wm-ipp-sparkline" style="position:relative; white-space:nowrap; width:475px;height:27px;background-color:#fff;cursor:pointer;border-right:1px solid #ccc;" title="Explore captures for this URL">
+			<img id="sparklineImgId" style="position:absolute; z-index:9012; top:0px; left:0px;"
+				onmouseover="showTrackers('inline');" 
+				onmouseout="showTrackers('none');"
+				onmousemove="trackMouseMove(event,this)"
+				alt="sparklines"
+				width="475"
+				height="27"
+				border="0"
+				src="/web/jsp/graph.jsp?graphdata=475_27_1996:-1:000000000000_1997:-1:000000000000_1998:-1:000000000000_1999:-1:000000000000_2000:-1:000000000000_2001:-1:000000000000_2002:-1:000000000000_2003:-1:000000000000_2004:-1:000000000000_2005:-1:000000000000_2006:-1:000000000000_2007:-1:000000000000_2008:-1:000000000000_2009:-1:000000000000_2010:-1:000000000000_2011:-1:000000000100_2012:-1:100111000000_2013:4:000110000000_2014:-1:000000000000"></img>
+			<img id="wbMouseTrackYearImg" 
+				style="display:none; position:absolute; z-index:9010;"
+				width="25" 
+				height="27"
+				border="0"
+				src="/static/images/toolbar/transp-yellow-pixel.png"></img>
+			<img id="wbMouseTrackMonthImg"
+				style="display:none; position:absolute; z-index:9011; " 
+				width="2"
+				height="27" 
+				border="0"
+				src="/static/images/toolbar/transp-red-pixel.png"></img>
+       </div>
+		</a>
+
+       </td>
+       </tr></tbody></table>
+   </td>
+   <td style="text-align:right;padding:5px;width:65px;font-size:11px!important;">
+       <a href="javascript:;" onclick="document.getElementById('wm-ipp').style.display='none';" style="display:block;padding-right:18px;background:url(/static/images/toolbar/wm_tb_close.png) no-repeat 100% 0;color:#33f;font-family:'Lucida Grande','Arial',sans-serif;margin-bottom:23px;background-color:transparent;border:none;" title="Close the toolbar">Close</a>
+       <a href="http://faq.web.archive.org/" style="display:block;padding-right:18px;background:url(/static/images/toolbar/wm_tb_help.png) no-repeat 100% 0;color:#33f;font-family:'Lucida Grande','Arial',sans-serif;background-color:transparent;border:none;" title="Get some help using the Wayback Machine">Help</a>
+   </td>
+   </tr></tbody></table>
+
+</div>
+</div>
+<script type="text/javascript">
+ var wmDisclaimBanner = document.getElementById("wm-ipp");
+ if(wmDisclaimBanner != null) {
+   disclaimElement(wmDisclaimBanner);
+ }
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+
+	<div id="page_bg">
+		<div id="topw">
+			<div id="logo" style="width:739px;">
+				<a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php">Storybook - No. 1 Open Source Novel Writing Software</a>
+			</div>
+			<div id="search" style="width:200px;">
+						<div class="module">
+			<div>
+				<div>
+					<div>
+											<div id="jflanguageselection"><div class="rawimages"><span id="active_language"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor"><img src="/web/20130517201818im_/http://www.novelist.ch/joomla/components/com_joomfish/images/flags/en.gif" alt="English" title="English" /></a></span><span><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/de/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor"><img src="/web/20130517201818im_/http://www.novelist.ch/joomla/components/com_joomfish/images/flags/de.gif" alt="Deutsch" title="Deutsch" /></a></span></div></div><!--JoomFish V2.1.7 (Dafad)-->
+<!-- &copy; 2003-2011 Think Network, released under the GPL. -->
+<!-- More information: at /web/20130517201818/http://www.joomfish.net -->
+					</div>
+				</div>
+			</div>
+		</div>
+			<div class="module">
+			<div>
+				<div>
+					<div>
+											<form action="/web/20130517201818/http://www.novelist.ch/joomla/index.php/faq/31-general/index.php" method="post">
+	<div class="search1">
+		<input name="searchword" id="mod_search_searchword" maxlength="20" alt="Search" class="inputbox" type="text" size="20" value="search..."  onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';" />	</div>
+	<input type="hidden" name="task"   value="search" />
+	<input type="hidden" name="option" value="com_search" />
+</form>					</div>
+				</div>
+			</div>
+		</div>
+	
+			</div>
+		</div>
+		<div class="clr"></div>
+		
+		<div class="pill_m">
+			<div id="pillmenu">
+				<table cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+					<tr>
+						<td style="text-align: center; vertical-align: center;">
+							<ul id="mainlevel-nav"><li><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/about-storybook" class="mainlevel-nav" >About Storybook</a></li><li><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/features" class="mainlevel-nav" >Features</a></li><li><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/download" class="mainlevel-nav" >Download</a></li><li><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/go-pro" class="mainlevel-nav" >Go Pro!</a></li><li><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/community" class="mainlevel-nav" >Community</a></li></ul>
+							<div class="clr"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div id="header">
+			<div style="width:450px; float: right; margin: 20px 20px 0 0;">
+				<div id="newsflash">
+							<div class="module">
+			<div>
+				<div>
+					<div>
+													<h3>Newsflash</h3>
+											
+
+
+<table class="contentpaneopen">
+	<tr>
+		<td valign="top" ><p>
+	&quot;I&#39;m using it for my new novel and since I think in a non-linear fashion having a tool that I can jump around in and add/subtract from any scene and move any scene whenever I need to is an absolute dream. I&#39;m probably 40% more productive. Sure wish I&#39;d had it for my last novel.&quot;<em> - Steve</em></p>
+<p>
+	<a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/testimonials">More Testimonials</a></p></td>
+	</tr>
+	<tr>
+        <td valign="top" >
+
+       		</td>
+     </tr>
+</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+				</div>
+			</div>
+		</div>
+		
+		<!--center start-->
+		<div class="center">
+			<div id="wrapper">
+				<div id="content">
+				<!--pathway start-->
+							<div class="cpathway">
+								<div class="cpleft">
+									<span class="breadcrumbs pathway">
+<a href="/web/20130517201818/http://www.novelist.ch/joomla/" class="pathway">Home</a> <img src="/web/20130517201818im_/http://www.novelist.ch/joomla/images/M_images/arrow.png" alt=""  /> <a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/faq" class="pathway">FAQ</a> <img src="/web/20130517201818im_/http://www.novelist.ch/joomla/images/M_images/arrow.png" alt=""  /> <a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/faq/31-general" class="pathway">General</a> <img src="/web/20130517201818im_/http://www.novelist.ch/joomla/images/M_images/arrow.png" alt=""  /> Is Storybook a replacement for a word processor?</span>
+
+								</div>
+							</div>
+							<!--pathway end-->
+											<div id="leftcolumn">	
+									<div class="module">
+			<div>
+				<div>
+					<div>
+													<h3>AddThis</h3>
+											 <div class='joomla_add_this'><!-- AddThis Button BEGIN -->
+<script type='text/javascript'>
+var addthis_product = 'jlp-1.2';
+var addthis_config =
+{pubid:'intertec',
+ui_hover_direction:0,
+data_track_clickback:true,
+ui_language:'en',
+ui_use_css:true}</script>
+<a  href='/web/20130517201818/http://www.addthis.com/bookmark.php' onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]'); "   onmouseout='addthis_close();' onclick="return addthis_sendto();"><img src='/web/20130517201818im_/http://s7.addthis.com/static/btn/v2/lg-share-en.gif' border='0' alt='AddThis Social Bookmark Button' /></a>
+<script type='text/javascript' src='/web/20130517201818js_/http://s7.addthis.com/js/250/addthis_widget.js'></script>
+<!-- AddThis Button END -->
+</div>					</div>
+				</div>
+			</div>
+		</div>
+			<div class="module_menu">
+			<div>
+				<div>
+					<div>
+													<h3>Main Menu</h3>
+											<ul class="menu"><li class="item1"><a href="/web/20130517201818/http://www.novelist.ch/joomla/"><span>Home</span></a></li><li class="item53"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/storybook"><span>Storybook</span></a></li><li class="item54"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/storybook-pro"><span>Storybook Pro</span></a></li><li class="item55"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/storybook-memoria"><span>Storybook Memoria</span></a></li><li class="item59"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/comparison-sheet"><span>Compare Versions</span></a></li><li class="item63"><a href="/web/20130517201818/http://shop.novelist.ch/" target="_blank"><span>Shop</span></a></li><li class="item58"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/on-facebook"><span>On Facebook</span></a></li><li class="item77"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/on-google-plus"><span>On Google+</span></a></li><li class="item56"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/contact-form"><span>Contact Us</span></a></li></ul>					</div>
+				</div>
+			</div>
+		</div>
+			<div class="module_menu">
+			<div>
+				<div>
+					<div>
+													<h3>Resources</h3>
+											<ul class="menu"><li class="item70"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/screenshots"><span>Screenshots</span></a></li><li class="item65"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/installation"><span>Installation</span></a></li><li class="item57"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/documentation"><span>Documentation</span></a></li><li id="current" class="active item67"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/faq"><span>FAQ</span></a></li><li class="item60"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/testimonials"><span>Testimonials</span></a></li><li class="item72"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/example-files"><span>Example Files</span></a></li><li class="item66"><a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/release-notes"><span>Release Notes</span></a></li></ul>					</div>
+				</div>
+			</div>
+		</div>
+			<div class="module">
+			<div>
+				<div>
+					<div>
+													<h3>Account / Login</h3>
+											<p style="padding-top:10px;padding-left:20px">
+	&#9679;	<a href="/web/20130517201818/http://shop.novelist.ch/zencart/index.php?main_page=login" target="_blank">Login</a></p>					</div>
+				</div>
+			</div>
+		</div>
+			<div class="module">
+			<div>
+				<div>
+					<div>
+													<h3>SourceForge Site</h3>
+											<p style="padding-top:10px;padding-left:20px">
+	<a href="/web/20130517201818/http://sourceforge.net/projects/storybook2" target="_blank"><img alt="Get Storybook at SourceForge.net. Fast, secure and Free Open Source software downloads" height="15" src="/web/20130517201818im_/http://sflogo.sourceforge.net/sflogo.php?group_id=215748&type=9" width="80" /></a></p>					</div>
+				</div>
+			</div>
+		</div>
+	
+<br />	<br />
+							
+						</div>
+												
+												<div id="maincolumn">
+													<div class="nopad">			
+								
+																	<table class="contentpaneopen">
+<tr>
+		<td class="contentheading" width="100%">
+					Is Storybook a replacement for a word processor?			</td>
+						<td align="right" width="100%" class="buttonheading">
+		<a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor?format=pdf" title="PDF" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><img src="/web/20130517201818im_/http://www.novelist.ch/joomla/images/M_images/pdf_button.png" alt="PDF"  /></a>		</td>
+		
+				<td align="right" width="100%" class="buttonheading">
+		<a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/faq/31-general/66-is-storybook-a-replacement-for-a-word-processor?tmpl=component&print=1&page=" title="Print" onclick="window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no'); return false;" rel="nofollow"><img src="/web/20130517201818im_/http://www.novelist.ch/joomla/images/M_images/printButton.png" alt="Print"  /></a>		</td>
+		
+				<td align="right" width="100%" class="buttonheading">
+		<a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/component/mailto/?tmpl=component&link=11ad36cb175b08cc16eeaea5e951296a3685fb81" title="E-mail" onclick="window.open(this.href,'win2','width=400,height=350,menubar=yes,resizable=yes'); return false;"><img src="/web/20130517201818im_/http://www.novelist.ch/joomla/images/M_images/emailButton.png" alt="E-mail"  /></a>		</td>
+					</tr>
+</table>
+
+<table class="contentpaneopen">
+
+
+
+<tr>
+<td valign="top">
+<p>
+	Storybook can be used for plotting only or for writing a whole book, too.</p>
+<p>
+	With <a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/storybook-pro">Storybook Pro</a> the book text can be exported and inserted into a Word or OpenOffice / LibreOffice document.</p>
+<ul>
+	<li>
+		See documentation chapter <a href="/web/20130517201818/http://www.novelist.ch/joomla/index.php/en/documentation/139-chapter-10-from-storybook-to-the-final-book">From Storybook to the final book</a>.</li>
+</ul>
+<p>
+	&nbsp;</p>
+<p>
+	<div style="text-align:center;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-3755605487214878";
+google_ad_width = 336; 
+google_ad_height = 280; 
+google_ad_format = "336x280_as"; 
+google_ad_type = "text_image"; 
+google_ad_channel = ""; 
+google_color_border = "FFFFFF"; 
+google_color_bg = "FFFFFF"; 
+google_color_link = "6F4160"; 
+google_color_text = "000000"; 
+google_color_url = "596924"; 
+google_ui_features = "rc:6"; 
+//--> 
+</script>
+<script type="text/javascript" src="/web/20130517201818js_/http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div></p></td>
+</tr>
+
+</table>
+<span class="article_separator">&nbsp;</span>
+
+															</div>
+						</div>
+						
+												<div id="rightcolumn" style="float:right;">
+									<div class="module">
+			<div>
+				<div>
+					<div>
+													<h3>GTranslate</h3>
+											<noscript>Javascript is required to use this <a href="/web/20130517201818/http://gtranslate.net/">website translator</a>, <a href="/web/20130517201818/http://gtranslate.net/">free translator</a></noscript>
+<script type="text/javascript">
+/* <![CDATA[ */
+        if(top.location!=self.location)top.location=self.location;
+    window['_tipoff']=function(){};window['_tipon']=function(a){};
+    function doTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;if(location.hostname=='www.novelist.ch' && lang_pair=='en|en')return;var lang=lang_pair.split('|')[1];if(location.hostname!='www.novelist.ch' && lang_pair=='en|en')location.href=unescape(gfg('u'));else if(location.hostname=='www.novelist.ch' && lang_pair!='en|en')location.href='/web/20130517201818/http://translate.google.com/translate?client=tmpg&hl=en&langpair='+lang_pair+'&u='+escape(location.href);else location.href='/web/20130517201818/http://translate.google.com/translate?client=tmpg&hl=en&langpair='+lang_pair+'&u='+unescape(gfg('u'));}
+    function gfg(name) {name=name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var regexS="[\\?&]"+name+"=([^&#]*)";var regex=new RegExp(regexS);var results=regex.exec(location.href);if(results==null)return '';return results[1];}
+    /* ]]> */
+</script>
+
+
+<select onchange="doTranslate(this);"><option value="">Select Language</option><option value="en|en" style="font-weight:bold;background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -0px;padding-left:18px;">English</option><option value="en|af" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -688px;padding-left:18px;">Afrikaans</option><option value="en|sq" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -560px;padding-left:18px;">Albanian</option><option value="en|ar" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -16px;padding-left:18px;">Arabic</option><option value="en|hy" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -832px;padding-left:18px;">Armenian</option><option value="en|az" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -848px;padding-left:18px;">Azerbaijani</option><option value="en|eu" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -864px;padding-left:18px;">Basque</option><option value="en|be" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -768px;padding-left:18px;">Belarusian</option><option value="en|bg" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -32px;padding-left:18px;">Bulgarian</option><option value="en|ca" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -384px;padding-left:18px;">Catalan</option><option value="en|zh-CN" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -48px;padding-left:18px;">Chinese (Simplified)</option><option value="en|zh-TW" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -64px;padding-left:18px;">Chinese (Traditional)</option><option value="en|hr" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -80px;padding-left:18px;">Croatian</option><option value="en|cs" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -96px;padding-left:18px;">Czech</option><option value="en|da" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -112px;padding-left:18px;">Danish</option><option value="en|nl" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -128px;padding-left:18px;">Dutch</option><option value="en|et" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -576px;padding-left:18px;">Estonian</option><option value="en|tl" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -400px;padding-left:18px;">Filipino</option><option value="en|fi" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -144px;padding-left:18px;">Finnish</option><option value="en|fr" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -160px;padding-left:18px;">French</option><option value="en|gl" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -592px;padding-left:18px;">Galician</option><option value="en|ka" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -880px;padding-left:18px;">Georgian</option><option value="en|de" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -176px;padding-left:18px;">German</option><option value="en|el" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -192px;padding-left:18px;">Greek</option><option value="en|ht" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -896px;padding-left:18px;">Haitian Creole</option><option value="en|iw" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -416px;padding-left:18px;">Hebrew</option><option value="en|hi" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -208px;padding-left:18px;">Hindi</option><option value="en|hu" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -608px;padding-left:18px;">Hungarian</option><option value="en|is" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -784px;padding-left:18px;">Icelandic</option><option value="en|id" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -432px;padding-left:18px;">Indonesian</option><option value="en|ga" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -736px;padding-left:18px;">Irish</option><option value="en|it" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -224px;padding-left:18px;">Italian</option><option value="en|ja" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -240px;padding-left:18px;">Japanese</option><option value="en|ko" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -256px;padding-left:18px;">Korean</option><option value="en|lv" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -448px;padding-left:18px;">Latvian</option><option value="en|lt" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -464px;padding-left:18px;">Lithuanian</option><option value="en|mk" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -800px;padding-left:18px;">Macedonian</option><option value="en|ms" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -704px;padding-left:18px;">Malay</option><option value="en|mt" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -624px;padding-left:18px;">Maltese</option><option value="en|no" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -272px;padding-left:18px;">Norwegian</option><option value="en|fa" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -672px;padding-left:18px;">Persian</option><option value="en|pl" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -288px;padding-left:18px;">Polish</option><option value="en|pt" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -304px;padding-left:18px;">Portuguese</option><option value="en|ro" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -320px;padding-left:18px;">Romanian</option><option value="en|ru" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -336px;padding-left:18px;">Russian</option><option value="en|sr" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -480px;padding-left:18px;">Serbian</option><option value="en|sk" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -496px;padding-left:18px;">Slovak</option><option value="en|sl" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -512px;padding-left:18px;">Slovenian</option><option value="en|es" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -352px;padding-left:18px;">Spanish</option><option value="en|sw" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -720px;padding-left:18px;">Swahili</option><option value="en|sv" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -368px;padding-left:18px;">Swedish</option><option value="en|th" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -640px;padding-left:18px;">Thai</option><option value="en|tr" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -656px;padding-left:18px;">Turkish</option><option value="en|uk" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -528px;padding-left:18px;">Ukrainian</option><option value="en|ur" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -912px;padding-left:18px;">Urdu</option><option value="en|vi" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -544px;padding-left:18px;">Vietnamese</option><option value="en|cy" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -752px;padding-left:18px;">Welsh</option><option value="en|yi" style="background:url('/web/20130517201818im_/http://www.novelist.ch/joomla/modules/mod_gtranslate/tmpl/lang/16l.png') no-repeat scroll 0 -816px;padding-left:18px;">Yiddish</option></select>					</div>
+				</div>
+			</div>
+		</div>
+			<div class="module">
+			<div>
+				<div>
+					<div>
+											<div style="text-align:center;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-3755605487214878";
+google_ad_width = 160; 
+google_ad_height = 600; 
+google_ad_format = "160x600_as"; 
+google_ad_type = "text_image"; 
+google_ad_channel = ""; 
+google_color_border = "FFFFFF"; 
+google_color_bg = "FFFFFF"; 
+google_color_link = "6F4160"; 
+google_color_text = "000000"; 
+google_color_url = "596924"; 
+google_ui_features = "rc:0"; 
+//--> 
+</script>
+<script type="text/javascript" src="/web/20130517201818js_/http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>					</div>
+				</div>
+			</div>
+		</div>
+									
+						</div>
+										<div class="clr"></div>
+				</div>		
+			</div>
+		</div>
+		<!--center end-->
+		
+	</div>	
+	
+	<!--footer start-->
+		<div id="footer">
+			<div id="sgf">
+				<div>
+					<div style="text-align: center; padding: 10px 0 0;">
+							Storybook - No. 1 Open Source Novel Writing Software 	&copy; 2013 by Intertec. 
+	All Rights Reserved.
+	<br>Storybook is Open Source and released under the <a href="/web/20130517201818/http://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GNU/GPL License</a>.
+	| <a href="/web/20130517201818/http://www.novelist.ch/storybook_pad.xml">Storybook PAD file</a>.
+	| Powered by <a href="/web/20130517201818/http://joomla.org/" target="_blank">Joomla!</a>
+						</div> 
+					<div style=" padding: 5px 0; text-align: center; color: #83A330;">
+						Valid <a style="color: #83A330;" href="/web/20130517201818/http://validator.w3.org/check/referer">XHTML</a> and <a style="color: #83A330;" href="/web/20130517201818/http://jigsaw.w3.org/css-validator/check/referer">CSS</a>.
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--footer end-->
+		
+</body>
+</html>
+
+
+
+
+
+<!--
+     FILE ARCHIVED ON 20:18:18 mai 17, 2013 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 9:14:28 janv. 18, 2014.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->

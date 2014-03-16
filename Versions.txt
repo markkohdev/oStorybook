@@ -2,6 +2,8 @@ oStorybook
 --------------------------------------------------------------------------------
 
 Versions :
+4.9.14 : favdb ??/??/????
+- 
 4.9.13 : favdb 09/03/2014
 - ré-écriture du module d'exportation (suppression future de JasperReport),
   avec actualisation de la library iText à sa dernière version (5.5.0)

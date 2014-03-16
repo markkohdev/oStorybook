@@ -140,7 +140,7 @@
 			<arg value="./setup.sh" />
 		</exec>
 	</target>
-	<target name="distrib_lang">
+	<target name="distrib-all-lang">
 		<property name="langue" value="es" />
 		<zip destfile="${sb.distdir}/language_all.zip">
 			<zipfileset dir="dicts.all" includes="dicts/**" />
@@ -148,4 +148,8 @@
 			<zipfileset dir="." includes="INSTALL_LANG.txt" />
 		</zip>
 	</target>
+        <target name="distrib-create" depends="distrib-linux, distrib-zip">
+		<echo>Récupération du fichier de version</echo>
+		<copy file="Versions.txt" todir="${sb.distdir}" />
+        </target>
 </project>

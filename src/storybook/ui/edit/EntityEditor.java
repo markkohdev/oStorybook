@@ -37,7 +37,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -150,8 +149,8 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	private JTabbedPane tabbedPane;
 	private TitlePanel titlePanel;
-	private Vector<JComponent> inputComponents;
-	private Vector<JPanel> containers;
+	private List<JComponent> inputComponents;
+	private List<JPanel> containers;
 	private JButton btAddOrUpdate;
 	private JLabel lbMsgState;
 	private HashMap<RadioButtonGroup, RadioButtonGroupPanel> rbgPanels;
@@ -161,7 +160,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	private AbstractEntity origEntity = null;
 
 	public EntityEditor(MainFrame mainFrame) {
-		StorybookApp.trace("EntityEditor.EntityEditor("+mainFrame.getName()+")");
+		StorybookApp.trace("EntityEditor("+mainFrame.getName()+")");
 		this.mainFrame = mainFrame;
 		this.ctrl = mainFrame.getDocumentController();
 	}
@@ -169,9 +168,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	@Override
 	public void init() {
 		StorybookApp.trace("EntityEditor.init() <-"+mainFrame.getName());
-		containers = new Vector<JPanel>();
-		inputComponents = new Vector<JComponent>();
-		rbgPanels = new HashMap<RadioButtonGroup, RadioButtonGroupPanel>();
+		containers = new ArrayList<>();
+		inputComponents = new ArrayList<>();
+		rbgPanels = new HashMap<>();
 		try {
 			Internal internal = DocumentUtil.restoreInternal(mainFrame,
 					InternalKey.LEAVE_EDITOR_OPEN,
@@ -196,7 +195,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		setMinimumSize(MINIMUM_SIZE);
 
 		removeAll();
-		containers.removeAllElements();
+		containers.clear();
 		inputComponents.clear();
 		rbgPanels.clear();
 
@@ -214,7 +213,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		add(titlePanel, "growx");
 
 		containers.add(new JPanel());
-		JPanel container = containers.lastElement();
+		JPanel container = containers.get(containers.size()-1);
 		container.setLayout(new MigLayout("wrap 2", "[][grow]", ""));
 		container.putClientProperty(
 				SbConstants.ClientPropertyName.COMPONENT_TITLE.toString(),
@@ -223,7 +222,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		for (SbColumn col : entityHandler.getColumns()) {
 			if (col.isShowInSeparateTab()) {
 				containers.add(new JPanel());
-				container = containers.lastElement();
+				container = containers.get(containers.size()-1);
 				container.setLayout(new MigLayout("fill,wrap", "[grow]", ""));
 				container.putClientProperty(
 						SbConstants.ClientPropertyName.COMPONENT_TITLE
@@ -460,6 +459,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void setMsgState(MsgState state) {
+		StorybookApp.trace("EntityEditor.setMsgState("+state.name()+")");
 		String text = "";
 		Icon icon = null;
 		switch (state) {
@@ -609,6 +609,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void showHasErrorWarning() {
+		StorybookApp.trace("EntityEditor.showHasErrorWarning("+")");
 		mainFrame.showEditor();
 		JOptionPane.showMessageDialog(this,
 				I18N.getMsg("msg.common.editor.has.error"),
@@ -616,6 +617,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private int showConfirmation() {
+		StorybookApp.trace("EntityEditor.showConfirmation("+")");
 		mainFrame.showEditor();
 		final Object[] options = { I18N.getMsg("msg.common.save.changes"),
 				I18N.getMsg("msg.common.discard.changes"),
@@ -632,7 +634,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void editEntity(PropertyChangeEvent evt) {
-		StorybookApp.trace("EntityEditor.editEntity("+evt.toString()+")");
+		StorybookApp.trace("EntityEditor.editEntity("+evt.getPropertyName()+"::"+evt.getNewValue()+")");
 		initUi();
 		for (SbColumn col : entityHandler.getColumns()) {
 			try {
@@ -962,7 +964,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 				}
 			} catch (	NumberFormatException | NullPointerException ex1) {
 				// ignore
-			} catch (Exception ex) {
+			} catch (IllegalAccessException | IllegalArgumentException 
+					| NoSuchMethodException | SecurityException 
+					| InvocationTargetException ex) {
 			}
 		}
 
@@ -1108,11 +1112,13 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void abandonEntityChanges() {
+		StorybookApp.trace("EntityEditor.abandonEntityChanges("+")");
 		EntityUtil.abandonEntityChanges(mainFrame, entity);
 		unloadEntity();
 	}
 
 	private void unloadEntity() {
+		StorybookApp.trace("EntityEditor.unloadEntity("+")");
 		entity = null;
 		entityHandler = null;
 		containers.clear();
@@ -1121,20 +1127,23 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	public AbstractEntity getEntity() {
+		StorybookApp.trace("EntityEditor.getEntity("+")");
 		return entity;
 	}
 
 	public boolean isEntityLoaded() {
+		StorybookApp.trace("EntityEditor.isEntityLoaded("+")");
 		return entity != null;
 	}
 
 	public boolean hasEntityChanged() {
+		StorybookApp.trace("EntityEditor.hasEntityChanged("+")");
 		return (entity != null && (!entity.equals(origEntity)));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		StorybookApp.trace("EntityEditor.actionPerformed()");
+		StorybookApp.trace("EntityEditor.actionPerformed("+e.getActionCommand()+")");
 		String compName = ((Component) e.getSource()).getName();
 		if (ComponentName.BT_OK.check(compName)) {
 			addOrUpdateEntity();
@@ -1148,9 +1157,6 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			}
 		} else if (ComponentName.BT_ADD_OR_UPDATE.check(compName)) {
 			addOrUpdateEntity();
-			if (errorState == ErrorState.ERROR) {
-				return;
-			}
 		} else if (ComponentName.BT_CANCEL.check(compName)) {
 			abandonEntityChanges();
 			refresh();
@@ -1162,6 +1168,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
+		StorybookApp.trace("EntityEditor.itemStateChanged("+e.paramString()+")");
 		JCheckBox cb = (JCheckBox) e.getSource();
 		leaveOpen = cb.isSelected();
 		DocumentUtil.storeInternal(mainFrame, InternalKey.LEAVE_EDITOR_OPEN,

@@ -1,0 +1,117 @@
+<!--
+SbApp: Open Source software for novelists and authors.
+Original idea 2008 - 2012 Martin Mustun
+Copyrigth (C) Favdb
+-->
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="robots" content="index, follow" />
+        <meta name="keywords" content="'novel writing software', 'writing software', 'story writing', 'how to write book', 'program download', 'novel writing', 'book writing', 'write book', 'writing software', 'story writing software', 'book writing software', 'creative writing software', writing, 'novel writing', 'creative writing', 'write story', 'free download', writer, idea, creative, story, author, bestseller, novel, novelist, plot, help, planning, plotting, brainstorm, storyline, 'write a bestseller', 'how to write a romance novel', 'fiction software', 'how to start writing a novel', 'fiction planning', 'story planning software'" />
+        <meta name="description" content="oStorybook est un logiciel libre et ouvert pour les écrivains, essayistes et auteurs qui ont besoin d'aide pour conserver une vue organisée de leur travail." />
+        <title>oStorybook - Logiciel libre pour évrivain</title>
+        <link rel="stylesheet" href="../../css/template.css" type="text/css" />
+        <link rel="shortcut icon" href="../../img/favicon.ico" type="image/x-icon" />
+        <script language="JavaScript" type="text/javascript">
+            <!-- 
+    // -->< ![CDATA[
+            var ecran = [
+                [
+                    "main.png",
+                    "La fenêtre principale de l'application<br>\
+                    Chaque vue (panneau de visualisation) est \"détachable\". Elle peut aussi \
+                    se mettre en \"plein écran\", en fait elle occupera la totalité de \
+                    l'espace de la fenêtre de l'application."
+                ],
+                [
+                    "01_chrono.png",
+                    "La vue chronologique"
+                ],
+                [
+                    "01_memoria.png",
+                    "La vue Mémoria"
+                ],
+                [
+                    "02_export_print.png",
+                    "L'export de données"
+                ],
+                [
+                    "02_manage.png",
+                    "Gestion des chapitres et scènes"
+                ],
+                [
+                    "03_plain_text_exp.png",
+                    "Export en texte brut"
+                ],
+                [
+                    "03_book.png",
+                    "Vue livre"
+                ],
+                [
+                    "04_chart_wiww.png",
+                    "Qui est Où et Quand?"
+                ],
+                [
+                    "04_reading.png",
+                    "Vue Lecture"
+                ],
+                [
+                    "05_chart_char_by_date.png",
+                    "Table des personnages par date"
+                ],
+                [
+                    "06_chart_char_by_scene.png",
+                    "Table des personnages par scène"
+                ],
+                [
+                    "07_chart_gantt.png",
+                    "Diagramme de Gantt"
+                ]
+            ];
+            var cur = 0;
+            function suivant() {
+                if (cur < ecran.length) {
+                    cur++;
+                    refaire();
+                }
+            }
+            function precedent() {
+                if (cur > 0) {
+                    cur--;
+                    refaire();
+                }
+            }
+            function refaire() {
+                document.getElementById("texte").innerHTML = ecran[cur][1];
+                document.getElementById("ecran").innerHTML = "<img src=\"" + ecran[cur][0] + "\">";
+                if (cur+1 < ecran.length) {
+                    document.getElementById("suivant").innerHTML = "<button onclick=\"javascript:suivant();\"><img src=\"../../img/bt_next_on.png\" /></button>"
+                } else {
+                    document.getElementById("suivant").innerHTML = "<img src=\"../../img/bt_next_off.png\" />"
+                }
+                if (cur > 0) {
+                    document.getElementById("precedent").innerHTML = "<button onclick=\"javascript:precedent();\"><img src=\"../../img/bt_prev_on.png\" /></button>"
+                } else {
+                    document.getElementById("precedent").innerHTML = "<img src=\"../../img/bt_prev_off.png\" />"
+                }
+            }
+            // ]]>
+        </script>
+    </head>
+    <body>
+        <div class="componentheading"><h1>Captures d'écrans</h1></div>
+        <div id="texte">
+            <p><b>La fenêtre principale de l'application</b><br>
+                Chaque vue (panneau de visualisation) est "détachable". Elle peut aussi 
+                se mettre en "plein écran", en fait elle occupera la totalité de 
+                l'espace de la fenêtre de l'application.</p>
+        </div>
+        <table>
+            <tr>
+                <td><div id="precedent"><img src='../../img/bt_prev_off.png' /></div></td>
+                <td><div id="ecran"><img src="main.png"></div></td>
+                <td><div id="suivant"><button onclick="javascript:suivant();"><img src="../../img/bt_next_on.png" /></button></div></td>
+            </tr>
+        </table>
+    </body>
+</html>

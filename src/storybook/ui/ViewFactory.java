@@ -61,6 +61,7 @@ import storybook.ui.panel.tree.TreePanel;
 
 import net.infonode.docking.View;
 import net.infonode.docking.util.StringViewMap;
+import storybook.StorybookApp;
 
 /**
  * @author martin
@@ -68,7 +69,7 @@ import net.infonode.docking.util.StringViewMap;
  */
 public class ViewFactory {
 
-	private boolean trace=false;
+	//private boolean trace=false;
 	private MainFrame mainFrame;
 	private StringViewMap viewMap;
 
@@ -336,9 +337,7 @@ public class ViewFactory {
 	}
 
 	public SbView getScenesView() {
-		if (trace) {
-			System.out.println("ViewFactory.getScenesViem()");
-		}
+		StorybookApp.trace("ViewFactory.getScenesViem()");
 		if (isViewInitialized(ViewName.SCENES)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.scenes"));
 			view.setName(ViewName.SCENES.toString());

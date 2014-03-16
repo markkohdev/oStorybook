@@ -188,7 +188,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	public TreePath[] getPaths(JTree tree, boolean expanded) {
 		TreeNode root = (TreeNode) tree.getModel().getRoot();
-		List<Object> list = new ArrayList<Object>();
+		List<Object> list = new ArrayList<>();
 		getPaths(tree, new TreePath(root), expanded, list);
 		return (TreePath[]) list.toArray(new TreePath[list.size()]);
 	}
@@ -218,7 +218,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		setLayout(new MigLayout("wrap,fill,ins 0"));
 		setMinimumSize(new Dimension(280, 180));
 
-		toggleButtonList = new ArrayList<ToggleIconButton>();
+		toggleButtonList = new ArrayList<>();
 
 		btTooglePersons = new ToggleIconButton("icon.small.person",
 				"msg.tree.show.characters", getTogglePersonsAction());
