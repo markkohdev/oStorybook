@@ -62,7 +62,7 @@ public class ExportTags {
 				break;
 			case "html":
 				html=new ExportHtml(parent,rep,parent.file.getAbsolutePath(),headers,parent.author);
-				html.open();
+				html.open(true);
 				break;
 			case "csv":
 				csv=new ExportCsv(parent,rep,parent.file.getAbsolutePath(),headers,parent.author);
@@ -109,7 +109,7 @@ public class ExportTags {
 	public void end() {
 		switch(parent.format) {
 			case "html":
-				html.close();
+				html.close(true);
 				break;
 			case "pdf":
 				pdf.close();

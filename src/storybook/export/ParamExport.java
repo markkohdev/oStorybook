@@ -22,6 +22,13 @@ public class ParamExport {
 	String txtSeparator;
 	boolean htmlUseCss;
 	String htmlCssFile;
+	boolean isExportChapterNumbers;
+	boolean isExportChapterNumbersRoman;
+	boolean isExportChapterTitles;
+	boolean isExportChapterDatesLocs;
+	boolean isExportSceneTitles;
+	boolean isExportSceneSeparator;
+	boolean htmlBookMulti;
 	String pdfPageSize;
 	boolean pdfLandscape;
 
@@ -59,6 +66,20 @@ public class ParamExport {
 					.restoreInternal(mainFrame, SbConstants.InternalKey.HTML_CSS_FILE, "").getStringValue();
 		else
 			htmlCssFile = "";
+		htmlBookMulti = DocumentUtil
+				.restoreInternal(mainFrame, SbConstants.InternalKey.HTML_BOOK_MULTI, false).getBooleanValue();
+		isExportChapterNumbers = DocumentUtil
+				.restoreInternal(mainFrame, SbConstants.InternalKey.EXPORT_CHAPTER_NUMBERS, false).getBooleanValue();
+		isExportChapterNumbersRoman = DocumentUtil
+				.restoreInternal(mainFrame, SbConstants.InternalKey.EXPORT_ROMAN_NUMERALS, false).getBooleanValue();
+		isExportChapterTitles = DocumentUtil
+				.restoreInternal(mainFrame, SbConstants.InternalKey.EXPORT_CHAPTER_TITLES, false).getBooleanValue();
+		isExportChapterDatesLocs = DocumentUtil
+				.restoreInternal(mainFrame, SbConstants.InternalKey.EXPORT_CHAPTER_DATES_LOCATIONS, false).getBooleanValue();
+		isExportSceneTitles = DocumentUtil
+				.restoreInternal(mainFrame, SbConstants.InternalKey.EXPORT_SCENE_TITLES, false).getBooleanValue();
+		isExportSceneSeparator = DocumentUtil
+				.restoreInternal(mainFrame, SbConstants.InternalKey.EXPORT_SCENE_SEPARATOR, false).getBooleanValue();
 		pdfPageSize = DocumentUtil
 				.restoreInternal(mainFrame, SbConstants.InternalKey.PDF_PAGE_SIZE, "A4").getStringValue();
 		pdfLandscape = DocumentUtil
@@ -73,6 +94,13 @@ public class ParamExport {
 		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.TXT_OTHER.toString(), txtSeparator);
 		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.HTML_USE_CSS.toString(), htmlUseCss);
 		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.HTML_CSS_FILE.toString(), htmlCssFile);
+		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.HTML_BOOK_MULTI.toString(), htmlBookMulti);
+		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.EXPORT_CHAPTER_NUMBERS.toString(), isExportChapterNumbers);
+		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.EXPORT_ROMAN_NUMERALS.toString(), isExportChapterNumbersRoman);
+		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.EXPORT_CHAPTER_TITLES.toString(), isExportChapterTitles);
+		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.EXPORT_CHAPTER_DATES_LOCATIONS.toString(), isExportChapterDatesLocs);
+		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.EXPORT_SCENE_TITLES.toString(), isExportSceneTitles);
+		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.EXPORT_SCENE_SEPARATOR.toString(), isExportSceneSeparator);
 		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.PDF_PAGE_SIZE.toString(), pdfPageSize);
 		DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.PDF_LANDSCAPE.toString(), pdfLandscape);
 	}

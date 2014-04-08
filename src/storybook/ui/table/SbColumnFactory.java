@@ -81,8 +81,7 @@ public class SbColumnFactory {
 		Vector<SbColumn> columns = new Vector<SbColumn>();
 		columns.add(getIdColumn());
 
-		SbColumn col = new SbColumn(1, "Part", InputType.COMBOBOX,
-				"msg.common.part");
+		SbColumn col = new SbColumn(1, "Part", InputType.COMBOBOX, "msg.common.part");
 		col.setTableCellRenderer(new PartTableCellRenderer());
 		col.setWidth(60);
 		columns.add(col);

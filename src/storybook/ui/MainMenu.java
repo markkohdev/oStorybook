@@ -25,14 +25,11 @@ import javax.swing.Timer;
 import net.infonode.docking.View;
 import org.apache.commons.io.FileUtils;
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
-import storybook.SbConstants.ViewName;
 import storybook.StorybookApp;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.I18N;
 import storybook.toolkit.net.Updater;
 import storybook.toolkit.swing.SwingUtil;
-import storybook.action.ActionHandler;
 import storybook.action.DisposeDialogAction;
 import storybook.action.OpenFileAction;
 import storybook.controller.BookController;
@@ -53,12 +50,11 @@ import storybook.toolkit.DocumentUtil;
 import storybook.toolkit.net.NetUtil;
 import storybook.ui.dialog.AboutDialog;
 import storybook.ui.dialog.BookPropertiesDialog;
-import storybook.ui.dialog.FoiDialog;
 import storybook.ui.dialog.PreferencesDialog;
 import storybook.ui.dialog.WaitDialog;
 import storybook.ui.dialog.file.SaveAsFileDialog;
-import storybook.ui.jasperreports.ExportPrintDialog;
 import storybook.export.DlgExport;
+import storybook.model.hbn.entity.Gender;
 
 /**
  *
@@ -243,6 +239,7 @@ public class MainMenu extends javax.swing.JFrame {
         filePrint.add(filePrintBook);
 
         filePrintChapter.setText(bundle.getString("msg.file.print.chapter")); // NOI18N
+        filePrintChapter.setEnabled(false);
         filePrintChapter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filePrintChapterActionPerformed(evt);
@@ -251,6 +248,7 @@ public class MainMenu extends javax.swing.JFrame {
         filePrint.add(filePrintChapter);
 
         filePrintScene.setText(bundle.getString("msg.file.print.scene")); // NOI18N
+        filePrintScene.setEnabled(false);
         filePrintScene.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filePrintSceneActionPerformed(evt);
@@ -351,6 +349,7 @@ public class MainMenu extends javax.swing.JFrame {
         newMenu.add(newCharacter);
 
         newCharacterCategory.setText(bundle.getString("msg.persons.category")); // NOI18N
+        newCharacterCategory.setEnabled(false);
         newCharacterCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newCharacterCategoryActionPerformed(evt);
@@ -376,6 +375,7 @@ public class MainMenu extends javax.swing.JFrame {
         newMenu.add(newLocation);
 
         renameCity.setText(bundle.getString("msg.location.rename.city")); // NOI18N
+        renameCity.setEnabled(false);
         renameCity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 renameCityActionPerformed(evt);
@@ -384,6 +384,7 @@ public class MainMenu extends javax.swing.JFrame {
         newMenu.add(renameCity);
 
         renameCountry.setText(bundle.getString("msg.location.rename.country")); // NOI18N
+        renameCountry.setEnabled(false);
         renameCountry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 renameCountryActionPerformed(evt);
@@ -752,7 +753,6 @@ public class MainMenu extends javax.swing.JFrame {
 		mainFrame.setWaitingCursor();
 		StorybookApp.getInstance().openFile();
 		mainFrame.setDefaultCursor();
-
     }//GEN-LAST:event_fileOpenActionPerformed
 
     private void fileSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveActionPerformed
@@ -761,7 +761,6 @@ public class MainMenu extends javax.swing.JFrame {
 		timer.setRepeats(false);
 		timer.start();
 		SwingUtil.showModalDialog(dlg, mainFrame);
-
     }//GEN-LAST:event_fileSaveActionPerformed
 
     private void fileSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveAsActionPerformed
@@ -773,7 +772,7 @@ public class MainMenu extends javax.swing.JFrame {
 		try {
 			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
 		} catch (IOException ioe) {
-			System.err.println("ActionHandler.handleSaveAs() IOex : " + ioe.getMessage());
+			StorybookApp.error("ActionHandler.handleSaveAs() IOex : ", ioe);
 		}
 		DbFile dbFile = new DbFile(file);
 		OpenFileAction act = new OpenFileAction("", dbFile);
@@ -801,11 +800,23 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_filePrintBookActionPerformed
 
     private void filePrintChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintChapterActionPerformed
-
+		// TODO printChapter à terminer
+		Printing p = new Printing(mainFrame);
+		p.setInteractive(true);
+		BookExporter exp = new BookExporter(mainFrame);
+		exp.setExportForOpenOffice(true);
+		p.init(exp.getChapterAsHtml(getCurrentChapter()));
+		p.doPrint();
     }//GEN-LAST:event_filePrintChapterActionPerformed
 
     private void filePrintSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintSceneActionPerformed
-
+		// TODO printScene à terminer
+		Printing p = new Printing(mainFrame);
+		p.setInteractive(true);
+		BookExporter exp = new BookExporter(mainFrame);
+		exp.setExportForOpenOffice(true);
+		p.init(exp.getSceneAsHtml(getCurrentScene()));
+		p.doPrint();
     }//GEN-LAST:event_filePrintSceneActionPerformed
 
     private void fileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExitActionPerformed
@@ -819,7 +830,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_editCopyBookActionPerformed
 
     private void editCopyBlurbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCopyBlurbActionPerformed
-		Internal internal = DocumentUtil.restoreInternal(mainFrame, InternalKey.BLURB, "");
+		Internal internal = DocumentUtil.restoreInternal(mainFrame, SbConstants.InternalKey.BLURB, "");
 		StringSelection selection = new StringSelection(internal.getStringValue() + "\n");
 		Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clbrd.setContents(selection, selection);
@@ -870,19 +881,19 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_itemsLinksActionPerformed
 
     private void chartsWiwwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsWiwwActionPerformed
-		showAndFocus(ViewName.CHART_WiWW);
+		showAndFocus(SbConstants.ViewName.CHART_WiWW);
     }//GEN-LAST:event_chartsWiwwActionPerformed
 
     private void chartsCharactersByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsCharactersByDateActionPerformed
-		showAndFocus(ViewName.CHART_PERSONS_BY_DATE);
+		showAndFocus(SbConstants.ViewName.CHART_PERSONS_BY_DATE);
     }//GEN-LAST:event_chartsCharactersByDateActionPerformed
 
     private void chartsCharactersBySceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsCharactersBySceneActionPerformed
-		showAndFocus(ViewName.CHART_PERSONS_BY_SCENE);
+		showAndFocus(SbConstants.ViewName.CHART_PERSONS_BY_SCENE);
     }//GEN-LAST:event_chartsCharactersBySceneActionPerformed
 
     private void chartsUsageStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsUsageStrandsActionPerformed
-		showAndFocus(ViewName.CHART_STRANDS_BY_DATE);
+		showAndFocus(SbConstants.ViewName.CHART_STRANDS_BY_DATE);
     }//GEN-LAST:event_chartsUsageStrandsActionPerformed
 
     private void chartsGanttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsGanttActionPerformed
@@ -890,15 +901,15 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_chartsGanttActionPerformed
 
     private void chartsOccurrenceCharactersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsOccurrenceCharactersActionPerformed
-		showAndFocus(ViewName.CHART_OCCURRENCE_OF_PERSONS);
+		showAndFocus(SbConstants.ViewName.CHART_OCCURRENCE_OF_PERSONS);
     }//GEN-LAST:event_chartsOccurrenceCharactersActionPerformed
 
     private void chartsOccurrenceLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsOccurrenceLocationsActionPerformed
-		showAndFocus(ViewName.CHART_OCCURRENCE_OF_LOCATIONS);
+		showAndFocus(SbConstants.ViewName.CHART_OCCURRENCE_OF_LOCATIONS);
     }//GEN-LAST:event_chartsOccurrenceLocationsActionPerformed
 
     private void toolsTasksListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsTasksListActionPerformed
-		showAndFocus(ViewName.SCENES);
+		showAndFocus(SbConstants.ViewName.SCENES);
 		mainFrame.getDocumentController().showTaskList();
     }//GEN-LAST:event_toolsTasksListActionPerformed
 
@@ -907,67 +918,67 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_toolsLanguageActionPerformed
 
     private void viewTableStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableStrandsActionPerformed
-		viewTable("Strands");
+		showAndFocus(SbConstants.ViewName.STRANDS);
     }//GEN-LAST:event_viewTableStrandsActionPerformed
 
     private void viewTablePartsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTablePartsActionPerformed
-		viewTable("Parts");
+		showAndFocus(SbConstants.ViewName.PARTS);
     }//GEN-LAST:event_viewTablePartsActionPerformed
 
     private void viewTableChaptersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableChaptersActionPerformed
-		viewTable("Chapters");
+		showAndFocus(SbConstants.ViewName.CHAPTERS);
     }//GEN-LAST:event_viewTableChaptersActionPerformed
 
     private void viewTableScenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableScenesActionPerformed
-		viewTable("Scenes");
+		showAndFocus(SbConstants.ViewName.SCENES);
     }//GEN-LAST:event_viewTableScenesActionPerformed
 
     private void viewTableCharactersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableCharactersActionPerformed
-		viewTable("Persons");
+		showAndFocus(SbConstants.ViewName.PERSONS);
     }//GEN-LAST:event_viewTableCharactersActionPerformed
 
     private void viewTableLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableLocationsActionPerformed
-		viewTable("Locations");
+		showAndFocus(SbConstants.ViewName.LOCATIONS);
     }//GEN-LAST:event_viewTableLocationsActionPerformed
 
     private void viewTableItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableItemsActionPerformed
-		viewTable("Items");
+		showAndFocus(SbConstants.ViewName.ITEMS);
     }//GEN-LAST:event_viewTableItemsActionPerformed
 
     private void viewTableItemsAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableItemsAssociationsActionPerformed
-		viewTable("ItemAssociations");
+		showAndFocus(SbConstants.ViewName.ITEMLINKS);
     }//GEN-LAST:event_viewTableItemsAssociationsActionPerformed
 
     private void viewTableTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableTagsActionPerformed
-		viewTable("Tags");
+		showAndFocus(SbConstants.ViewName.TAGS);
     }//GEN-LAST:event_viewTableTagsActionPerformed
 
     private void viewTableTagsAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableTagsAssociationsActionPerformed
-		viewTable("TagAssociations");
+		showAndFocus(SbConstants.ViewName.TAGLINKS);
     }//GEN-LAST:event_viewTableTagsAssociationsActionPerformed
 
     private void viewTableIdeasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableIdeasActionPerformed
-		viewTable("Ideas");
+		showAndFocus(SbConstants.ViewName.IDEAS);
     }//GEN-LAST:event_viewTableIdeasActionPerformed
 
     private void viewManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewManageActionPerformed
-		showAndFocus(ViewName.MANAGE);
+		showAndFocus(SbConstants.ViewName.MANAGE);
     }//GEN-LAST:event_viewManageActionPerformed
 
     private void viewChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewChronoActionPerformed
-		showAndFocus(ViewName.CHRONO);
+		showAndFocus(SbConstants.ViewName.CHRONO);
     }//GEN-LAST:event_viewChronoActionPerformed
 
     private void viewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBookActionPerformed
-		showAndFocus(ViewName.BOOK);
+		showAndFocus(SbConstants.ViewName.BOOK);
     }//GEN-LAST:event_viewBookActionPerformed
 
     private void viewReadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReadingActionPerformed
-		showAndFocus(ViewName.READING);
+		showAndFocus(SbConstants.ViewName.READING);
     }//GEN-LAST:event_viewReadingActionPerformed
 
     private void viewMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMemoriaActionPerformed
-		showAndFocus(ViewName.MEMORIA);
+		showAndFocus(SbConstants.ViewName.MEMORIA);
     }//GEN-LAST:event_viewMemoriaActionPerformed
 
     private void helpDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpDocActionPerformed
@@ -983,10 +994,11 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_helpBugsActionPerformed
 
     private void helpContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContactActionPerformed
-
+		NetUtil.openBrowser(SbConstants.URL.CONTACT.toString());
     }//GEN-LAST:event_helpContactActionPerformed
 
     private void helpCheckUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpCheckUpdateActionPerformed
+		// TODO checkForUpdate
 		if (Updater.checkForUpdate())
 			JOptionPane.showMessageDialog(mainFrame,
 					I18N.getMsg("msg.update.no.text"),
@@ -1000,7 +1012,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_helpAboutActionPerformed
 
     private void newGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGenderActionPerformed
-		// TODO newGenderActionPerformed
+		handleNewEntity(new Gender());
     }//GEN-LAST:event_newGenderActionPerformed
 
     private void newCharacterCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newCharacterCategoryActionPerformed
@@ -1017,7 +1029,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_renameCityActionPerformed
 
     private void renameCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCountryActionPerformed
-		// TODO renameCityActionPerformed
+		// TODO renameCountryActionPerformed
     }//GEN-LAST:event_renameCountryActionPerformed
 
 	/**
@@ -1036,13 +1048,8 @@ public class MainMenu extends javax.swing.JFrame {
 					break;
 				}
 			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+		} catch (ClassNotFoundException | InstantiationException 
+				| IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
 	//</editor-fold>
@@ -1153,24 +1160,22 @@ public class MainMenu extends javax.swing.JFrame {
 		mainFrame.showView(SbConstants.ViewName.EDITOR);
 	}
 
-	private void showAndFocus(ViewName viewName) {
+	private void showAndFocus(SbConstants.ViewName viewName) {
 		View view = mainFrame.getView(viewName);
 		view.restore();
 		view.restoreFocus();
 	}
-
-	private void viewTable(String str) {
-		switch (str) {
-			case "Strands":
-				break; // TODO view Strands
-			case "Parts":
-				break; // TODO view Parts
-			case "Chapters":
-				break; // TODO view Chapters
-			case "Scenes":
-				break; // TODO view Scenes
-			default:
-				break;
-		}
+	
+	private Chapter getCurrentChapter() {
+		// TODO getCurrentChapter
+		Chapter chapter=null;
+		return(chapter);
 	}
+
+	private Scene getCurrentScene() {
+		// TODO getCurrentScene
+		Scene scene=null;
+		return(scene);
+	}
+
 }

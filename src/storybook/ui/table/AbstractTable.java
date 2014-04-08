@@ -325,8 +325,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	}
 
 	protected void initTableModel(PropertyChangeEvent evt) {
-		table.putClientProperty(ClientPropertyName.MAIN_FRAME.toString(),
-				mainFrame);
+		table.putClientProperty(ClientPropertyName.MAIN_FRAME.toString(), mainFrame);
 
 		// clear table
 		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {

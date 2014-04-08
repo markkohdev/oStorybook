@@ -19,6 +19,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.ResourceBundle;
 import storybook.model.hbn.entity.Chapter;
+import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Idea;
 import storybook.model.hbn.entity.Item;
 import storybook.model.hbn.entity.ItemLink;
@@ -42,7 +43,7 @@ public class Editor extends javax.swing.JPanel {
     String currentView = "NONE";
     String[] typeEdit = {
         "NONE", "strand", "part", "chapter", "scene", "person",
-        "location", "item", "itemlink", "tag", "taglink", "idea"
+        "location", "item", "itemlink", "tag", "taglink", "idea","gender"
     };
     ResourceBundle bundle;
     private final CardLayout card = new CardLayout(0, 0);
@@ -58,6 +59,7 @@ public class Editor extends javax.swing.JPanel {
     EditTag editTag;
     EditTagLinks editTagLinks;
     EditIdea editIdea;
+	EditGender editGender;
 
     /**
      * Creates new form Editor
@@ -79,6 +81,7 @@ public class Editor extends javax.swing.JPanel {
         editTag = new EditTag(this, null);
         editTagLinks = new EditTagLinks(this, null);
         editIdea = new EditIdea(this, null);
+		editGender=new EditGender(this,null);
         editorPane.setLayout(card);
         currentView = "NONE";
         card.show(editorPane, currentView);
@@ -159,6 +162,10 @@ public class Editor extends javax.swing.JPanel {
                 editIdea = new EditIdea(this, (Idea) obj);
                 editorPane.add(editIdea, currentView);
                 break;
+			case "gender":
+				currentView="gender";
+				editGender = new EditGender(this,(Gender) obj);
+				break;
             case "NONE":
                 currentView = "NONE";
                 editorPane.add(editBlank, currentView);
@@ -320,11 +327,15 @@ public class Editor extends javax.swing.JPanel {
             case "idea":
                 rt = editIdea.isModified();
                 break;
+			case "gender":
+				rt=editGender.isModified();
+				break;
         }
         return (rt);
     }
 
     private void saveData() {
+		// TODO Editor.saveData
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -80,6 +80,13 @@ public class EditScene extends javax.swing.JPanel {
 		CommonBox.loadLbPersons(parent.parent, lbPersons, scene);
 		CommonBox.loadLbItems(parent.parent, lbItems, scene);
 		//TODO date fixed or relative
+		if (scene.hasSceneTs()) {
+			rbFixed.setSelected(true);
+			rbRelative.setSelected(false);
+		} else {
+			rbFixed.setSelected(false);
+			rbRelative.setSelected(true);
+		}
 		notes.setText(scene.getNotes());
 		text.setText(scene.getText());
 	}

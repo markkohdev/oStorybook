@@ -54,6 +54,19 @@ public class DlgExportOptions extends javax.swing.JDialog {
 			htmlCssFile.setVisible(false);
 			btCssDirectory.setVisible(false);
 		}
+		if (param.htmlBookMulti) {
+			htmlBookOneFile.setSelected(false);
+			htmlBookMultiFile.setSelected(true);
+		} else {
+			htmlBookOneFile.setSelected(true);
+			htmlBookMultiFile.setSelected(false);
+		}
+		ckExportChapterNumbers.setSelected(param.isExportChapterNumbers);
+		ckExportChapterNumbersRoman.setSelected(param.isExportChapterNumbersRoman);
+		ckExportChapterTitles.setSelected(param.isExportChapterTitles);
+		ckExportChapterDatesLocations.setSelected(param.isExportChapterDatesLocs);
+		ckExportSceneTitles.setSelected(param.isExportSceneTitles);
+		ckExportSceneSeparator.setSelected(param.isExportSceneSeparator);
 		String pageSize[]={"A0","A1","A2","A3","A4"};
 		for (String p : pageSize) {
 			pdfPageSize.addItem(p);
@@ -74,6 +87,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
         csvGroupComma = new javax.swing.ButtonGroup();
         txtGroupTab = new javax.swing.ButtonGroup();
         pdfGroupOrientation = new javax.swing.ButtonGroup();
+        htmlBookGroup = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         paneCSV = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -98,6 +112,16 @@ public class DlgExportOptions extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         pdfPortrait = new javax.swing.JRadioButton();
         pdfLandscape = new javax.swing.JRadioButton();
+        paneBook = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        htmlBookMultiFile = new javax.swing.JRadioButton();
+        htmlBookOneFile = new javax.swing.JRadioButton();
+        ckExportChapterNumbers = new javax.swing.JCheckBox();
+        ckExportChapterNumbersRoman = new javax.swing.JCheckBox();
+        ckExportChapterTitles = new javax.swing.JCheckBox();
+        ckExportChapterDatesLocations = new javax.swing.JCheckBox();
+        ckExportSceneTitles = new javax.swing.JCheckBox();
+        ckExportSceneSeparator = new javax.swing.JCheckBox();
         btCancel = new javax.swing.JButton();
         btOK = new javax.swing.JButton();
 
@@ -162,7 +186,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(csvComma)
                     .addComponent(csvSemicolon))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(160, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("CSV", paneCSV);
@@ -197,7 +221,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
                 .addComponent(txtOther)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(251, Short.MAX_VALUE))
         );
         paneTXTLayout.setVerticalGroup(
             paneTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,7 +232,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
                     .addComponent(txtTab)
                     .addComponent(txtOther)
                     .addComponent(txtSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("TXT", paneTXT);
@@ -236,12 +260,12 @@ public class DlgExportOptions extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(paneHTMLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(paneHTMLLayout.createSequentialGroup()
-                        .addComponent(htmlUseCss)
-                        .addGap(0, 257, Short.MAX_VALUE))
-                    .addGroup(paneHTMLLayout.createSequentialGroup()
                         .addComponent(htmlCssFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btCssDirectory)))
+                        .addComponent(btCssDirectory))
+                    .addGroup(paneHTMLLayout.createSequentialGroup()
+                        .addComponent(htmlUseCss)
+                        .addGap(0, 345, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         paneHTMLLayout.setVerticalGroup(
@@ -253,7 +277,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
                 .addGroup(paneHTMLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(htmlCssFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btCssDirectory))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("HTML", paneHTML);
@@ -302,10 +326,76 @@ public class DlgExportOptions extends javax.swing.JDialog {
                     .addComponent(jLabel5)
                     .addComponent(pdfPortrait)
                     .addComponent(pdfLandscape))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(160, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("PDF", panePDF);
+
+        jLabel6.setText(bundle.getString("msg.export.book.htmloption")); // NOI18N
+
+        htmlBookGroup.add(htmlBookMultiFile);
+        htmlBookMultiFile.setText(bundle.getString("msg.export.book.htmloption.multifile")); // NOI18N
+
+        htmlBookGroup.add(htmlBookOneFile);
+        htmlBookOneFile.setText(bundle.getString("msg.export.book.htmloption.onefile")); // NOI18N
+
+        ckExportChapterNumbers.setText(bundle.getString("msg.export.chapter.numbers")); // NOI18N
+
+        ckExportChapterNumbersRoman.setText(bundle.getString("msg.export.roman.numerals")); // NOI18N
+
+        ckExportChapterTitles.setText(bundle.getString("msg.export.chapter.titles")); // NOI18N
+
+        ckExportChapterDatesLocations.setText(bundle.getString("msg.export.chapter.dates.locations")); // NOI18N
+
+        ckExportSceneTitles.setText(bundle.getString("msg.export.scene.titles")); // NOI18N
+
+        ckExportSceneSeparator.setText(bundle.getString("msg.export.scene.separator")); // NOI18N
+
+        javax.swing.GroupLayout paneBookLayout = new javax.swing.GroupLayout(paneBook);
+        paneBook.setLayout(paneBookLayout);
+        paneBookLayout.setHorizontalGroup(
+            paneBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneBookLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(paneBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(paneBookLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(htmlBookOneFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(htmlBookMultiFile))
+                    .addComponent(ckExportChapterNumbersRoman)
+                    .addComponent(ckExportChapterTitles)
+                    .addComponent(ckExportChapterDatesLocations)
+                    .addComponent(ckExportChapterNumbers)
+                    .addComponent(ckExportSceneTitles)
+                    .addComponent(ckExportSceneSeparator))
+                .addContainerGap(167, Short.MAX_VALUE))
+        );
+        paneBookLayout.setVerticalGroup(
+            paneBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneBookLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(paneBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(htmlBookOneFile)
+                    .addComponent(htmlBookMultiFile))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ckExportChapterNumbers)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ckExportChapterNumbersRoman)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ckExportChapterTitles)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ckExportChapterDatesLocations)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ckExportSceneTitles)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ckExportSceneSeparator)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab(bundle.getString("msg.export.book.text"), paneBook); // NOI18N
 
         btCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shef/ui/resources/images/x16/cancel.png"))); // NOI18N
         btCancel.setText(bundle.getString("msg.common.cancel")); // NOI18N
@@ -332,22 +422,22 @@ public class DlgExportOptions extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btOK, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btOK, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCancel)
                     .addComponent(btOK))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -366,6 +456,12 @@ public class DlgExportOptions extends javax.swing.JDialog {
 		if (!param.txtTab) param.txtSeparator=txtSeparator.getText();
         param.htmlUseCss=htmlUseCss.isSelected();
 		if (!param.htmlUseCss) param.htmlCssFile=htmlCssFile.getText();
+		param.isExportChapterNumbers=ckExportChapterNumbers.isSelected();
+		param.isExportChapterNumbersRoman=ckExportChapterNumbersRoman.isSelected();
+		param.isExportChapterTitles=ckExportChapterTitles.isSelected();
+		param.isExportSceneTitles=ckExportSceneTitles.isSelected();
+		param.isExportSceneSeparator=ckExportSceneSeparator.isSelected();
+		param.htmlBookMulti=htmlBookMultiFile.isSelected();
 		param.pdfPageSize=pdfPageSize.getSelectedItem().toString();
 		param.pdfLandscape=pdfLandscape.isSelected();
 		param.save();
@@ -436,6 +532,12 @@ public class DlgExportOptions extends javax.swing.JDialog {
     private javax.swing.JButton btCancel;
     private javax.swing.JButton btCssDirectory;
     private javax.swing.JButton btOK;
+    private javax.swing.JCheckBox ckExportChapterDatesLocations;
+    private javax.swing.JCheckBox ckExportChapterNumbers;
+    private javax.swing.JCheckBox ckExportChapterNumbersRoman;
+    private javax.swing.JCheckBox ckExportChapterTitles;
+    private javax.swing.JCheckBox ckExportSceneSeparator;
+    private javax.swing.JCheckBox ckExportSceneTitles;
     private javax.swing.JRadioButton csvComma;
     private javax.swing.JRadioButton csvDoubleQuotes;
     private javax.swing.ButtonGroup csvGroupComma;
@@ -443,6 +545,9 @@ public class DlgExportOptions extends javax.swing.JDialog {
     private javax.swing.JRadioButton csvNoQuotes;
     private javax.swing.JRadioButton csvSemicolon;
     private javax.swing.JRadioButton csvSingleQuotes;
+    private javax.swing.ButtonGroup htmlBookGroup;
+    private javax.swing.JRadioButton htmlBookMultiFile;
+    private javax.swing.JRadioButton htmlBookOneFile;
     private javax.swing.JTextField htmlCssFile;
     private javax.swing.JCheckBox htmlUseCss;
     private javax.swing.JLabel jLabel1;
@@ -450,7 +555,9 @@ public class DlgExportOptions extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel paneBook;
     private javax.swing.JPanel paneCSV;
     private javax.swing.JPanel paneHTML;
     private javax.swing.JPanel panePDF;

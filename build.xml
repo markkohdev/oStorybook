@@ -10,7 +10,7 @@
 <project name="Storybook" default="default" basedir=".">
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
-	<property name="sb.version" value="4.9.13" />
+	<property name="sb.version" value="4.9.14" />
 	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
     <!--
 
@@ -83,8 +83,6 @@
 		<copy file="log4j.xml" todir="${build.classes.dir}" />
 		<echo>Récupération du fichier d'action dans le classpath</echo>
 		<copy file="actions.xml" todir="${build.classes.dir}" />
-		<echo>Récupération du fichier de configuration Jasper dans le classpath</echo>
-		<copy file="jasperreports.properties" todir="${build.classes.dir}" />
 	</target>
 	<!-- Récupération des autres fichiers l'application -->
 	<target name="-post-jar">
@@ -123,8 +121,6 @@
 		<copy file="log4j.xml" todir="${dist.dir}" />
 		<echo>Récupération du fichier d'action dans le classpath</echo>
 		<copy file="actions.xml" todir="${dist.dir}" />
-		<echo>Récupération du fichier de configuration Jasper dans le classpath</echo>
-		<copy file="jasperreports.properties" todir="${dist.dir}" />
 	</target>
 	<target name="distrib-zip" depends="jar" >
 		<mkdir dir="${sb.distdir}" />

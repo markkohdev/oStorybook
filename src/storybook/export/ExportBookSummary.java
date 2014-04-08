@@ -65,7 +65,7 @@ public class ExportBookSummary {
 		String str = "";
 		switch (parent.format) {
 			case "html":
-				html.open();
+				html.open(true);
 				break;
 			case "csv":
 				csv.open();
@@ -88,7 +88,7 @@ public class ExportBookSummary {
 		switch (parent.format) {
 			case "html":
 				str = "<b>"+lib+"</b> "+data;
-				html.writeText(str);
+				html.writeText(str,true);
 				break;
 			case "csv":
 				csv.writeText(str);
@@ -108,7 +108,7 @@ public class ExportBookSummary {
 	private void fin() {
 		switch(parent.format) {
 			case "html":
-				html.close();
+				html.close(true);
 				break;
 			case "pdf":
 				pdf.close();

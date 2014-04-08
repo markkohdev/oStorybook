@@ -1,21 +1,20 @@
 /*
-Storybook: Open Source software for novelists and authors.
-Copyright (C) 2008 - 2012 Martin Mustun
+ Storybook: Open Source software for novelists and authors.
+ Copyright (C) 2008 - 2012 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package storybook.ui.edit;
 
 import java.awt.Color;
@@ -129,24 +128,21 @@ import storybook.StorybookApp;
  *
  */
 @SuppressWarnings("serial")
-public class EntityEditor extends AbstractPanel implements ActionListener,
-		ItemListener {
+public class EntityEditor extends AbstractPanel implements ActionListener, ItemListener {
 
 	public static Dimension MINIMUM_SIZE = new Dimension(440, 500);
 	private static final String ERROR_LABEL = "error_label";
-	private enum MsgState { ERRORS, WARNINGS, UPDATED, ADDED }
+
+	private enum MsgState {
+		ERRORS, WARNINGS, UPDATED, ADDED
+	}
 
 	private boolean leaveOpen;
-
 	private AbstractEntityHandler entityHandler;
-
 //	private MainFrame mainFrame;
 	private BookController ctrl;
-
 	private AbstractEntity entity;
-
 	private ErrorState errorState;
-
 	private JTabbedPane tabbedPane;
 	private TitlePanel titlePanel;
 	private List<JComponent> inputComponents;
@@ -154,20 +150,18 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	private JButton btAddOrUpdate;
 	private JLabel lbMsgState;
 	private HashMap<RadioButtonGroup, RadioButtonGroupPanel> rbgPanels;
-
 	private ArrayList<Attribute> attributes;
-
 	private AbstractEntity origEntity = null;
 
 	public EntityEditor(MainFrame mainFrame) {
-		StorybookApp.trace("EntityEditor("+mainFrame.getName()+")");
+		StorybookApp.trace("EntityEditor(" + mainFrame.getName() + ")");
 		this.mainFrame = mainFrame;
 		this.ctrl = mainFrame.getDocumentController();
 	}
 
 	@Override
 	public void init() {
-		StorybookApp.trace("EntityEditor.init() <-"+mainFrame.getName());
+		StorybookApp.trace("EntityEditor.init() <-" + mainFrame.getName());
 		containers = new ArrayList<>();
 		inputComponents = new ArrayList<>();
 		rbgPanels = new HashMap<>();
@@ -175,9 +169,8 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			Internal internal = DocumentUtil.restoreInternal(mainFrame,
 					InternalKey.LEAVE_EDITOR_OPEN,
 					SbConstants.DEFAULT_LEAVE_EDITOR_OPEN);
-			if (internal != null) {
+			if (internal != null)
 				leaveOpen = internal.getBooleanValue();
-			}
 		} catch (Exception e) {
 			leaveOpen = SbConstants.DEFAULT_LEAVE_EDITOR_OPEN;
 		}
@@ -188,8 +181,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	 */
 	@Override
 	public void initUi() {
-		StorybookApp.trace("EntityEditor.initUI() <-"+mainFrame.getName());
-		if (!containers.isEmpty()) return;
+		StorybookApp.trace("EntityEditor.initUI() <-" + mainFrame.getName());
+		if (!containers.isEmpty())
+			return;
 		setLayout(new MigLayout("fill,wrap"));
 		setBackground(Color.white);
 		setMinimumSize(MINIMUM_SIZE);
@@ -213,22 +207,19 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		add(titlePanel, "growx");
 
 		containers.add(new JPanel());
-		JPanel container = containers.get(containers.size()-1);
+		JPanel container = containers.get(containers.size() - 1);
 		container.setLayout(new MigLayout("wrap 2", "[][grow]", ""));
 		container.putClientProperty(
-				SbConstants.ClientPropertyName.COMPONENT_TITLE.toString(),
-				I18N.getMsg("msg.common"));
+				SbConstants.ClientPropertyName.COMPONENT_TITLE.toString(), I18N.getMsg("msg.common"));
 
 		for (SbColumn col : entityHandler.getColumns()) {
 			if (col.isShowInSeparateTab()) {
 				containers.add(new JPanel());
-				container = containers.get(containers.size()-1);
+				container = containers.get(containers.size() - 1);
 				container.setLayout(new MigLayout("fill,wrap", "[grow]", ""));
-				container.putClientProperty(
-						SbConstants.ClientPropertyName.COMPONENT_TITLE
-								.toString(), col.toString());
+				container.putClientProperty(SbConstants.ClientPropertyName.COMPONENT_TITLE
+						.toString(), col.toString());
 			}
-
 			RadioButtonGroupPanel btgPanel = null;
 
 			// skip label for components shown in a separate tab
@@ -244,40 +235,34 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 					}
 					container.add(btgPanel, "span");
 				}
-				if (col.getInputType() == InputType.NONE) {
+				if (col.getInputType() == InputType.NONE)
 					// skip input type "none"
 					continue;
-				}
 				JLabel lb = new JLabel();
 				lb.setText(col.toString() + ":");
 				// make mandatory labels bold, but skip read-only fields
-				if (col.hasVerifier()) {
-					if (col.getVerifier().isMandatory() && !col.isReadOnly()) {
+				if (col.hasVerifier())
+					if (col.getVerifier().isMandatory() && !col.isReadOnly())
 						lb.setFont(FontUtil.getBoldFont());
-					}
-				}
-				if (col.hasRadioButtonGroup()) {
+				if (col.hasRadioButtonGroup())
 					btgPanel.getSubPanel(col.getRadioButtonIndex()).add(lb, "top");
-				} else {
+				else
 					container.add(lb, "top");
-				}
 			}
 
 			// input field
 			InputType inputType = col.getInputType();
 			JComponent comp = null;
-			if (inputType == InputType.NONE) {
+			if (inputType == InputType.NONE)
 				comp = new JLabel();
-			} else if (inputType == InputType.TEXTFIELD) {
+			else if (inputType == InputType.TEXTFIELD) {
 				comp = new JTextField(20);
-				if (col.hasVerifier()) {
-					if (col.getVerifier().isNumber()) {
+				if (col.hasVerifier())
+					if (col.getVerifier().isNumber())
 						((JTextField) comp).setColumns(4);
-					}
-				}
-				if (col.isAutoComplete()) {
+				if (col.isAutoComplete())
 					comp = new AutoCompleteComboBox();
-				} else if (col.hasMaxLength()) {
+				else if (col.hasMaxLength()) {
 					AbstractDocument doc = (AbstractDocument) ((JTextField) comp)
 							.getDocument();
 					doc.setDocumentFilter(new DocumentSizeFilter(col
@@ -290,50 +275,41 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 						comp = new HtmlEditor();
 						((HtmlEditor) comp).setMaxLength(col.getMaxLength());
 					}
-				} else {
+				} else
 					if (DocumentUtil.isUseHtmlScenes(mainFrame)) {
 						comp = new HtmlEditor(
 								DocumentUtil.isEditorFullToolbar(mainFrame));
 						((HtmlEditor) comp).setMaxLength(col.getMaxLength());
 					}
-				}
 				if (comp == null) {
 					comp = new PlainTextEditor();
 					((PlainTextEditor) comp).setMaxLength(col.getMaxLength());
 				}
-			} else if (inputType == InputType.CHECKBOX) {
+			} else if (inputType == InputType.CHECKBOX)
 				comp = new JCheckBox();
-			} else if (inputType == InputType.COMBOBOX) {
+			else if (inputType == InputType.COMBOBOX)
 				comp = new JComboBox();
-			} else if (inputType == InputType.DATE) {
+			else if (inputType == InputType.DATE) {
 				comp = new DateChooser(mainFrame, col.hasDateTime());
 				comp.setPreferredSize(new Dimension(150, 20));
-			} else if (inputType == InputType.COLOR) {
-				comp = new CleverColorChooser(
-						I18N.getMsg("msg.dlg.strand.choose.color"), null,
+			} else if (inputType == InputType.COLOR)
+				comp = new CleverColorChooser(I18N.getMsg("msg.dlg.strand.choose.color"), null,
 						ColorUtil.getNiceColors(), col.isAllowNoColor());
-			} else if (inputType == InputType.ICON) {
+			else if (inputType == InputType.ICON)
 				comp = new JLabel();
-			} else if (inputType == InputType.LIST) {
+			else if (inputType == InputType.LIST)
 				comp = new CheckBoxPanel(mainFrame);
-			} else if (inputType == InputType.ATTRIBUTES) {
+			else if (inputType == InputType.ATTRIBUTES)
 				comp = new AttributesPanel(mainFrame);
-			}
 
 			comp.setName(col.getMethodName());
-			comp.putClientProperty(
-					ClientPropertyName.DOCUMENT_MODEL.toString(),
-					mainFrame.getDocumentModel());
-			if (col.isReadOnly()) {
+			comp.putClientProperty(ClientPropertyName.DOCUMENT_MODEL.toString(),mainFrame.getDocumentModel());
+			if (col.isReadOnly())
 				comp.setEnabled(false);
-			}
-			if (col.hasVerifier()) {
+			if (col.hasVerifier())
 				comp.setInputVerifier(col.getVerifier());
-			}
-			if (inputType == InputType.TEXTAREA
-					|| inputType == InputType.ATTRIBUTES) {
-				if (comp instanceof JTextArea
-						|| comp instanceof AttributesPanel) {
+			if (inputType == InputType.TEXTAREA || inputType == InputType.ATTRIBUTES)
+				if (comp instanceof JTextArea || comp instanceof AttributesPanel) {
 					JScrollPane scroller = new JScrollPane(comp);
 					SwingUtil.setUnitIncrement(scroller);
 					SwingUtil.setMaxPreferredSize(scroller);
@@ -347,20 +323,17 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 						container.add(comp, "grow,id " + comp.getName());
 					}
 				}
-			} else if (inputType == InputType.LIST) {
+			else if (inputType == InputType.LIST) {
 				JScrollPane scroller = new JScrollPane(comp);
 				SwingUtil.setUnitIncrement(scroller);
 				SwingUtil.setMaxPreferredSize(scroller);
 				container.add(scroller, "grow");
 			} else {
 				if (col.hasRadioButtonGroup()) {
-					btgPanel.getSubPanel(col.getRadioButtonIndex()).add(comp,
-							"id " + comp.getName());
+					btgPanel.getSubPanel(col.getRadioButtonIndex()).add(comp, "id " + comp.getName());
 				} else {
 					String growx = "";
-					if (col.isGrowX()) {
-						growx = "growx,";
-					}
+					if (col.isGrowX()) growx = "growx,";
 					container.add(comp, growx + "id " + comp.getName());
 				}
 			}
@@ -371,14 +344,12 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		for (SbColumn column : entityHandler.getColumns()) {
 			if (column.hasCompleter()) {
 				if (column.getCompleter() instanceof AbbrCompleter) {
-					AbbrCompleter abbrCompleter = (AbbrCompleter) column
-							.getCompleter();
+					AbbrCompleter abbrCompleter = (AbbrCompleter) column.getCompleter();
 					Iterator<JComponent> it = inputComponents.iterator();
 					while (it.hasNext()) {
 						JComponent comp = it.next();
-						if (comp.getName().equals(column.getMethodName())) {
+						if (comp.getName().equals(column.getMethodName()))
 							abbrCompleter.setComp((JTextComponent) comp);
-						}
 						if (comp.getName().equals(abbrCompleter.getCompName1())) {
 							comp.addKeyListener(abbrCompleter);
 							abbrCompleter.setSourceComp1((JTextComponent) comp);
@@ -395,8 +366,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		tabbedPane = new JTabbedPane();
 		int i = 0;
 		for (JPanel container2 : containers) {
-			String title = (String) container2
-					.getClientProperty(SbConstants.ClientPropertyName.COMPONENT_TITLE
+			String title = (String) container2.getClientProperty(SbConstants.ClientPropertyName.COMPONENT_TITLE
 							.toString());
 			if (i == 0) {
 				// put the first panel into a scroller (for small screens)
@@ -421,25 +391,19 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 		btAddOrUpdate = new JButton(I18N.getMsg("msg.editor.update"));
 		btAddOrUpdate.setName(ComponentName.BT_ADD_OR_UPDATE.toString());
-		/*if (I18N.isEnglish()) {*/
-			btAddOrUpdate.setIcon(I18N.getIcon("icon.small.refresh"));
-		/*}*/
+		btAddOrUpdate.setIcon(I18N.getIcon("icon.small.refresh"));
 		btAddOrUpdate.addActionListener(this);
 
 		JButton btCancel = new JButton(I18N.getMsg("msg.common.cancel"));
 		btCancel.setName(ComponentName.BT_CANCEL.toString());
-		if (I18N.isEnglish()) {
-			btCancel.setIcon(I18N.getIcon("icon.small.cancel"));
-		}
+		if (I18N.isEnglish()) btCancel.setIcon(I18N.getIcon("icon.small.cancel"));
 		btCancel.addActionListener(this);
 		SwingUtil.addEscAction(btCancel, new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				abandonEntityChanges();
 				refresh();
-				if (!leaveOpen) {
-					mainFrame.hideEditor();
-				}
+				if (!leaveOpen) mainFrame.hideEditor();
 			}
 		});
 
@@ -459,26 +423,26 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void setMsgState(MsgState state) {
-		StorybookApp.trace("EntityEditor.setMsgState("+state.name()+")");
+		StorybookApp.trace("EntityEditor.setMsgState(" + state.name() + ")");
 		String text = "";
 		Icon icon = null;
 		switch (state) {
-		case ERRORS:
-			text = I18N.getMsg("msg.common.error");
-			icon = IconUtil.StateIcon.ERROR.getIcon();
-			break;
-		case WARNINGS:
-			text = I18N.getMsg("msg.common.warning");
-			icon = IconUtil.StateIcon.WARNING.getIcon();
-			break;
-		case ADDED:
-			text = I18N.getMsg("msg.editor.added");
-			icon = IconUtil.StateIcon.OK.getIcon();
-			break;
-		case UPDATED:
-			text = I18N.getMsg("msg.editor.updated");
-			icon = IconUtil.StateIcon.OK.getIcon();
-			break;
+			case ERRORS:
+				text = I18N.getMsg("msg.common.error");
+				icon = IconUtil.StateIcon.ERROR.getIcon();
+				break;
+			case WARNINGS:
+				text = I18N.getMsg("msg.common.warning");
+				icon = IconUtil.StateIcon.WARNING.getIcon();
+				break;
+			case ADDED:
+				text = I18N.getMsg("msg.editor.added");
+				icon = IconUtil.StateIcon.OK.getIcon();
+				break;
+			case UPDATED:
+				text = I18N.getMsg("msg.editor.updated");
+				icon = IconUtil.StateIcon.OK.getIcon();
+				break;
 		}
 		lbMsgState.setVisible(true);
 		lbMsgState.setText(text);
@@ -499,9 +463,8 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
-		StorybookApp.trace("EntityEditor.modelPropertyChange("+evt.getPropertyName()+")");
+		StorybookApp.trace("EntityEditor.modelPropertyChange(" + evt.getPropertyName() + ")");
 		String propName = evt.getPropertyName();
-
 		if (propName.startsWith("Delete")) {
 			if (entity != null
 					&& entity.equals((AbstractEntity) evt.getOldValue())) {
@@ -511,7 +474,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			return;
 		}
 
-		if (!propName.startsWith("Edit")) {return;}
+		if (!propName.startsWith("Edit")) return;
 
 		if (entity != null) {
 			updateEntityFromInputComponents();
@@ -524,56 +487,45 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 				showHasErrorWarning();
 				return;
 			}
-			if (newEntity.getClass().equals(entity.getClass())
-					&& newEntity.getId().equals(entity.getId())) {
+			if (newEntity.getClass().equals(entity.getClass()) && newEntity.getId().equals(entity.getId()))
 				return;
-			}
 			int n = showConfirmation();
-			if (n == 2) {
-				return;
-			}
-			if (n == 0) {
-				addOrUpdateEntity();
-			} else if (n == 1) {
-				abandonEntityChanges();
-			}
+			if (n == 2) return;
+			if (n == 0) addOrUpdateEntity();
+			else if (n == 1) abandonEntityChanges();
 		}
 
-		if (BookController.SceneProps.EDIT.check(propName)) {
+		if (BookController.SceneProps.EDIT.check(propName))
 			entityHandler = new SceneEntityHandler(mainFrame);
-		} else if (BookController.ChapterProps.EDIT.check(propName)) {
+		else if (BookController.ChapterProps.EDIT.check(propName))
 			entityHandler = new ChapterEntityHandler(mainFrame);
-		} else if (BookController.PartProps.EDIT.check(propName)) {
+		else if (BookController.PartProps.EDIT.check(propName))
 			entityHandler = new PartEntityHandler(mainFrame);
-		} else if (BookController.LocationProps.EDIT.check(propName)) {
+		else if (BookController.LocationProps.EDIT.check(propName))
 			entityHandler = new LocationEntityHandler(mainFrame);
-		} else if (BookController.PersonProps.EDIT.check(propName)) {
+		else if (BookController.PersonProps.EDIT.check(propName))
 			entityHandler = new PersonEntityHandler(mainFrame);
-		} else if (BookController.GenderProps.EDIT.check(propName)) {
+		else if (BookController.GenderProps.EDIT.check(propName))
 			entityHandler = new GenderEntityHandler(mainFrame);
-		} else if (BookController.CategoryProps.EDIT.check(propName)) {
+		else if (BookController.CategoryProps.EDIT.check(propName))
 			entityHandler = new CategoryEntityHandler(mainFrame);
-		} else if (BookController.StrandProps.EDIT.check(propName)) {
+		else if (BookController.StrandProps.EDIT.check(propName))
 			entityHandler = new StrandEntityHandler(mainFrame);
-		} else if (BookController.IdeaProps.EDIT.check(propName)) {
+		else if (BookController.IdeaProps.EDIT.check(propName))
 			entityHandler = new IdeaEntityHandler(mainFrame);
-		} else if (BookController.TagProps.EDIT.check(propName)) {
+		else if (BookController.TagProps.EDIT.check(propName))
 			entityHandler = new TagEntityHandler(mainFrame);
-		} else if (BookController.ItemProps.EDIT.check(propName)) {
+		else if (BookController.ItemProps.EDIT.check(propName))
 			entityHandler = new ItemEntityHandler(mainFrame);
-		} else if (BookController.TagLinkProps.EDIT.check(propName)) {
+		else if (BookController.TagLinkProps.EDIT.check(propName))
 			entityHandler = new TagLinkEntityHandler(mainFrame);
-		} else if (BookController.ItemLinkProps.EDIT.check(propName)) {
+		else if (BookController.ItemLinkProps.EDIT.check(propName))
 			entityHandler = new ItemLinkEntityHandler(mainFrame);
-		} else if (BookController.InternalProps.EDIT.check(propName)) {
+		else if (BookController.InternalProps.EDIT.check(propName))
 			entityHandler = new InternalEntityHandler(mainFrame);
-		}
 
 		entity = (AbstractEntity) evt.getNewValue();
-		if (entity.isTransient()) {
-			// new entity
-			entity = entityHandler.newEntity(entity);
-		}
+		if (entity.isTransient()) entity = entityHandler.newEntity(entity);// new entity
 
 		// keep origEntity up-to-date
 		origEntity = entityHandler.createNewEntity();
@@ -584,49 +536,43 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		// set entity and DAO on input components
 		for (JComponent comp : inputComponents) {
 			comp.putClientProperty(ClientPropertyName.ENTITY.toString(), entity);
-			comp.putClientProperty(ClientPropertyName.DAO.toString(),
-					entityHandler.createDAO());
+			comp.putClientProperty(ClientPropertyName.DAO.toString(), entityHandler.createDAO());
 		}
 
-		if (entity.isTransient()) {
-			// new
-			btAddOrUpdate.setText(I18N.getMsg("msg.common.add"));
-		} else {
-			// update
-			btAddOrUpdate.setText(I18N.getMsg("msg.editor.update"));
-		}
+		if (entity.isTransient()) btAddOrUpdate.setText(I18N.getMsg("msg.common.add"));// new
+		else btAddOrUpdate.setText(I18N.getMsg("msg.editor.update"));// update
 
 		editEntity(evt);
 
-		if (!entity.isTransient()) {
+		if (!entity.isTransient())
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
 					verifyInput();
 				}
 			});
-		}
 	}
 
 	private void showHasErrorWarning() {
-		StorybookApp.trace("EntityEditor.showHasErrorWarning("+")");
+		StorybookApp.trace("EntityEditor.showHasErrorWarning(" + ")");
 		mainFrame.showEditor();
-		JOptionPane.showMessageDialog(this,
-				I18N.getMsg("msg.common.editor.has.error"),
+		JOptionPane.showMessageDialog(this, I18N.getMsg("msg.common.editor.has.error"),
 				I18N.getMsg("msg.common.warning"), JOptionPane.WARNING_MESSAGE);
 	}
 
 	private int showConfirmation() {
-		StorybookApp.trace("EntityEditor.showConfirmation("+")");
+		StorybookApp.trace("EntityEditor.showConfirmation(" + ")");
 		mainFrame.showEditor();
-		final Object[] options = { I18N.getMsg("msg.common.save.changes"),
-				I18N.getMsg("msg.common.discard.changes"),
-				I18N.getMsg("msg.common.cancel") };
+		final Object[] options = {
+			I18N.getMsg("msg.common.save.changes"),
+			I18N.getMsg("msg.common.discard.changes"),
+			I18N.getMsg("msg.common.cancel")
+		};
 		int n = JOptionPane.showOptionDialog(
 				mainFrame,
 				I18N.getMsg("msg.common.save.or.discard.changes") + "\n\n"
-						+ EntityUtil.getEntityTitle(entity) + ": "
-						+ entity.toString() + "\n\n",
+				+ EntityUtil.getEntityTitle(entity) + ": "
+				+ entity.toString() + "\n\n",
 				I18N.getMsg("msg.common.save.changes.title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
 				null, options, options[2]);
@@ -634,7 +580,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void editEntity(PropertyChangeEvent evt) {
-		StorybookApp.trace("EntityEditor.editEntity("+evt.getPropertyName()+"::"+evt.getNewValue()+")");
+		StorybookApp.trace("EntityEditor.editEntity(" + evt.getPropertyName() + "::" + evt.getNewValue() + ")");
 		initUi();
 		for (SbColumn col : entityHandler.getColumns()) {
 			try {
@@ -642,40 +588,28 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 				Method method = entity.getClass().getMethod(methodName);
 				final Object ret = method.invoke(entity);
 				for (JComponent comp : inputComponents) {
-					if (col.getMethodName().equals(comp.getName())) {
+					if (col.getMethodName().equals(comp.getName()))
 						if (comp instanceof JTextComponent) {
-							if (ret == null) {
-								continue;
-							}
+							if (ret == null) continue;
 							JTextComponent tf = (JTextComponent) comp;
 							tf.setText(ret.toString());
 							tf.setCaretPosition(0);
 						} else if (comp instanceof PlainTextEditor) {
-							if (ret == null) {
-								continue;
-							}
+							if (ret == null) continue;
 							PlainTextEditor editor = (PlainTextEditor) comp;
 							editor.setText(ret.toString());
 						} else if (comp instanceof HtmlEditor) {
-							if (ret == null) {
-								continue;
-							}
+							if (ret == null) continue;
 							HtmlEditor editor = (HtmlEditor) comp;
 							editor.setText(ret.toString());
 							editor.setCaretPosition(0);
 						} else if (comp instanceof JCheckBox) {
-							if (ret == null) {
-								continue;
-							}
-							((JCheckBox) comp).setSelected((Boolean)ret);
+							if (ret == null) continue;
+							((JCheckBox) comp).setSelected((Boolean) ret);
 						} else if (comp instanceof AutoCompleteComboBox) {
-							AbstractEntityHandler eh = EntityUtil
-									.getEntityHandler(mainFrame, ret, method,
-											entity);
+							AbstractEntityHandler eh = EntityUtil.getEntityHandler(mainFrame, ret, method, entity);
 							AutoCompleteComboBox autoCombo = (AutoCompleteComboBox) comp;
-							EntityUtil.fillAutoCombo(mainFrame, autoCombo,
-									eh, (String) ret,
-									col.getAutoCompleteDaoMethod());
+							EntityUtil.fillAutoCombo(mainFrame, autoCombo, eh, (String) ret, col.getAutoCompleteDaoMethod());
 						} else if (comp instanceof JComboBox) {
 							boolean isNew = (ret == null);
 							final JComboBox combo = (JComboBox) comp;
@@ -688,20 +622,13 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 								}
 								combo.setModel(model);
 								combo.revalidate();
-								if (ret == null && combo.getItemCount() > 0) {
-									combo.setSelectedIndex(0);
-								} else {
-									model.setSelectedItem(ret);
-								}
-								if (col.hasListCellRenderer()) {
-									combo.setRenderer(col.getListCellRenderer());
-								}
+								if (ret == null && combo.getItemCount() > 0) combo.setSelectedIndex(0);
+								else model.setSelectedItem(ret);
+								if (col.hasListCellRenderer()) combo.setRenderer(col.getListCellRenderer());
 							} else {
-								AbstractEntityHandler entityHandler2 = EntityUtil
-										.getEntityHandler(mainFrame, ret,
-												method, entity);
-								EntityUtil.fillEntityCombo(mainFrame, combo,
-										entityHandler2, (AbstractEntity) ret,
+								AbstractEntityHandler entityHandler2 = EntityUtil .getEntityHandler(mainFrame, ret,
+										method, entity);
+								EntityUtil.fillEntityCombo(mainFrame, combo, entityHandler2, (AbstractEntity) ret,
 										isNew, col.isEmptyComboItem());
 							}
 						} else if (comp instanceof CheckBoxPanel) {
@@ -712,12 +639,11 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 								cbPanel.setDecorator(decorator);
 							}
 							cbPanel.setEntity(entity);
-							AbstractEntityHandler entityHandler2 = EntityUtil
-									.getEntityHandler(mainFrame, ret, method,
-											entity);
+							AbstractEntityHandler entityHandler2 = EntityUtil .getEntityHandler(mainFrame, ret, method,
+								entity);
 							cbPanel.setEntityHandler(entityHandler2);
 							cbPanel.setEntity(entity);
-							cbPanel.setEntityList((List)ret);
+							cbPanel.setEntityList((List) ret);
 							cbPanel.setSearch(col.getSearch());
 							cbPanel.initAll();
 						} else if (comp instanceof DateChooser) {
@@ -733,14 +659,14 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 							lb.setIcon((Icon) ret);
 						} else if (comp instanceof AttributesPanel) {
 							AttributesPanel attrPanel = (AttributesPanel) comp;
-							attrPanel.setAttributes(EntityUtil
-									.getEntityAttributes(mainFrame, entity));
+							attrPanel.setAttributes(EntityUtil.getEntityAttributes(mainFrame, entity));
 							attrPanel.initAll();
 						}
-					}
 				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-				System.err.println("EntityEditor.editEntity() Exception : "+ex.getMessage());
+			} catch (NoSuchMethodException | SecurityException 
+					| IllegalAccessException | IllegalArgumentException 
+					| InvocationTargetException ex) {
+				StorybookApp.error("EntityEditor.editEntity() Exception : ",ex);
 			}
 
 			if (col.hasRadioButtonGroup()) {
@@ -764,15 +690,11 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 		StorybookApp.trace("EntityEditor.updateEntityFromInputComponents()");
 		for (SbColumn col : entityHandler.getColumns()) {
 			try {
-				if (col.isReadOnly()) {
-					continue;
-				}
+				if (col.isReadOnly()) continue;
 
 				Object objVal = null;
 				for (JComponent comp : inputComponents) {
-					if (!col.getMethodName().equals(comp.getName())) {
-						continue;
-					}
+					if (!col.getMethodName().equals(comp.getName())) continue;
 					if (comp instanceof JTextComponent) {
 						JTextComponent tf = (JTextComponent) comp;
 						objVal = tf.getText();
@@ -815,9 +737,8 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 					}
 					if (comp instanceof CleverColorChooser) {
 						CleverColorChooser colorChooser = (CleverColorChooser) comp;
-						if (colorChooser.getColor() != null) {
+						if (colorChooser.getColor() != null)
 							objVal = colorChooser.getColor();
-						}
 						break;
 					}
 					if (comp instanceof CheckBoxPanel) {
@@ -842,138 +763,111 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 				if (type == Long.class) {
 					// scene ID
 					val = (Scene) objVal;
-					types = new Class[] { Scene.class };
+					types = new Class[]{Scene.class};
 				} else if (type == Integer.class) {
 					if (objVal != null) {
-						if (objVal.toString().isEmpty()) {
-							val = null;
-						} else {
-							val = Integer.parseInt(objVal.toString());
-						}
+						if (objVal.toString().isEmpty()) val = null;
+						else val = Integer.parseInt(objVal.toString());
 					}
-					types = new Class[] { Integer.class };
+					types = new Class[]{Integer.class};
 				} else if (type == String.class) {
 					val = objVal;
-					types = new Class[] { String.class };
+					types = new Class[]{String.class};
 				} else if (type == Boolean.class) {
 					val = objVal;
-					types = new Class[] { Boolean.class };
+					types = new Class[]{Boolean.class};
 				} else if (type == Person.class) {
 					if (objVal instanceof String) {
-						if (((String) objVal).length() == 0) {
-							val = null;
-						}
-					} else {
-						val = (Person) objVal;
-					}
-					types = new Class[] { Person.class };
+						if (((String) objVal).length() == 0) val = null;
+					} else val = (Person) objVal;
+					types = new Class[]{Person.class};
 				} else if (type == Location.class) {
 					if (objVal instanceof String) {
-						if (((String) objVal).length() == 0) {
-							val = null;
-						}
-					} else {
-						val = (Location) objVal;
-					}
-					types = new Class[] { Location.class };
+						if (((String) objVal).length() == 0) val = null;
+					} else val = (Location) objVal;
+					types = new Class[]{Location.class};
 				} else if (type == Scene.class) {
 					if (objVal instanceof String) {
-						if (((String) objVal).length() == 0) {
-							val = null;
-						}
-					} else {
-						val = (Scene) objVal;
-					}
-					types = new Class[] { Scene.class };
+						if (((String) objVal).length() == 0) val = null;
+					} else val = (Scene) objVal;
+					types = new Class[]{Scene.class};
 				} else if (type == Chapter.class) {
 					if (objVal instanceof String) {
-						if (((String) objVal).length() == 0) {
-							val = null;
-						}
-					} else {
-						val = (Chapter) objVal;
-					}
-					types = new Class[] { Chapter.class };
+						if (((String) objVal).length() == 0) val = null;
+					} else val = (Chapter) objVal;
+					types = new Class[]{Chapter.class};
 				} else if (type == Part.class) {
 					val = (Part) objVal;
-					types = new Class[] { Part.class };
+					types = new Class[]{Part.class};
 				} else if (type == Gender.class) {
 					val = (Gender) objVal;
-					types = new Class[] { Gender.class };
+					types = new Class[]{Gender.class};
 				} else if (type == Category.class) {
 					val = (Category) objVal;
-					types = new Class[] { Category.class };
+					types = new Class[]{Category.class};
 				} else if (type == Strand.class) {
 					val = (Strand) objVal;
-					types = new Class[] { Strand.class };
+					types = new Class[]{Strand.class};
 				} else if (type == Idea.class) {
 					val = (Idea) objVal;
-					types = new Class[] { Idea.class };
+					types = new Class[]{Idea.class};
 				} else if (type == Tag.class) {
 					val = (Tag) objVal;
-					types = new Class[] { Tag.class };
+					types = new Class[]{Tag.class};
 				} else if (type == AbstractTag.class) {
 					val = (AbstractTag) objVal;
-					types = new Class[] { AbstractTag.class };
+					types = new Class[]{AbstractTag.class};
 				} else if (type == Item.class) {
 					val = (Item) objVal;
-					types = new Class[] { Item.class };
+					types = new Class[]{Item.class};
 				} else if (type == TagLink.class) {
 					val = (TagLink) objVal;
-					types = new Class[] { TagLink.class };
+					types = new Class[]{TagLink.class};
 				} else if (type == ItemLink.class) {
 					val = (ItemLink) objVal;
-					types = new Class[] { ItemLink.class };
+					types = new Class[]{ItemLink.class};
 				} else if (type == Date.class) {
 					val = (Date) objVal;
-					types = new Class[] { Date.class };
+					types = new Class[]{Date.class};
 				} else if (type == Timestamp.class) {
 					val = (Timestamp) objVal;
-					types = new Class[] { Timestamp.class };
+					types = new Class[]{Timestamp.class};
 				} else if (type == Color.class) {
 					val = (Color) objVal;
-					types = new Class[] { Color.class };
+					types = new Class[]{Color.class};
 				} else if (type == SceneState.class) {
 					val = (SceneState) objVal;
-					types = new Class[] { SceneState.class };
+					types = new Class[]{SceneState.class};
 				} else if (type == IdeaState.class) {
 					val = (IdeaState) objVal;
-					types = new Class[] { IdeaState.class };
+					types = new Class[]{IdeaState.class};
 				} else if (type == List.class) {
 					val = (List<?>) objVal;
-					types = new Class[] { List.class };
+					types = new Class[]{List.class};
 				} else if (type == Icon.class) {
 					val = (Icon) objVal;
-					types = new Class[] { Icon.class };
+					types = new Class[]{Icon.class};
 				}
 
 				// invoke setter
-				if (col.getInputType() != InputType.ATTRIBUTES
-						&& col.getInputType() != InputType.NONE) {
+				if (col.getInputType() != InputType.ATTRIBUTES && col.getInputType() != InputType.NONE) {
 					methodName = "set" + col.getMethodName();
 					method = entity.getClass().getMethod(methodName, types);
 					method.invoke(entity, val);
 				}
-				if (col.getInputType() == InputType.ATTRIBUTES) {
-					if (entity instanceof Person) {
+				if (col.getInputType() == InputType.ATTRIBUTES)
+					if (entity instanceof Person)
 						// save attributes for later usage
-						attributes = (ArrayList<Attribute>) val;
-						// ((Person)entity).setAttributes((ArrayList<Attribute>)
-						// val);
-					}
-				}
-			} catch (	NumberFormatException | NullPointerException ex1) {
+						attributes = (ArrayList<Attribute>) val; // ((Person)entity).setAttributes((ArrayList<Attribute>)val);
+			} catch (NumberFormatException | NullPointerException ex1) {
 				// ignore
-			} catch (IllegalAccessException | IllegalArgumentException 
-					| NoSuchMethodException | SecurityException 
-					| InvocationTargetException ex) {
+			} catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
 			}
 		}
 
 		// on a radio button panel, remove (set to null) attributes that are not
 		// selected
-		for (Entry<RadioButtonGroup, RadioButtonGroupPanel> e : rbgPanels
-				.entrySet()) {
+		for (Entry<RadioButtonGroup, RadioButtonGroupPanel> e : rbgPanels.entrySet()) {
 			RadioButtonGroup rbg = e.getKey();
 			RadioButtonGroupPanel panel = e.getValue();
 			ArrayList<AbstractButton> buttons = panel.getNotSelectedButtons();
@@ -991,8 +885,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			// remove error labels
 			for (Container container : containers) {
 				ArrayList<Component> components = new ArrayList<>();
-				SwingUtil.findComponentsNameStartsWith(container, ERROR_LABEL,
-						components);
+				SwingUtil.findComponentsNameStartsWith(container, ERROR_LABEL, components);
 				for (Component comp : components) {
 					Container cont = comp.getParent();
 					cont.remove(comp);
@@ -1001,20 +894,12 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 
 			int i = 0;
 			for (JComponent comp : inputComponents) {
-				AbstractInputVerifier verifier = (AbstractInputVerifier) comp
-						.getInputVerifier();
-				if (verifier == null) {
-					continue;
-				}
-				if (!comp.isEnabled()) {
-					// don't check disabled components
-					continue;
-				}
+				AbstractInputVerifier verifier = (AbstractInputVerifier) comp.getInputVerifier();
+				if (verifier == null) continue;
+				if (!comp.isEnabled()) continue;// don't check disabled components
 				if (!verifier.verify(comp)) {
 					Icon icon = IconUtil.StateIcon.WARNING.getIcon();
-					if (errorState == ErrorState.OK) {
-						errorState = ErrorState.WARNING;
-					}
+					if (errorState == ErrorState.OK) errorState = ErrorState.WARNING;
 					if (verifier.getErrorState() == ErrorState.ERROR) {
 						errorState = ErrorState.ERROR;
 						icon = IconUtil.StateIcon.ERROR.getIcon();
@@ -1026,9 +911,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 					Container container = comp.getParent();
 					int x = comp.getWidth() - 18;
 					int y = 1;
-					if (comp instanceof DateChooser) {
-						x = comp.getWidth() - 203;
-					}
+					if (comp instanceof DateChooser) x = comp.getWidth() - 203;
 					if (comp instanceof JComboBox) {
 						x = comp.getWidth() - 40;
 						y = 3;
@@ -1041,14 +924,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 						x = comp.getWidth() - 44;
 						y = comp.getHeight() - 70;
 					}
-					if (x < 0) {
-						x = 0;
-					}
-					if (y < 0) {
-						y = 0;
-					}
-					container.add(lb, "pos (" + cn + ".x+" + x + ") (" + cn
-							+ ".y+" + y + ")");
+					if (x < 0) x = 0;
+					if (y < 0) y = 0;
+					container.add(lb, "pos (" + cn + ".x+" + x + ") (" + cn + ".y+" + y + ")");
 					int zo = container.getComponentZOrder(comp);
 					container.setComponentZOrder(lb, zo > 0 ? zo - 1 : 0);
 
@@ -1056,18 +934,14 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 				}
 			}
 			if (errorState != ErrorState.OK) {
-				if (errorState == ErrorState.ERROR) {
-					setMsgState(MsgState.ERRORS);
-				} else {
-					setMsgState(MsgState.WARNINGS);
-				}
+				if (errorState == ErrorState.ERROR) setMsgState(MsgState.ERRORS);
+				else setMsgState(MsgState.WARNINGS);
 			}
-
 			for (JPanel container : containers) {
 				SwingUtil.forceRevalidate(container);
 			}
 		} catch (Exception e) {
-			System.err.println("EntityEditor.verifyInput() Exception :"+e.getMessage());
+			StorybookApp.error("EntityEditor.verifyInput() Exception :", e);
 		}
 	}
 
@@ -1078,31 +952,22 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 			if (entity.isTransient()) {
 				// new entity
 				verifyInput();
-				if (errorState == ErrorState.ERROR) {
-					return;
-				}
+				if (errorState == ErrorState.ERROR) return;
 				ctrl.newEntity(entity);
-				if (errorState == ErrorState.OK) {
-					setMsgState(MsgState.ADDED);
-				}
+				if (errorState == ErrorState.OK) setMsgState(MsgState.ADDED);
 				titlePanel.refresh(entity);
 				btAddOrUpdate.setText(I18N.getMsg("msg.editor.update"));
 			} else {
 				// update entity
 				verifyInput();
-				if (errorState == ErrorState.ERROR) {
-					return;
-				}
+				if (errorState == ErrorState.ERROR) return;
 				ctrl.updateEntity(entity);
-				if (errorState == ErrorState.OK) {
+				if (errorState == ErrorState.OK)
 					setMsgState(MsgState.UPDATED);
-				}
 			}
 
 			// save attributes
-			if (entity instanceof Person) {
-				EntityUtil.setEntityAttributes(mainFrame, entity, attributes);
-			}
+			if (entity instanceof Person) EntityUtil.setEntityAttributes(mainFrame, entity, attributes);
 
 			// keep origEntity up-to-date
 			origEntity = entityHandler.createNewEntity();
@@ -1112,13 +977,13 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	private void abandonEntityChanges() {
-		StorybookApp.trace("EntityEditor.abandonEntityChanges("+")");
+		StorybookApp.trace("EntityEditor.abandonEntityChanges(" + ")");
 		EntityUtil.abandonEntityChanges(mainFrame, entity);
 		unloadEntity();
 	}
 
 	private void unloadEntity() {
-		StorybookApp.trace("EntityEditor.unloadEntity("+")");
+		StorybookApp.trace("EntityEditor.unloadEntity(" + ")");
 		entity = null;
 		entityHandler = null;
 		containers.clear();
@@ -1127,51 +992,43 @@ public class EntityEditor extends AbstractPanel implements ActionListener,
 	}
 
 	public AbstractEntity getEntity() {
-		StorybookApp.trace("EntityEditor.getEntity("+")");
+		StorybookApp.trace("EntityEditor.getEntity(" + ")");
 		return entity;
 	}
 
 	public boolean isEntityLoaded() {
-		StorybookApp.trace("EntityEditor.isEntityLoaded("+")");
+		StorybookApp.trace("EntityEditor.isEntityLoaded(" + ")");
 		return entity != null;
 	}
 
 	public boolean hasEntityChanged() {
-		StorybookApp.trace("EntityEditor.hasEntityChanged("+")");
+		StorybookApp.trace("EntityEditor.hasEntityChanged(" + ")");
 		return (entity != null && (!entity.equals(origEntity)));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		StorybookApp.trace("EntityEditor.actionPerformed("+e.getActionCommand()+")");
+		StorybookApp.trace("EntityEditor.actionPerformed(" + e.getActionCommand() + ")");
 		String compName = ((Component) e.getSource()).getName();
 		if (ComponentName.BT_OK.check(compName)) {
 			addOrUpdateEntity();
-			if (errorState == ErrorState.ERROR) {
-				return;
-			}
+			if (errorState == ErrorState.ERROR) return;
 			unloadEntity();
 			refresh();
-			if (!leaveOpen) {
-				mainFrame.hideEditor();
-			}
-		} else if (ComponentName.BT_ADD_OR_UPDATE.check(compName)) {
-			addOrUpdateEntity();
-		} else if (ComponentName.BT_CANCEL.check(compName)) {
+			if (!leaveOpen) mainFrame.hideEditor();
+		} else if (ComponentName.BT_ADD_OR_UPDATE.check(compName)) addOrUpdateEntity();
+		else if (ComponentName.BT_CANCEL.check(compName)) {
 			abandonEntityChanges();
 			refresh();
-			if (!leaveOpen) {
-				mainFrame.hideEditor();
-			}
+			if (!leaveOpen) mainFrame.hideEditor();
 		}
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		StorybookApp.trace("EntityEditor.itemStateChanged("+e.paramString()+")");
+		StorybookApp.trace("EntityEditor.itemStateChanged(" + e.paramString() + ")");
 		JCheckBox cb = (JCheckBox) e.getSource();
 		leaveOpen = cb.isSelected();
-		DocumentUtil.storeInternal(mainFrame, InternalKey.LEAVE_EDITOR_OPEN,
-				leaveOpen);
+		DocumentUtil.storeInternal(mainFrame, InternalKey.LEAVE_EDITOR_OPEN, leaveOpen);
 	}
 }

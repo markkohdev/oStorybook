@@ -31,6 +31,7 @@ public class ExportHtml {
 	String author;
 	private final Export parent;
 	private ParamExport param;
+	public boolean isOpened=false;
 
 	ExportHtml(Export parent, String report, String fileName, List<ExportHeader> headers, String author) {
 		this.parent = parent;
@@ -38,33 +39,41 @@ public class ExportHtml {
 		this.fileName = fileName;
 		this.headers = headers;
 		this.author = author;
-		this.param=parent.parent.paramExport;
+		this.param = parent.parent.paramExport;
+		this.isOpened=false;
 	}
 
-	public void open() {
+	public void open(boolean isTable) {
 		try {
 			try {
 				outStream = new BufferedWriter(new FileWriter(fileName));
 				String str = "<html>" + getHtmlHead();
-				if (headers != null)
-					str += "<body>"+"<h1>"+parent.bookTitle+" - "+parent.exportData.getKey()+"</h1>"+
-							"<table border=\"1\" cellspacing=\"0\" cellpadding=\"0\">";
+				if (isTable)
+					if (headers != null)
+						str += "<body>"
+								+ "<h1>" + parent.bookTitle + " - " + parent.exportData.getKey() + "</h1>"
+								+ "<table border=\"1\" cellspacing=\"0\" cellpadding=\"0\">";
+					else
+						str += "<body>"
+								+ "<h1>" + parent.bookTitle + " - " + parent.exportData.getKey() + "</h1>";
 				else
-					str += "<body><h1>"+parent.bookTitle+" - "+parent.exportData.getKey()+"</h1>";
+					str += "<body>";
 				outStream.write(str, 0, str.length());
 				outStream.flush();
+				isOpened=true;
 			} catch (IOException ex) {
 				StorybookApp.error("ExportHtml.open()", ex);
 			}
-			if (headers != null) {
-				String str = "<tr>\n";
-				for (ExportHeader header : headers) {
-					str += parent.getColon(header.getName(), header.getSize());
+			if (isTable)
+				if (headers != null) {
+					String str = "<tr>\n";
+					for (ExportHeader header : headers) {
+						str += parent.getColon(header.getName(), header.getSize());
+					}
+					str += "</tr>\n";
+					outStream.write(str, 0, str.length());
+					outStream.flush();
 				}
-				str += "</tr>\n";
-				outStream.write(str, 0, str.length());
-				outStream.flush();
-			}
 		} catch (IOException ex) {
 			StorybookApp.error("ExportHtml.open()", ex);
 		}
@@ -90,9 +99,10 @@ public class ExportHtml {
 
 	public String getHtmlHead() {
 		String buf = "<head>";
-		String rep=parent.exportData.getKey();
-		buf+="<title>oStorybook : "+parent.bookTitle+" - "+rep+"</title>";
-		buf += "<style type='text/css'>";
+		String rep = parent.exportData.getKey();
+		buf += "<title>oStorybook : " + parent.bookTitle + " - " + rep + "</title>\n";
+		buf += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
+		buf += "<style type='text/css'>\n";
 		buf += "<!--\n";
 		if (param.htmlUseCss)
 			try {
@@ -159,14 +169,16 @@ public class ExportHtml {
 					+ "}\n";
 		}
 		buf += "-->";
-		buf += "</style>";
+		buf += "</style>\n";
 		buf += "</head>\n";
 		return (buf);
 	}
 
-	public void writeText(String str) {
+	public void writeText(String str, boolean withParagraph) {
 		try {
 			String s = "<p>" + str + "</p>";
+			if (!withParagraph)
+				s = str;
 			outStream.write(s, 0, s.length());
 			outStream.flush();
 		} catch (IOException ex) {
@@ -174,16 +186,20 @@ public class ExportHtml {
 		}
 	}
 
-	public void close() {
+	public void close(boolean isTable) {
 		try {
 			String str = "";
-			if (headers != null)
-				str += "</table></body></html>";
+			if (isTable)
+				if (headers != null)
+					str += "</table></body></html>";
+				else
+					str += "</body></html>";
 			else
-				str += "</body></html>";;
+				str += "</body></html>";
 			outStream.write(str, 0, str.length());
 			outStream.flush();
 			outStream.close();
+			isOpened=false;
 		} catch (IOException ex) {
 			StorybookApp.error("ExportHtml.close()", ex);
 		}

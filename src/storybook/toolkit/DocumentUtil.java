@@ -53,6 +53,12 @@ public class DocumentUtil {
 				InternalKey.USE_HTML_DESCR, SbConstants.DEFAULT_USE_HTML_DESCR);
 		return internal.getBooleanValue();
 	}
+	
+	public static boolean isExportBookHtmlMulti(MainFrame mainFrame) {
+		Internal internal = restoreInternal(mainFrame,
+				InternalKey.HTML_BOOK_MULTI, false);
+		return internal.getBooleanValue();
+	}
 
 	public static boolean isExportChapterNumbers(MainFrame mainFrame) {
 		Internal internal = restoreInternal(mainFrame,
@@ -86,6 +92,13 @@ public class DocumentUtil {
 		Internal internal = restoreInternal(mainFrame,
 				InternalKey.EXPORT_SCENE_TITLES,
 				SbConstants.DEFAULT_EXPORT_SCENE_TITLES);
+		return internal.getBooleanValue();
+	}
+
+	public static boolean isExportSceneSeparator(MainFrame mainFrame) {
+		Internal internal = restoreInternal(mainFrame,
+				InternalKey.EXPORT_SCENE_SEPARATOR,
+				SbConstants.DEFAULT_EXPORT_SCENE_SEPARATOR);
 		return internal.getBooleanValue();
 	}
 
@@ -179,4 +192,5 @@ public class DocumentUtil {
 	public static String getHomeDir() {
 		return System.getProperty("user.home");
 	}
+
 }

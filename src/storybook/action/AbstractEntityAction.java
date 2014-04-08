@@ -21,6 +21,7 @@ package storybook.action;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import storybook.StorybookApp;
 
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.ui.MainFrame;
@@ -39,5 +40,6 @@ public abstract class AbstractEntityAction extends AbstractAction {
 		super(name, icon);
 		this.mainFrame = mainframe;
 		this.entity = entity;
+		StorybookApp.trace("AbstractEntityAction("+mainFrame.getName()+","+entity.getAbbr()+","+name+",icon)");
 	}
 }

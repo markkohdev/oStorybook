@@ -4,10 +4,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import org.hibernate.Session;
+import storybook.StorybookApp;
 import storybook.model.hbn.SbSessionFactory;
 
 public abstract class AbstractModel {
-	private boolean trace=false;
 
 	protected PropertyChangeSupport propertyChangeSupport;
 
@@ -22,7 +22,7 @@ public abstract class AbstractModel {
 
 
 	public void initSession(String dbName, String configFile) {
-		if (trace) {System.out.println("AbstractModel.initSession("+dbName+","+configFile+")");}
+		StorybookApp.trace("AbstractModel.initSession("+dbName+","+configFile+")");
 		sessionFactory.init(dbName, configFile);
 	}
 
@@ -46,7 +46,7 @@ public abstract class AbstractModel {
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
-		if (trace) {System.out.println("AbstractModel.addPropertyChangeListener("+l.toString()+")");}
+		StorybookApp.trace("AbstractModel.addPropertyChangeListener("+l.toString()+")");
 		propertyChangeSupport.addPropertyChangeListener(l);
 	}
 

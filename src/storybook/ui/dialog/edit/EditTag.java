@@ -212,16 +212,16 @@ public class EditTag extends javax.swing.JPanel {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public String getData() {
+    public String saveData() {
         String rt = ctrlData();
         if ("".equals(rt)) {
-            // TODO
+            // TODO EditTag.saveData
         }
         return (rt);
     }
 
     private String ctrlData() {
-        // TODO
+        // TODO EditTag.ctrlData
         return ("");
     }
 }

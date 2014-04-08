@@ -141,11 +141,12 @@ public class Gender extends AbstractEntity {
 		if (isFemale()) {
 			return I18N.getIcon("icon.small.woman");
 		}
+		//TODO Gender.getIcon
 		return I18N.getIcon("icon.small.person");
 	}
 
 	public void setIcon(Icon icon) {
-		// not implemented yet
+		// TODO Gender.setIcon
 	}
 
 	@Override

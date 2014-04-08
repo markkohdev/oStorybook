@@ -14,8 +14,6 @@ import org.jsoup.Jsoup;
 import storybook.toolkit.TextUtil;
 import storybook.toolkit.swing.ColorUtil;
 
-// TODO add external CSS possibility
-
 public class HtmlUtil {
 
 	public static String getCleanHtml(String html) {
@@ -219,6 +217,15 @@ public class HtmlUtil {
 
 	public static String getHeadWithCSS() {
 		return getHeadWithCSS(10);
+	}
+
+	public static String getHeadWithExternalCSS(int fontSize) {
+		// TODO add external CSS possibility
+		String buf = "<head>"
+			+ "<style type='text/css'><!--\n";
+		buf+="--></style>"
+			+ "</head>\n";
+		return(buf);
 	}
 
 	public static String getHeadWithCSS(int fontSize) {

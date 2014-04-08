@@ -80,7 +80,6 @@ import storybook.ui.dialog.rename.RenameCityDialog;
 import storybook.ui.dialog.rename.RenameCountryDialog;
 import storybook.ui.dialog.rename.RenameItemCategoryDialog;
 import storybook.ui.dialog.rename.RenameTagCategoryDialog;
-import storybook.ui.jasperreports.ExportPrintDialog;
 
 import com.sun.jaf.ui.ActionManager;
 import storybook.export.BookExporter;
@@ -246,8 +245,8 @@ public class ActionHandler {
 	}
 
 	public void handleExportPrint() {
-		ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
-		SwingUtil.showDialog(dlg, mainFrame);
+		//ExportPrintDialog dlg = new ExportPrintDialog(mainFrame);
+		//SwingUtil.showDialog(dlg, mainFrame);
 	}
 
 	public void handleChartGantt() {//new OK

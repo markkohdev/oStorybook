@@ -16,6 +16,9 @@
 package storybook.ui;
 
 import javax.swing.JToolBar;
+import net.infonode.docking.View;
+import storybook.SbConstants;
+import storybook.StorybookApp;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Idea;
 import storybook.model.hbn.entity.Item;
@@ -25,6 +28,7 @@ import storybook.model.hbn.entity.Person;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.model.hbn.entity.Tag;
+import storybook.toolkit.net.NetUtil;
 import static storybook.toolkit.swing.SwingUtil.showModalDialog;
 import storybook.ui.dialog.edit.Editor;
 import storybook.ui.dialog.edit.EditorDlg;
@@ -53,7 +57,6 @@ public class MainToolBar extends javax.swing.JFrame {
     private void initComponents() {
 
         mainToolBar = new javax.swing.JToolBar();
-        lbFile = new javax.swing.JLabel();
         btNewFile = new javax.swing.JButton();
         btOpenFile = new javax.swing.JButton();
         btExit = new javax.swing.JButton();
@@ -72,15 +75,15 @@ public class MainToolBar extends javax.swing.JFrame {
         btNewItem = new javax.swing.JButton();
         btNewIdea = new javax.swing.JButton();
         lbView = new javax.swing.JLabel();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jToggleButton3 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
-        jToggleButton5 = new javax.swing.JToggleButton();
-        jToggleButton6 = new javax.swing.JToggleButton();
-        jToggleButton7 = new javax.swing.JToggleButton();
-        jToggleButton8 = new javax.swing.JToggleButton();
-        jToggleButton9 = new javax.swing.JToggleButton();
+        tbStrands = new javax.swing.JButton();
+        tbParts = new javax.swing.JButton();
+        tbChapters = new javax.swing.JButton();
+        tbScenes = new javax.swing.JButton();
+        tbPersons = new javax.swing.JButton();
+        tbLocations = new javax.swing.JButton();
+        tbTags = new javax.swing.JButton();
+        tbObjects = new javax.swing.JButton();
+        tbIdeas = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JToolBar.Separator();
         btManage = new javax.swing.JButton();
         btChrono = new javax.swing.JButton();
@@ -96,13 +99,8 @@ public class MainToolBar extends javax.swing.JFrame {
         mainToolBar.setFloatable(false);
         mainToolBar.setRollover(true);
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
-        lbFile.setText(bundle.getString("msg.menu.file")); // NOI18N
-        lbFile.setAlignmentX(0.5F);
-        lbFile.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
-        mainToolBar.add(lbFile);
-
         btNewFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-new.png"))); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
         btNewFile.setToolTipText(bundle.getString("msg.file.new")); // NOI18N
         btNewFile.setAlignmentX(0.5F);
         btNewFile.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -285,59 +283,104 @@ public class MainToolBar extends javax.swing.JFrame {
         lbView.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 2));
         mainToolBar.add(lbView);
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/strand.png"))); // NOI18N
-        jToggleButton1.setFocusable(false);
-        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton1);
+        tbStrands.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/strand.png"))); // NOI18N
+        tbStrands.setFocusable(false);
+        tbStrands.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbStrands.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbStrands.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbStrandsActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbStrands);
 
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/part.png"))); // NOI18N
-        jToggleButton2.setFocusable(false);
-        jToggleButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton2);
+        tbParts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/part.png"))); // NOI18N
+        tbParts.setFocusable(false);
+        tbParts.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbParts.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbParts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbPartsActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbParts);
 
-        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chapter.png"))); // NOI18N
-        jToggleButton3.setFocusable(false);
-        jToggleButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton3);
+        tbChapters.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chapter.png"))); // NOI18N
+        tbChapters.setFocusable(false);
+        tbChapters.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbChapters.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbChapters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbChaptersActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbChapters);
 
-        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/scene.png"))); // NOI18N
-        jToggleButton4.setFocusable(false);
-        jToggleButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton4);
+        tbScenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/scene.png"))); // NOI18N
+        tbScenes.setFocusable(false);
+        tbScenes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbScenes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbScenes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbScenesActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbScenes);
 
-        jToggleButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/person.png"))); // NOI18N
-        jToggleButton5.setFocusable(false);
-        jToggleButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton5);
+        tbPersons.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/person.png"))); // NOI18N
+        tbPersons.setFocusable(false);
+        tbPersons.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbPersons.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbPersons.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbPersonsActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbPersons);
 
-        jToggleButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/location.png"))); // NOI18N
-        jToggleButton6.setFocusable(false);
-        jToggleButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton6);
+        tbLocations.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/location.png"))); // NOI18N
+        tbLocations.setFocusable(false);
+        tbLocations.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbLocations.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbLocations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbLocationsActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbLocations);
 
-        jToggleButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/tag.png"))); // NOI18N
-        jToggleButton7.setFocusable(false);
-        jToggleButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton7);
+        tbTags.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/tag.png"))); // NOI18N
+        tbTags.setFocusable(false);
+        tbTags.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbTags.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbTags.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTagsActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbTags);
 
-        jToggleButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/item.png"))); // NOI18N
-        jToggleButton8.setFocusable(false);
-        jToggleButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton8);
+        tbObjects.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/item.png"))); // NOI18N
+        tbObjects.setFocusable(false);
+        tbObjects.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbObjects.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbObjects.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbObjectsActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbObjects);
 
-        jToggleButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/idea.png"))); // NOI18N
-        jToggleButton9.setFocusable(false);
-        jToggleButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        mainToolBar.add(jToggleButton9);
+        tbIdeas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/idea.png"))); // NOI18N
+        tbIdeas.setFocusable(false);
+        tbIdeas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbIdeas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbIdeas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbIdeasActionPerformed(evt);
+            }
+        });
+        mainToolBar.add(tbIdeas);
         mainToolBar.add(jSeparator8);
 
         btManage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/manage.png"))); // NOI18N
@@ -447,90 +490,110 @@ public class MainToolBar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btNewFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewFileActionPerformed
-        // TODO newfile
+        StorybookApp.getInstance().createNewFile();
     }//GEN-LAST:event_btNewFileActionPerformed
 
     private void btOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenFileActionPerformed
-        // TODO openfile
+        mainFrame.setWaitingCursor();
+		StorybookApp.getInstance().openFile();
+		mainFrame.setDefaultCursor();
     }//GEN-LAST:event_btOpenFileActionPerformed
 
     private void btNewStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewStrandActionPerformed
-        Editor e = new Editor(mainFrame, (Strand) null);
-        e.setEdit("strand", (Strand) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "strand");
     }//GEN-LAST:event_btNewStrandActionPerformed
 
     private void btNewPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewPartActionPerformed
-        Editor e = new Editor(mainFrame, (Part) null);
-        e.setEdit("part", (Part) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "part");
     }//GEN-LAST:event_btNewPartActionPerformed
 
     private void btNewChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewChapterActionPerformed
-        Editor e = new Editor(mainFrame, (Chapter) null);
-        e.setEdit("chapter", (Chapter) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "chapter");
     }//GEN-LAST:event_btNewChapterActionPerformed
 
     private void btNewSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewSceneActionPerformed
-        Editor e = new Editor(mainFrame, (Scene) null);
-        e.setEdit("scene", (Scene) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "scene");
     }//GEN-LAST:event_btNewSceneActionPerformed
 
     private void btNewCharacterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewCharacterActionPerformed
-        Editor e = new Editor(mainFrame, (Person) null);
-        e.setEdit("person", (Person) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "person");
     }//GEN-LAST:event_btNewCharacterActionPerformed
 
     private void btNewLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewLocationActionPerformed
-        Editor e = new Editor(mainFrame, (Location) null);
-        e.setEdit("location", (Location) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "location");
     }//GEN-LAST:event_btNewLocationActionPerformed
 
     private void btNewTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewTagActionPerformed
-        Editor e = new Editor(mainFrame, (Tag) null);
-        e.setEdit("tag", (Tag) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "tag");
     }//GEN-LAST:event_btNewTagActionPerformed
 
     private void btNewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewItemActionPerformed
-        Editor e = new Editor(mainFrame, (Item) null);
-        e.setEdit("item", (Item) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "item");
     }//GEN-LAST:event_btNewItemActionPerformed
 
     private void btNewIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewIdeaActionPerformed
-        Editor e = new Editor(mainFrame, (Idea) null);
-        e.setEdit("idea", (Idea) null);
-        startEditNew(mainFrame, e);
+        startEditNew(mainFrame, "idea");
     }//GEN-LAST:event_btNewIdeaActionPerformed
 
     private void btManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManageActionPerformed
-        // TODO manage
+		viewPanel(SbConstants.ViewName.MANAGE);
     }//GEN-LAST:event_btManageActionPerformed
 
     private void btChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btChronoActionPerformed
-        // TODO chrono
+		viewPanel(SbConstants.ViewName.CHRONO);
     }//GEN-LAST:event_btChronoActionPerformed
 
     private void btBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBookActionPerformed
-        // TODO book
+		viewPanel(SbConstants.ViewName.BOOK);
     }//GEN-LAST:event_btBookActionPerformed
 
     private void btReadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReadingActionPerformed
-        // TODO reading
+		viewPanel(SbConstants.ViewName.READING);
     }//GEN-LAST:event_btReadingActionPerformed
 
     private void btMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btMemoriaActionPerformed
-        // TODO memoria
+		viewPanel(SbConstants.ViewName.MEMORIA);
     }//GEN-LAST:event_btMemoriaActionPerformed
 
     private void btHelpDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btHelpDocActionPerformed
-        // TODO help
+		NetUtil.openBrowser(SbConstants.URL.DOC.toString());
     }//GEN-LAST:event_btHelpDocActionPerformed
+
+    private void tbStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbStrandsActionPerformed
+		viewPanel(SbConstants.ViewName.STRANDS);
+    }//GEN-LAST:event_tbStrandsActionPerformed
+
+    private void tbPartsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbPartsActionPerformed
+		viewPanel(SbConstants.ViewName.PARTS);
+    }//GEN-LAST:event_tbPartsActionPerformed
+
+    private void tbChaptersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbChaptersActionPerformed
+		viewPanel(SbConstants.ViewName.CHAPTERS);
+    }//GEN-LAST:event_tbChaptersActionPerformed
+
+    private void tbScenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbScenesActionPerformed
+		viewPanel(SbConstants.ViewName.SCENES);
+    }//GEN-LAST:event_tbScenesActionPerformed
+
+    private void tbPersonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbPersonsActionPerformed
+		viewPanel(SbConstants.ViewName.PERSONS);
+    }//GEN-LAST:event_tbPersonsActionPerformed
+
+    private void tbLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbLocationsActionPerformed
+		viewPanel(SbConstants.ViewName.LOCATIONS);
+    }//GEN-LAST:event_tbLocationsActionPerformed
+
+    private void tbTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbTagsActionPerformed
+		viewPanel(SbConstants.ViewName.TAGS);
+    }//GEN-LAST:event_tbTagsActionPerformed
+
+    private void tbObjectsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbObjectsActionPerformed
+		viewPanel(SbConstants.ViewName.ITEMS);
+    }//GEN-LAST:event_tbObjectsActionPerformed
+
+    private void tbIdeasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbIdeasActionPerformed
+		viewPanel(SbConstants.ViewName.IDEAS);
+    }//GEN-LAST:event_tbIdeasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -548,19 +611,15 @@ public class MainToolBar extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainToolBar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainToolBar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainToolBar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException 
+				| IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainToolBar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 		//</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
             public void run() {
                 new MainToolBar().setVisible(true);
             }
@@ -590,21 +649,20 @@ public class MainToolBar extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JToolBar.Separator jSeparator9;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
-    private javax.swing.JToggleButton jToggleButton5;
-    private javax.swing.JToggleButton jToggleButton6;
-    private javax.swing.JToggleButton jToggleButton7;
-    private javax.swing.JToggleButton jToggleButton8;
-    private javax.swing.JToggleButton jToggleButton9;
-    private javax.swing.JLabel lbFile;
     private javax.swing.JLabel lbHelp;
     private javax.swing.JLabel lbNew;
     private javax.swing.JLabel lbPart;
     private javax.swing.JLabel lbView;
     private javax.swing.JToolBar mainToolBar;
+    private javax.swing.JButton tbChapters;
+    private javax.swing.JButton tbIdeas;
+    private javax.swing.JButton tbLocations;
+    private javax.swing.JButton tbObjects;
+    private javax.swing.JButton tbParts;
+    private javax.swing.JButton tbPersons;
+    private javax.swing.JButton tbScenes;
+    private javax.swing.JButton tbStrands;
+    private javax.swing.JButton tbTags;
     // End of variables declaration//GEN-END:variables
 
     public JToolBar getToolBar() {
@@ -627,7 +685,20 @@ public class MainToolBar extends javax.swing.JFrame {
         cbPart.setSelectedItem(x);
     }
 
-    private void startEditNew(MainFrame mainFrame, Editor e) {
+    private void startEditNew(MainFrame mainFrame, String obj) {
+        Editor e = new Editor(mainFrame, (Strand) null);
+		switch(obj) {
+			case "strand":	e.setEdit(obj, (Strand) null);break;
+			case "part":	e.setEdit(obj, (Part) null);break;
+			case "chapter":	e.setEdit(obj, (Chapter) null);break;
+			case "scene":	e.setEdit(obj, (Scene) null);break;
+			case "person":	e.setEdit(obj, (Person) null);break;
+			case "location":e.setEdit(obj, (Location) null);break;
+			case "item":	e.setEdit(obj, (Item) null);break;
+			case "tag":		e.setEdit(obj, (Tag) null);break;
+			case "idea":	e.setEdit(obj, (Idea) null);break;
+			default: return;
+		}
         EditorDlg dlg = new EditorDlg(mainFrame);
         dlg.setPanel(e);
         showModalDialog(dlg, mainFrame, true);
@@ -635,4 +706,10 @@ public class MainToolBar extends javax.swing.JFrame {
 
         }
     }
+
+	private void viewPanel(SbConstants.ViewName viewName) {
+		View view = mainFrame.getView(viewName);
+		view.restore();
+		view.restoreFocus();
+	}
 }

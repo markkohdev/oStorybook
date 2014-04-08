@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import javax.swing.JOptionPane;
+import storybook.StorybookApp;
 import storybook.model.hbn.entity.Scene;
 import storybook.ui.MainFrame;
 
@@ -74,7 +75,7 @@ public class CallLibreOffice {
 			+ I18N.getMsg("msg.common.chapter") + " " + str1 + " "
 			+ I18N.getMsg("msg.common.scene") + " " + str2
 			+ ".odt";
-		System.out.println("Scene odt file=" + str);
+		StorybookApp.trace("Scene odt file=" + str);
 		return(str);
 	}
 

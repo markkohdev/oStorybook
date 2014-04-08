@@ -241,7 +241,6 @@ public class DlgExport extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFolderActionPerformed
-        // TODO btFolderActionPerformed
 		JFileChooser chooser = new JFileChooser(txFolder.getText());
 		chooser.setFileSelectionMode(1);
 		int i = chooser.showOpenDialog(this);
@@ -275,7 +274,7 @@ public class DlgExport extends javax.swing.JDialog {
 
     private void cbReportItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbReportItemStateChanged
 		if (evt.getStateChange()==ItemEvent.SELECTED) {
-			// TODO change export report
+			if (evt.getItem().toString().equals(I18N.getMsg("msg.export.book.text"))) setOptions(cbFormat.getSelectedItem().toString());
 		}
     }//GEN-LAST:event_cbReportItemStateChanged
 
@@ -286,7 +285,6 @@ public class DlgExport extends javax.swing.JDialog {
     }//GEN-LAST:event_cbFormatItemStateChanged
 
     private void btOptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOptionsActionPerformed
-        // TODO add your handling code here:
 		DlgExportOptions expo=new DlgExportOptions(this,true);
 		expo.setVisible(true);
     }//GEN-LAST:event_btOptionsActionPerformed
@@ -377,6 +375,7 @@ public class DlgExport extends javax.swing.JDialog {
 				+(paramExport.pdfLandscape?I18N.getMsg("msg.export.options.pdf.orientation.landscape")
 						:I18N.getMsg("msg.export.options.pdf.orientation.portrait"))+"</li>";
 		str+="</ul>";
+		str+=getBookOptions();
 		return(str);
 	}
 
@@ -390,6 +389,7 @@ public class DlgExport extends javax.swing.JDialog {
 			str+="<li>"+I18N.getMsg("msg.export.html_css_file")+" : "+paramExport.htmlCssFile+"</li>";
 		str+="</ul>";
 		str+="<p>"+I18N.getMsg("msg.export.html_add_index")+"</p>";
+		str+=getBookOptions();
 		return(str);
 	}
 
@@ -406,6 +406,7 @@ public class DlgExport extends javax.swing.JDialog {
 				:I18N.getMsg("msg.export.options.csv.separate.semicolon"))+"</li>";
 		str+="</ul>";
 		str+=I18N.getMsg("msg.export.csv_not_book");
+		str+=getBookOptions();
 		return(str);
 	}
 
@@ -417,6 +418,7 @@ public class DlgExport extends javax.swing.JDialog {
 				(paramExport.txtTab?"'tab'":"'"+paramExport.txtSeparator+"'"))+"</li>";
 		str+="<li>"+I18N.getMsg("msg.export.txt_EOL")+"</li>";
 		str+="</ul>";
+		str+=getBookOptions();
 		return(str);
 	}
 
@@ -426,6 +428,28 @@ public class DlgExport extends javax.swing.JDialog {
 		str+="<ul>";
 		str+="<li>"+I18N.getMsg("msg.export.odf.no_options")+"</li>";
 		str+="</ul>";
+		str+=getBookOptions();
+		return(str);
+	}
+	
+	private String getBookOptions() {
+		String str="";
+		if (cbReport.getSelectedItem().toString().equals(I18N.getMsg("msg.export.book.text"))) {
+			str+="<p>"+I18N.getMsg("msg.export.book.htmloption")+" ";
+			if (paramExport.htmlBookMulti)
+				str+=I18N.getMsg("msg.export.book.htmloption.multifile");
+			else 
+				str+=I18N.getMsg("msg.export.book.htmloption.onefile");
+			str+="</p>";
+			str+="<ul>";
+			if (paramExport.isExportChapterNumbers) str+="<li>"+I18N.getMsg("msg.export.chapter.numbers")+"</li>";
+			if (paramExport.isExportChapterNumbersRoman) str+="<li>"+I18N.getMsg("msg.export.roman.numerals")+"</li>";
+			if (paramExport.isExportChapterTitles) str+="<li>"+I18N.getMsg("msg.export.chapter.titles")+"</li>";
+			if (paramExport.isExportChapterDatesLocs) str+="<li>"+I18N.getMsg("msg.export.chapter.dates.locations")+"</li>";
+			if (paramExport.isExportSceneTitles) str+="<li>"+I18N.getMsg("msg.export.scene.titles")+"</li>";
+			if (paramExport.isExportSceneSeparator) str+="<li>"+I18N.getMsg("msg.export.scene.separator")+"</li>";
+			str+="</ul>";
+		}
 		return(str);
 	}
 

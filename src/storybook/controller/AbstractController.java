@@ -169,8 +169,8 @@ public abstract class AbstractController implements PropertyChangeListener {
 				| IllegalArgumentException | InvocationTargetException e) {
 				System.err
 					.println("ERR AbstractController.setModelProperty() Exception: "+e.getMessage()
-					+ "method:" + method + "\n"
-					+ "classes:" + classes);
+					+ "\nmethod:" + method.getName()
+					+ "\nclasses:" + classes.getClass().getName());
 			}
 		}
 	}

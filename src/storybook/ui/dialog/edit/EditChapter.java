@@ -260,7 +260,7 @@ public class EditChapter extends javax.swing.JPanel {
 		return (false);
 	}
 
-	public String getData() {
+	public String saveData() {
 		String rt = ctrlData();
 		if ("".equals(rt)) {
 			chapter.setChapterno(Integer.getInteger(txNumber.getText()));

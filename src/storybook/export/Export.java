@@ -80,10 +80,12 @@ public class Export {
 		if (format.equals("preview")) format = "html";
 		switch (xp.getExportName()) {
 			case "book":
+				ExportBook exportBook=new ExportBook(this);
+				ret=exportBook.get();
 				JOptionPane.showMessageDialog(parent,
-					"Not supported yet.",
+					I18N.getMsg("msg.common.export.success") + "\n" + xp.getKey(),
 					I18N.getMsg("msg.common.export"), JOptionPane.OK_OPTION);
-				return ("Not supported yet."); //TODO getLocation
+				return (ret);
 			case "summary":
 				ExportBookSummary exp=new ExportBookSummary(this);
 				if (format.equals("csv")) format="txt";
@@ -189,8 +191,8 @@ public class Export {
 	public void createHtmlIndex(String dir) {
 		exportData=new ExportData("all", "msg.export.all.list");
 		ExportHtml html=new ExportHtml(this,"",dir+File.separator+"index.html",(List<ExportHeader>) null,"");
-		html.open();
-		html.writeText("<p>Lists index</p>");
+		html.open(true);
+		html.writeText("<p>Lists index</p>",false);
 		String str="<ul>";
 		for (ExportData rep : parent.exports) {
 			if (rep.getExportName().contentEquals("all")) break;
@@ -200,8 +202,8 @@ public class Export {
 			str+="</a></li>";
 		}
 		str+="</ul>";
-		html.writeText(str);
-		html.close();
+		html.writeText(str,false);
+		html.close(true);
 		JOptionPane.showMessageDialog(parent,
 			I18N.getMsg("msg.common.export.success") + "\n",
 			I18N.getMsg("msg.common.export"), JOptionPane.OK_OPTION);

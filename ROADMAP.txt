@@ -28,5 +28,4 @@ Suggestions approuvées, réalisation non planifiée:
 31/01/2014 : ajouter en export au format LaTeX
 
 Suggestions/Demandes en cours de réalisation:
-22/01/2014 : résoudre les problèmes d'export TXT et HTML, ceux du presse-papier
-             et mettre en place un vrai module d'impression. Prioritaire.
+22/01/2014 : mettre en place un vrai module d'impression. Prioritaire.

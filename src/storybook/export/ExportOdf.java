@@ -15,6 +15,7 @@ import java.util.List;
  * @author favdb
  */
 class ExportOdf {
+	// TODO
 
 	private final Export parent;
 	String report;
@@ -33,24 +34,18 @@ class ExportOdf {
 	}
 	
 	public void open() {
-		
 	}
 	
 	public void writeRow(String data) {
-		// TODO
 	}
 	
 	void writeText(String str) {
-		// TODO
-		throw new UnsupportedOperationException("Not supported yet."); 
 	}
 	
 	public void close() {
-		// TODO
 	}
 
 	void writeRow(String[] body) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }

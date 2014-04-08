@@ -278,16 +278,16 @@ public class EditLocation extends javax.swing.JPanel {
 	return(false)
 ;    }
 
-    public String getData() {
+    public String saveData() {
         String rt = ctrlData();
         if ("".equals(rt)) {
             location.setName(txName.getText());
-	    location.setAddress(txAdress.getText());
-	    location.setCity(cbCity.getSelectedItem().toString());
-	    location.setCountry(cbCountry.getSelectedItem().toString());
-	    location.setAltitude(Integer.getInteger(txAltitude.getText()));
-	    location.setDescription(description.getText());
-	    location.setNotes(notes.getText());
+			location.setAddress(txAdress.getText());
+			location.setCity(cbCity.getSelectedItem().toString());
+			location.setCountry(cbCountry.getSelectedItem().toString());
+			location.setAltitude(Integer.getInteger(txAltitude.getText()));
+			location.setDescription(description.getText());
+			location.setNotes(notes.getText());
         }
         return (rt);
     }

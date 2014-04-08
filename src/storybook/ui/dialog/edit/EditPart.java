@@ -24,6 +24,7 @@ import static storybook.ui.dialog.edit.DlgErrorMessage.mandatoryField;
  * @author favdb
  */
 public class EditPart extends javax.swing.JPanel {
+
 	private Editor parent;
 	private Part part;
 
@@ -33,16 +34,17 @@ public class EditPart extends javax.swing.JPanel {
 	public EditPart() {
 		initComponents();
 	}
+
 	public EditPart(Editor m, Part p) {
 		initComponents();
-		parent=m;
-		part=p;
+		parent = m;
+		part = p;
 		initUI();
 	}
 
 	private void initUI() {
-		if (part==null) {
-			part=new Part();
+		if (part == null) {
+			part = new Part();
 			part.setId(-1L);
 			txNumber.setText("");
 			txName.setText("");
@@ -129,47 +131,52 @@ public class EditPart extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
 	public void set(Part p) {
-		part=p;
+		part = p;
 		initUI();
 	}
 
 	public boolean isOK() {
-		boolean rc=true;
+		boolean rc = true;
 		parent.setError("");
-		if ((txName.getText()==null)||(txName.getText().isEmpty())) {
+		if ((txName.getText() == null) || (txName.getText().isEmpty())) {
 			parent.setError(I18N.getMsg("ERR_NAME_EMPTY"));
-			rc=false;
+			rc = false;
 		}
-		if ((txNumber.getText()==null)||(txNumber.getText().isEmpty())) {
+		if ((txNumber.getText() == null) || (txNumber.getText().isEmpty())) {
 			parent.setError(I18N.getMsg("ERR_NUMBER_EMPTY"));
-			rc=false;
+			rc = false;
 		}
-		int x=Integer.getInteger(txNumber.getText());
-		if (x<1) {
+		int x = Integer.getInteger(txNumber.getText());
+		if (x < 1) {
 			parent.setError(I18N.getMsg("ERR_NUMBER_ERROR"));
-			rc=false;
+			rc = false;
 		}
-		return(rc);
+		return (rc);
 	}
 
 	boolean isModified() {
-		if (!txName.getText().equals(part.getName())) return(true);
-		if (!txNumber.getText().equals(Integer.toString(part.getNumber()))) return(true);
-		return(false);
+		if (!txName.getText().equals(part.getName()))
+			return (true);
+		if (!txNumber.getText().equals(Integer.toString(part.getNumber())))
+			return (true);
+		return (false);
 	}
 
-	public String getData() {
-		String rt=ctrlData();
-		if (!"".equals(rt)) return(rt);
-		part.setName(txName.getText());
-		part.setNumber(Integer.getInteger(txNumber.getText()));
-		return("");
+	public String saveData() {
+		String rt = ctrlData();
+		if ("".equals(rt)) {
+			part.setName(txName.getText());
+			part.setNumber(Integer.getInteger(txNumber.getText()));
+		}
+		return ("");
 	}
 
 	private String ctrlData() {
-		if ("".equals(txName.getText())) return(mandatoryField("msg.common.name"));
-		if ("".equals(txNumber.getText())) return(mandatoryField("msg.common.number"));
-		return("");
+		if ("".equals(txName.getText()))
+			return (mandatoryField("msg.common.name"));
+		if ("".equals(txNumber.getText()))
+			return (mandatoryField("msg.common.number"));
+		return ("");
 	}
 
 }

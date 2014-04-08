@@ -13,5 +13,5 @@ oStorybook
   for more details.
 ===================================================================
 
-More information about the oStorybook can be found on:
+More information about oStorybook can be found on:
 http://ostorybook.sourceforge.net

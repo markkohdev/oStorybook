@@ -101,7 +101,7 @@ public class ChapterTable extends AbstractTable {
 
 	@Override
 	protected synchronized void sendDeleteEntities(int[] rows) {
-		ArrayList<Long> ids = new ArrayList<Long>();
+		ArrayList<Long> ids = new ArrayList<>();
 		for (int row : rows) {
 			Chapter chapter = (Chapter) getEntityFromRow(row);
 			ids.add(chapter.getId());
