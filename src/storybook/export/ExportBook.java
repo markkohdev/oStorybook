@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.List;
 import org.hibernate.Session;
 import storybook.SbConstants;
+import storybook.StorybookApp;
 import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.PartDAOImpl;
@@ -31,7 +32,7 @@ public class ExportBook {
 	private ExportTxt txt;
 	private ExportOdf odf;
 	private final BookExporter bookExporter;
-	private final boolean isMultiHtml;
+	private boolean isMultiHtml;
 	private String baseFilename;
 
 	public ExportBook(Export m) {
@@ -48,7 +49,7 @@ public class ExportBook {
 			case "html": html = new ExportHtml(parent, "Book", baseFilename+".html", null, parent.author); break;
 			case "csv": break; // no export csv Book
 			case "txt": txt = new ExportTxt(parent, "Book", baseFilename+".txt", null, parent.author); break;
-			case "pdf": pdf = new ExportPDF(parent, "Book", baseFilename+".pdf", null, parent.author); break;
+			case "pdf": html = new ExportHtml(parent, "Book", baseFilename+"workingFile.html", null, parent.author); isMultiHtml=false;break;
 			case "odf": odf = new ExportOdf(parent, "Book", baseFilename+".odt", null, parent.author); break;
 		}
 		if (!isMultiHtml) {
@@ -95,13 +96,14 @@ public class ExportBook {
 			case "html":	html.open(false); break;
 			case "csv":		csv.open(); break;//no header
 			case "txt":		txt.open(); break;//no header
-			case "pdf":		pdf.open(); break;
+			case "pdf":		html.open(false); break;
 			case "odf":		odf.open(); break;
 		}
 		return (rc);
 	}
 
 	private void getPart(Part part) {
+		StorybookApp.trace("getPart("+part.getName()+")");
 		switch (parent.format) {
 			case "html":
 				if (!isMultiHtml) {
@@ -111,8 +113,7 @@ public class ExportBook {
 			case "csv": break; // no csv export for book
 			case "txt": txt.writeText(bookExporter.getPartAsTxt(part)); break;
 			case "pdf": // TODO ExportBook PDF
-				//pdf.writeText(str);
-				break;
+				html.writeText(bookExporter.getPartAsHtml(part), false); break;
 			case "odf": // TODO ExportBook ODF
 				//odf.writeText(str);
 				break;
@@ -141,7 +142,7 @@ public class ExportBook {
 			case "csv": break; // no export csv Book
 			case "txt": txt.writeText(bookExporter.getChapterAsTxt(chapter, ChapterDAO)); break;
 			case "pdf":
-				//pdf.writeText(str);
+				html.writeText(bookExporter.getChapterAsHtml(chapter, ChapterDAO), false);
 				break;
 			case "odf":
 				//odf.writeText(str);
@@ -154,9 +155,7 @@ public class ExportBook {
 			case "html": html.writeText(bookExporter.getSceneAsHtml(scene), false); break;
 			case "csv": break; // no export csv Book
 			case "txt": txt.writeText(bookExporter.getSceneAsTxt(scene)); break;
-			case "pdf":
-				//pdf.writeText(str);
-				break;
+			case "pdf": html.writeText(bookExporter.getSceneAsHtml(scene), false); break;
 			case "odf":
 				//odf.writeText(str);
 				break;
@@ -166,7 +165,13 @@ public class ExportBook {
 	private void fin() {
 		switch (parent.format) {
 			case "html": html.close(false); break;
-			case "pdf": pdf.close(); break;
+			case "pdf":
+				html.close(false);
+				pdf = new ExportPDF(parent, "Book", baseFilename+".pdf", null, parent.author);
+				pdf.open();
+				pdf.HtmlToPdf(baseFilename+"workingFile.html");
+				pdf.close();
+				break;
 			case "csv": csv.close(); break;
 			case "txt": txt.close(); break;
 		}

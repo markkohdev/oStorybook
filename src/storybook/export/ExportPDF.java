@@ -6,10 +6,21 @@
 package storybook.export;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.html.simpleparser.StyleSheet;
 import com.itextpdf.text.pdf.*;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import storybook.StorybookApp;
 
 /**
@@ -108,6 +119,20 @@ public class ExportPDF {
 			StorybookApp.error("ExportPDF.close()", ex);
 		}
 		outDoc.close();
+	}
+	
+	public void HtmlToPdf(String source) {
+		StyleSheet styles=null;
+		try {
+			List<Element> elements = (ArrayList) HTMLWorker.parseToList(new FileReader(source), styles);
+			for (Element el : elements) {
+				outDoc.add(el);
+			}
+			File wx=new File(source);
+			wx.delete();
+		} catch (IOException|DocumentException ex) {
+			StorybookApp.error("ExportPDF.HtmlToPdf("+source+")", ex);
+		}
 	}
 
 }

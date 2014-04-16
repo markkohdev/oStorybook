@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import storybook.StorybookApp;
 import storybook.toolkit.I18N;
+import storybook.toolkit.TextUtil;
 
 /**
  *
@@ -100,7 +101,7 @@ public class ExportHtml {
 	public String getHtmlHead() {
 		String buf = "<head>";
 		String rep = parent.exportData.getKey();
-		buf += "<title>oStorybook : " + parent.bookTitle + " - " + rep + "</title>\n";
+		buf += "<title>"+ parent.bookTitle +" - "+parent.author+ "</title>\n";
 		buf += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
 		buf += "<style type='text/css'>\n";
 		buf += "<!--\n";
@@ -175,6 +176,8 @@ public class ExportHtml {
 	}
 
 	public void writeText(String str, boolean withParagraph) {
+		if ("".equals(str)) return;
+		StorybookApp.trace("ExportHtml.writeText("+TextUtil.truncateString(str, 32)+")");
 		try {
 			String s = "<p>" + str + "</p>";
 			if (!withParagraph)

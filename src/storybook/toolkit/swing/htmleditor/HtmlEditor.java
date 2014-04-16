@@ -233,7 +233,8 @@ public class HtmlEditor extends JPanel {
 		add(tabs, "grow, id tabs");
 		lbMessage = new JLabel("", JLabel.RIGHT);
 		add(lbMessage,
-				"pos (tabs.x + tabs.w-200) (tabs.y + tabs.h-16) (tabs.x + tabs.w) (tabs.y + tabs.h)");
+				//"pos (tabs.x + tabs.w-200) (tabs.y + tabs.h-16) (tabs.x + tabs.w) (tabs.y + tabs.h)");
+				"pos (tabs.x + tabs.w-600) (tabs.y + tabs.h-16) (tabs.x + tabs.w) (tabs.y + tabs.h)");
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -795,13 +796,15 @@ public class HtmlEditor extends JPanel {
 		@Override
 		public void caretUpdate(CaretEvent e) {
 			if (maxLength > 0) {
-				int len = maxLength - getText().length() - 1;
-				if (len < 0) {
+				int left = maxLength - getText().length() - 1;
+				if (left < 0) {
 					lbMessage.setForeground(Color.red);
 				} else {
 					lbMessage.setForeground(Color.black);
 				}
-				lbMessage.setText(I18N.getMsg("msg.editor.letters.left", len));
+				//lbMessage.setText(I18N.getMsg("msg.editor.letters.left", len));
+				Integer a[]={getText().length(),left};
+				lbMessage.setText(I18N.getMsg("msg.editor.letters.length", a));
 			}
 
 			updateState();

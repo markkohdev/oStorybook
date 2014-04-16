@@ -247,7 +247,7 @@ public class BookExporter extends AbstractExporter {
 			if (isExportChapterTitles)
 				buf += chapter.getTitle();
 		}
-		buf += eH2;
+		buf += eH2 + "</a>";
 		if (isExportChapterDatLoc) {
 			buf += bH3;
 			buf += DateUtil.getNiceDates((List) ChapterDAO.findDates(chapter));
@@ -295,7 +295,7 @@ public class BookExporter extends AbstractExporter {
 				buf += scene.getTitle();
 			buf += scene.getText() + "\n";
 			if (isExportSceneSeparator)
-				buf +="<p style=\"text-align:center\">.oOo.<p>";
+				buf +="<p style=\"text-align:center\">.oOo.</p>";
 		}
 		if (exportTableOfContentsLink)
 			buf += "<p style='font-size:8px;text-align:left;'><a href='#toc'>"
