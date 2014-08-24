@@ -7,11 +7,33 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="Storybook" default="default" basedir=".">
+<project name="oStorybook" default="default" basedir=".">
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
-	<property name="sb.version" value="4.9.14" />
+	<property name="sb.version" value="4.9.15" />
 	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
+	<property name="sb.file.name" value="oStorybook" />
+	<property name="sb.jar.name" value="${sb.file.name}.jar" />
+	<!-- mac specific build parameters -->
+	<property name="sb.mac.deployment.dir" value="${sb.deployment.dir}/macintosh" />
+	<property name="sb.mac.installer.mount.dir" value="/Volumes/tmpStorybook-${TODAY}" />
+	<property name="sb.mac.installer.template" value="Storybook_template.dmg" />
+	<!-- jarbundler properties -->
+	<property name="jarbundler.name" value="${ant.project.name}" />
+	<property name="jarbundler.shortname" value="${ant.project.name}" />
+	<property name="jarbundler.signature" value="${ant.project.name}, oStorybook.sourceforge.net" />
+	<property name="jarbundler.mainclass" value="storybook.SbApp" />
+	<property name="jarbundler.icon" value="storybook-icon.icns" />
+	<property name="jarbundler.jvmversion" value="1.6+" />
+	<property name="jarbundler.version" value="${sb.version}" />
+	<property name="jarbundler.infostring" value="${ant.project.name} ${sb.version}, ${TODAY}" />
+	<property name="jarbundler.build" value="" />
+	<property name="jarbundler.bundleid" value="storybook.SbApp" />
+	<property name="jarbundler.apple.laf.useScreenMenuBar" value="true" />
+	<property name="jarbundler.apple.awt.brushMetal" value="true" />
+	<property name="jarbundler.apple.awt.showGrowBox" value="true" />
+	<property name="jarbundler.apple.awt.textantialiasing" value="true" />
+	<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
     <!--
 
     There exist several targets which are by default empty and which can be
@@ -74,18 +96,18 @@
 
  -->
 	<target name="-post-compile">
-<!--
-		<echo>Récupération du fichier de configuration Hibernate dans le classpath</echo>
-		<copy file="hibernate.cfg.xml" todir="${build.classes.dir}" />
--->
-		<echo>Récupération des fichiers de configuration de log4j dans le classpath</echo>
 		<copy file="log4j.dtd" todir="${build.classes.dir}" />
 		<copy file="log4j.xml" todir="${build.classes.dir}" />
-		<echo>Récupération du fichier d'action dans le classpath</echo>
 		<copy file="actions.xml" todir="${build.classes.dir}" />
 	</target>
 	<!-- Récupération des autres fichiers l'application -->
 	<target name="-post-jar">
+            <!--
+		<mkdir dir="${dist.dir}/msg" />
+		<copy todir="${dist.dir}/msg" flatten="false">
+			<fileset dir="${basedir}/msg" />
+		</copy>
+                -->
 		<mkdir dir="${dist.dir}/dicts" />
 		<copy todir="${dist.dir}/dicts" flatten="false">
 			<fileset dir="dicts.all/dicts/" />
@@ -111,20 +133,44 @@
 		<copy todir="${dist.dir}/xdg" flatten="false">
 			<fileset dir="deployment/linux/xdg" />
 		</copy>
-
-<!--
-		<echo>Récupération du fichier de configuration Hibernate dans le classpath</echo>
-		<copy file="hibernate.cfg.xml" todir="${dist.dir}" />
--->
-		<echo>Récupération des fichiers de configuration de log4j dans le classpath</echo>
 		<copy file="log4j.dtd" todir="${dist.dir}" />
 		<copy file="log4j.xml" todir="${dist.dir}" />
-		<echo>Récupération du fichier d'action dans le classpath</echo>
 		<copy file="actions.xml" todir="${dist.dir}" />
 	</target>
 	<target name="distrib-zip" depends="jar" >
 		<mkdir dir="${sb.distdir}" />
 		<zip destfile="${sb.distdir}/oStorybook-${sb.version}.zip" basedir="${basedir}/dist" />
+	</target>
+	<target name="distrib-mac" depends="jar" >
+		<jarbundler dir="${sb.distdir}"
+                            name="${jarbundler.name}"
+                            shortname="${jarbundler.shortname}"
+                            signature="${jarbundler.signature}"
+                            mainclass="${jarbundler.mainclass}"
+                            icon="${jarbundler.icon}"
+                            jvmversion="${jarbundler.jvmversion}"
+                            version="${jarbundler.version}"
+                            infostring="${jarbundler.infostring}"
+                            build="${jarbundler.build}"
+                            bundleid="${jarbundler.bundleid}"
+                            workingdirectory="$$APP_PACKAGE/Contents/Resources/Java">
+			<jarfileset dir="${dist.dir}">
+                                <include name="*.txt" />
+				<include name="log4j.xml" />
+				<include name="log4j.dtd" />
+				<include name="${sb.jar.name}" />
+				<include name="lib/**" />
+				<include name="dicts/**" />
+				<include name="splash.png" />
+				<include name="oStorybook-icon.icns" />
+				<include name="oStorybook-icon.ico" />
+				<include name="oStorybook-icon.png" />
+			</jarfileset>
+			<javaproperty name="apple.laf.useScreenMenuBar" value="${jarbundler.apple.laf.useScreenMenuBar}" />
+			<javaproperty name="apple.awt.brushMetal" value="${jarbundler.apple.awt.brushMetal}" />
+			<javaproperty name="apple.awt.showGrowBox" value="${jarbundler.apple.awt.showGrowBox}" />
+			<javaproperty name="apple.awt.textantialiasing" value="${jarbundler.apple.awt.textantialiasing}" />
+		</jarbundler>
 	</target>
 	<target name="distrib-linux" depends="jar" >
 		<mkdir dir="${sb.distdir}" />
@@ -145,7 +191,6 @@
 		</zip>
 	</target>
         <target name="distrib-create" depends="distrib-linux, distrib-zip">
-		<echo>Récupération du fichier de version</echo>
 		<copy file="Versions.txt" todir="${sb.distdir}" />
         </target>
 </project>

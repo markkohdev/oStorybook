@@ -459,6 +459,9 @@
   	<action id="about-command"
           name="<i18n>msg.menu.help.about</i18n>"
           mnemonic="A" />
+  	<action id="trace-command"
+          name="<i18n>msg.menu.help.trace</i18n>"
+          mnemonic="T" />
   	<action id="check-update-command"
           name="<i18ndot>msg.menu.help.update</i18ndot>" />
 
@@ -637,9 +640,10 @@
 			<empty />
 			<action idref="check-update-command" />
 			<action idref="about-command" />
+                        <action idref="trace-command" />
 		</action-list>
 		<!--
-        <action-list id="dev-menu" idref="dev-menu-command">
+                <action-list id="dev-menu" idref="dev-menu-command">
 			<action idref="run-gc-command" />
 			<action idref="dump-attached-views-command" />
 			<action idref="dummy-command" />

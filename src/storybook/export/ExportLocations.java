@@ -30,7 +30,7 @@ public class ExportLocations {
 	
 	ExportLocations(Export m) {
 		parent=m;
-		headers=new ArrayList();
+		headers=new ArrayList<>();
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.id"),5));
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.name"), 15));
 		headers.add(new ExportHeader(I18N.getMsg("msg.dlg.location.address"), 30));
@@ -41,7 +41,7 @@ public class ExportLocations {
 	public String get(Location obj) {
 		if (obj!=null) return(EntityUtil.getInfo(parent.mainFrame, obj));
 		String str = debut(obj);
-		BookModel model = parent.mainFrame.getDocumentModel();
+		BookModel model = parent.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl dao = new LocationDAOImpl(session);
 		List<Location> locations = dao.findAll();

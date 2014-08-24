@@ -45,7 +45,7 @@ public class ShowInMemoriaAction extends AbstractEntityAction {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				BookController ctrl = mainFrame.getDocumentController();
+				BookController ctrl = mainFrame.getBookController();
 				ctrl.showInMemoria(entity);
 			}
 		});

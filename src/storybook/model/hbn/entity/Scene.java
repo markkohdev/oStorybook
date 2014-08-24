@@ -40,8 +40,6 @@ import storybook.toolkit.html.HtmlUtil;
  */
 public class Scene extends AbstractEntity implements Comparable<Scene> {
 
-	//private static final long serialVersionUID = -6602639398552542281L;
-
 	private Chapter chapter;
 	private Strand strand;
 	private Integer sceneno;
@@ -79,12 +77,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.informative = informative;
 	}
 
-	/**
-	 * @hibernate.id
-	 *   column="ID"
-	 *   generator-class="increment"
-	 *   unsaved-value="null"
-	 */
 	@Override
 	public Long getId() {
 		return this.id;
@@ -94,11 +86,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.id = id;
 	}
 
-	/**
-	 * @hibernate.many-to-one
-	 *   column="chapter_id"
-	 *   cascade="none"
-	 */
 	public Chapter getChapter() {
 		return this.chapter;
 	}
@@ -115,11 +102,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.chapter = null;
 	}
 
-	/**
-	 * @hibernate.many-to-one
-	 *   column="strand_id"
-	 *   cascade="none"
-	 */
 	public Strand getStrand() {
 		return this.strand;
 	}
@@ -128,9 +110,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.strand = strand;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public Integer getSceneno() {
 		return this.sceneno;
 	}
@@ -143,9 +122,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.sceneno = sceneno;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public Timestamp getSceneTs() {
 		return this.sceneTs;
 	}
@@ -238,9 +214,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		return sceneTs == null;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getTitle() {
 		return title;
 	}
@@ -322,17 +295,13 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		return buf.toString();
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getSummary() {
 		return this.summary;
 	}
 
 	public String getSummary(boolean truncate, int length) {
 		if (truncate) {
-			return TextUtil
-					.truncateString(HtmlUtil.htmlToText(summary), length);
+			return TextUtil.truncateString(HtmlUtil.htmlToText(summary), length);
 		}
 		return this.summary;
 	}
@@ -349,9 +318,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.summary = summary;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public Integer getStatus() {
 		return this.status;
 	}
@@ -373,10 +339,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		return (SceneState) model.findByNumber(this.status);
 	}
 
-	/**
-	 * @hibernate.property
-	 *   column="relative_date_difference"
-	 */
 	public Integer getRelativeDateDifference() {
 		return this.relativeDateDifference;
 	}
@@ -396,10 +358,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		return DateUtils.addDays(date, relativeDateDifference);
 	}
 
-	/**
-	 * @hibernate.property
-	 *   column="relative_scene_id"
-	 */
 	public Long getRelativeSceneId() {
 		return this.relativeSceneId;
 	}
@@ -424,9 +382,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		relativeDateDifference = null;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getNotes() {
 		return getNotes(false);
 	}
@@ -445,16 +400,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.notes = notes;
 	}
 
-	/**
-	* @hibernate.bag
-	*   table="scene_person"
-	*   cascade="none"
-	* @hibernate.collection-many-to-many
-	*   column="person_id"
-	*   class="storybook.model.hbn.entity.Person"
-	* @hibernate.collection-key
-	*   column="scene_id"
-	*/
 	public List<Person> getPersons() {
 		return persons;
 	}
@@ -464,18 +409,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.persons = persons;
 	}
 
-	/**
-	* @hibernate.list
-	*   table="scene_location"
-	*   cascade="save-update"
-	* @hibernate.collection-many-to-many
-	*   column="location_id"
-	*   class="storybook.model.hbn.entity.Location"
-	* @hibernate.collection-key
-	*   column="scene_id"
-	* @hibernate.collection-index
-	*   column="id"
-	*/
 	public List<Location> getLocations() {
 		return locations;
 	}
@@ -484,18 +417,6 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		this.locations = locations;
 	}
 
-	/**
-	* @hibernate.list
-	*   table="scene_strand"
-	*   cascade="save-update"
-	* @hibernate.collection-many-to-many
-	*   column="strand_id"
-	*   class="storybook.model.hbn.entity.Strand"
-	* @hibernate.collection-key
-	*   column="scene_id"
-	* @hibernate.collection-index
-	*   column="id"
-	*/
 	public List<Strand> getStrands() {
 		return strands;
 	}
@@ -523,8 +444,7 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	@Override
 	public String toString() {
 		if (isTransient()) {
-//			return I18N.getMsg("msg.common.scene") + " [" + getTransientId()
-//					+ "]";
+//			return I18N.getMsg("msg.common.scene") + " [" + getTransientId() + "]";
 			return "";
 		}
 		return getFullTitle(false, true);
@@ -548,12 +468,8 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		if (sceneTs != null) {
 			ret = ret && equalsTimestampNullValue(sceneTs, test.getSceneTs());
 		} else if (relativeSceneId != null) {
-			ret = ret
-					&& equalsLongNullValue(relativeSceneId,
-							test.getRelativeSceneId());
-			ret = ret
-					&& equalsIntegerNullValue(relativeDateDifference,
-							test.getRelativeDateDifference());
+			ret = ret && equalsLongNullValue(relativeSceneId, test.getRelativeSceneId());
+			ret = ret && equalsIntegerNullValue(relativeDateDifference, test.getRelativeDateDifference());
 		}
 		ret = ret && equalsStringNullValue(title, test.getTitle());
 		ret = ret && equalsStringNullValue(summary, test.getSummary());
@@ -573,12 +489,8 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		hash = hash * 31 + (chapter != null ? chapter.hashCode() : 0);
 		hash = hash * 31 + (strand != null ? strand.hashCode() : 0);
 		hash = hash * 31 + (sceneTs != null ? sceneTs.hashCode() : 0);
-		hash = hash * 31
-				+ (relativeSceneId != null ? relativeSceneId.hashCode() : 0);
-		hash = hash
-				* 31
-				+ (relativeDateDifference != null ? relativeDateDifference
-						.hashCode() : 0);
+		hash = hash * 31 + (relativeSceneId != null ? relativeSceneId.hashCode() : 0);
+		hash = hash * 31 + (relativeDateDifference != null ? relativeDateDifference.hashCode() : 0);
 		hash = hash * 31 + (title != null ? title.hashCode() : 0);
 		hash = hash * 31 + (summary != null ? summary.hashCode() : 0);
 		hash = hash * 31 + (notes != null ? notes.hashCode() : 0);

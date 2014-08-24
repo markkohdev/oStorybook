@@ -59,7 +59,7 @@ public class EditTag extends javax.swing.JPanel {
         }
         txtId.setText(Long.toString(tag.getId()));
         txtName.setText(tag.getName());
-        loadCbCategories(parent.parent, cbCategory, tag);
+        loadCbCategories(parent.mainFrame, cbCategory, tag);
         description.setText(tag.getDescription());
         notes.setText(tag.getNotes());
     }
@@ -84,7 +84,7 @@ public class EditTag extends javax.swing.JPanel {
         paneDescription = new javax.swing.JPanel();
         paneNotes = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         lbTitle.setText(bundle.getString("msg.common.name")); // NOI18N
 
         txtId.setEditable(false);
@@ -106,7 +106,7 @@ public class EditTag extends javax.swing.JPanel {
         );
         paneDescriptionLayout.setVerticalGroup(
             paneDescriptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGap(0, 207, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -123,7 +123,7 @@ public class EditTag extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                                .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                                 .addGap(269, 269, 269))
                             .addComponent(txtName))
                         .addGap(14, 14, 14))
@@ -181,7 +181,7 @@ public class EditTag extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

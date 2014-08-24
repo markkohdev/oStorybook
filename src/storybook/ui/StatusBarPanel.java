@@ -32,7 +32,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.SbConstants.PreferenceKey;
 import storybook.action.LoadDockingLayoutAction;
 import storybook.controller.BookController;
@@ -105,10 +105,11 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 		repaint();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refreshLayoutCombo() {
 		layoutCombo.removeAllItems();
 		layoutCombo.addItem("");
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		List<Preference> pref = dao.findAll();
@@ -116,7 +117,7 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 			if (preference.getKey().startsWith(
 					PreferenceKey.DOCKING_LAYOUT.toString())) {
 				String name = preference.getStringValue();
-				if (SbConstants.InternalKey.LAST_USED_LAYOUT.toString().equals(
+				if (SbConstants.BookKey.LAST_USED_LAYOUT.toString().equals(
 						name)) {
 					continue;
 				}

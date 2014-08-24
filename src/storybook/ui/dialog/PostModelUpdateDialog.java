@@ -24,9 +24,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.model.EntityUtil;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
 
@@ -81,8 +81,8 @@ public class PostModelUpdateDialog extends AbstractDialog {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DocumentUtil.storeInternal(mainFrame,InternalKey.USE_HTML_SCENES,cbUseHtmlScenes.isSelected());
-				DocumentUtil.storeInternal(mainFrame, InternalKey.USE_HTML_DESCR,cbUseHtmlDescr.isSelected());
+				BookUtil.store(mainFrame,BookKey.USE_HTML_SCENES,cbUseHtmlScenes.isSelected());
+				BookUtil.store(mainFrame, BookKey.USE_HTML_DESCR,cbUseHtmlDescr.isSelected());
 				mainFrame.setWaitingCursor();
 				EntityUtil.convertPlainTextToHtml(mainFrame);
 				mainFrame.setDefaultCursor();

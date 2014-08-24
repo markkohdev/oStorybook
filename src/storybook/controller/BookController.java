@@ -18,10 +18,13 @@
 package storybook.controller;
 
 import java.util.ArrayList;
-import storybook.StorybookApp;
+import storybook.SbApp;
+import storybook.model.BlankModel;
+import storybook.model.BookModel;
 
 import storybook.model.DbFile;
 import storybook.model.hbn.entity.AbstractEntity;
+import storybook.model.hbn.entity.Attribute;
 import storybook.model.hbn.entity.Category;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Gender;
@@ -38,6 +41,7 @@ import storybook.model.hbn.entity.Tag;
 import storybook.model.hbn.entity.TagLink;
 import storybook.model.state.SceneState;
 import storybook.model.state.SceneStateModel;
+import storybook.ui.MainFrame;
 import storybook.ui.SbView;
 
 /**
@@ -45,7 +49,26 @@ import storybook.ui.SbView;
  *
  */
 public class BookController extends AbstractController {
+
+	MainFrame mainFrame;
+
+	public BookController(MainFrame m) {
+		super();
+		mainFrame=m;
+	}
+
+	public BookController(MainFrame m, BlankModel model) {
+		super();
+		mainFrame=m;
+		attachModel(model);
+	}
 	
+	public BookController(MainFrame m, BookModel model) {
+		super();
+		mainFrame=m;
+		attachModel(model);
+	}
+
 	public enum CommonProps {
 
 		REFRESH("Refresh"),
@@ -259,6 +282,30 @@ public class BookController extends AbstractController {
 		final private String text;
 
 		private PersonProps(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+
+		public boolean check(String prop) {
+			return text.equals(prop);
+		}
+	};
+
+	public enum AttributeProps {
+
+		INIT("InitAttributes"),
+		EDIT("EditAttribute"),
+		DELETE("DeleteAttribute"),
+		DELETE_MULTI("DeleteMultiAttributes"),
+		NEW("NewAttribute"),
+		UPDATE("UpdateAttribute");
+		final private String text;
+
+		private AttributeProps(String text) {
 			this.text = text;
 		}
 
@@ -518,7 +565,7 @@ public class BookController extends AbstractController {
 	};
 
 	public void updateEntity(AbstractEntity entity) {
-		StorybookApp.trace("DocumentController.updateEntity("+entity.getClass().getName()+")");
+		SbApp.trace("BookController.updateEntity("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				updateChapter((Chapter) entity);
@@ -578,12 +625,12 @@ public class BookController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			StorybookApp.logErr("DocumentController.updateEntity(" + entity.getAbbr() + ")",e);
+			SbApp.error("BookController.updateEntity(" + entity.getAbbr() + ")",e);
 		}
 	}
 
 	public void deleteEntity(AbstractEntity entity) {
-		StorybookApp.trace("DocumentController.deleteEntity("+entity.getClass().getName()+")");
+		SbApp.trace("BookController.deleteEntity("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				deleteChapter((Chapter) entity);
@@ -643,13 +690,13 @@ public class BookController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			StorybookApp.logErr("DocumentController.deleteEntity(" + entity.getClass().getName()
+			SbApp.error("BookController.deleteEntity(" + entity.getClass().getName()
 				+ ") Exception:",e);
 		}
 	}
 
 	public void newEntity(AbstractEntity entity) {
-		StorybookApp.trace("DocumentController.newEntity("+entity.getClass().getName()+")");
+		SbApp.trace("BookController.newEntity("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				newChapter((Chapter) entity);
@@ -709,13 +756,12 @@ public class BookController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			StorybookApp.logErr("DocumentController.newEntity(" + entity.getClass().getName()
-				+ ") Exception:",e);
+			SbApp.error("BookController.newEntity(" + entity.getClass().getName() + ") Exception:",e);
 		}
 	}
 
 	public void setEntityToEdit(AbstractEntity entity) {
-		StorybookApp.trace("DocumentController.setEntityToEdit("+entity.getClass().getName()+")");
+		SbApp.trace("BookController.setEntityToEdit("+entity.getClass().getName()+")");
 		try {
 			if (entity instanceof Chapter) {
 				setChapterToEdit((Chapter) entity);
@@ -775,8 +821,7 @@ public class BookController extends AbstractController {
 			}
 			throw new Exception("Entity type not found.");
 		} catch (Exception e) {
-			StorybookApp.logErr("DocumentController.setEntityToEdit(" + entity.getClass().getName()
-				+ ") Exception:",e);
+			SbApp.error("BookController.setEntityToEdit(" + entity.getClass().getName() + ") Exception:",e);
 		}
 	}
 
@@ -981,6 +1026,26 @@ public class BookController extends AbstractController {
 		setModelProperty(GenderProps.DELETE_MULTI.toString(), ids);
 	}
 
+	public void updateAttribute(Attribute entity) {
+		setModelProperty(GenderProps.UPDATE.toString(), entity);
+	}
+
+	public void newAttribute(Attribute entity) {
+		setModelProperty(GenderProps.NEW.toString(), entity);
+	}
+
+	public void setAttributeToEdit(Attribute entity) {
+		setModelProperty(AttributeProps.EDIT.toString(), entity);
+	}
+
+	public void deleteAttribute(Attribute entity) {
+		setModelProperty(GenderProps.DELETE.toString(), entity);
+	}
+
+	public void deleteMultiAttributes(ArrayList<Long> ids) {
+		setModelProperty(GenderProps.DELETE_MULTI.toString(), ids);
+	}
+
 	public void setGenderToEdit(Gender genderToEdit) {
 		setModelProperty(GenderProps.EDIT.toString(), genderToEdit);
 	}
@@ -1166,6 +1231,7 @@ public class BookController extends AbstractController {
 	}
 
 	public void setSceneToEdit(Scene sceneToEdit) {
+		SbApp.trace("BookController.setSceneToEdit("+sceneToEdit.toString()+")");
 		setModelProperty(SceneProps.EDIT.toString(), sceneToEdit);
 	}
 

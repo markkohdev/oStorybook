@@ -41,7 +41,7 @@ public class PartTableCellRenderer extends DefaultTableCellRenderer {
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		MainFrame mainFrame = (MainFrame) table
 				.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		Long id = ((Part) value).getId();
 		Part part = (Part) session.get(Part.class, id);

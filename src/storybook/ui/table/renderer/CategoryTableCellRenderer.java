@@ -47,7 +47,7 @@ public class CategoryTableCellRenderer extends DefaultTableCellRenderer {
 		panel.setOpaque(true);
 		panel.setBackground(lbText.getBackground());
 		if (value instanceof Category) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			Long id = ((Category) value).getId();
 			Category category = (Category) session.get(Category.class, id);

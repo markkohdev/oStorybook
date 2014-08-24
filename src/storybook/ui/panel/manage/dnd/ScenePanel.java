@@ -29,12 +29,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.action.EditEntityAction;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Scene;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.html.HtmlUtil;
 import storybook.toolkit.swing.ColorUtil;
@@ -89,8 +89,8 @@ public class ScenePanel extends AbstractScenePanel implements MouseListener,
 			System.out.println("ScenePanel.init()");
 		}
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
 			setZoomedSize(internal.getIntegerValue());
 		} catch (Exception e) {
 			setZoomedSize(SbConstants.DEFAULT_MANAGE_ZOOM);

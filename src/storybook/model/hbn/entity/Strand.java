@@ -32,8 +32,6 @@ import storybook.toolkit.swing.ColorUtil;
  */
 public class Strand extends AbstractEntity implements Comparable<Strand> {
 
-	private static final long serialVersionUID = 6478069075613506505L;
-
 	private String abbreviation;
 	private String name;
 	private Integer color;

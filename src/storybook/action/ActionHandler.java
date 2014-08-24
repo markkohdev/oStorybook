@@ -35,11 +35,11 @@ import net.infonode.docking.View;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
+
+import storybook.SbApp;
 import storybook.SbConstants;
-import storybook.StorybookApp;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.SbConstants.ViewName;
-import storybook.controller.BookController;
 import storybook.model.DbFile;
 import storybook.model.BookModel;
 import storybook.model.EntityUtil;
@@ -60,11 +60,10 @@ import storybook.model.hbn.entity.Strand;
 import storybook.model.hbn.entity.Tag;
 import storybook.model.hbn.entity.TagLink;
 import storybook.toolkit.DockingWindowUtil;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.EnvUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.net.NetUtil;
-import storybook.toolkit.net.Updater;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.ui.MainFrame;
 import storybook.ui.dialog.AboutDialog;
@@ -83,8 +82,8 @@ import storybook.ui.dialog.rename.RenameTagCategoryDialog;
 
 import com.sun.jaf.ui.ActionManager;
 import storybook.export.BookExporter;
-import storybook.export.DlgExport;
 import storybook.ui.SbView;
+import storybook.ui.dialog.edit.EditorDlg;
 
 /**
  * @author martin
@@ -98,25 +97,23 @@ public class ActionHandler {
 		mainFrame = mainframe;
 	}
 
-	public void handleCheckUpdate() {//new OK
+	/*public void handleCheckUpdate() {//new OK
 		if (Updater.checkForUpdate()) {
 			JOptionPane.showMessageDialog(mainFrame,
 				I18N.getMsg("msg.update.no.text"),
 				I18N.getMsg("msg.update.no.title"),
 				JOptionPane.INFORMATION_MESSAGE);
 		}
-	}
+	}*/
 
 	public void handleOpenExportFolder() {
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.EXPORT_DIRECTORY,
+			Internal internal = BookUtil.get(mainFrame,
+				BookKey.EXPORT_DIRECTORY,
 				EnvUtil.getDefaultExportDir(mainFrame));
 			Desktop.getDesktop().open(new File(internal.getStringValue()));
-		} catch (IOException ex) {
-			StorybookApp.logErr("ActionHandler.handleExportDir() Exception : ",ex);
-		} catch (Error er) {
-			StorybookApp.logErr("ActionHandler.handleExportDir() Error : ",er);
+		} catch (IOException | Error ex) {
+			SbApp.error("ActionHandler.handleExportDir()", (Exception) ex);
 		}
 	}
 
@@ -203,35 +200,25 @@ public class ActionHandler {
 	}
 
 	public void handleNewScene()		{handleNewEntity(new Scene());}//new OK
-
 	public void handleNewChapter()	{handleNewEntity(new Chapter());}//new OK
-
 	public void handleNewPart()		{handleNewEntity(new Part());}//new OK
-
 	public void handleNewStrand()		{handleNewEntity(new Strand());}//new OK
-
 	public void handleNewPerson()		{handleNewEntity(new Person());}//new OK
-
 	public void handleNewCategory()	{handleNewEntity(new Category());}//new OK
-
 	public void handleNewGender()		{handleNewEntity(new Gender());}//new OK
-
 	public void handleNewLocation()	{handleNewEntity(new Location());}//new OK
-
 	public void handleNewTag()			{handleNewEntity(new Tag());}//new OK
-
 	public void handleNewTagLink()	{handleNewEntity(new TagLink());}//new OK
-
 	public void handleNewItem()		{handleNewEntity(new Item());}//new OK
-
 	public void handleNewItemLink()	{handleNewEntity(new ItemLink());}//new OK
-
 	public void handleNewIdea()		{handleNewEntity(new Idea());}//new OK
 
 	private void handleNewEntity(AbstractEntity entity) {//new OK
-		BookController ctrl = mainFrame.getDocumentController();
+		/*BookController ctrl = mainFrame.getBookController();
 		ctrl.setEntityToEdit(entity);
-		mainFrame.showView(ViewName.EDITOR);
+		mainFrame.showView(ViewName.EDITOR);*/
+		EditorDlg dlg=new EditorDlg(mainFrame,entity);
+		dlg.setVisible(true);
 	}
 
 	public void handleFlashOfInspiration() {
@@ -241,7 +228,7 @@ public class ActionHandler {
 
 	public void handleTaskList() {//new OK
 		showAndFocus(ViewName.SCENES);
-		mainFrame.getDocumentController().showTaskList();
+		mainFrame.getBookController().showTaskList();
 	}
 
 	public void handleExportPrint() {
@@ -279,7 +266,7 @@ public class ActionHandler {
 
 	public void handlePreviousPart() {
 		Part currentPart = mainFrame.getCurrentPart();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -294,7 +281,7 @@ public class ActionHandler {
 
 	public void handleNextPart() {
 		Part currentPart = mainFrame.getCurrentPart();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -316,12 +303,16 @@ public class ActionHandler {
 		}
 		mainFrame.setCurrentPart(part);
 		mainFrame.setTitle();
-		mainFrame.getDocumentController().changePart(part);
+		mainFrame.getBookController().changePart(part);
 		mainFrame.setDefaultCursor();
 	}
 
 	public void handleShowChronoView() {//new OK
 		showAndFocus(ViewName.CHRONO);
+	}
+
+	public void handleShowAttributesView() {
+		showAndFocus(ViewName.ATTRIBUTES);
 	}
 
 	public void handleShowBookView() {//new OK
@@ -357,25 +348,24 @@ public class ActionHandler {
 	}
 
 	public void handleDumpAttachedViews() {
-		BookController ctrl = mainFrame.getDocumentController();
-		ctrl.printAttachedViews();
+		mainFrame.getBookController().printAttachedViews();
 	}
 	/* suppression du garbage collector
 	 public void handleRunGC() {
 	 SwingUtil.printMemoryUsage();
 	 System.out.println("ActionHandler.handleRunGC(): running GC...");
-	 StorybookApp.getInstance().runGC();
+	 SbApp.getInstance().runGC();
 	 SwingUtil.printMemoryUsage();
 	 }
 	 */
 
 	public void handleDummy() {
-		StorybookApp.trace("ActionHandler.handleDummy(): ");
+		SbApp.trace("ActionHandler.handleDummy(): ");
 		try {
 			SbView view = mainFrame.getView(SbConstants.ViewName.EDITOR);
 			mainFrame.getViewFactory().unloadView(view);
 		} catch (Exception ex) {
-			StorybookApp.logErr("ActionHandler.handleDummy() Exception : ",ex);
+			SbApp.error("ActionHandler.handleDummy()",ex);
 		}
 	}
 
@@ -442,21 +432,21 @@ public class ActionHandler {
 		view.restoreFocus();
 	}
 
-	public void handleNewFile() {//new OK
-		StorybookApp.getInstance().createNewFile();
-	}
+	/*public void handleNewFile() {//new OK
+		SbApp.getInstance().createNewFile();
+	}*/
 
-	public void handleOpenFile() {//new OK
+	/*public void handleOpenFile() {//new OK
 		mainFrame.setWaitingCursor();
-		StorybookApp.getInstance().openFile();
+		SbApp.getInstance().openFile();
 		mainFrame.setDefaultCursor();
-	}
+	}*/
 
 	public void handleRecentClear() {
-		StorybookApp.getInstance().clearRecentFiles();
+		SbApp.getInstance().clearRecentFiles();
 	}
 
-	public void handleSave() {//new OK
+	public void handleFileSave() {//new OK
 		WaitDialog dlg = new WaitDialog(mainFrame,I18N.getMsg("msg.file.saving"));
 		Timer timer = new Timer(500, new DisposeDialogAction(dlg));
 		timer.setRepeats(false);
@@ -464,7 +454,7 @@ public class ActionHandler {
 		SwingUtil.showModalDialog(dlg, mainFrame);
 	}
 
-	public void handleSaveAs() {
+	public void handleFileSaveAs() {
 		SaveAsFileDialog dlg = new SaveAsFileDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
 		if (dlg.isCanceled()) {
@@ -481,14 +471,14 @@ public class ActionHandler {
 		act.actionPerformed(null);
 	}
 
-	public void handleRenameFile() {
+	public void handleFileRename() {
 		RenameFileDialog dlg = new RenameFileDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
 		if (dlg.isCanceled()) {
 			return;
 		}
 		File file = dlg.getFile();
-		StorybookApp.getInstance().renameFile(mainFrame, file);
+		SbApp.getInstance().renameFile(mainFrame, file);
 	}
 
 	public void handleClose() {
@@ -541,9 +531,8 @@ public class ActionHandler {
 	public void handleResetLayout() {
 		SwingUtil.setWaitingCursor(mainFrame);
 		mainFrame.setDefaultLayout();
-		/* suppression du garbage collector
-		 StorybookApp.getInstance().runGC();
-		 */
+		// suppression du garbage collector
+		//SbApp.getInstance().runGC();
 		SwingUtil.setDefaultCursor(mainFrame);
 	}
 
@@ -551,7 +540,7 @@ public class ActionHandler {
 		mainFrame.refresh();
 	}
 
-	public void handleDocumentPreferences() {//new OK
+	public void handleBookProperties() {//new OK
 		BookPropertiesDialog dlg = new BookPropertiesDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
 	}
@@ -564,21 +553,20 @@ public class ActionHandler {
 	public void handleViewStatus(boolean selected) {
 	}
 
-	public void handleExportBookText() {//new OK
+	/*public void handleExportBookText() {//new OK
 		DlgExport export=new DlgExport(mainFrame);
 		export.setVisible(true);
-		/* old
-		BookExporter exp = new BookExporter(mainFrame);
-		exp.setExportForOpenOffice(true);
-		exp.exportToHtmlFile();
-				*/
-	}
+		// old
+		//BookExporter exp = new BookExporter(mainFrame);
+		//exp.setExportForOpenOffice(true);
+		//exp.exportToHtmlFile();
+	}*/
 
-	public void handleExportBookHtml() {//new OK
+	/*public void handleExportBookHtml() {//new OK
 		BookExporter exp = new BookExporter(mainFrame);
 		exp.setExportForOpenOffice(true);
 		exp.exportToHtmlFile();
-	}
+	}*/
 
 	public void handleCopyBookText() {//new OK
 		BookExporter exp = new BookExporter(mainFrame);
@@ -587,7 +575,7 @@ public class ActionHandler {
 	}
 
 	public void handleCopyBlurb() {//new OK
-		Internal internal = DocumentUtil.restoreInternal(mainFrame,InternalKey.BLURB, "");
+		Internal internal = BookUtil.get(mainFrame,BookKey.BLURB, "");
 		StringSelection selection = new StringSelection(internal.getStringValue() + "\n");
 		Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clbrd.setContents(selection, selection);
@@ -609,12 +597,17 @@ public class ActionHandler {
 		NetUtil.openBrowser(SbConstants.URL.HOMEPAGE.toString());
 	}
 
-	public void handleAbout() {//new OK
+	public void handleAbout() {
 		AboutDialog dlg = new AboutDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
 	}
 
+	public void handleTrace() {//new OK
+		if (SbApp.getInstance().getTrace()) SbApp.getInstance().setTrace(false);
+		else SbApp.getInstance().setTrace(true);
+	}
+
 	public void handleExit() {
-		StorybookApp.getInstance().exit();
+		SbApp.getInstance().exit();
 	}
 }

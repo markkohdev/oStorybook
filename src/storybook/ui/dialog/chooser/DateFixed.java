@@ -69,7 +69,7 @@ public class DateFixed extends javax.swing.JPanel {
         btLast.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/last.png"))); // NOI18N
         btLast.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         lbDate.setText(bundle.getString("msg.common.date")); // NOI18N
 
         btClearDate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/clear.png"))); // NOI18N

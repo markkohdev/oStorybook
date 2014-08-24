@@ -1,21 +1,20 @@
 /*
-Storybook: Open Source software for novelists and authors.
-Copyright (C) 2008 - 2012 Martin Mustun
+ Storybook: Open Source software for novelists and authors.
+ Copyright (C) 2008 - 2012 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package storybook.toolkit.swing.htmleditor;
 
 import java.awt.Color;
@@ -34,7 +33,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,13 +63,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.undo.UndoManager;
-/*
-import net.atlanticbb.tantlinger.i18n.HtmlEditorI18n;
+
+import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.DefaultAction;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
@@ -94,7 +91,7 @@ import net.atlanticbb.tantlinger.ui.text.actions.HTMLLinkAction;
 import net.atlanticbb.tantlinger.ui.text.actions.HTMLTableAction;
 import net.atlanticbb.tantlinger.ui.text.actions.HTMLTextEditAction;
 import net.atlanticbb.tantlinger.ui.text.actions.SpecialCharAction;
-*/
+import net.miginfocom.swing.MigLayout;
 import novaworx.syntax.SyntaxFactory;
 import novaworx.textpane.SyntaxDocument;
 import novaworx.textpane.SyntaxGutter;
@@ -103,7 +100,6 @@ import novaworx.textpane.SyntaxGutterBase;
 import org.bushe.swing.action.ActionList;
 import org.bushe.swing.action.ActionManager;
 import org.bushe.swing.action.ActionUIFactory;
-
 import storybook.SbConstants.PreferenceKey;
 import storybook.SbConstants.Spelling;
 import storybook.model.hbn.entity.Preference;
@@ -112,33 +108,8 @@ import storybook.toolkit.PrefUtil;
 import storybook.toolkit.html.HtmlUtil;
 
 import com.inet.jortho.SpellChecker;
-
-import net.miginfocom.swing.MigLayout;
-
-import shef.HtmlEditorI18n;
-import shef.ui.DefaultAction;
-import shef.ui.UIUtils;
-import shef.ui.text.CompoundUndoManager;
-import shef.ui.text.Entities;
-import shef.ui.text.HTMLUtils;
-import shef.ui.text.IndentationFilter;
-import shef.ui.text.SourceCodeEditor;
-import shef.ui.text.WysiwygHTMLEditorKit;
-import shef.ui.text.actions.ClearStylesAction;
-import shef.ui.text.actions.FindReplaceAction;
-import shef.ui.text.actions.HTMLEditorActionFactory;
-import shef.ui.text.actions.HTMLElementPropertiesAction;
-import shef.ui.text.actions.HTMLFontAction;
-import shef.ui.text.actions.HTMLFontColorAction;
-import shef.ui.text.actions.HTMLHorizontalRuleAction;
-import shef.ui.text.actions.HTMLImageAction;
-import shef.ui.text.actions.HTMLInlineAction;
-import shef.ui.text.actions.HTMLLineBreakAction;
-import shef.ui.text.actions.HTMLLinkAction;
-import shef.ui.text.actions.HTMLTableAction;
-import shef.ui.text.actions.HTMLTextEditAction;
-import shef.ui.text.actions.SpecialCharAction;
-import storybook.StorybookApp;
+import java.io.IOException;
+import javax.swing.text.BadLocationException;
 
 /**
  * Based on HTMLEditorPane by SHEF / Bob Tantlinger.<br>
@@ -150,11 +121,11 @@ import storybook.StorybookApp;
 @SuppressWarnings("serial")
 public class HtmlEditor extends JPanel {
 
-	private static final HtmlEditorI18n i18n = HtmlEditorI18n
+	private static final I18n i18n = I18n
 			.getInstance("net.atlanticbb.tantlinger.shef");
 
-	private static final String INVALID_TAGS[] = { "html", "head", "body",
-			"title" };
+	private static final String INVALID_TAGS[] = {"html", "head", "body",
+		"title"};
 
 	private int maxLength = -1;
 	private boolean showFullToolbar = true;
@@ -177,12 +148,12 @@ public class HtmlEditor extends JPanel {
 
 	private ActionList actionList;
 
-	private FocusListener focusHandler = new FocusHandler();
-	private DocumentListener textChangedHandler = new TextChangedHandler();
-	private ActionListener fontChangeHandler = new FontChangeHandler();
-	private ActionListener paragraphComboHandler = new ParagraphComboHandler();
-	private CaretListener caretHandler = new CaretHandler();
-	private MouseListener popupHandler = new PopupHandler();
+	private final FocusListener focusHandler = new FocusHandler();
+	private final DocumentListener textChangedHandler = new TextChangedHandler();
+	private final ActionListener fontChangeHandler = new FontChangeHandler();
+	private final ActionListener paragraphComboHandler = new ParagraphComboHandler();
+	private final CaretListener caretHandler = new CaretHandler();
+	private final MouseListener popupHandler = new PopupHandler();
 
 	private boolean isWysTextChanged;
 
@@ -233,8 +204,7 @@ public class HtmlEditor extends JPanel {
 		add(tabs, "grow, id tabs");
 		lbMessage = new JLabel("", JLabel.RIGHT);
 		add(lbMessage,
-				//"pos (tabs.x + tabs.w-200) (tabs.y + tabs.h-16) (tabs.x + tabs.w) (tabs.y + tabs.h)");
-				"pos (tabs.x + tabs.w-600) (tabs.y + tabs.h-16) (tabs.x + tabs.w) (tabs.y + tabs.h)");
+				"pos (tabs.x + tabs.w-200) (tabs.y + tabs.h-16) (tabs.x + tabs.w) (tabs.y + tabs.h)");
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -388,8 +358,8 @@ public class HtmlEditor extends JPanel {
 		createFormatToolBar(paraActions, fontSizeActions);
 	}
 
-	private void createFormatToolBar(ActionList blockActs,
-			ActionList fontSizeActs) {
+	@SuppressWarnings("unchecked")
+	private void createFormatToolBar(ActionList blockActs, ActionList fontSizeActs) {
 		formatToolBar = new JToolBar();
 		formatToolBar.setFloatable(false);
 		formatToolBar.setFocusable(false);
@@ -401,21 +371,18 @@ public class HtmlEditor extends JPanel {
 		PropertyChangeListener propLst = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals("selected")) {
+				if (evt.getPropertyName().equals("selected"))
 					if (evt.getNewValue().equals(Boolean.TRUE)) {
-						paragraphCombo
-								.removeActionListener(paragraphComboHandler);
+						paragraphCombo.removeActionListener(paragraphComboHandler);
 						paragraphCombo.setSelectedItem(evt.getSource());
 						paragraphCombo.addActionListener(paragraphComboHandler);
 					}
-				}
 			}
 		};
 		for (Iterator it = blockActs.iterator(); it.hasNext();) {
 			Object o = it.next();
-			if (o instanceof DefaultAction) {
+			if (o instanceof DefaultAction)
 				((DefaultAction) o).addPropertyChangeListener(propLst);
-			}
 		}
 		paragraphCombo = new JComboBox(toArray(blockActs));
 		paragraphCombo.setFont(comboFont);
@@ -432,8 +399,7 @@ public class HtmlEditor extends JPanel {
 		fonts.add("serif");
 		fonts.add("sans-serif");
 		fonts.add("monospaced");
-		GraphicsEnvironment gEnv = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
+		GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		fonts.addAll(Arrays.asList(gEnv.getAvailableFontFamilyNames()));
 
 		fontFamilyCombo = new JComboBox(fonts);
@@ -454,9 +420,8 @@ public class HtmlEditor extends JPanel {
 		};
 		fontSizeButton.addActionListener(al);
 		configToolbarButton(fontSizeButton);
-		if (showFullToolbar) {
+		if (showFullToolbar)
 			formatToolBar.add(fontSizeButton);
-		}
 
 		Action act;
 		act = new HTMLFontColorAction();
@@ -471,9 +436,8 @@ public class HtmlEditor extends JPanel {
 				ActionManager.BUTTON_TYPE_VALUE_TOGGLE);
 		actionList.add(act);
 		String opts = "";
-		if (showFullToolbar) {
+		if (showFullToolbar)
 			opts = "newline,split 20";
-		}
 		addToToolBar(formatToolBar, act, opts);
 
 		act = new HTMLInlineAction(HTMLInlineAction.ITALIC);
@@ -496,14 +460,12 @@ public class HtmlEditor extends JPanel {
 			act.putValue(ActionManager.BUTTON_TYPE,
 					ActionManager.BUTTON_TYPE_VALUE_TOGGLE);
 			actionList.add(act);
-			if (showFullToolbar) {
+			if (showFullToolbar)
 				addToToolBar(formatToolBar, act);
-			}
 		}
 
-		if (showFullToolbar) {
+		if (showFullToolbar)
 			formatToolBar.addSeparator();
-		}
 
 		alst = HTMLEditorActionFactory.createAlignActionList();
 		for (Iterator it = alst.iterator(); it.hasNext();) {
@@ -514,9 +476,8 @@ public class HtmlEditor extends JPanel {
 			addToToolBar(formatToolBar, act);
 		}
 
-		if (showFullToolbar) {
+		if (showFullToolbar)
 			formatToolBar.addSeparator();
-		}
 
 		if (showFullToolbar) {
 			act = new HTMLLinkAction();
@@ -544,19 +505,18 @@ public class HtmlEditor extends JPanel {
 	}
 
 	/**
-	 * Converts an action list to an array. Any of the null "separators" or sub
-	 * ActionLists are omitted from the array.
+	 * Converts an action list to an array. Any of the null "separators" or sub ActionLists are omitted from the array.
 	 *
 	 * @param lst
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private Action[] toArray(ActionList lst) {
 		List acts = new ArrayList();
 		for (Iterator it = lst.iterator(); it.hasNext();) {
 			Object v = it.next();
-			if (v != null && v instanceof Action) {
+			if (v != null && v instanceof Action)
 				acts.add(v);
-			}
 		}
 
 		return (Action[]) acts.toArray(new Action[acts.size()]);
@@ -573,9 +533,8 @@ public class HtmlEditor extends JPanel {
 		button.setFocusPainted(false);
 		// button.setBorder(plainBorder);
 		Action a = button.getAction();
-		if (a != null) {
+		if (a != null)
 			button.setToolTipText(a.getValue(Action.NAME).toString());
-		}
 	}
 
 	private JMenu createMenu(ActionList lst, String menuName) {
@@ -637,9 +596,8 @@ public class HtmlEditor extends JPanel {
 		Preference pref = PrefUtil.get(PreferenceKey.SPELLING,
 				Spelling.none.toString());
 		Spelling spelling = Spelling.valueOf(pref.getStringValue());
-		if (Spelling.none != spelling) {
+		if (Spelling.none != spelling)
 			SpellChecker.register(ed);
-		}
 		ed.addMouseListener(popupHandler);
 
 		HTMLDocument document = (HTMLDocument) ed.getDocument();
@@ -656,10 +614,10 @@ public class HtmlEditor extends JPanel {
 		try {
 			HTMLEditorKit kit = (HTMLEditorKit) editor.getEditorKit();
 			Document doc = editor.getDocument();
-			StringReader reader = new StringReader(
-					HTMLUtils.jEditorPaneizeHTML(html));
+			StringReader reader = new StringReader(HTMLUtils.jEditorPaneizeHTML(html));
 			kit.read(reader, doc, location);
 		} catch (IOException | BadLocationException ex) {
+			ex.printStackTrace();
 		}
 	}
 
@@ -705,7 +663,7 @@ public class HtmlEditor extends JPanel {
 	}
 
 	public String getText() {
-		String topText="";
+		String topText = "";
 		// return only body content
 		try {
 			if (tabs.getSelectedIndex() == 0) {
@@ -722,7 +680,7 @@ public class HtmlEditor extends JPanel {
 				topText = Entities.HTML40.unescapeUnknownEntities(topText);
 			}
 		} catch (Exception e) {
-			StorybookApp.error("HtmlEditor.getText() Exception:",e);
+			e.printStackTrace();
 		}
 		return topText;
 		// OLD
@@ -756,16 +714,15 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private String removeInvalidTags(String html) {
-		for (int i = 0; i < INVALID_TAGS.length; i++) {
-			html = deleteOccurance(html, '<' + INVALID_TAGS[i] + '>');
-			html = deleteOccurance(html, "</" + INVALID_TAGS[i] + '>');
+		for (String invalid_tag : INVALID_TAGS) {
+			html = deleteOccurance(html, '<' + invalid_tag + '>');
+			html = deleteOccurance(html, "</" + invalid_tag + '>');
 		}
 
 		return html.trim();
 	}
 
 	private String deleteOccurance(String text, String word) {
-		if (text == null) return "";
 		StringBuilder sb = new StringBuilder(text);
 		int p;
 		while ((p = sb.toString().toLowerCase().indexOf(word.toLowerCase())) != -1) {
@@ -778,12 +735,10 @@ public class HtmlEditor extends JPanel {
 		if (focusedEditor == wysEditor) {
 			fontFamilyCombo.removeActionListener(fontChangeHandler);
 			String fontName = HTMLUtils.getFontFamily(wysEditor);
-			if (fontName == null) {
+			if (fontName == null)
 				fontFamilyCombo.setSelectedIndex(0);
-			}
-			else {
+			else
 				fontFamilyCombo.setSelectedItem(fontName);
-			}
 			fontFamilyCombo.addActionListener(fontChangeHandler);
 		}
 
@@ -793,18 +748,16 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class CaretHandler implements CaretListener {
+
 		@Override
 		public void caretUpdate(CaretEvent e) {
 			if (maxLength > 0) {
-				int left = maxLength - getText().length() - 1;
-				if (left < 0) {
+				int len = maxLength - getText().length() - 1;
+				if (len < 0)
 					lbMessage.setForeground(Color.red);
-				} else {
+				else
 					lbMessage.setForeground(Color.black);
-				}
-				//lbMessage.setText(I18N.getMsg("msg.editor.letters.left", len));
-				Integer a[]={getText().length(),left};
-				lbMessage.setText(I18N.getMsg("msg.editor.letters.length", a));
+				lbMessage.setText(I18N.getMsg("msg.editor.letters.left", len));
 			}
 
 			updateState();
@@ -812,6 +765,7 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class PopupHandler extends MouseAdapter {
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			checkForPopupTrigger(e);
@@ -824,22 +778,20 @@ public class HtmlEditor extends JPanel {
 
 		private void checkForPopupTrigger(MouseEvent e) {
 			if (e.isPopupTrigger()) {
-				JPopupMenu p = null;
-				if (e.getSource() == wysEditor) {
+				JPopupMenu p;
+				if (e.getSource() == wysEditor)
 					p = wysPopupMenu;
-				}
-				else if (e.getSource() == srcEditor) {
+				else if (e.getSource() == srcEditor)
 					p = srcPopupMenu;
-				}
-				else {
+				else
 					return;
-				}
 				p.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 	}
 
 	private class FocusHandler implements FocusListener {
+
 		@Override
 		public void focusGained(FocusEvent e) {
 			if (e.getComponent() instanceof JEditorPane) {
@@ -863,6 +815,7 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class TextChangedHandler implements DocumentListener {
+
 		@Override
 		public void insertUpdate(DocumentEvent e) {
 			textChanged();
@@ -879,16 +832,16 @@ public class HtmlEditor extends JPanel {
 		}
 
 		private void textChanged() {
-			if (tabs.getSelectedIndex() == 0) {
+			if (tabs.getSelectedIndex() == 0)
 				isWysTextChanged = true;
-			}
 		}
 	}
 
 	private class ChangeTabAction extends DefaultAction {
+
 		/**
-         *
-         */
+		 *
+		 */
 		private static final long serialVersionUID = 1L;
 		int tab;
 
@@ -912,6 +865,7 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class ParagraphComboHandler implements ActionListener {
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == paragraphCombo) {
@@ -922,17 +876,17 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class ParagraphComboRenderer extends DefaultListCellRenderer {
+
 		/**
-         *
-         */
+		 *
+		 */
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
-			if (value instanceof Action) {
+			if (value instanceof Action)
 				value = ((Action) value).getValue(Action.NAME);
-			}
 
 			return super.getListCellRendererComponent(list, value, index,
 					isSelected, cellHasFocus);
@@ -940,21 +894,18 @@ public class HtmlEditor extends JPanel {
 	}
 
 	private class FontChangeHandler implements ActionListener {
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == fontFamilyCombo && focusedEditor == wysEditor) {
 				// MutableAttributeSet tagAttrs = new SimpleAttributeSet();
-				HTMLDocument document = (HTMLDocument) focusedEditor
-						.getDocument();
+				HTMLDocument document = (HTMLDocument) focusedEditor.getDocument();
 				CompoundUndoManager.beginCompoundEdit(document);
 
-				if (fontFamilyCombo.getSelectedIndex() != 0) {
-					HTMLUtils.setFontFamily(wysEditor, fontFamilyCombo
-							.getSelectedItem().toString());
-
-				} else {
+				if (fontFamilyCombo.getSelectedIndex() != 0)
+					HTMLUtils.setFontFamily(wysEditor, fontFamilyCombo.getSelectedItem().toString());
+				else
 					HTMLUtils.setFontFamily(wysEditor, null);
-				}
 				CompoundUndoManager.endCompoundEdit(document);
 			}
 		}

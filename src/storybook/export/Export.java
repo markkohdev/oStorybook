@@ -8,8 +8,9 @@ package storybook.export;
 import java.io.File;
 import java.util.List;
 import javax.swing.JOptionPane;
+
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Idea;
 import storybook.model.hbn.entity.Item;
@@ -18,7 +19,7 @@ import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Person;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Tag;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import static storybook.toolkit.TextUtil.truncateText;
 import storybook.toolkit.html.HtmlUtil;
@@ -46,8 +47,8 @@ public class Export {
 		mainFrame = m.mainFrame;
 		format = f;
 		zoom=x;
-		author=DocumentUtil.restoreInternal(mainFrame, SbConstants.InternalKey.AUTHOR, "").getStringValue();
-		bookTitle=DocumentUtil.restoreInternal(mainFrame, SbConstants.InternalKey.TITLE, "").getStringValue();
+		author=BookUtil.get(mainFrame, SbConstants.BookKey.AUTHOR, "").getStringValue();
+		bookTitle=BookUtil.get(mainFrame, SbConstants.BookKey.TITLE, "").getStringValue();
 	}
 	
 	public MainFrame getMainFrame() {
@@ -67,10 +68,11 @@ public class Export {
 	 * @param dir : directory to export
 	 * @param xp : the object type to export
 	 * @param object : the object to export, null for list all
+	 * @param silent
 	 * @return if type==html then the export string, else if error the error message
 	 */
 	public String fill(String dir, ExportData xp, Object object, boolean silent) {
-		StorybookApp.trace("Report.fill(\"" + dir + "\"," 
+		SbApp.trace("Report.fill(\"" + dir + "\"," 
 				+ xp.getExportName() + "," 
 				+ (object == null ? "null" : object.getClass().getName()) + ")");
 		String ret = "";

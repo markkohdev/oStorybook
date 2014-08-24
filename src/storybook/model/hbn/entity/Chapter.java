@@ -28,8 +28,6 @@ import storybook.toolkit.TextUtil;
  */
 public class Chapter extends AbstractEntity implements Comparable<Chapter> {
 
-	private static final long serialVersionUID = -6581550047607846080L;
-
 	private Part part;
 	private Integer chapterno;
 	private String title;

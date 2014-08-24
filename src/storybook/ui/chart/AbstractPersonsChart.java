@@ -37,6 +37,7 @@ public abstract class AbstractPersonsChart extends AbstractChartPanel {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void initChart() {
 		this.categoryCbList = EntityUtil.createCategoryCheckBoxes(this.mainFrame, this);
 		this.selectedCategories = new ArrayList();

@@ -31,7 +31,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.controller.BookController;
 import storybook.model.BookModel;
 import storybook.model.EntityUtil;
@@ -39,7 +39,7 @@ import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Scene;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.toolkit.swing.label.VerticalLabelUI;
@@ -124,8 +124,8 @@ public class ChapterPanel extends AbstractPanel implements
 	@Override
 	public void init() {
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
 			setZoomedSize(internal.getIntegerValue());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -171,7 +171,7 @@ public class ChapterPanel extends AbstractPanel implements
 
 		sceneTransferHandler = new SceneTransferHandler(mainFrame);
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Scene> scenes = dao.findScenes(chapter);

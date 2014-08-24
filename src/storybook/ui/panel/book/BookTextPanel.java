@@ -29,12 +29,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.text.JTextComponent;
 
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.action.EditEntityAction;
 import storybook.controller.BookController;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Scene;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.FontUtil;
 import storybook.toolkit.swing.SwingUtil;
@@ -108,11 +108,11 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 	@Override
 	public void init() {
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.BOOK_ZOOM, SbConstants.DEFAULT_BOOK_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.BOOK_ZOOM, SbConstants.DEFAULT_BOOK_ZOOM);
 			setZoomedSize(internal.getIntegerValue());
-			internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.BOOK_HEIGHT_FACTOR,
+			internal = BookUtil.get(mainFrame,
+					BookKey.BOOK_HEIGHT_FACTOR,
 					SbConstants.DEFAULT_BOOK_HEIGHT_FACTOR);
 			heightFactor = internal.getIntegerValue();
 		} catch (Exception e) {
@@ -214,7 +214,7 @@ public class BookTextPanel extends AbstractPanel implements FocusListener {
 					scene.setSummary(tc.getText());
 					break;
 			}
-			mainFrame.getDocumentController().updateScene(scene);
+			mainFrame.getBookController().updateScene(scene);
 		}
 	}
 }

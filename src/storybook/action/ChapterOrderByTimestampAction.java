@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.hibernate.Session;
+
 import storybook.controller.BookController;
 import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
@@ -38,7 +39,7 @@ import storybook.ui.MainFrame;
 @SuppressWarnings("serial")
 public class ChapterOrderByTimestampAction extends AbstractEntityAction {
 
-	private Chapter chapter;
+	private final Chapter chapter;
 
 	public ChapterOrderByTimestampAction(MainFrame mainFrame, Chapter chapter) {
 		super(mainFrame, chapter, I18N.getMsg("msg.common.order.by.time"), I18N
@@ -48,8 +49,8 @@ public class ChapterOrderByTimestampAction extends AbstractEntityAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		BookModel model = mainFrame.getDocumentModel();
-		BookController ctrl = mainFrame.getDocumentController();
+		BookModel model = mainFrame.getBookModel();
+		BookController ctrl = mainFrame.getBookController();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Scene> scenes = dao.findScenesOrderByTimestamp(chapter);

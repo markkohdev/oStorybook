@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.h2.jdbc.JdbcSQLException;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.model.oldModel.MigrationConstants.ProjectSetting;
 
 //@Deprecated
@@ -40,7 +40,7 @@ public class InternalPeer {
 		try {
 			createTable();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.create()",e);
+			SbApp.error("InternalPeer.create()",e);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class InternalPeer {
 		Statement stmt;
 
 		// create
-		StorybookApp.trace("InternalPeer.createTable(" + Internal.TABLE_NAME+")");
+		SbApp.trace("InternalPeer.createTable(" + Internal.TABLE_NAME+")");
 		sql = "create table IF NOT EXISTS "
 			+ Internal.TABLE_NAME
 			+ " ("
@@ -82,7 +82,7 @@ public class InternalPeer {
 			}
 			return list;
 		} catch (SQLException e) {
-			StorybookApp.error("InternalPeer.doSelectAll()", e);
+			SbApp.error("InternalPeer.doSelectAll()", e);
 		}
 		return null;
 	}
@@ -146,7 +146,7 @@ public class InternalPeer {
 			rs.next();
 			return rs.getInt(1);
 		} catch (SQLException e) {
-			StorybookApp.error("InternalPeer.doCount()", e);
+			SbApp.error("InternalPeer.doCount()", e);
 		}
 		return 0;
 	}
@@ -190,11 +190,11 @@ public class InternalPeer {
 				rs.next();
 				return rs.getString(Internal.COLUMN_OLD_VALUE);
 			} catch (SQLException se) {
-				StorybookApp.error("InternalPeer.getDbModelVersion()", se);
+				SbApp.error("InternalPeer.getDbModelVersion()", se);
 				return null;
 			}
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.getDbModelVersion()", e);
+			SbApp.error("InternalPeer.getDbModelVersion()", e);
 			return null;
 		}
 	}
@@ -213,7 +213,7 @@ public class InternalPeer {
 			internal.setStringValue(version);
 			internal.save();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.setDbModelVersion()", e);
+			SbApp.error("InternalPeer.setDbModelVersion()", e);
 		}
 	}
 
@@ -233,7 +233,7 @@ public class InternalPeer {
 			internal.setIntegerValue(scaleFactor);
 			internal.save();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.setScaleFactorChrono("+scaleFactor+")", e);
+			SbApp.error("InternalPeer.setScaleFactorChrono("+scaleFactor+")", e);
 		}
 	}
 
@@ -245,7 +245,7 @@ public class InternalPeer {
 			}
 			return internal.getIntegerValue();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.getScaleFactorChrono()", e);
+			SbApp.error("InternalPeer.getScaleFactorChrono()", e);
 		}
 		return MigrationConstants.DEFAULT_SCALE_FACTOR_CHRONO;
 	}
@@ -260,7 +260,7 @@ public class InternalPeer {
 			internal.setIntegerValue(scaleFactor);
 			internal.save();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.setScaleFactorChrono("+scaleFactor+")", e);
+			SbApp.error("InternalPeer.setScaleFactorChrono("+scaleFactor+")", e);
 		}
 	}
 
@@ -272,7 +272,7 @@ public class InternalPeer {
 			}
 			return internal.getIntegerValue();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.getScaleFactorChrono()", e);
+			SbApp.error("InternalPeer.getScaleFactorChrono()", e);
 		}
 		return MigrationConstants.DEFAULT_SCALE_FACTOR_BOOK;
 	}
@@ -287,7 +287,7 @@ public class InternalPeer {
 			internal.setIntegerValue(scaleFactor);
 			internal.save();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.setScaleFactorManage("+scaleFactor+")", e);
+			SbApp.error("InternalPeer.setScaleFactorManage("+scaleFactor+")", e);
 		}
 	}
 
@@ -299,7 +299,7 @@ public class InternalPeer {
 			}
 			return internal.getIntegerValue();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.getScaleFactorManage()", e);
+			SbApp.error("InternalPeer.getScaleFactorManage()", e);
 		}
 		return MigrationConstants.DEFAULT_SCALE_FACTOR_MANAGE;
 	}
@@ -315,7 +315,7 @@ public class InternalPeer {
 			internal.setIntegerValue(cols);
 			internal.save();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.saveManaeGols("+cols+")", e);
+			SbApp.error("InternalPeer.saveManaeGols("+cols+")", e);
 		}
 	}
 
@@ -328,7 +328,7 @@ public class InternalPeer {
 			}
 			return internal.getIntegerValue();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.getManageCols()", e);
+			SbApp.error("InternalPeer.getManageCols()", e);
 		}
 		return 4;
 	}
@@ -344,7 +344,7 @@ public class InternalPeer {
 			internal.setIntegerValue(textLength);
 			internal.save();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.saveManageViewTextLength("+textLength+")", e);
+			SbApp.error("InternalPeer.saveManageViewTextLength("+textLength+")", e);
 		}
 	}
 
@@ -357,7 +357,7 @@ public class InternalPeer {
 			}
 			return internal.getIntegerValue();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.getManageViewTextLength()", e);
+			SbApp.error("InternalPeer.getManageViewTextLength()", e);
 		}
 		return 100;
 	}
@@ -372,7 +372,7 @@ public class InternalPeer {
 			}
 			return internal.getBooleanValue();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.getReadingView()", e);
+			SbApp.error("InternalPeer.getReadingView()", e);
 		}
 		return false;
 	}
@@ -388,7 +388,7 @@ public class InternalPeer {
 			internal.setBooleanValue(readingView);
 			internal.save();
 		} catch (Exception e) {
-			StorybookApp.error("InternalPeer.saveReadingView("+(readingView?"true":false)+")", e);
+			SbApp.error("InternalPeer.saveReadingView("+(readingView?"true":false)+")", e);
 		}
 	}
 }

@@ -30,6 +30,7 @@ import storybook.toolkit.swing.SwingUtil;
 import storybook.ui.interfaces.IPaintable;
 
 import net.miginfocom.swing.MigLayout;
+import storybook.SbApp;
 
 /**
  * @author martin
@@ -38,6 +39,8 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class HourglassSplash extends JDialog implements IPaintable {
 	private String text;
+	private JLabel lbText;
+	private JLabel lbProgress;
 
 	public HourglassSplash(String text) {
 		this.text = text;
@@ -66,14 +69,25 @@ public class HourglassSplash extends JDialog implements IPaintable {
 		panel.setBorder(SwingUtil.getBorderDefault());
 
 		JLabel lbHg = new JLabel(I18N.getIcon("icon.large.hourglass"));
-		JLabel lbText = new JLabel(text);
+		lbText = new JLabel(text);
 
 		panel.add(lbHg, "al center,gap bottom 10");
 		panel.add(lbText);
+		lbProgress=new JLabel("...");
+		lbProgress.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		add(panel);
 
 		SwingUtil.showDialog(this, null);
 		toFront();
-		repaint(10);
+		repaint(0);
+	}
+	public void setText(String s) {
+		lbText.setText(s);
+		SbApp.trace("progress : "+s);
+		repaint(0);
+	}
+	public void setProgress(String s) {
+		lbProgress.setText(s);
+		repaint(0);
 	}
 }

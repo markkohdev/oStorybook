@@ -1,74 +1,75 @@
 /*
- * SbApp: Open Source software for novelists and authors.
- * Original idea 2008 - 2012 Martin Mustun
- * Copyrigth (C) Favdb
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
+
 package storybook.ui;
+
+import com.sun.jaf.ui.ActionManager;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.File;
-import java.io.IOException;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
-import net.infonode.docking.View;
-import org.apache.commons.io.FileUtils;
+
+import storybook.SbApp;
 import storybook.SbConstants;
-import storybook.StorybookApp;
-import storybook.model.hbn.entity.Scene;
-import storybook.toolkit.I18N;
-import storybook.toolkit.net.Updater;
-import storybook.toolkit.swing.SwingUtil;
-import storybook.action.DisposeDialogAction;
-import storybook.action.OpenFileAction;
-import storybook.controller.BookController;
+import storybook.SbConstants.ViewName;
+import storybook.action.LangToolAction;
 import storybook.export.BookExporter;
-import storybook.export.Printing;
-import storybook.model.DbFile;
+import storybook.export.DlgExport;
 import storybook.model.hbn.entity.AbstractEntity;
+import storybook.model.hbn.entity.Category;
 import storybook.model.hbn.entity.Chapter;
+import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Idea;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Item;
+import storybook.model.hbn.entity.ItemLink;
 import storybook.model.hbn.entity.Location;
 import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Person;
+import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.model.hbn.entity.Tag;
-import storybook.toolkit.DocumentUtil;
+import storybook.model.hbn.entity.TagLink;
+import storybook.toolkit.BookUtil;
+import storybook.toolkit.DockingWindowUtil;
+import storybook.toolkit.I18N;
 import storybook.toolkit.net.NetUtil;
+import storybook.toolkit.net.Updater;
+import storybook.toolkit.swing.SwingUtil;
 import storybook.ui.dialog.AboutDialog;
 import storybook.ui.dialog.BookPropertiesDialog;
+import storybook.ui.dialog.CreateChaptersDialog;
+import storybook.ui.dialog.FoiDialog;
+import storybook.ui.dialog.ManageLayoutsDialog;
 import storybook.ui.dialog.PreferencesDialog;
-import storybook.ui.dialog.WaitDialog;
-import storybook.ui.dialog.file.SaveAsFileDialog;
-import storybook.export.DlgExport;
-import storybook.model.hbn.entity.Gender;
+import storybook.ui.dialog.rename.RenameCityDialog;
+import storybook.ui.dialog.rename.RenameCountryDialog;
+import storybook.ui.dialog.rename.RenameItemCategoryDialog;
+import storybook.ui.dialog.rename.RenameTagCategoryDialog;
 
 /**
  *
  * @author favdb
  */
 public class MainMenu extends javax.swing.JFrame {
-
-	MainFrame mainFrame;
+	private MainFrame mainFrame;
 
 	/**
 	 * Creates new form MainMenu
 	 */
 	public MainMenu() {
 		initComponents();
+	}
+
+	public MainMenu(MainFrame main) {
+		initComponents();
+		mainFrame=main;
+		helpTrace.setSelected(SbApp.getTrace());
 	}
 
 	/**
@@ -79,748 +80,1435 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
+        toolBar = new javax.swing.JToolBar();
+        btFileNew = new javax.swing.JButton();
+        btFileOpen = new javax.swing.JButton();
+        btFileSave = new javax.swing.JButton();
+        jSeparator19 = new javax.swing.JToolBar.Separator();
+        btNewScene = new javax.swing.JButton();
+        btNewChapter = new javax.swing.JButton();
+        btNewPerson = new javax.swing.JButton();
+        btNewLocation = new javax.swing.JButton();
+        btNewItem = new javax.swing.JButton();
+        btNewTag = new javax.swing.JButton();
+        jSeparator20 = new javax.swing.JToolBar.Separator();
+        btTabScene = new javax.swing.JButton();
+        btTabChapter = new javax.swing.JButton();
+        btTabPerson = new javax.swing.JButton();
+        btTabLocation = new javax.swing.JButton();
+        btTabItem = new javax.swing.JButton();
+        btTabItemLink = new javax.swing.JButton();
+        btTabTag = new javax.swing.JButton();
+        btTabTagLink = new javax.swing.JButton();
+        jSeparator21 = new javax.swing.JToolBar.Separator();
+        btViewChrono = new javax.swing.JButton();
+        btViewBook = new javax.swing.JButton();
+        btManageScene = new javax.swing.JButton();
+        btViewReading = new javax.swing.JButton();
+        btViewMemoria = new javax.swing.JButton();
+        jSeparator22 = new javax.swing.JToolBar.Separator();
+        btPreviousPart = new javax.swing.JButton();
+        btNextPart = new javax.swing.JButton();
+        jSeparator23 = new javax.swing.JToolBar.Separator();
+        btIdea = new javax.swing.JButton();
+        menuBar = new javax.swing.JMenuBar();
+        menuFile = new javax.swing.JMenu();
         fileNew = new javax.swing.JMenuItem();
         fileOpen = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        fileOpenRecent = new javax.swing.JMenu();
         fileSave = new javax.swing.JMenuItem();
         fileSaveAs = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        fileRename = new javax.swing.JMenuItem();
+        fileClose = new javax.swing.JMenuItem();
+        separatorFile1 = new javax.swing.JPopupMenu.Separator();
         fileProperties = new javax.swing.JMenuItem();
-        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        separatorFile2 = new javax.swing.JPopupMenu.Separator();
         fileExport = new javax.swing.JMenuItem();
-        filePrint = new javax.swing.JMenu();
-        filePrintBook = new javax.swing.JMenuItem();
-        filePrintChapter = new javax.swing.JMenuItem();
-        filePrintScene = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        filePrint = new javax.swing.JMenuItem();
+        separatorFile3 = new javax.swing.JPopupMenu.Separator();
         fileExit = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
+        menuEdit = new javax.swing.JMenu();
         editCopyBook = new javax.swing.JMenuItem();
         editCopyBlurb = new javax.swing.JMenuItem();
-        jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        documentProperties = new javax.swing.JMenuItem();
-        newMenu = new javax.swing.JMenu();
-        newStrand = new javax.swing.JMenuItem();
-        newPart = new javax.swing.JMenuItem();
-        newChapter = new javax.swing.JMenuItem();
+        windowPreferences = new javax.swing.JMenuItem();
+        menuNewEntity = new javax.swing.JMenu();
         newScene = new javax.swing.JMenuItem();
-        jSeparator7 = new javax.swing.JPopupMenu.Separator();
-        newCharacter = new javax.swing.JMenuItem();
-        newCharacterCategory = new javax.swing.JMenuItem();
+        newChapter = new javax.swing.JMenuItem();
+        newChapters = new javax.swing.JMenuItem();
+        newPart = new javax.swing.JMenuItem();
+        newStrand = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        newPerson = new javax.swing.JMenuItem();
+        newCategory = new javax.swing.JMenuItem();
         newGender = new javax.swing.JMenuItem();
-        jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
         newLocation = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JPopupMenu.Separator();
+        newTag = new javax.swing.JMenuItem();
+        newTagLink = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        newItem = new javax.swing.JMenuItem();
+        newItemLink = new javax.swing.JMenuItem();
+        newFOI = new javax.swing.JMenuItem();
+        newIdea = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        menuPrimaryObjects = new javax.swing.JMenu();
+        tabScene = new javax.swing.JMenuItem();
+        tabChapter = new javax.swing.JMenuItem();
+        tabPart = new javax.swing.JMenuItem();
+        tabStrand = new javax.swing.JMenuItem();
+        jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        tabPerson = new javax.swing.JMenuItem();
+        tabCategory = new javax.swing.JMenuItem();
+        tabGender = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        tabLocation = new javax.swing.JMenuItem();
         renameCity = new javax.swing.JMenuItem();
         renameCountry = new javax.swing.JMenuItem();
-        newItem = new javax.swing.JMenuItem();
-        jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        newTag = new javax.swing.JMenuItem();
-        newIdea = new javax.swing.JMenuItem();
-        linksMenu = new javax.swing.JMenu();
-        tagsLinks = new javax.swing.JMenuItem();
-        itemsLinks = new javax.swing.JMenuItem();
-        chartsMenu = new javax.swing.JMenu();
-        chartsWiww = new javax.swing.JMenuItem();
-        chartsCharactersByDate = new javax.swing.JMenuItem();
-        chartsCharactersByScene = new javax.swing.JMenuItem();
-        chartsUsageStrands = new javax.swing.JMenuItem();
-        chartsGantt = new javax.swing.JMenuItem();
-        jSeparator10 = new javax.swing.JPopupMenu.Separator();
-        chartsOccurrenceCharacters = new javax.swing.JMenuItem();
-        chartsOccurrenceLocations = new javax.swing.JMenuItem();
-        toolsMenu = new javax.swing.JMenu();
-        toolsTasksList = new javax.swing.JMenuItem();
-        toolsLanguage = new javax.swing.JMenuItem();
-        viewMenu = new javax.swing.JMenu();
-        viewTable = new javax.swing.JMenu();
-        viewTableStrands = new javax.swing.JMenuItem();
-        viewTableParts = new javax.swing.JMenuItem();
-        viewTableChapters = new javax.swing.JMenuItem();
-        viewTableScenes = new javax.swing.JMenuItem();
-        viewTableCharacters = new javax.swing.JMenuItem();
-        viewTableLocations = new javax.swing.JMenuItem();
-        viewTableItems = new javax.swing.JMenuItem();
-        viewTableItemsAssociations = new javax.swing.JMenuItem();
-        viewTableTags = new javax.swing.JMenuItem();
-        viewTableTagsAssociations = new javax.swing.JMenuItem();
-        viewTableIdeas = new javax.swing.JMenuItem();
-        viewManage = new javax.swing.JMenuItem();
-        viewChrono = new javax.swing.JMenuItem();
-        viewBook = new javax.swing.JMenuItem();
-        viewReading = new javax.swing.JMenuItem();
-        viewMemoria = new javax.swing.JMenuItem();
-        windowMenu = new javax.swing.JMenu();
+        menuSecondaryObjects = new javax.swing.JMenu();
+        tabTag = new javax.swing.JMenuItem();
+        tabTagLink = new javax.swing.JMenuItem();
+        renameTagCategory = new javax.swing.JMenuItem();
+        jSeparator11 = new javax.swing.JPopupMenu.Separator();
+        tabItem = new javax.swing.JMenuItem();
+        tabItemLink = new javax.swing.JMenuItem();
+        renameItemCategory = new javax.swing.JMenuItem();
+        tabIdea = new javax.swing.JMenuItem();
+        menuView = new javax.swing.JMenu();
+        vueChrono = new javax.swing.JMenuItem();
+        vueBook = new javax.swing.JMenuItem();
+        vueReading = new javax.swing.JMenuItem();
+        vueManageScene = new javax.swing.JMenuItem();
+        vueMemoria = new javax.swing.JMenuItem();
+        jSeparator12 = new javax.swing.JPopupMenu.Separator();
+        vueEditor = new javax.swing.JMenuItem();
+        vueTree = new javax.swing.JMenuItem();
+        vueInfo = new javax.swing.JMenuItem();
+        vueNavigation = new javax.swing.JMenuItem();
+        menuParts = new javax.swing.JMenu();
+        partPrevious = new javax.swing.JMenuItem();
+        partNext = new javax.swing.JMenuItem();
+        menuCharts = new javax.swing.JMenu();
+        chartsAttributes = new javax.swing.JMenuItem();
+        chartPersonsByDate = new javax.swing.JMenuItem();
+        chartPersonsByScene = new javax.swing.JMenuItem();
+        chartWIWW = new javax.swing.JMenuItem();
+        chartStrandsByDate = new javax.swing.JMenuItem();
+        jSeparator13 = new javax.swing.JPopupMenu.Separator();
+        chartOccurrenceOfPersons = new javax.swing.JMenuItem();
+        chartOccurrenceOfLocations = new javax.swing.JMenuItem();
+        chartGantt = new javax.swing.JMenuItem();
+        menuTools = new javax.swing.JMenu();
+        toolsLangtool = new javax.swing.JMenuItem();
+        toolsTaskList = new javax.swing.JMenuItem();
+        jSeparator14 = new javax.swing.JPopupMenu.Separator();
+        toolsConvertTextToHtml = new javax.swing.JMenuItem();
+        toolsConvertHtmlToText = new javax.swing.JMenuItem();
+        menuWindow = new javax.swing.JMenu();
         windowLoadLayout = new javax.swing.JMenu();
         windowSaveLayout = new javax.swing.JMenuItem();
-        windowManageLayouts = new javax.swing.JMenuItem();
         windowDefaultLayout = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
+        windowManageLayouts = new javax.swing.JMenuItem();
+        jSeparator15 = new javax.swing.JPopupMenu.Separator();
+        windowPersonsAndLocations = new javax.swing.JMenuItem();
+        windowTagsAndItems = new javax.swing.JMenuItem();
+        windowChrono = new javax.swing.JMenuItem();
+        windowBook = new javax.swing.JMenuItem();
+        windowManage = new javax.swing.JMenuItem();
+        windowReading = new javax.swing.JMenuItem();
+        jSeparator16 = new javax.swing.JPopupMenu.Separator();
+        windowResetLayout = new javax.swing.JMenuItem();
+        windowRefresh = new javax.swing.JMenuItem();
+        menuHelp = new javax.swing.JMenu();
         helpDoc = new javax.swing.JMenuItem();
-        helpFAQ = new javax.swing.JMenuItem();
-        helpBugs = new javax.swing.JMenuItem();
-        helpContact = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        helpCheckUpdate = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        helpFaq = new javax.swing.JMenuItem();
+        helpHome = new javax.swing.JMenuItem();
+        helpReportBug = new javax.swing.JMenuItem();
         helpAbout = new javax.swing.JMenuItem();
+        jSeparator18 = new javax.swing.JPopupMenu.Separator();
+        helpCheckUpdates = new javax.swing.JMenuItem();
+        helpTrace = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        fileMenu.setMnemonic('f');
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
-        fileMenu.setText(bundle.getString("msg.menu.file")); // NOI18N
+        toolBar.setFloatable(false);
+        toolBar.setRollover(true);
+        toolBar.setName("MainToolbar"); // NOI18N
 
+        btFileNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-new.png"))); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
+        btFileNew.setToolTipText(bundle.getString("msg.file.new")); // NOI18N
+        btFileNew.setFocusable(false);
+        btFileNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btFileNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btFileNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btFileNewActionPerformed(evt);
+            }
+        });
+        toolBar.add(btFileNew);
+
+        btFileOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
+        btFileOpen.setToolTipText(bundle.getString("msg.file.open")); // NOI18N
+        btFileOpen.setFocusable(false);
+        btFileOpen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btFileOpen.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btFileOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btFileOpenActionPerformed(evt);
+            }
+        });
+        toolBar.add(btFileOpen);
+
+        btFileSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-save.png"))); // NOI18N
+        btFileSave.setToolTipText(bundle.getString("msg.file.save")); // NOI18N
+        btFileSave.setFocusable(false);
+        btFileSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btFileSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btFileSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btFileSaveActionPerformed(evt);
+            }
+        });
+        toolBar.add(btFileSave);
+        toolBar.add(jSeparator19);
+
+        btNewScene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/scene.png"))); // NOI18N
+        btNewScene.setToolTipText(bundle.getString("msg.common.scene")); // NOI18N
+        btNewScene.setFocusable(false);
+        btNewScene.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNewScene.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNewScene.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNewSceneActionPerformed(evt);
+            }
+        });
+        toolBar.add(btNewScene);
+
+        btNewChapter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chapter.png"))); // NOI18N
+        btNewChapter.setToolTipText(bundle.getString("msg.common.chapter")); // NOI18N
+        btNewChapter.setFocusable(false);
+        btNewChapter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNewChapter.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNewChapter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNewChapterActionPerformed(evt);
+            }
+        });
+        toolBar.add(btNewChapter);
+
+        btNewPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/person.png"))); // NOI18N
+        btNewPerson.setToolTipText(bundle.getString("msg.common.person")); // NOI18N
+        btNewPerson.setFocusable(false);
+        btNewPerson.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNewPerson.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNewPerson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNewPersonActionPerformed(evt);
+            }
+        });
+        toolBar.add(btNewPerson);
+
+        btNewLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/location.png"))); // NOI18N
+        btNewLocation.setToolTipText(bundle.getString("msg.common.location")); // NOI18N
+        btNewLocation.setFocusable(false);
+        btNewLocation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNewLocation.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNewLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNewLocationActionPerformed(evt);
+            }
+        });
+        toolBar.add(btNewLocation);
+
+        btNewItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/item.png"))); // NOI18N
+        btNewItem.setToolTipText(bundle.getString("msg.common.item")); // NOI18N
+        btNewItem.setFocusable(false);
+        btNewItem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNewItem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNewItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNewItemActionPerformed(evt);
+            }
+        });
+        toolBar.add(btNewItem);
+
+        btNewTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/tag.png"))); // NOI18N
+        btNewTag.setToolTipText(bundle.getString("msg.common.tag")); // NOI18N
+        btNewTag.setFocusable(false);
+        btNewTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNewTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNewTag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNewTagActionPerformed(evt);
+            }
+        });
+        toolBar.add(btNewTag);
+        toolBar.add(jSeparator20);
+
+        btTabScene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_scenes.png"))); // NOI18N
+        btTabScene.setToolTipText(bundle.getString("msg.common.scenes")); // NOI18N
+        btTabScene.setFocusable(false);
+        btTabScene.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabScene.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabScene.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabSceneActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabScene);
+
+        btTabChapter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_chapters.png"))); // NOI18N
+        btTabChapter.setToolTipText(bundle.getString("msg.common.chapters")); // NOI18N
+        btTabChapter.setFocusable(false);
+        btTabChapter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabChapter.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabChapter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabChapterActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabChapter);
+
+        btTabPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_persons.png"))); // NOI18N
+        btTabPerson.setToolTipText(bundle.getString("msg.common.persons")); // NOI18N
+        btTabPerson.setFocusable(false);
+        btTabPerson.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabPerson.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabPerson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabPersonActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabPerson);
+
+        btTabLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_locations.png"))); // NOI18N
+        btTabLocation.setToolTipText(bundle.getString("msg.common.locations")); // NOI18N
+        btTabLocation.setFocusable(false);
+        btTabLocation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabLocation.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabLocationActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabLocation);
+
+        btTabItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_items.png"))); // NOI18N
+        btTabItem.setToolTipText(bundle.getString("msg.common.items")); // NOI18N
+        btTabItem.setFocusable(false);
+        btTabItem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabItem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabItemActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabItem);
+
+        btTabItemLink.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_item_links.png"))); // NOI18N
+        btTabItemLink.setToolTipText(bundle.getString("msg.common.item.links")); // NOI18N
+        btTabItemLink.setFocusable(false);
+        btTabItemLink.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabItemLink.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabItemLink.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabItemLinkActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabItemLink);
+
+        btTabTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_tags.png"))); // NOI18N
+        btTabTag.setToolTipText(bundle.getString("msg.common.tags")); // NOI18N
+        btTabTag.setFocusable(false);
+        btTabTag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabTag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabTag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabTagActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabTag);
+
+        btTabTagLink.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_tag_links.png"))); // NOI18N
+        btTabTagLink.setToolTipText(bundle.getString("msg.common.tags.links")); // NOI18N
+        btTabTagLink.setFocusable(false);
+        btTabTagLink.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btTabTagLink.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btTabTagLink.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btTabTagLinkActionPerformed(evt);
+            }
+        });
+        toolBar.add(btTabTagLink);
+        toolBar.add(jSeparator21);
+
+        btViewChrono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chrono_view.png"))); // NOI18N
+        btViewChrono.setToolTipText(bundle.getString("msg.menu.view.chrono")); // NOI18N
+        btViewChrono.setFocusable(false);
+        btViewChrono.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btViewChrono.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btViewChrono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btViewChronoActionPerformed(evt);
+            }
+        });
+        toolBar.add(btViewChrono);
+
+        btViewBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/book_view.png"))); // NOI18N
+        btViewBook.setToolTipText(bundle.getString("msg.menu.view.book")); // NOI18N
+        btViewBook.setFocusable(false);
+        btViewBook.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btViewBook.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btViewBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btViewBookActionPerformed(evt);
+            }
+        });
+        toolBar.add(btViewBook);
+
+        btManageScene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/manage_view.png"))); // NOI18N
+        btManageScene.setToolTipText(bundle.getString("msg.menu.view.manage")); // NOI18N
+        btManageScene.setFocusable(false);
+        btManageScene.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btManageScene.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btManageScene.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btManageSceneActionPerformed(evt);
+            }
+        });
+        toolBar.add(btManageScene);
+
+        btViewReading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/reading.png"))); // NOI18N
+        btViewReading.setToolTipText(bundle.getString("msg.menu.view.reading")); // NOI18N
+        btViewReading.setFocusable(false);
+        btViewReading.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btViewReading.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btViewReading.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btViewReadingActionPerformed(evt);
+            }
+        });
+        toolBar.add(btViewReading);
+
+        btViewMemoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/memoria.png"))); // NOI18N
+        btViewMemoria.setToolTipText(bundle.getString("msg.menu.view.pov")); // NOI18N
+        btViewMemoria.setFocusable(false);
+        btViewMemoria.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btViewMemoria.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btViewMemoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btViewMemoriaActionPerformed(evt);
+            }
+        });
+        toolBar.add(btViewMemoria);
+        toolBar.add(jSeparator22);
+
+        btPreviousPart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/arrowleft.png"))); // NOI18N
+        btPreviousPart.setToolTipText(bundle.getString("msg.common.part.previous")); // NOI18N
+        btPreviousPart.setFocusable(false);
+        btPreviousPart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btPreviousPart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btPreviousPart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPreviousPartActionPerformed(evt);
+            }
+        });
+        toolBar.add(btPreviousPart);
+
+        btNextPart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/arrowright.png"))); // NOI18N
+        btNextPart.setToolTipText(bundle.getString("msg.common.part.next")); // NOI18N
+        btNextPart.setFocusable(false);
+        btNextPart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btNextPart.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btNextPart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNextPartActionPerformed(evt);
+            }
+        });
+        toolBar.add(btNextPart);
+        toolBar.add(jSeparator23);
+
+        btIdea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/idea.png"))); // NOI18N
+        btIdea.setToolTipText(bundle.getString("msg.common.idea")); // NOI18N
+        btIdea.setFocusable(false);
+        btIdea.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btIdea.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btIdea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btIdeaActionPerformed(evt);
+            }
+        });
+        toolBar.add(btIdea);
+
+        menuBar.setName("file-menu-command"); // NOI18N
+
+        menuFile.setMnemonic('F');
+        menuFile.setText(bundle.getString("msg.menu.file")); // NOI18N
+
+        fileNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        fileNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-new.png"))); // NOI18N
+        fileNew.setMnemonic('N');
         fileNew.setText(bundle.getString("msg.file.new")); // NOI18N
+        fileNew.setActionCommand("new-command");
+        fileNew.setName("new-command"); // NOI18N
         fileNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileNewActionPerformed(evt);
             }
         });
-        fileMenu.add(fileNew);
+        menuFile.add(fileNew);
 
-        fileOpen.setMnemonic('o');
+        fileOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        fileOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
         fileOpen.setText(bundle.getString("msg.file.open")); // NOI18N
+        fileOpen.setActionCommand("open-command");
+        fileOpen.setName("open-command"); // NOI18N
         fileOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileOpenActionPerformed(evt);
             }
         });
-        fileMenu.add(fileOpen);
+        menuFile.add(fileOpen);
 
-        jMenu3.setText(bundle.getString("msg.file.open.recent")); // NOI18N
-        fileMenu.add(jMenu3);
+        fileOpenRecent.setText(bundle.getString("msg.file.open.recent")); // NOI18N
+        fileOpenRecent.setActionCommand("recent-menu-command");
+        fileOpenRecent.setName("recent-menu-command"); // NOI18N
+        menuFile.add(fileOpenRecent);
 
-        fileSave.setMnemonic('s');
+        fileSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        fileSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-save.png"))); // NOI18N
+        fileSave.setMnemonic('S');
         fileSave.setText(bundle.getString("msg.file.save")); // NOI18N
+        fileSave.setActionCommand("save-command");
         fileSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileSaveActionPerformed(evt);
             }
         });
-        fileMenu.add(fileSave);
+        menuFile.add(fileSave);
 
-        fileSaveAs.setMnemonic('a');
+        fileSaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        fileSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-save-as.png"))); // NOI18N
+        fileSaveAs.setMnemonic('A');
         fileSaveAs.setText(bundle.getString("msg.file.save.as")); // NOI18N
+        fileSaveAs.setActionCommand("save-as-command");
         fileSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileSaveAsActionPerformed(evt);
             }
         });
-        fileMenu.add(fileSaveAs);
-        fileMenu.add(jSeparator5);
+        menuFile.add(fileSaveAs);
 
-        fileProperties.setText(bundle.getString("msg.document.preference.title")); // NOI18N
+        fileRename.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        fileRename.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/rename.png"))); // NOI18N
+        fileRename.setText(bundle.getString("msg.common.rename")); // NOI18N
+        fileRename.setActionCommand("rename-command");
+        fileRename.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileRenameActionPerformed(evt);
+            }
+        });
+        menuFile.add(fileRename);
+
+        fileClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
+        fileClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/close.png"))); // NOI18N
+        fileClose.setText(bundle.getString("msg.file.close")); // NOI18N
+        fileClose.setActionCommand("close-command");
+        fileClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileCloseActionPerformed(evt);
+            }
+        });
+        menuFile.add(fileClose);
+        menuFile.add(separatorFile1);
+
+        fileProperties.setText(bundle.getString("msg.file.properties")); // NOI18N
+        fileProperties.setActionCommand("document-preferences-command");
         fileProperties.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filePropertiesActionPerformed(evt);
             }
         });
-        fileMenu.add(fileProperties);
-        fileMenu.add(jSeparator4);
+        menuFile.add(fileProperties);
+        menuFile.add(separatorFile2);
 
+        fileExport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        fileExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/export.png"))); // NOI18N
         fileExport.setText(bundle.getString("msg.export")); // NOI18N
+        fileExport.setActionCommand("export-command");
         fileExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileExportActionPerformed(evt);
             }
         });
-        fileMenu.add(fileExport);
+        menuFile.add(fileExport);
 
+        filePrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        filePrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/print.png"))); // NOI18N
         filePrint.setText(bundle.getString("msg.file.print")); // NOI18N
-
-        filePrintBook.setText(bundle.getString("msg.file.print.book")); // NOI18N
-        filePrintBook.addActionListener(new java.awt.event.ActionListener() {
+        filePrint.setActionCommand("print-command");
+        filePrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filePrintBookActionPerformed(evt);
+                filePrintActionPerformed(evt);
             }
         });
-        filePrint.add(filePrintBook);
+        menuFile.add(filePrint);
+        menuFile.add(separatorFile3);
 
-        filePrintChapter.setText(bundle.getString("msg.file.print.chapter")); // NOI18N
-        filePrintChapter.setEnabled(false);
-        filePrintChapter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filePrintChapterActionPerformed(evt);
-            }
-        });
-        filePrint.add(filePrintChapter);
-
-        filePrintScene.setText(bundle.getString("msg.file.print.scene")); // NOI18N
-        filePrintScene.setEnabled(false);
-        filePrintScene.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filePrintSceneActionPerformed(evt);
-            }
-        });
-        filePrint.add(filePrintScene);
-
-        fileMenu.add(filePrint);
-        fileMenu.add(jSeparator3);
-
-        fileExit.setMnemonic('x');
+        fileExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        fileExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/exit.png"))); // NOI18N
+        fileExit.setMnemonic('X');
         fileExit.setText(bundle.getString("msg.common.exit")); // NOI18N
+        fileExit.setActionCommand("exit-command");
+        fileExit.setName("exit-command"); // NOI18N
         fileExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileExitActionPerformed(evt);
             }
         });
-        fileMenu.add(fileExit);
+        menuFile.add(fileExit);
 
-        jMenuBar1.add(fileMenu);
+        menuBar.add(menuFile);
 
-        editMenu.setMnemonic('e');
-        editMenu.setText(bundle.getString("msg.common.edit")); // NOI18N
+        menuEdit.setText(bundle.getString("msg.common.edit")); // NOI18N
+        menuEdit.setName("edit-menu-command"); // NOI18N
 
+        editCopyBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/edit-copy.png"))); // NOI18N
+        editCopyBook.setMnemonic('C');
         editCopyBook.setText(bundle.getString("msg.book.copy")); // NOI18N
         editCopyBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editCopyBookActionPerformed(evt);
             }
         });
-        editMenu.add(editCopyBook);
+        menuEdit.add(editCopyBook);
 
+        editCopyBlurb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/edit-copy.png"))); // NOI18N
+        editCopyBlurb.setMnemonic('P');
         editCopyBlurb.setText(bundle.getString("msg.blurb.copy")); // NOI18N
         editCopyBlurb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editCopyBlurbActionPerformed(evt);
             }
         });
-        editMenu.add(editCopyBlurb);
-        editMenu.add(jSeparator6);
+        menuEdit.add(editCopyBlurb);
 
-        documentProperties.setText(bundle.getString("msg.common.preferences")); // NOI18N
-        documentProperties.addActionListener(new java.awt.event.ActionListener() {
+        windowPreferences.setText(bundle.getString("msg.dlg.preference.title")); // NOI18N
+        windowPreferences.setName("preferences-command"); // NOI18N
+        windowPreferences.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                documentPropertiesActionPerformed(evt);
+                windowPreferencesActionPerformed(evt);
             }
         });
-        editMenu.add(documentProperties);
+        menuEdit.add(windowPreferences);
 
-        jMenuBar1.add(editMenu);
+        menuBar.add(menuEdit);
 
-        newMenu.setText(bundle.getString("msg.common.new.object")); // NOI18N
+        menuNewEntity.setText(bundle.getString("msg.common.new.object")); // NOI18N
+        menuNewEntity.setName("new-entity-menu-command"); // NOI18N
 
-        newStrand.setText(bundle.getString("msg.common.strand")); // NOI18N
-        newStrand.setToolTipText("");
-        newStrand.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newStrandActionPerformed(evt);
-            }
-        });
-        newMenu.add(newStrand);
-
-        newPart.setText(bundle.getString("msg.common.part")); // NOI18N
-        newPart.setToolTipText("");
-        newPart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newPartActionPerformed(evt);
-            }
-        });
-        newMenu.add(newPart);
-
-        newChapter.setText(bundle.getString("msg.common.chapter")); // NOI18N
-        newChapter.setToolTipText("");
-        newChapter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newChapterActionPerformed(evt);
-            }
-        });
-        newMenu.add(newChapter);
-
+        newScene.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        newScene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/scene.png"))); // NOI18N
+        newScene.setMnemonic('S');
         newScene.setText(bundle.getString("msg.common.scene")); // NOI18N
-        newScene.setToolTipText("");
         newScene.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newSceneActionPerformed(evt);
             }
         });
-        newMenu.add(newScene);
-        newMenu.add(jSeparator7);
+        menuNewEntity.add(newScene);
 
-        newCharacter.setText(bundle.getString("msg.common.person")); // NOI18N
-        newCharacter.setToolTipText("");
-        newCharacter.addActionListener(new java.awt.event.ActionListener() {
+        newChapter.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        newChapter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chapter.png"))); // NOI18N
+        newChapter.setMnemonic('C');
+        newChapter.setText(bundle.getString("msg.common.chapter")); // NOI18N
+        newChapter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newCharacterActionPerformed(evt);
+                newChapterActionPerformed(evt);
             }
         });
-        newMenu.add(newCharacter);
+        menuNewEntity.add(newChapter);
 
-        newCharacterCategory.setText(bundle.getString("msg.persons.category")); // NOI18N
-        newCharacterCategory.setEnabled(false);
-        newCharacterCategory.addActionListener(new java.awt.event.ActionListener() {
+        newChapters.setMnemonic('M');
+        newChapters.setText(bundle.getString("msg.generate.chapters")); // NOI18N
+        newChapters.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newCharacterCategoryActionPerformed(evt);
+                newChaptersActionPerformed(evt);
             }
         });
-        newMenu.add(newCharacterCategory);
+        menuNewEntity.add(newChapters);
 
-        newGender.setText(bundle.getString("msg.common.gender")); // NOI18N
+        newPart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/part.png"))); // NOI18N
+        newPart.setMnemonic('P');
+        newPart.setText(bundle.getString("msg.common.part")); // NOI18N
+        newPart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newPartActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newPart);
+
+        newStrand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/strand.png"))); // NOI18N
+        newStrand.setMnemonic('S');
+        newStrand.setText(bundle.getString("msg.common.strand")); // NOI18N
+        newStrand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newStrandActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newStrand);
+        menuNewEntity.add(jSeparator4);
+
+        newPerson.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        newPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/person.png"))); // NOI18N
+        newPerson.setMnemonic('P');
+        newPerson.setText(bundle.getString("msg.common.person")); // NOI18N
+        newPerson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newPersonActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newPerson);
+
+        newCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/category.png"))); // NOI18N
+        newCategory.setText(bundle.getString("msg.persons.category")); // NOI18N
+        newCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newCategoryActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newCategory);
+
+        newGender.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/gender.png"))); // NOI18N
+        newGender.setText(bundle.getString("msg.common.genders")); // NOI18N
         newGender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newGenderActionPerformed(evt);
             }
         });
-        newMenu.add(newGender);
-        newMenu.add(jSeparator8);
+        menuNewEntity.add(newGender);
+        menuNewEntity.add(jSeparator5);
 
+        newLocation.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        newLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/location.png"))); // NOI18N
         newLocation.setText(bundle.getString("msg.common.location")); // NOI18N
         newLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newLocationActionPerformed(evt);
             }
         });
-        newMenu.add(newLocation);
+        menuNewEntity.add(newLocation);
+        menuNewEntity.add(jSeparator6);
 
-        renameCity.setText(bundle.getString("msg.location.rename.city")); // NOI18N
-        renameCity.setEnabled(false);
-        renameCity.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                renameCityActionPerformed(evt);
-            }
-        });
-        newMenu.add(renameCity);
-
-        renameCountry.setText(bundle.getString("msg.location.rename.country")); // NOI18N
-        renameCountry.setEnabled(false);
-        renameCountry.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                renameCountryActionPerformed(evt);
-            }
-        });
-        newMenu.add(renameCountry);
-
-        newItem.setText(bundle.getString("msg.common.item")); // NOI18N
-        newItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newItemActionPerformed(evt);
-            }
-        });
-        newMenu.add(newItem);
-        newMenu.add(jSeparator9);
-
-        newTag.setText(bundle.getString("msg.common.tag")); // NOI18N
+        newTag.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        newTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/tag.png"))); // NOI18N
+        newTag.setText(bundle.getString("msg.tag")); // NOI18N
         newTag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newTagActionPerformed(evt);
             }
         });
-        newMenu.add(newTag);
+        menuNewEntity.add(newTag);
 
-        newIdea.setText(bundle.getString("msg.common.idea")); // NOI18N
+        newTagLink.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/link.png"))); // NOI18N
+        newTagLink.setText(bundle.getString("msg.tag.link")); // NOI18N
+        newTagLink.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newTagLinkActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newTagLink);
+        menuNewEntity.add(jSeparator7);
+
+        newItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        newItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/item.png"))); // NOI18N
+        newItem.setText(bundle.getString("msg.item")); // NOI18N
+        newItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newItemActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newItem);
+
+        newItemLink.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/link.png"))); // NOI18N
+        newItemLink.setText(bundle.getString("msg.item.link")); // NOI18N
+        newItemLink.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newItemLinkActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newItemLink);
+
+        newFOI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        newFOI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/bulb.png"))); // NOI18N
+        newFOI.setText(bundle.getString("msg.foi.title")); // NOI18N
+        newFOI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newFOIActionPerformed(evt);
+            }
+        });
+        menuNewEntity.add(newFOI);
+
+        newIdea.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        newIdea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/bulb.png"))); // NOI18N
+        newIdea.setText(bundle.getString("msg.idea.table.idea")); // NOI18N
         newIdea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newIdeaActionPerformed(evt);
             }
         });
-        newMenu.add(newIdea);
+        menuNewEntity.add(newIdea);
+        menuNewEntity.add(jSeparator8);
 
-        jMenuBar1.add(newMenu);
+        menuBar.add(menuNewEntity);
 
-        linksMenu.setText(bundle.getString("msg.common.links")); // NOI18N
+        menuPrimaryObjects.setText(bundle.getString("msg.common.primary.objects")); // NOI18N
+        menuPrimaryObjects.setName("main-entities-menu-command"); // NOI18N
 
-        tagsLinks.setText(bundle.getString("msg.common.tags.links")); // NOI18N
-        tagsLinks.addActionListener(new java.awt.event.ActionListener() {
+        tabScene.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        tabScene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_scenes.png"))); // NOI18N
+        tabScene.setMnemonic('S');
+        tabScene.setText(bundle.getString("msg.common.scene")); // NOI18N
+        tabScene.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tagsLinksActionPerformed(evt);
+                tabSceneActionPerformed(evt);
             }
         });
-        linksMenu.add(tagsLinks);
+        menuPrimaryObjects.add(tabScene);
 
-        itemsLinks.setText(bundle.getString("msg.common.item.links")); // NOI18N
-        itemsLinks.addActionListener(new java.awt.event.ActionListener() {
+        tabChapter.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        tabChapter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_chapters.png"))); // NOI18N
+        tabChapter.setMnemonic('C');
+        tabChapter.setText(bundle.getString("msg.common.chapter")); // NOI18N
+        tabChapter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemsLinksActionPerformed(evt);
+                tabChapterActionPerformed(evt);
             }
         });
-        linksMenu.add(itemsLinks);
+        menuPrimaryObjects.add(tabChapter);
 
-        jMenuBar1.add(linksMenu);
-
-        chartsMenu.setText(bundle.getString("msg.common.charts")); // NOI18N
-
-        chartsWiww.setText(bundle.getString("msg.menu.tools.charts.overall.whoIsWhereWhen")); // NOI18N
-        chartsWiww.addActionListener(new java.awt.event.ActionListener() {
+        tabPart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_parts.png"))); // NOI18N
+        tabPart.setMnemonic('P');
+        tabPart.setText(bundle.getString("msg.common.part")); // NOI18N
+        tabPart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsWiwwActionPerformed(evt);
+                tabPartActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsWiww);
+        menuPrimaryObjects.add(tabPart);
 
-        chartsCharactersByDate.setText(bundle.getString("msg.menu.tools.charts.overall.character.date")); // NOI18N
-        chartsCharactersByDate.addActionListener(new java.awt.event.ActionListener() {
+        tabStrand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_strands.png"))); // NOI18N
+        tabStrand.setMnemonic('S');
+        tabStrand.setText(bundle.getString("msg.common.strand")); // NOI18N
+        tabStrand.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsCharactersByDateActionPerformed(evt);
+                tabStrandActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsCharactersByDate);
+        menuPrimaryObjects.add(tabStrand);
+        menuPrimaryObjects.add(jSeparator9);
 
-        chartsCharactersByScene.setText(bundle.getString("msg.menu.tools.charts.part.character.scene")); // NOI18N
-        chartsCharactersByScene.addActionListener(new java.awt.event.ActionListener() {
+        tabPerson.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        tabPerson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_persons.png"))); // NOI18N
+        tabPerson.setMnemonic('P');
+        tabPerson.setText(bundle.getString("msg.common.person")); // NOI18N
+        tabPerson.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsCharactersBySceneActionPerformed(evt);
+                tabPersonActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsCharactersByScene);
+        menuPrimaryObjects.add(tabPerson);
 
-        chartsUsageStrands.setText(bundle.getString("msg.menu.tools.charts.overall.strand.date")); // NOI18N
-        chartsUsageStrands.addActionListener(new java.awt.event.ActionListener() {
+        tabCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_categories.png"))); // NOI18N
+        tabCategory.setText(bundle.getString("msg.persons.category")); // NOI18N
+        tabCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsUsageStrandsActionPerformed(evt);
+                tabCategoryActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsUsageStrands);
+        menuPrimaryObjects.add(tabCategory);
 
-        chartsGantt.setText(bundle.getString("msg.chart.gantt.characters.title")); // NOI18N
-        chartsGantt.addActionListener(new java.awt.event.ActionListener() {
+        tabGender.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_genders.png"))); // NOI18N
+        tabGender.setText(bundle.getString("msg.common.genders")); // NOI18N
+        tabGender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsGanttActionPerformed(evt);
+                tabGenderActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsGantt);
-        chartsMenu.add(jSeparator10);
+        menuPrimaryObjects.add(tabGender);
+        menuPrimaryObjects.add(jSeparator10);
 
-        chartsOccurrenceCharacters.setText(bundle.getString("msg.menu.tools.charts.overall.character.occurrence")); // NOI18N
-        chartsOccurrenceCharacters.addActionListener(new java.awt.event.ActionListener() {
+        tabLocation.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        tabLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_locations.png"))); // NOI18N
+        tabLocation.setText(bundle.getString("msg.common.location")); // NOI18N
+        tabLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsOccurrenceCharactersActionPerformed(evt);
+                tabLocationActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsOccurrenceCharacters);
+        menuPrimaryObjects.add(tabLocation);
 
-        chartsOccurrenceLocations.setText(bundle.getString("msg.menu.tools.charts.overall.location.occurrence")); // NOI18N
-        chartsOccurrenceLocations.addActionListener(new java.awt.event.ActionListener() {
+        renameCity.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/rename.png"))); // NOI18N
+        renameCity.setText(bundle.getString("msg.location.rename.city")); // NOI18N
+        renameCity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chartsOccurrenceLocationsActionPerformed(evt);
+                renameCityActionPerformed(evt);
             }
         });
-        chartsMenu.add(chartsOccurrenceLocations);
+        menuPrimaryObjects.add(renameCity);
 
-        jMenuBar1.add(chartsMenu);
-
-        toolsMenu.setText(bundle.getString("msg.menu.tools")); // NOI18N
-
-        toolsTasksList.setText(bundle.getString("msg.tasklist.title")); // NOI18N
-        toolsTasksList.addActionListener(new java.awt.event.ActionListener() {
+        renameCountry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/rename.png"))); // NOI18N
+        renameCountry.setText(bundle.getString("msg.location.rename.country")); // NOI18N
+        renameCountry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolsTasksListActionPerformed(evt);
+                renameCountryActionPerformed(evt);
             }
         });
-        toolsMenu.add(toolsTasksList);
+        menuPrimaryObjects.add(renameCountry);
 
-        toolsLanguage.setText(bundle.getString("msg.common.language")); // NOI18N
-        toolsLanguage.addActionListener(new java.awt.event.ActionListener() {
+        menuBar.add(menuPrimaryObjects);
+
+        menuSecondaryObjects.setText(bundle.getString("msg.common.secondary.objects")); // NOI18N
+        menuSecondaryObjects.setName("secondary-entities-menu-command"); // NOI18N
+
+        tabTag.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        tabTag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_tags.png"))); // NOI18N
+        tabTag.setText(bundle.getString("msg.tag")); // NOI18N
+        tabTag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolsLanguageActionPerformed(evt);
+                tabTagActionPerformed(evt);
             }
         });
-        toolsMenu.add(toolsLanguage);
+        menuSecondaryObjects.add(tabTag);
 
-        jMenuBar1.add(toolsMenu);
-
-        viewMenu.setText(bundle.getString("msg.menu.view")); // NOI18N
-
-        viewTable.setText(bundle.getString("msg.menu.view.table")); // NOI18N
-
-        viewTableStrands.setText(bundle.getString("msg.common.strands")); // NOI18N
-        viewTableStrands.addActionListener(new java.awt.event.ActionListener() {
+        tabTagLink.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_tag_links.png"))); // NOI18N
+        tabTagLink.setText(bundle.getString("msg.tag.link")); // NOI18N
+        tabTagLink.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableStrandsActionPerformed(evt);
+                tabTagLinkActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableStrands);
+        menuSecondaryObjects.add(tabTagLink);
 
-        viewTableParts.setText(bundle.getString("msg.common.parts")); // NOI18N
-        viewTableParts.addActionListener(new java.awt.event.ActionListener() {
+        renameTagCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/rename.png"))); // NOI18N
+        renameTagCategory.setText(bundle.getString("msg.tag.rename.category")); // NOI18N
+        renameTagCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTablePartsActionPerformed(evt);
+                renameTagCategoryActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableParts);
+        menuSecondaryObjects.add(renameTagCategory);
+        menuSecondaryObjects.add(jSeparator11);
 
-        viewTableChapters.setText(bundle.getString("msg.common.chapters")); // NOI18N
-        viewTableChapters.addActionListener(new java.awt.event.ActionListener() {
+        tabItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        tabItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_items.png"))); // NOI18N
+        tabItem.setText(bundle.getString("msg.item")); // NOI18N
+        tabItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableChaptersActionPerformed(evt);
+                tabItemActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableChapters);
+        menuSecondaryObjects.add(tabItem);
 
-        viewTableScenes.setText(bundle.getString("msg.common.scenes")); // NOI18N
-        viewTableScenes.addActionListener(new java.awt.event.ActionListener() {
+        tabItemLink.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_item_links.png"))); // NOI18N
+        tabItemLink.setText(bundle.getString("msg.item.link")); // NOI18N
+        tabItemLink.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableScenesActionPerformed(evt);
+                tabItemLinkActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableScenes);
+        menuSecondaryObjects.add(tabItemLink);
 
-        viewTableCharacters.setText(bundle.getString("msg.common.persons")); // NOI18N
-        viewTableCharacters.addActionListener(new java.awt.event.ActionListener() {
+        renameItemCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/rename.png"))); // NOI18N
+        renameItemCategory.setText(bundle.getString("msg.item.rename.category")); // NOI18N
+        renameItemCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableCharactersActionPerformed(evt);
+                renameItemCategoryActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableCharacters);
+        menuSecondaryObjects.add(renameItemCategory);
 
-        viewTableLocations.setText(bundle.getString("msg.common.locations")); // NOI18N
-        viewTableLocations.addActionListener(new java.awt.event.ActionListener() {
+        tabIdea.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        tabIdea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x32/manage_ideas.png"))); // NOI18N
+        tabIdea.setText(bundle.getString("msg.idea.table.idea")); // NOI18N
+        tabIdea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableLocationsActionPerformed(evt);
+                tabIdeaActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableLocations);
+        menuSecondaryObjects.add(tabIdea);
 
-        viewTableItems.setText(bundle.getString("msg.common.items")); // NOI18N
-        viewTableItems.addActionListener(new java.awt.event.ActionListener() {
+        menuBar.add(menuSecondaryObjects);
+
+        menuView.setText(bundle.getString("msg.menu.view")); // NOI18N
+        menuView.setName("view-menu-command"); // NOI18N
+
+        vueChrono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chrono_view.png"))); // NOI18N
+        vueChrono.setText(bundle.getString("msg.menu.view.chrono")); // NOI18N
+        vueChrono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableItemsActionPerformed(evt);
+                vueChronoActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableItems);
+        menuView.add(vueChrono);
 
-        viewTableItemsAssociations.setText(bundle.getString("msg.common.item.links")); // NOI18N
-        viewTableItemsAssociations.addActionListener(new java.awt.event.ActionListener() {
+        vueBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/book_view.png"))); // NOI18N
+        vueBook.setText(bundle.getString("msg.menu.view.book")); // NOI18N
+        vueBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableItemsAssociationsActionPerformed(evt);
+                vueBookActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableItemsAssociations);
+        menuView.add(vueBook);
 
-        viewTableTags.setText(bundle.getString("msg.common.tags")); // NOI18N
-        viewTableTags.addActionListener(new java.awt.event.ActionListener() {
+        vueReading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/reading.png"))); // NOI18N
+        vueReading.setText(bundle.getString("msg.menu.view.reading")); // NOI18N
+        vueReading.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableTagsActionPerformed(evt);
+                vueReadingActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableTags);
+        menuView.add(vueReading);
 
-        viewTableTagsAssociations.setText(bundle.getString("msg.common.tags.links")); // NOI18N
-        viewTableTagsAssociations.addActionListener(new java.awt.event.ActionListener() {
+        vueManageScene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/manage_view.png"))); // NOI18N
+        vueManageScene.setText(bundle.getString("msg.menu.view.manage")); // NOI18N
+        vueManageScene.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableTagsAssociationsActionPerformed(evt);
+                vueManageSceneActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableTagsAssociations);
+        menuView.add(vueManageScene);
 
-        viewTableIdeas.setText(bundle.getString("msg.common.ideas")); // NOI18N
-        viewTableIdeas.addActionListener(new java.awt.event.ActionListener() {
+        vueMemoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/memoria.png"))); // NOI18N
+        vueMemoria.setText(bundle.getString("msg.menu.view.pov")); // NOI18N
+        vueMemoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTableIdeasActionPerformed(evt);
+                vueMemoriaActionPerformed(evt);
             }
         });
-        viewTable.add(viewTableIdeas);
+        menuView.add(vueMemoria);
+        menuView.add(jSeparator12);
 
-        viewMenu.add(viewTable);
-
-        viewManage.setText(bundle.getString("msg.menu.view.manage")); // NOI18N
-        viewManage.addActionListener(new java.awt.event.ActionListener() {
+        vueEditor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/edit.png"))); // NOI18N
+        vueEditor.setText(bundle.getString("msg.common.editor")); // NOI18N
+        vueEditor.setEnabled(false);
+        vueEditor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewManageActionPerformed(evt);
+                vueEditorActionPerformed(evt);
             }
         });
-        viewMenu.add(viewManage);
+        menuView.add(vueEditor);
 
-        viewChrono.setText(bundle.getString("msg.menu.view.chrono")); // NOI18N
-        viewChrono.addActionListener(new java.awt.event.ActionListener() {
+        vueTree.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/tree.png"))); // NOI18N
+        vueTree.setText(bundle.getString("msg.common.tree")); // NOI18N
+        vueTree.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewChronoActionPerformed(evt);
+                vueTreeActionPerformed(evt);
             }
         });
-        viewMenu.add(viewChrono);
+        menuView.add(vueTree);
 
-        viewBook.setText(bundle.getString("msg.menu.view.book")); // NOI18N
-        viewBook.addActionListener(new java.awt.event.ActionListener() {
+        vueInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/info.png"))); // NOI18N
+        vueInfo.setText(bundle.getString("msg.info.title")); // NOI18N
+        vueInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewBookActionPerformed(evt);
+                vueInfoActionPerformed(evt);
             }
         });
-        viewMenu.add(viewBook);
+        menuView.add(vueInfo);
 
-        viewReading.setText(bundle.getString("msg.menu.view.reading")); // NOI18N
-        viewReading.addActionListener(new java.awt.event.ActionListener() {
+        vueNavigation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/compass.png"))); // NOI18N
+        vueNavigation.setText(bundle.getString("msg.common.navigation")); // NOI18N
+        vueNavigation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewReadingActionPerformed(evt);
+                vueNavigationActionPerformed(evt);
             }
         });
-        viewMenu.add(viewReading);
+        menuView.add(vueNavigation);
 
-        viewMemoria.setText(bundle.getString("msg.menu.view.pov")); // NOI18N
-        viewMemoria.addActionListener(new java.awt.event.ActionListener() {
+        menuBar.add(menuView);
+
+        menuParts.setText(bundle.getString("msg.menu.parts")); // NOI18N
+        menuParts.setName("parts-menu-command"); // NOI18N
+
+        partPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/arrowleft.png"))); // NOI18N
+        partPrevious.setText(bundle.getString("msg.common.part.previous")); // NOI18N
+        partPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewMemoriaActionPerformed(evt);
+                partPreviousActionPerformed(evt);
             }
         });
-        viewMenu.add(viewMemoria);
+        menuParts.add(partPrevious);
 
-        jMenuBar1.add(viewMenu);
+        partNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/arrowright.png"))); // NOI18N
+        partNext.setText(bundle.getString("msg.common.part.next")); // NOI18N
+        partNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                partNextActionPerformed(evt);
+            }
+        });
+        menuParts.add(partNext);
 
-        windowMenu.setText(bundle.getString("msg.common.window")); // NOI18N
-        windowMenu.setToolTipText("");
+        menuBar.add(menuParts);
 
-        windowLoadLayout.setText(bundle.getString("msg.layout.load")); // NOI18N
-        windowMenu.add(windowLoadLayout);
+        menuCharts.setText(bundle.getString("msg.menu.charts")); // NOI18N
+        menuCharts.setName("charts-menu-command"); // NOI18N
 
-        windowSaveLayout.setText(bundle.getString("msg.layout.save")); // NOI18N
-        windowMenu.add(windowSaveLayout);
+        chartsAttributes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/columns.png"))); // NOI18N
+        chartsAttributes.setText(bundle.getString("msg.attribute.list")); // NOI18N
+        chartsAttributes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartsAttributesActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartsAttributes);
 
-        windowManageLayouts.setText(bundle.getString("msg.layout.manage")); // NOI18N
-        windowMenu.add(windowManageLayouts);
+        chartPersonsByDate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chart.png"))); // NOI18N
+        chartPersonsByDate.setText(bundle.getString("msg.menu.tools.charts.overall.character.date")); // NOI18N
+        chartPersonsByDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartPersonsByDateActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartPersonsByDate);
+
+        chartPersonsByScene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chart.png"))); // NOI18N
+        chartPersonsByScene.setText(bundle.getString("msg.menu.tools.charts.part.character.scene")); // NOI18N
+        chartPersonsByScene.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartPersonsBySceneActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartPersonsByScene);
+
+        chartWIWW.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chart.png"))); // NOI18N
+        chartWIWW.setText(bundle.getString("msg.menu.tools.charts.overall.whoIsWhereWhen")); // NOI18N
+        chartWIWW.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartWIWWActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartWIWW);
+
+        chartStrandsByDate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chart.png"))); // NOI18N
+        chartStrandsByDate.setText(bundle.getString("msg.menu.tools.charts.overall.strand.date")); // NOI18N
+        chartStrandsByDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartStrandsByDateActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartStrandsByDate);
+        menuCharts.add(jSeparator13);
+
+        chartOccurrenceOfPersons.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chart.png"))); // NOI18N
+        chartOccurrenceOfPersons.setText(bundle.getString("msg.menu.tools.charts.overall.character.occurrence")); // NOI18N
+        chartOccurrenceOfPersons.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartOccurrenceOfPersonsActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartOccurrenceOfPersons);
+
+        chartOccurrenceOfLocations.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chart.png"))); // NOI18N
+        chartOccurrenceOfLocations.setText(bundle.getString("msg.menu.tools.charts.overall.location.occurrence")); // NOI18N
+        chartOccurrenceOfLocations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartOccurrenceOfLocationsActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartOccurrenceOfLocations);
+
+        chartGantt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/chart.png"))); // NOI18N
+        chartGantt.setText(bundle.getString("msg.chart.gantt.characters.title")); // NOI18N
+        chartGantt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chartGanttActionPerformed(evt);
+            }
+        });
+        menuCharts.add(chartGantt);
+
+        menuBar.add(menuCharts);
+
+        menuTools.setText(bundle.getString("msg.menu.tools")); // NOI18N
+        menuTools.setName("tools-menu-command"); // NOI18N
+
+        toolsLangtool.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/langtool.png"))); // NOI18N
+        toolsLangtool.setText(bundle.getString("msg.langtool.title")); // NOI18N
+        toolsLangtool.setName("langtool-command"); // NOI18N
+        toolsLangtool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolsLangtoolActionPerformed(evt);
+            }
+        });
+        menuTools.add(toolsLangtool);
+
+        toolsTaskList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/tasklist.png"))); // NOI18N
+        toolsTaskList.setText(bundle.getString("msg.tasklist.title")); // NOI18N
+        toolsTaskList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolsTaskListActionPerformed(evt);
+            }
+        });
+        menuTools.add(toolsTaskList);
+        menuTools.add(jSeparator14);
+
+        toolsConvertTextToHtml.setText(bundle.getString("msg.text.to.html")); // NOI18N
+        toolsConvertTextToHtml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolsConvertTextToHtmlActionPerformed(evt);
+            }
+        });
+        menuTools.add(toolsConvertTextToHtml);
+
+        toolsConvertHtmlToText.setText(bundle.getString("msg.html.to.text")); // NOI18N
+        toolsConvertHtmlToText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolsConvertHtmlToTextActionPerformed(evt);
+            }
+        });
+        menuTools.add(toolsConvertHtmlToText);
+
+        menuBar.add(menuTools);
+
+        menuWindow.setText(bundle.getString("msg.common.window")); // NOI18N
+        menuWindow.setName("window-menu-command"); // NOI18N
+
+        windowLoadLayout.setText(bundle.getString("msg.docking.load.layout")); // NOI18N
+        menuWindow.add(windowLoadLayout);
+
+        windowSaveLayout.setText(bundle.getString("msg.docking.save.layout")); // NOI18N
+        windowSaveLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowSaveLayoutActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowSaveLayout);
 
         windowDefaultLayout.setText(bundle.getString("msg.layout.default")); // NOI18N
-        windowMenu.add(windowDefaultLayout);
+        windowDefaultLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowDefaultLayoutActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowDefaultLayout);
 
-        jMenuBar1.add(windowMenu);
+        windowManageLayouts.setText(bundle.getString("msg.docking.manage.layouts")); // NOI18N
+        windowManageLayouts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowManageLayoutsActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowManageLayouts);
+        menuWindow.add(jSeparator15);
 
-        helpMenu.setMnemonic('h');
-        helpMenu.setText(bundle.getString("msg.menu.help")); // NOI18N
+        windowPersonsAndLocations.setText(bundle.getString("msg.layout.persons.locations")); // NOI18N
+        windowPersonsAndLocations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowPersonsAndLocationsActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowPersonsAndLocations);
 
+        windowTagsAndItems.setText(bundle.getString("msg.layout.tags.items")); // NOI18N
+        windowTagsAndItems.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowTagsAndItemsActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowTagsAndItems);
+
+        windowChrono.setText(bundle.getString("msg.layout.chrono.only")); // NOI18N
+        windowChrono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowChronoActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowChrono);
+
+        windowBook.setText(bundle.getString("msg.layout.book.only")); // NOI18N
+        windowBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowBookActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowBook);
+
+        windowManage.setText(bundle.getString("msg.layout.manage.only")); // NOI18N
+        windowManage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowManageActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowManage);
+
+        windowReading.setText(bundle.getString("msg.layout.reading.only")); // NOI18N
+        windowReading.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowReadingActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowReading);
+        menuWindow.add(jSeparator16);
+
+        windowResetLayout.setText(bundle.getString("msg.docking.reset.layout")); // NOI18N
+        windowResetLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowResetLayoutActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowResetLayout);
+
+        windowRefresh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        windowRefresh.setText(bundle.getString("msg.common.refresh")); // NOI18N
+        windowRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowRefreshActionPerformed(evt);
+            }
+        });
+        menuWindow.add(windowRefresh);
+
+        menuBar.add(menuWindow);
+
+        menuHelp.setText(bundle.getString("msg.menu.help")); // NOI18N
+        menuHelp.setName("help-menu"); // NOI18N
+
+        helpDoc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        helpDoc.setMnemonic('D');
         helpDoc.setText(bundle.getString("msg.menu.help.doc")); // NOI18N
+        helpDoc.setName("doc-command"); // NOI18N
         helpDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 helpDocActionPerformed(evt);
             }
         });
-        helpMenu.add(helpDoc);
+        menuHelp.add(helpDoc);
 
-        helpFAQ.setText(bundle.getString("msg.menu.help.faq")); // NOI18N
-        helpFAQ.addActionListener(new java.awt.event.ActionListener() {
+        helpFaq.setMnemonic('F');
+        helpFaq.setText(bundle.getString("msg.menu.help.faq")); // NOI18N
+        helpFaq.setName("faq-command"); // NOI18N
+        helpFaq.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpFAQActionPerformed(evt);
+                helpFaqActionPerformed(evt);
             }
         });
-        helpMenu.add(helpFAQ);
+        menuHelp.add(helpFaq);
 
-        helpBugs.setText(bundle.getString("msg.menu.help.bug")); // NOI18N
-        helpBugs.addActionListener(new java.awt.event.ActionListener() {
+        helpHome.setMnemonic('H');
+        helpHome.setText(bundle.getString("msg.menu.help.homepage")); // NOI18N
+        helpHome.setName("homepage-command"); // NOI18N
+        helpHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpBugsActionPerformed(evt);
+                helpHomeActionPerformed(evt);
             }
         });
-        helpMenu.add(helpBugs);
+        menuHelp.add(helpHome);
 
-        helpContact.setText(bundle.getString("msg.menu.help.contact")); // NOI18N
-        helpContact.addActionListener(new java.awt.event.ActionListener() {
+        helpReportBug.setMnemonic('B');
+        helpReportBug.setText(bundle.getString("msg.menu.help.bug")); // NOI18N
+        helpReportBug.setEnabled(false);
+        helpReportBug.setName("report-bug-command"); // NOI18N
+        helpReportBug.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpContactActionPerformed(evt);
+                helpReportBugActionPerformed(evt);
             }
         });
-        helpMenu.add(helpContact);
-        helpMenu.add(jSeparator2);
+        menuHelp.add(helpReportBug);
 
-        helpCheckUpdate.setText(bundle.getString("msg.menu.help.update")); // NOI18N
-        helpCheckUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpCheckUpdateActionPerformed(evt);
-            }
-        });
-        helpMenu.add(helpCheckUpdate);
-        helpMenu.add(jSeparator1);
-
-        helpAbout.setMnemonic('a');
+        helpAbout.setMnemonic('A');
         helpAbout.setText(bundle.getString("msg.menu.help.about")); // NOI18N
+        helpAbout.setName("about-command"); // NOI18N
         helpAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 helpAboutActionPerformed(evt);
             }
         });
-        helpMenu.add(helpAbout);
+        menuHelp.add(helpAbout);
+        menuHelp.add(jSeparator18);
 
-        jMenuBar1.add(helpMenu);
+        helpCheckUpdates.setMnemonic('U');
+        helpCheckUpdates.setText(bundle.getString("msg.menu.help.update")); // NOI18N
+        helpCheckUpdates.setName("check-update-command"); // NOI18N
+        helpCheckUpdates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpCheckUpdatesActionPerformed(evt);
+            }
+        });
+        menuHelp.add(helpCheckUpdates);
 
-        setJMenuBar(jMenuBar1);
+        helpTrace.setMnemonic('T');
+        helpTrace.setText(bundle.getString("msg.menu.help.trace")); // NOI18N
+        helpTrace.setName("trace-command"); // NOI18N
+        helpTrace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpTraceActionPerformed(evt);
+            }
+        });
+        menuHelp.add(helpTrace);
+
+        menuBar.add(menuHelp);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 26, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 256, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void fileNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileNewActionPerformed
-		StorybookApp.getInstance().createNewFile();
+        SbApp.getInstance().createNewFile();
     }//GEN-LAST:event_fileNewActionPerformed
 
     private void fileOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileOpenActionPerformed
-		mainFrame.setWaitingCursor();
-		StorybookApp.getInstance().openFile();
+        mainFrame.setWaitingCursor();
+		SbApp.getInstance().openFile();
 		mainFrame.setDefaultCursor();
     }//GEN-LAST:event_fileOpenActionPerformed
 
     private void fileSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveActionPerformed
-		WaitDialog dlg = new WaitDialog(mainFrame, I18N.getMsg("msg.file.saving"));
-		Timer timer = new Timer(500, new DisposeDialogAction(dlg));
-		timer.setRepeats(false);
-		timer.start();
-		SwingUtil.showModalDialog(dlg, mainFrame);
+        mainFrame.getSbActionManager().getActionHandler().handleFileSave();
     }//GEN-LAST:event_fileSaveActionPerformed
 
     private void fileSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveAsActionPerformed
-		SaveAsFileDialog dlg = new SaveAsFileDialog(mainFrame);
-		SwingUtil.showModalDialog(dlg, mainFrame);
-		if (dlg.isCanceled())
-			return;
-		File file = dlg.getFile();
-		try {
-			FileUtils.copyFile(mainFrame.getDbFile().getFile(), file);
-		} catch (IOException ioe) {
-			StorybookApp.error("ActionHandler.handleSaveAs() IOex : ", ioe);
-		}
-		DbFile dbFile = new DbFile(file);
-		OpenFileAction act = new OpenFileAction("", dbFile);
-		act.actionPerformed(null);
+        mainFrame.getSbActionManager().getActionHandler().handleFileSaveAs();
     }//GEN-LAST:event_fileSaveAsActionPerformed
 
+    private void fileRenameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileRenameActionPerformed
+        mainFrame.getSbActionManager().getActionHandler().handleFileRename();
+    }//GEN-LAST:event_fileRenameActionPerformed
+
+    private void fileCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileCloseActionPerformed
+        mainFrame.close();
+    }//GEN-LAST:event_fileCloseActionPerformed
+
     private void filePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePropertiesActionPerformed
-		BookPropertiesDialog dlg = new BookPropertiesDialog(mainFrame);
+        BookPropertiesDialog dlg = new BookPropertiesDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_filePropertiesActionPerformed
 
     private void fileExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportActionPerformed
-		DlgExport dlg=new DlgExport(mainFrame);
-		dlg.setVisible(true);
+		DlgExport export=new DlgExport(mainFrame);
+		export.setVisible(true);
+
     }//GEN-LAST:event_fileExportActionPerformed
 
-    private void filePrintBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintBookActionPerformed
-		Printing p = new Printing(mainFrame);
-		p.setInteractive(true);
-		BookExporter exp = new BookExporter(mainFrame);
-		exp.setExportForOpenOffice(true);
-		StringBuffer str = exp.getContent();
-		p.init(str.toString());
-		p.doPrint();
-    }//GEN-LAST:event_filePrintBookActionPerformed
-
-    private void filePrintChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintChapterActionPerformed
-		// TODO printChapter à terminer
-		Printing p = new Printing(mainFrame);
-		p.setInteractive(true);
-		BookExporter exp = new BookExporter(mainFrame);
-		exp.setExportForOpenOffice(true);
-		p.init(exp.getChapterAsHtml(getCurrentChapter()));
-		p.doPrint();
-    }//GEN-LAST:event_filePrintChapterActionPerformed
-
-    private void filePrintSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintSceneActionPerformed
-		// TODO printScene à terminer
-		Printing p = new Printing(mainFrame);
-		p.setInteractive(true);
-		BookExporter exp = new BookExporter(mainFrame);
-		exp.setExportForOpenOffice(true);
-		p.init(exp.getSceneAsHtml(getCurrentScene()));
-		p.doPrint();
-    }//GEN-LAST:event_filePrintSceneActionPerformed
+    private void filePrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filePrintActionPerformed
 
     private void fileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExitActionPerformed
-		StorybookApp.getInstance().exit();
+        SbApp.getInstance().exit();
     }//GEN-LAST:event_fileExitActionPerformed
 
     private void editCopyBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCopyBookActionPerformed
@@ -830,216 +1518,471 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_editCopyBookActionPerformed
 
     private void editCopyBlurbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCopyBlurbActionPerformed
-		Internal internal = DocumentUtil.restoreInternal(mainFrame, SbConstants.InternalKey.BLURB, "");
+		Internal internal = BookUtil.get(mainFrame,SbConstants.BookKey.BLURB, "");
 		StringSelection selection = new StringSelection(internal.getStringValue() + "\n");
 		Clipboard clbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clbrd.setContents(selection, selection);
     }//GEN-LAST:event_editCopyBlurbActionPerformed
 
-    private void newStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStrandActionPerformed
-		handleNewEntity(new Strand());
-    }//GEN-LAST:event_newStrandActionPerformed
-
-    private void newPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPartActionPerformed
-		handleNewEntity(new Part());
-    }//GEN-LAST:event_newPartActionPerformed
-
-    private void newChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newChapterActionPerformed
-		handleNewEntity(new Chapter());
-    }//GEN-LAST:event_newChapterActionPerformed
-
     private void newSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSceneActionPerformed
-		handleNewEntity(new Scene());
+        newEntity(new Scene());
     }//GEN-LAST:event_newSceneActionPerformed
 
-    private void newCharacterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newCharacterActionPerformed
-		handleNewEntity(new Person());
-    }//GEN-LAST:event_newCharacterActionPerformed
+    private void newChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newChapterActionPerformed
+        newEntity(new Chapter());
+    }//GEN-LAST:event_newChapterActionPerformed
+
+    private void newChaptersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newChaptersActionPerformed
+		CreateChaptersDialog dlg = new CreateChaptersDialog(mainFrame);
+		SwingUtil.showModalDialog(dlg, mainFrame);
+    }//GEN-LAST:event_newChaptersActionPerformed
+
+    private void newPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPartActionPerformed
+        newEntity(new Part());
+    }//GEN-LAST:event_newPartActionPerformed
+
+    private void newStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStrandActionPerformed
+        newEntity(new Strand());
+    }//GEN-LAST:event_newStrandActionPerformed
+
+    private void newPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPersonActionPerformed
+        newEntity(new Person());
+    }//GEN-LAST:event_newPersonActionPerformed
+
+    private void newCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newCategoryActionPerformed
+        newEntity(new Category());
+    }//GEN-LAST:event_newCategoryActionPerformed
+
+    private void newGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGenderActionPerformed
+        newEntity(new Gender());
+    }//GEN-LAST:event_newGenderActionPerformed
 
     private void newLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newLocationActionPerformed
-		handleNewEntity(new Location());
+        newEntity(new Location());
     }//GEN-LAST:event_newLocationActionPerformed
 
-    private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
-		handleNewEntity(new Item());
-    }//GEN-LAST:event_newItemActionPerformed
-
     private void newTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagActionPerformed
-		handleNewEntity(new Tag());
+        newEntity(new Tag());
     }//GEN-LAST:event_newTagActionPerformed
 
+    private void newTagLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTagLinkActionPerformed
+        newEntity(new TagLink());
+    }//GEN-LAST:event_newTagLinkActionPerformed
+
+    private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
+        newEntity(new Item());
+    }//GEN-LAST:event_newItemActionPerformed
+
+    private void newItemLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemLinkActionPerformed
+        newEntity(new ItemLink());
+    }//GEN-LAST:event_newItemLinkActionPerformed
+
+    private void newFOIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFOIActionPerformed
+        FoiDialog dlg = new FoiDialog(mainFrame);
+		SwingUtil.showModalDialog(dlg, mainFrame);
+    }//GEN-LAST:event_newFOIActionPerformed
+
     private void newIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newIdeaActionPerformed
-		handleNewEntity(new Idea());
+		newEntity(new Idea());
     }//GEN-LAST:event_newIdeaActionPerformed
 
-    private void tagsLinksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagsLinksActionPerformed
+    private void tabSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabSceneActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.SCENES);
+    }//GEN-LAST:event_tabSceneActionPerformed
 
-    }//GEN-LAST:event_tagsLinksActionPerformed
+    private void tabChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabChapterActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.CHAPTERS);
+    }//GEN-LAST:event_tabChapterActionPerformed
 
-    private void itemsLinksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemsLinksActionPerformed
+    private void tabPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabPartActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.PARTS);
+    }//GEN-LAST:event_tabPartActionPerformed
 
-    }//GEN-LAST:event_itemsLinksActionPerformed
+    private void tabStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabStrandActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.STRANDS);
+    }//GEN-LAST:event_tabStrandActionPerformed
 
-    private void chartsWiwwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsWiwwActionPerformed
-		showAndFocus(SbConstants.ViewName.CHART_WiWW);
-    }//GEN-LAST:event_chartsWiwwActionPerformed
+    private void tabPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabPersonActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.PERSONS);
+    }//GEN-LAST:event_tabPersonActionPerformed
 
-    private void chartsCharactersByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsCharactersByDateActionPerformed
-		showAndFocus(SbConstants.ViewName.CHART_PERSONS_BY_DATE);
-    }//GEN-LAST:event_chartsCharactersByDateActionPerformed
+    private void tabCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabCategoryActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.CATEGORIES);
+    }//GEN-LAST:event_tabCategoryActionPerformed
 
-    private void chartsCharactersBySceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsCharactersBySceneActionPerformed
-		showAndFocus(SbConstants.ViewName.CHART_PERSONS_BY_SCENE);
-    }//GEN-LAST:event_chartsCharactersBySceneActionPerformed
+    private void tabGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabGenderActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.GENDERS);
+    }//GEN-LAST:event_tabGenderActionPerformed
 
-    private void chartsUsageStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsUsageStrandsActionPerformed
-		showAndFocus(SbConstants.ViewName.CHART_STRANDS_BY_DATE);
-    }//GEN-LAST:event_chartsUsageStrandsActionPerformed
+    private void tabLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabLocationActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.LOCATIONS);
+    }//GEN-LAST:event_tabLocationActionPerformed
 
-    private void chartsGanttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsGanttActionPerformed
-		showAndFocus(SbConstants.ViewName.CHART_GANTT);
-    }//GEN-LAST:event_chartsGanttActionPerformed
+    private void renameCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCityActionPerformed
+        RenameCityDialog dlg = new RenameCityDialog(mainFrame);
+		ActionManager actMngr = mainFrame.getSbActionManager().getActionManager();
+		Action act = actMngr.getAction("rename-city-command");
+		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
+		if (obj != null) {
+			dlg.setSelectedItem(obj);
+		}
+		SwingUtil.showModalDialog(dlg, mainFrame);
+		act.putValue(SbConstants.ActionKey.CATEGORY.toString(), null);
+    }//GEN-LAST:event_renameCityActionPerformed
 
-    private void chartsOccurrenceCharactersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsOccurrenceCharactersActionPerformed
-		showAndFocus(SbConstants.ViewName.CHART_OCCURRENCE_OF_PERSONS);
-    }//GEN-LAST:event_chartsOccurrenceCharactersActionPerformed
+    private void renameCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCountryActionPerformed
+        RenameCountryDialog dlg = new RenameCountryDialog(mainFrame);
+		ActionManager actMngr = mainFrame.getSbActionManager().getActionManager();
+		Action act = actMngr.getAction("rename-country-command");
+		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
+		if (obj != null) {
+			dlg.setSelectedItem(obj);
+		}
+		SwingUtil.showModalDialog(dlg, mainFrame);
+		act.putValue(SbConstants.ActionKey.CATEGORY.toString(), null);
+    }//GEN-LAST:event_renameCountryActionPerformed
 
-    private void chartsOccurrenceLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsOccurrenceLocationsActionPerformed
-		showAndFocus(SbConstants.ViewName.CHART_OCCURRENCE_OF_LOCATIONS);
-    }//GEN-LAST:event_chartsOccurrenceLocationsActionPerformed
+    private void tabTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabTagActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.TAGS);
+    }//GEN-LAST:event_tabTagActionPerformed
 
-    private void toolsTasksListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsTasksListActionPerformed
-		showAndFocus(SbConstants.ViewName.SCENES);
-		mainFrame.getDocumentController().showTaskList();
-    }//GEN-LAST:event_toolsTasksListActionPerformed
+    private void tabTagLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabTagLinkActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.TAGLINKS);
+    }//GEN-LAST:event_tabTagLinkActionPerformed
 
-    private void toolsLanguageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsLanguageActionPerformed
-		// TODO toolsLanguageActionPerformed
-    }//GEN-LAST:event_toolsLanguageActionPerformed
+    private void renameTagCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameTagCategoryActionPerformed
+		RenameTagCategoryDialog dlg = new RenameTagCategoryDialog(mainFrame);
+		ActionManager actMngr = mainFrame.getSbActionManager().getActionManager();
+		Action act = actMngr.getAction("rename-tag-category-command");
+		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
+		if (obj != null) {
+			dlg.setSelectedItem(obj);
+		}
+		SwingUtil.showModalDialog(dlg, mainFrame);
+		act.putValue(SbConstants.ActionKey.CATEGORY.toString(), null);
+    }//GEN-LAST:event_renameTagCategoryActionPerformed
 
-    private void viewTableStrandsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableStrandsActionPerformed
-		showAndFocus(SbConstants.ViewName.STRANDS);
-    }//GEN-LAST:event_viewTableStrandsActionPerformed
+    private void tabItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabItemActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.ITEMS);
+    }//GEN-LAST:event_tabItemActionPerformed
 
-    private void viewTablePartsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTablePartsActionPerformed
-		showAndFocus(SbConstants.ViewName.PARTS);
-    }//GEN-LAST:event_viewTablePartsActionPerformed
+    private void tabItemLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabItemLinkActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.ITEMLINKS);
+    }//GEN-LAST:event_tabItemLinkActionPerformed
 
-    private void viewTableChaptersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableChaptersActionPerformed
-		showAndFocus(SbConstants.ViewName.CHAPTERS);
-    }//GEN-LAST:event_viewTableChaptersActionPerformed
+    private void renameItemCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameItemCategoryActionPerformed
+		RenameItemCategoryDialog dlg = new RenameItemCategoryDialog(mainFrame);
+		ActionManager actMngr = mainFrame.getSbActionManager().getActionManager();
+		Action act = actMngr.getAction("rename-item-category-command");
+		Object obj = act.getValue(SbConstants.ActionKey.CATEGORY.toString());
+		if (obj != null) {
+			dlg.setSelectedItem(obj);
+		}
+		SwingUtil.showModalDialog(dlg, mainFrame);
+		act.putValue(SbConstants.ActionKey.CATEGORY.toString(), null);
+    }//GEN-LAST:event_renameItemCategoryActionPerformed
 
-    private void viewTableScenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableScenesActionPerformed
-		showAndFocus(SbConstants.ViewName.SCENES);
-    }//GEN-LAST:event_viewTableScenesActionPerformed
+    private void tabIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabIdeaActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.SCENES);
+		mainFrame.getBookController().showTaskList();
+    }//GEN-LAST:event_tabIdeaActionPerformed
 
-    private void viewTableCharactersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableCharactersActionPerformed
-		showAndFocus(SbConstants.ViewName.PERSONS);
-    }//GEN-LAST:event_viewTableCharactersActionPerformed
+    private void vueChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueChronoActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.CHRONO);
+    }//GEN-LAST:event_vueChronoActionPerformed
 
-    private void viewTableLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableLocationsActionPerformed
-		showAndFocus(SbConstants.ViewName.LOCATIONS);
-    }//GEN-LAST:event_viewTableLocationsActionPerformed
+    private void vueBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueBookActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.BOOK);
+    }//GEN-LAST:event_vueBookActionPerformed
 
-    private void viewTableItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableItemsActionPerformed
-		showAndFocus(SbConstants.ViewName.ITEMS);
-    }//GEN-LAST:event_viewTableItemsActionPerformed
+    private void vueReadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueReadingActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.READING);
+    }//GEN-LAST:event_vueReadingActionPerformed
 
-    private void viewTableItemsAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableItemsAssociationsActionPerformed
-		showAndFocus(SbConstants.ViewName.ITEMLINKS);
-    }//GEN-LAST:event_viewTableItemsAssociationsActionPerformed
+    private void vueManageSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueManageSceneActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.MANAGE);
+    }//GEN-LAST:event_vueManageSceneActionPerformed
 
-    private void viewTableTagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableTagsActionPerformed
-		showAndFocus(SbConstants.ViewName.TAGS);
-    }//GEN-LAST:event_viewTableTagsActionPerformed
+    private void vueMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueMemoriaActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.MEMORIA);
+    }//GEN-LAST:event_vueMemoriaActionPerformed
 
-    private void viewTableTagsAssociationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableTagsAssociationsActionPerformed
-		showAndFocus(SbConstants.ViewName.TAGLINKS);
-    }//GEN-LAST:event_viewTableTagsAssociationsActionPerformed
+    private void vueEditorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueEditorActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.EDITOR);
+    }//GEN-LAST:event_vueEditorActionPerformed
 
-    private void viewTableIdeasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTableIdeasActionPerformed
-		showAndFocus(SbConstants.ViewName.IDEAS);
-    }//GEN-LAST:event_viewTableIdeasActionPerformed
+    private void vueTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueTreeActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.TREE);
+    }//GEN-LAST:event_vueTreeActionPerformed
 
-    private void viewManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewManageActionPerformed
-		showAndFocus(SbConstants.ViewName.MANAGE);
-    }//GEN-LAST:event_viewManageActionPerformed
+    private void vueInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueInfoActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.INFO);
+    }//GEN-LAST:event_vueInfoActionPerformed
 
-    private void viewChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewChronoActionPerformed
-		showAndFocus(SbConstants.ViewName.CHRONO);
-    }//GEN-LAST:event_viewChronoActionPerformed
+    private void vueNavigationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueNavigationActionPerformed
+        mainFrame.showAndFocus(SbConstants.ViewName.NAVIGATION);
+    }//GEN-LAST:event_vueNavigationActionPerformed
 
-    private void viewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBookActionPerformed
-		showAndFocus(SbConstants.ViewName.BOOK);
-    }//GEN-LAST:event_viewBookActionPerformed
+    private void partPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partPreviousActionPerformed
+		mainFrame.getSbActionManager().getActionHandler().handlePreviousPart();
+    }//GEN-LAST:event_partPreviousActionPerformed
 
-    private void viewReadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReadingActionPerformed
-		showAndFocus(SbConstants.ViewName.READING);
-    }//GEN-LAST:event_viewReadingActionPerformed
+    private void partNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partNextActionPerformed
+		mainFrame.getSbActionManager().getActionHandler().handleNextPart();
+    }//GEN-LAST:event_partNextActionPerformed
 
-    private void viewMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMemoriaActionPerformed
-		showAndFocus(SbConstants.ViewName.MEMORIA);
-    }//GEN-LAST:event_viewMemoriaActionPerformed
+    private void chartPersonsByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartPersonsByDateActionPerformed
+        mainFrame.showAndFocus(ViewName.CHART_PERSONS_BY_DATE);
+    }//GEN-LAST:event_chartPersonsByDateActionPerformed
+
+    private void chartPersonsBySceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartPersonsBySceneActionPerformed
+        mainFrame.showAndFocus(ViewName.CHART_PERSONS_BY_SCENE);
+    }//GEN-LAST:event_chartPersonsBySceneActionPerformed
+
+    private void chartWIWWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartWIWWActionPerformed
+        mainFrame.showAndFocus(ViewName.CHART_WiWW);
+    }//GEN-LAST:event_chartWIWWActionPerformed
+
+    private void chartStrandsByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartStrandsByDateActionPerformed
+        mainFrame.showAndFocus(ViewName.CHART_STRANDS_BY_DATE);
+    }//GEN-LAST:event_chartStrandsByDateActionPerformed
+
+    private void chartOccurrenceOfPersonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartOccurrenceOfPersonsActionPerformed
+        mainFrame.showAndFocus(ViewName.CHART_OCCURRENCE_OF_PERSONS);
+    }//GEN-LAST:event_chartOccurrenceOfPersonsActionPerformed
+
+    private void chartOccurrenceOfLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartOccurrenceOfLocationsActionPerformed
+        mainFrame.showAndFocus(ViewName.CHART_OCCURRENCE_OF_LOCATIONS);
+    }//GEN-LAST:event_chartOccurrenceOfLocationsActionPerformed
+
+    private void chartGanttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartGanttActionPerformed
+        mainFrame.showAndFocus(ViewName.CHART_GANTT);
+    }//GEN-LAST:event_chartGanttActionPerformed
+
+    private void toolsLangtoolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsLangtoolActionPerformed
+		LangToolAction act = new LangToolAction(mainFrame);
+		act.actionPerformed(null);
+    }//GEN-LAST:event_toolsLangtoolActionPerformed
+
+    private void toolsTaskListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsTaskListActionPerformed
+        mainFrame.showAndFocus(ViewName.SCENES);
+		mainFrame.getBookController().showTaskList();
+    }//GEN-LAST:event_toolsTaskListActionPerformed
+
+    private void toolsConvertTextToHtmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsConvertTextToHtmlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toolsConvertTextToHtmlActionPerformed
+
+    private void toolsConvertHtmlToTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsConvertHtmlToTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toolsConvertHtmlToTextActionPerformed
+
+    private void windowSaveLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowSaveLayoutActionPerformed
+        String name = JOptionPane.showInputDialog(mainFrame,
+			I18N.getMsgColon("msg.common.enter.name"),
+			I18N.getMsg("msg.docking.save.layout"),
+			JOptionPane.PLAIN_MESSAGE);
+		if (name != null) {
+			DockingWindowUtil.saveLayout(mainFrame, name);
+		}
+    }//GEN-LAST:event_windowSaveLayoutActionPerformed
+
+    private void windowDefaultLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowDefaultLayoutActionPerformed
+        DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.DEFAULT_LAYOUT);
+    }//GEN-LAST:event_windowDefaultLayoutActionPerformed
+
+    private void windowManageLayoutsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowManageLayoutsActionPerformed
+        ManageLayoutsDialog dlg = new ManageLayoutsDialog(mainFrame);
+		SwingUtil.showModalDialog(dlg, mainFrame);
+    }//GEN-LAST:event_windowManageLayoutsActionPerformed
+
+    private void windowPersonsAndLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowPersonsAndLocationsActionPerformed
+        DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.PERSONS_LOCATIONS_LAYOUT);
+    }//GEN-LAST:event_windowPersonsAndLocationsActionPerformed
+
+    private void windowTagsAndItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowTagsAndItemsActionPerformed
+        DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.TAGS_ITEMS_LAYOUT);
+    }//GEN-LAST:event_windowTagsAndItemsActionPerformed
+
+    private void windowChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowChronoActionPerformed
+        DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.CHRONO_ONLY_LAYOUT);
+    }//GEN-LAST:event_windowChronoActionPerformed
+
+    private void windowBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowBookActionPerformed
+        DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.BOOK_ONLY_LAYOUT);
+    }//GEN-LAST:event_windowBookActionPerformed
+
+    private void windowManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowManageActionPerformed
+        DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.MANAGE_ONLY_LAYOUT);
+    }//GEN-LAST:event_windowManageActionPerformed
+
+    private void windowReadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowReadingActionPerformed
+        DockingWindowUtil.setLayout(mainFrame,DockingWindowUtil.READING_ONLY_LAYOUT);
+    }//GEN-LAST:event_windowReadingActionPerformed
+
+    private void windowResetLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowResetLayoutActionPerformed
+		SwingUtil.setWaitingCursor(mainFrame);
+		mainFrame.setDefaultLayout();
+		SwingUtil.setDefaultCursor(mainFrame);
+    }//GEN-LAST:event_windowResetLayoutActionPerformed
+
+    private void windowRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowRefreshActionPerformed
+        mainFrame.refresh();
+    }//GEN-LAST:event_windowRefreshActionPerformed
+
+    private void windowPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowPreferencesActionPerformed
+        PreferencesDialog dlg = new PreferencesDialog();
+		SwingUtil.showModalDialog(dlg, mainFrame);
+    }//GEN-LAST:event_windowPreferencesActionPerformed
 
     private void helpDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpDocActionPerformed
-		NetUtil.openBrowser(SbConstants.URL.DOC.toString());
+        NetUtil.openBrowser(SbConstants.URL.DOC.toString());
     }//GEN-LAST:event_helpDocActionPerformed
 
-    private void helpFAQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpFAQActionPerformed
-		NetUtil.openBrowser(SbConstants.URL.FAQ.toString());
-    }//GEN-LAST:event_helpFAQActionPerformed
+    private void helpFaqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpFaqActionPerformed
+        NetUtil.openBrowser(SbConstants.URL.FAQ.toString());
+    }//GEN-LAST:event_helpFaqActionPerformed
 
-    private void helpBugsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBugsActionPerformed
-		NetUtil.openBrowser(SbConstants.URL.REPORTBUG.toString());
-    }//GEN-LAST:event_helpBugsActionPerformed
-
-    private void helpContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpContactActionPerformed
-		NetUtil.openBrowser(SbConstants.URL.CONTACT.toString());
-    }//GEN-LAST:event_helpContactActionPerformed
-
-    private void helpCheckUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpCheckUpdateActionPerformed
-		// TODO checkForUpdate
-		if (Updater.checkForUpdate())
-			JOptionPane.showMessageDialog(mainFrame,
-					I18N.getMsg("msg.update.no.text"),
-					I18N.getMsg("msg.update.no.title"),
-					JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_helpCheckUpdateActionPerformed
+    private void helpHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpHomeActionPerformed
+        NetUtil.openBrowser(SbConstants.URL.HOMEPAGE.toString());
+    }//GEN-LAST:event_helpHomeActionPerformed
 
     private void helpAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpAboutActionPerformed
 		AboutDialog dlg = new AboutDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_helpAboutActionPerformed
 
-    private void newGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGenderActionPerformed
-		handleNewEntity(new Gender());
-    }//GEN-LAST:event_newGenderActionPerformed
+    private void helpCheckUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpCheckUpdatesActionPerformed
+		if (Updater.checkForUpdate()) {
+			JOptionPane.showMessageDialog(mainFrame,
+				I18N.getMsg("msg.update.no.text"),
+				I18N.getMsg("msg.update.no.title"),
+				JOptionPane.INFORMATION_MESSAGE);
+		}
+    }//GEN-LAST:event_helpCheckUpdatesActionPerformed
 
-    private void newCharacterCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newCharacterCategoryActionPerformed
-		// TODO newCharacterCategoryActionPerformed
-    }//GEN-LAST:event_newCharacterCategoryActionPerformed
+    private void helpTraceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpTraceActionPerformed
+		if (SbApp.getTrace()) SbApp.setTrace(false);
+		else SbApp.setTrace(true);
+		helpTrace.setSelected(SbApp.getTrace());
+    }//GEN-LAST:event_helpTraceActionPerformed
 
-    private void documentPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentPropertiesActionPerformed
-		PreferencesDialog dlg = new PreferencesDialog();
-		SwingUtil.showModalDialog(dlg, mainFrame);
-    }//GEN-LAST:event_documentPropertiesActionPerformed
+    private void btFileNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFileNewActionPerformed
+        this.fileNewActionPerformed(evt);
+    }//GEN-LAST:event_btFileNewActionPerformed
 
-    private void renameCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCityActionPerformed
-		// TODO renameCityActionPerformed
-    }//GEN-LAST:event_renameCityActionPerformed
+    private void btFileOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFileOpenActionPerformed
+        this.fileOpenActionPerformed(evt);
+    }//GEN-LAST:event_btFileOpenActionPerformed
 
-    private void renameCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameCountryActionPerformed
-		// TODO renameCountryActionPerformed
-    }//GEN-LAST:event_renameCountryActionPerformed
+    private void btFileSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFileSaveActionPerformed
+        this.fileSaveActionPerformed(evt);
+    }//GEN-LAST:event_btFileSaveActionPerformed
+
+    private void btNewSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewSceneActionPerformed
+        this.newSceneActionPerformed(evt);
+    }//GEN-LAST:event_btNewSceneActionPerformed
+
+    private void btNewChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewChapterActionPerformed
+        this.newChapterActionPerformed(evt);
+    }//GEN-LAST:event_btNewChapterActionPerformed
+
+    private void btNewPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewPersonActionPerformed
+        this.newPersonActionPerformed(evt);
+    }//GEN-LAST:event_btNewPersonActionPerformed
+
+    private void btNewLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewLocationActionPerformed
+        this.newLocationActionPerformed(evt);
+    }//GEN-LAST:event_btNewLocationActionPerformed
+
+    private void btNewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewItemActionPerformed
+        this.newItemActionPerformed(evt);
+    }//GEN-LAST:event_btNewItemActionPerformed
+
+    private void btNewTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewTagActionPerformed
+        this.newTagActionPerformed(evt);
+    }//GEN-LAST:event_btNewTagActionPerformed
+
+    private void btTabSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabSceneActionPerformed
+        this.tabSceneActionPerformed(evt);
+    }//GEN-LAST:event_btTabSceneActionPerformed
+
+    private void btTabChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabChapterActionPerformed
+        this.tabChapterActionPerformed(evt);
+    }//GEN-LAST:event_btTabChapterActionPerformed
+
+    private void btTabPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabPersonActionPerformed
+        this.tabPersonActionPerformed(evt);
+    }//GEN-LAST:event_btTabPersonActionPerformed
+
+    private void btTabLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabLocationActionPerformed
+        this.tabLocationActionPerformed(evt);
+    }//GEN-LAST:event_btTabLocationActionPerformed
+
+    private void btTabItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabItemActionPerformed
+        this.tabItemActionPerformed(evt);
+    }//GEN-LAST:event_btTabItemActionPerformed
+
+    private void btTabItemLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabItemLinkActionPerformed
+        this.tabItemLinkActionPerformed(evt);
+    }//GEN-LAST:event_btTabItemLinkActionPerformed
+
+    private void btTabTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabTagActionPerformed
+        this.tabTagActionPerformed(evt);
+    }//GEN-LAST:event_btTabTagActionPerformed
+
+    private void btTabTagLinkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTabTagLinkActionPerformed
+        this.tabTagLinkActionPerformed(evt);
+    }//GEN-LAST:event_btTabTagLinkActionPerformed
+
+    private void btViewChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewChronoActionPerformed
+        this.vueChronoActionPerformed(evt);
+    }//GEN-LAST:event_btViewChronoActionPerformed
+
+    private void btViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewBookActionPerformed
+        this.vueBookActionPerformed(evt);
+    }//GEN-LAST:event_btViewBookActionPerformed
+
+    private void btManageSceneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManageSceneActionPerformed
+        this.vueManageSceneActionPerformed(evt);
+    }//GEN-LAST:event_btManageSceneActionPerformed
+
+    private void btViewReadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewReadingActionPerformed
+        this.vueReadingActionPerformed(evt);
+    }//GEN-LAST:event_btViewReadingActionPerformed
+
+    private void btViewMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btViewMemoriaActionPerformed
+        this.vueMemoriaActionPerformed(evt);
+    }//GEN-LAST:event_btViewMemoriaActionPerformed
+
+    private void btPreviousPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPreviousPartActionPerformed
+        this.partPreviousActionPerformed(evt);
+    }//GEN-LAST:event_btPreviousPartActionPerformed
+
+    private void btNextPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNextPartActionPerformed
+        this.partNextActionPerformed(evt);
+    }//GEN-LAST:event_btNextPartActionPerformed
+
+    private void btIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIdeaActionPerformed
+        this.newIdeaActionPerformed(evt);
+    }//GEN-LAST:event_btIdeaActionPerformed
+
+    private void helpReportBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpReportBugActionPerformed
+        NetUtil.openBrowser(SbConstants.URL.REPORTBUG.toString());
+    }//GEN-LAST:event_helpReportBugActionPerformed
+
+    private void chartsAttributesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartsAttributesActionPerformed
+        mainFrame.showAndFocus(ViewName.ATTRIBUTES);
+    }//GEN-LAST:event_chartsAttributesActionPerformed
 
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
 		/* Set the Nimbus look and feel */
-	//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
 		 */
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -1048,11 +1991,16 @@ public class MainMenu extends javax.swing.JFrame {
 					break;
 				}
 			}
-		} catch (ClassNotFoundException | InstantiationException 
-				| IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+		} catch (ClassNotFoundException ex) {
+			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (InstantiationException ex) {
+			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (IllegalAccessException ex) {
+			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
-	//</editor-fold>
+        //</editor-fold>
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1061,121 +2009,198 @@ public class MainMenu extends javax.swing.JFrame {
 			}
 		});
 	}
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem chartsCharactersByDate;
-    private javax.swing.JMenuItem chartsCharactersByScene;
-    private javax.swing.JMenuItem chartsGantt;
-    private javax.swing.JMenu chartsMenu;
-    private javax.swing.JMenuItem chartsOccurrenceCharacters;
-    private javax.swing.JMenuItem chartsOccurrenceLocations;
-    private javax.swing.JMenuItem chartsUsageStrands;
-    private javax.swing.JMenuItem chartsWiww;
-    private javax.swing.JMenuItem documentProperties;
+    private javax.swing.JButton btFileNew;
+    private javax.swing.JButton btFileOpen;
+    private javax.swing.JButton btFileSave;
+    private javax.swing.JButton btIdea;
+    private javax.swing.JButton btManageScene;
+    private javax.swing.JButton btNewChapter;
+    private javax.swing.JButton btNewItem;
+    private javax.swing.JButton btNewLocation;
+    private javax.swing.JButton btNewPerson;
+    private javax.swing.JButton btNewScene;
+    private javax.swing.JButton btNewTag;
+    private javax.swing.JButton btNextPart;
+    private javax.swing.JButton btPreviousPart;
+    private javax.swing.JButton btTabChapter;
+    private javax.swing.JButton btTabItem;
+    private javax.swing.JButton btTabItemLink;
+    private javax.swing.JButton btTabLocation;
+    private javax.swing.JButton btTabPerson;
+    private javax.swing.JButton btTabScene;
+    private javax.swing.JButton btTabTag;
+    private javax.swing.JButton btTabTagLink;
+    private javax.swing.JButton btViewBook;
+    private javax.swing.JButton btViewChrono;
+    private javax.swing.JButton btViewMemoria;
+    private javax.swing.JButton btViewReading;
+    private javax.swing.JMenuItem chartGantt;
+    private javax.swing.JMenuItem chartOccurrenceOfLocations;
+    private javax.swing.JMenuItem chartOccurrenceOfPersons;
+    private javax.swing.JMenuItem chartPersonsByDate;
+    private javax.swing.JMenuItem chartPersonsByScene;
+    private javax.swing.JMenuItem chartStrandsByDate;
+    private javax.swing.JMenuItem chartWIWW;
+    private javax.swing.JMenuItem chartsAttributes;
     private javax.swing.JMenuItem editCopyBlurb;
     private javax.swing.JMenuItem editCopyBook;
-    private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem fileClose;
     private javax.swing.JMenuItem fileExit;
     private javax.swing.JMenuItem fileExport;
-    private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem fileNew;
     private javax.swing.JMenuItem fileOpen;
-    private javax.swing.JMenu filePrint;
-    private javax.swing.JMenuItem filePrintBook;
-    private javax.swing.JMenuItem filePrintChapter;
-    private javax.swing.JMenuItem filePrintScene;
+    public javax.swing.JMenu fileOpenRecent;
+    private javax.swing.JMenuItem filePrint;
     private javax.swing.JMenuItem fileProperties;
+    private javax.swing.JMenuItem fileRename;
     private javax.swing.JMenuItem fileSave;
     private javax.swing.JMenuItem fileSaveAs;
     private javax.swing.JMenuItem helpAbout;
-    private javax.swing.JMenuItem helpBugs;
-    private javax.swing.JMenuItem helpCheckUpdate;
-    private javax.swing.JMenuItem helpContact;
+    private javax.swing.JMenuItem helpCheckUpdates;
     private javax.swing.JMenuItem helpDoc;
-    private javax.swing.JMenuItem helpFAQ;
-    private javax.swing.JMenu helpMenu;
-    private javax.swing.JMenuItem itemsLinks;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenuItem helpFaq;
+    private javax.swing.JMenuItem helpHome;
+    private javax.swing.JMenuItem helpReportBug;
+    private javax.swing.JCheckBoxMenuItem helpTrace;
     private javax.swing.JPopupMenu.Separator jSeparator10;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator11;
+    private javax.swing.JPopupMenu.Separator jSeparator12;
+    private javax.swing.JPopupMenu.Separator jSeparator13;
+    private javax.swing.JPopupMenu.Separator jSeparator14;
+    private javax.swing.JPopupMenu.Separator jSeparator15;
+    private javax.swing.JPopupMenu.Separator jSeparator16;
+    private javax.swing.JPopupMenu.Separator jSeparator18;
+    private javax.swing.JToolBar.Separator jSeparator19;
+    private javax.swing.JToolBar.Separator jSeparator20;
+    private javax.swing.JToolBar.Separator jSeparator21;
+    private javax.swing.JToolBar.Separator jSeparator22;
+    private javax.swing.JToolBar.Separator jSeparator23;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
-    private javax.swing.JMenu linksMenu;
+    public javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuCharts;
+    private javax.swing.JMenu menuEdit;
+    private javax.swing.JMenu menuFile;
+    private javax.swing.JMenu menuHelp;
+    private javax.swing.JMenu menuNewEntity;
+    public javax.swing.JMenu menuParts;
+    private javax.swing.JMenu menuPrimaryObjects;
+    private javax.swing.JMenu menuSecondaryObjects;
+    private javax.swing.JMenu menuTools;
+    private javax.swing.JMenu menuView;
+    private javax.swing.JMenu menuWindow;
+    private javax.swing.JMenuItem newCategory;
     private javax.swing.JMenuItem newChapter;
-    private javax.swing.JMenuItem newCharacter;
-    private javax.swing.JMenuItem newCharacterCategory;
+    private javax.swing.JMenuItem newChapters;
+    private javax.swing.JMenuItem newFOI;
     private javax.swing.JMenuItem newGender;
     private javax.swing.JMenuItem newIdea;
     private javax.swing.JMenuItem newItem;
+    private javax.swing.JMenuItem newItemLink;
     private javax.swing.JMenuItem newLocation;
-    private javax.swing.JMenu newMenu;
     private javax.swing.JMenuItem newPart;
+    private javax.swing.JMenuItem newPerson;
     private javax.swing.JMenuItem newScene;
     private javax.swing.JMenuItem newStrand;
     private javax.swing.JMenuItem newTag;
+    private javax.swing.JMenuItem newTagLink;
+    public javax.swing.JMenuItem partNext;
+    public javax.swing.JMenuItem partPrevious;
     private javax.swing.JMenuItem renameCity;
     private javax.swing.JMenuItem renameCountry;
-    private javax.swing.JMenuItem tagsLinks;
-    private javax.swing.JMenuItem toolsLanguage;
-    private javax.swing.JMenu toolsMenu;
-    private javax.swing.JMenuItem toolsTasksList;
-    private javax.swing.JMenuItem viewBook;
-    private javax.swing.JMenuItem viewChrono;
-    private javax.swing.JMenuItem viewManage;
-    private javax.swing.JMenuItem viewMemoria;
-    private javax.swing.JMenu viewMenu;
-    private javax.swing.JMenuItem viewReading;
-    private javax.swing.JMenu viewTable;
-    private javax.swing.JMenuItem viewTableChapters;
-    private javax.swing.JMenuItem viewTableCharacters;
-    private javax.swing.JMenuItem viewTableIdeas;
-    private javax.swing.JMenuItem viewTableItems;
-    private javax.swing.JMenuItem viewTableItemsAssociations;
-    private javax.swing.JMenuItem viewTableLocations;
-    private javax.swing.JMenuItem viewTableParts;
-    private javax.swing.JMenuItem viewTableScenes;
-    private javax.swing.JMenuItem viewTableStrands;
-    private javax.swing.JMenuItem viewTableTags;
-    private javax.swing.JMenuItem viewTableTagsAssociations;
+    private javax.swing.JMenuItem renameItemCategory;
+    private javax.swing.JMenuItem renameTagCategory;
+    private javax.swing.JPopupMenu.Separator separatorFile1;
+    private javax.swing.JPopupMenu.Separator separatorFile2;
+    private javax.swing.JPopupMenu.Separator separatorFile3;
+    private javax.swing.JMenuItem tabCategory;
+    private javax.swing.JMenuItem tabChapter;
+    private javax.swing.JMenuItem tabGender;
+    private javax.swing.JMenuItem tabIdea;
+    private javax.swing.JMenuItem tabItem;
+    private javax.swing.JMenuItem tabItemLink;
+    private javax.swing.JMenuItem tabLocation;
+    private javax.swing.JMenuItem tabPart;
+    private javax.swing.JMenuItem tabPerson;
+    private javax.swing.JMenuItem tabScene;
+    private javax.swing.JMenuItem tabStrand;
+    private javax.swing.JMenuItem tabTag;
+    private javax.swing.JMenuItem tabTagLink;
+    public javax.swing.JToolBar toolBar;
+    private javax.swing.JMenuItem toolsConvertHtmlToText;
+    private javax.swing.JMenuItem toolsConvertTextToHtml;
+    private javax.swing.JMenuItem toolsLangtool;
+    private javax.swing.JMenuItem toolsTaskList;
+    private javax.swing.JMenuItem vueBook;
+    private javax.swing.JMenuItem vueChrono;
+    private javax.swing.JMenuItem vueEditor;
+    private javax.swing.JMenuItem vueInfo;
+    private javax.swing.JMenuItem vueManageScene;
+    private javax.swing.JMenuItem vueMemoria;
+    private javax.swing.JMenuItem vueNavigation;
+    private javax.swing.JMenuItem vueReading;
+    private javax.swing.JMenuItem vueTree;
+    private javax.swing.JMenuItem windowBook;
+    private javax.swing.JMenuItem windowChrono;
     private javax.swing.JMenuItem windowDefaultLayout;
-    private javax.swing.JMenu windowLoadLayout;
+    public javax.swing.JMenu windowLoadLayout;
+    private javax.swing.JMenuItem windowManage;
     private javax.swing.JMenuItem windowManageLayouts;
-    private javax.swing.JMenu windowMenu;
+    private javax.swing.JMenuItem windowPersonsAndLocations;
+    private javax.swing.JMenuItem windowPreferences;
+    private javax.swing.JMenuItem windowReading;
+    private javax.swing.JMenuItem windowRefresh;
+    private javax.swing.JMenuItem windowResetLayout;
     private javax.swing.JMenuItem windowSaveLayout;
+    private javax.swing.JMenuItem windowTagsAndItems;
     // End of variables declaration//GEN-END:variables
 
-	public void setMainFrame(MainFrame m) {
-		mainFrame = m;
-	}
-
-	private void handleNewEntity(AbstractEntity entity) {
-		BookController ctrl = mainFrame.getDocumentController();
+	public void newEntity(AbstractEntity entity) {
+		SbApp.trace("MainMenu.newEntity("+entity.getClass().getName()+")");
+		/*BookController ctrl = mainFrame.getBookController();
 		ctrl.setEntityToEdit(entity);
-		mainFrame.showView(SbConstants.ViewName.EDITOR);
-	}
-
-	private void showAndFocus(SbConstants.ViewName viewName) {
-		View view = mainFrame.getView(viewName);
-		view.restore();
-		view.restoreFocus();
+		mainFrame.showView(SbConstants.ViewName.EDITOR);*/
+		//EditorDlg dlg=new EditorDlg(mainFrame,entity);
+		//dlg.setVisible(true);
+		mainFrame.showEditorAsDialog(entity);
 	}
 	
-	private Chapter getCurrentChapter() {
-		// TODO getCurrentChapter
-		Chapter chapter=null;
-		return(chapter);
+	public void setMenuForBlank() {
+		// hide menus from MenuBar
+		javax.swing.JMenu menus[]={
+			menuNewEntity, menuParts, menuPrimaryObjects, menuSecondaryObjects,
+			menuCharts, menuCharts, menuTools, menuView, menuWindow
+		};
+		for (javax.swing.JMenu m : menus) {
+			m.setVisible(false);
+		}
+		javax.swing.JMenuItem[] submenus={
+			editCopyBlurb, editCopyBook,
+			fileClose, fileExport, filePrint,
+			fileProperties, fileRename, fileSave, fileSaveAs
+		};
+		for (javax.swing.JMenuItem m : submenus) {
+			m.setVisible(false);
+		}
+		separatorFile1.setVisible(false);
+		separatorFile2.setVisible(false);
+		separatorFile3.setVisible(false);
+		//hide button from toolBar
+		javax.swing.JButton button[]={
+			btFileSave,
+			btManageScene,
+			btNewChapter, btNewItem, btNewLocation, btNewPerson, btNewScene, btNewTag,
+			btNextPart, btPreviousPart,
+			btTabChapter, btTabItem, btTabItemLink, btTabLocation, btTabPerson, btTabScene, btTabTag, btTabTagLink,
+			btViewBook, btViewChrono, btViewMemoria, btViewReading, btIdea
+		};
+		for (javax.swing.JButton bt : button)
+			bt.setVisible(false);
 	}
-
-	private Scene getCurrentScene() {
-		// TODO getCurrentScene
-		Scene scene=null;
-		return(scene);
-	}
-
 }

@@ -9,19 +9,13 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.html.simpleparser.StyleSheet;
 import com.itextpdf.text.pdf.*;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 /**
  *
@@ -48,14 +42,14 @@ public class ExportPDF {
 	}
 
 	public void writeRow(String[] strings) {
-		StorybookApp.trace("ExportPDF.writeRow()");
+		SbApp.trace("ExportPDF.writeRow()");
 		for (String str : strings) {
 			table.addCell(str);
 		}
 	}
 
 	private void addMetaData() {
-		StorybookApp.trace("ExportPDF.addMetaData()");
+		SbApp.trace("ExportPDF.addMetaData()");
 		outDoc.addTitle(report);
 		outDoc.addSubject("Base list");
 		outDoc.addKeywords("oStoryBook");
@@ -64,7 +58,7 @@ public class ExportPDF {
 	}
 
 	public void open() {
-		StorybookApp.trace("ExportPDF.open()");
+		SbApp.trace("ExportPDF.open()");
 		outDoc = new Document();
 		Rectangle rectangle=new Rectangle(PageSize.getRectangle(parent.parent.paramExport.pdfPageSize));
 		if (parent.parent.paramExport.pdfLandscape) {
@@ -74,7 +68,7 @@ public class ExportPDF {
 		try {
 			PdfWriter.getInstance(outDoc, new FileOutputStream(fileName));
 		} catch (FileNotFoundException | DocumentException ex) {
-			StorybookApp.error(ExportPDF.class.getName(), ex);
+			SbApp.error(ExportPDF.class.getName(), ex);
 		}
 		outDoc.open();
 
@@ -83,7 +77,7 @@ public class ExportPDF {
 			outDoc.add(new Phrase(parent.bookTitle+" - "+parent.exportData.getKey()+"\n"
 					, FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD)));
 		} catch (DocumentException ex) {
-			StorybookApp.error("ExportPDF.open()", ex);
+			SbApp.error("ExportPDF.open()", ex);
 		}
 		if (headers == null)
 			return;
@@ -102,36 +96,37 @@ public class ExportPDF {
 	}
 
 	void writeText(String str) {
-		StorybookApp.trace("ExportPDF.writeText("+str+")");
+		SbApp.trace("ExportPDF.writeText("+str+")");
 		try {
 			outDoc.add(new Phrase(str+"\n", FontFactory.getFont(FontFactory.HELVETICA, 10)));
 		} catch (DocumentException ex) {
-			StorybookApp.error("ExportPDF.writeText(" + str + ")", ex);
+			SbApp.error("ExportPDF.writeText(" + str + ")", ex);
 		}
 	}
 
 	public void close() {
-		StorybookApp.trace("ExportPDF.close()");
+		SbApp.trace("ExportPDF.close()");
 		try {
 			if (headers != null)
 				outDoc.add(table);
 		} catch (DocumentException ex) {
-			StorybookApp.error("ExportPDF.close()", ex);
+			SbApp.error("ExportPDF.close()", ex);
 		}
 		outDoc.close();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void HtmlToPdf(String source) {
 		StyleSheet styles=null;
 		try {
-			List<Element> elements = (ArrayList) HTMLWorker.parseToList(new FileReader(source), styles);
+			List<Element> elements = (List<Element>) HTMLWorker.parseToList(new FileReader(source), styles);
 			for (Element el : elements) {
 				outDoc.add(el);
 			}
 			File wx=new File(source);
 			wx.delete();
 		} catch (IOException|DocumentException ex) {
-			StorybookApp.error("ExportPDF.HtmlToPdf("+source+")", ex);
+			SbApp.error("ExportPDF.HtmlToPdf("+source+")", ex);
 		}
 	}
 

@@ -31,7 +31,7 @@ public class ExportIdeas {
 	
 	ExportIdeas(Export m) {
 		parent=m;
-		headers=new ArrayList();
+		headers=new ArrayList<>();
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.id"),5));
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.status"), 15));
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.notes"), 80));
@@ -40,7 +40,7 @@ public class ExportIdeas {
 	public String get(Idea obj) {
 		if (obj!=null) return(EntityUtil.getInfo(parent.mainFrame, obj));
 		String str = debut(obj);
-		BookModel model = parent.mainFrame.getDocumentModel();
+		BookModel model = parent.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		IdeaDAOImpl dao = new IdeaDAOImpl(session);
 		List<Idea> ideas = dao.findAll();

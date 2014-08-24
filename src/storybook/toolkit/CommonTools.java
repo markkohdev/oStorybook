@@ -23,7 +23,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 /**
  * Common tools

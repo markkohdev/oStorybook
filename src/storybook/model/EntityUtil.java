@@ -52,7 +52,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 import storybook.action.ChapterOrderByTimestampAction;
 import storybook.action.ChapterReSortAction;
@@ -118,7 +118,7 @@ import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.model.hbn.entity.Tag;
 import storybook.model.hbn.entity.TagLink;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.DateUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.TextUtil;
@@ -179,11 +179,11 @@ public class EntityUtil {
 	}
 
 	public static void convertPlainTextToHtml(MainFrame mainFrame) {
-		boolean useHtmlScenes = DocumentUtil.isUseHtmlScenes(mainFrame);
-		boolean useHtmlDescr = DocumentUtil.isUseHtmlDescr(mainFrame);
+		boolean useHtmlScenes = BookUtil.isUseHtmlScenes(mainFrame);
+		boolean useHtmlDescr = BookUtil.isUseHtmlDescr(mainFrame);
 		if (!useHtmlScenes && !useHtmlDescr)
 			return;
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 
 		// scenes
@@ -263,11 +263,11 @@ public class EntityUtil {
 	}
 
 	public static void convertHtmlToPlainText(MainFrame mainFrame) {
-		boolean usePlainTextScenes = !DocumentUtil.isUseHtmlScenes(mainFrame);
-		boolean usePlainTextDescr = !DocumentUtil.isUseHtmlDescr(mainFrame);
+		boolean usePlainTextScenes = !BookUtil.isUseHtmlScenes(mainFrame);
+		boolean usePlainTextDescr = !BookUtil.isUseHtmlDescr(mainFrame);
 		if (!usePlainTextScenes && !usePlainTextDescr)
 			return;
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 
 		// scenes
@@ -364,7 +364,7 @@ public class EntityUtil {
 	}
 
 	public static Date findFirstDate(MainFrame mainFrame) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		Date date = dao.findFirstDate();
@@ -373,7 +373,7 @@ public class EntityUtil {
 	}
 
 	public static Date findLastDate(MainFrame mainFrame) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		Date date = dao.findLastDate();
@@ -382,7 +382,7 @@ public class EntityUtil {
 	}
 
 	public static void printBeanProperties(AbstractEntity entity) {
-		StorybookApp.trace("EntityUtil.printBeanProperties(" + entity.getClass().getName() + ")");
+		SbApp.trace("EntityUtil.printBeanProperties(" + entity.getClass().getName() + ")");
 		try {
 			BeanInfo bi = Introspector.getBeanInfo(entity.getClass());
 			for (PropertyDescriptor propDescr : bi.getPropertyDescriptors()) {
@@ -462,7 +462,7 @@ public class EntityUtil {
 	public static void copyEntity(MainFrame mainFrame, AbstractEntity entity) {
 		AbstractEntityHandler handler = getEntityHandler(mainFrame, entity);
 		AbstractEntity newEntity = handler.createNewEntity();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
 		copyEntityProperties(mainFrame, entity, newEntity);
@@ -488,7 +488,7 @@ public class EntityUtil {
 			attributes = person.getAttributes();
 		}
 		model.commit();
-		BookController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getBookController();
 		ctrl.newEntity(newEntity);
 
 		// re-set "stolen" bag links
@@ -701,7 +701,7 @@ public class EntityUtil {
 		if (entity.isTransient())
 			return new ArrayList<>();
 		if (entity instanceof Person) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			Person person = (Person) entity;
 			session.refresh(person);
@@ -712,14 +712,13 @@ public class EntityUtil {
 		return new ArrayList<>();
 	}
 
-	public static void setEntityAttributes(MainFrame mainFrame,
-			AbstractEntity entity, ArrayList<Attribute> attributes) {
+	public static void setEntityAttributes(MainFrame mainFrame, AbstractEntity entity, List<Attribute> attributes) {
 		if (entity.isTransient())
 			return;
 		if (entity instanceof Person)
 			try {
 				Person person = (Person) entity;
-				BookModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getBookModel();
 
 				// delete attributes
 				Session session = model.beginTransaction();
@@ -738,9 +737,9 @@ public class EntityUtil {
 
 				// update person
 				person.setAttributes(attributes);
-				mainFrame.getDocumentController().updatePerson(person);
+				mainFrame.getBookController().updatePerson(person);
 			} catch (HibernateException e) {
-				StorybookApp.logErr("EntityUtil.copyEntityProperties() Exception : ", e);
+				SbApp.error("EntityUtil.copyEntityProperties()", e);
 			}
 	}
 
@@ -815,7 +814,7 @@ public class EntityUtil {
 	public static List<JCheckBox> createCategoryCheckBoxes(MainFrame mainFrame,
 			ActionListener comp) {
 		List<JCheckBox> list = new ArrayList<>();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
 		List<Category> categories = dao.findAllOrderBySort();
@@ -835,7 +834,7 @@ public class EntityUtil {
 	public static List<JCheckBox> createCountryCheckBoxes(MainFrame mainFrame,
 			ActionListener comp) {
 		List<JCheckBox> list = new ArrayList<>();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl dao = new LocationDAOImpl(session);
 		List<String> countries = dao.findCountries();
@@ -853,7 +852,7 @@ public class EntityUtil {
 	public static List<JCheckBox> createPersonCheckBoxes(MainFrame mainFrame,
 			List<JCheckBox> cbCategoryList, ActionListener comp) {
 		List<JCheckBox> list = new ArrayList<>();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl dao = new PersonDAOImpl(session);
 		for (JCheckBox cb : cbCategoryList) {
@@ -876,8 +875,8 @@ public class EntityUtil {
 	}
 
 	public static void renumberScenes(MainFrame mainFrame, Chapter chapter) {
-		BookModel model = mainFrame.getDocumentModel();
-		BookController ctrl = mainFrame.getDocumentController();
+		BookModel model = mainFrame.getBookModel();
+		BookController ctrl = mainFrame.getBookController();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Scene> scenes = dao.findScenes(chapter);
@@ -909,7 +908,7 @@ public class EntityUtil {
 			if (entity.isTransient())
 				// nothing to do for a new entity
 				return;
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.getSession();
 			if (session != null && session.isOpen()) {
 				Transaction transaction = session.beginTransaction();
@@ -917,7 +916,7 @@ public class EntityUtil {
 				transaction.commit();
 			}
 		} catch (HibernateException e) {
-			StorybookApp.logErr("EntityUtil.copyEntityProperties() Exception : ", e);
+			SbApp.error("EntityUtil.copyEntityProperties()", e);
 		}
 	}
 
@@ -1014,7 +1013,7 @@ public class EntityUtil {
 
 	private static boolean addDeletionInfo(MainFrame mainFrame,
 			AbstractEntity entity, StringBuffer buf) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		boolean warnings = false;
 
@@ -1187,7 +1186,7 @@ public class EntityUtil {
 			buf.append(HtmlUtil.getBold(col.toString()));
 			buf.append(": ");
 			try {
-				BookModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getBookModel();
 				Session session = model.beginTransaction();
 				session.refresh(entity);
 				Method method = clazz.getMethod(methodName);
@@ -1246,7 +1245,7 @@ public class EntityUtil {
 
 	public static AbstractEntity get(MainFrame mainFrame,
 			Class<? extends AbstractEntity> c, Long entityId) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		AbstractEntity entity = (AbstractEntity) session.get(c, entityId);
 		model.commit();
@@ -1254,7 +1253,7 @@ public class EntityUtil {
 	}
 
 	public static void refresh(MainFrame mainFrame, AbstractEntity entity) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
 		model.commit();
@@ -1322,7 +1321,7 @@ public class EntityUtil {
 		try {
 			JComboBox combo = autoCombo.getJComboBox();
 			combo.removeAllItems();
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			SbGenericDAOImpl<?, ?> dao = entityHandler.createDAO();
 			dao.setSession(session);
@@ -1337,28 +1336,25 @@ public class EntityUtil {
 			combo.addItem("");
 			combo.getModel().setSelectedItem(text);
 			combo.revalidate();
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			System.err.println("EntityUtil.copyEntityProperties() Exception : " + e.getMessage());
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException 
+				| IllegalArgumentException | InvocationTargetException e) {
+			SbApp.error("EntityUtil.copyEntityProperties()",e);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void fillEntityCombo(MainFrame mainFrame, JComboBox combo,
 			AbstractEntityHandler entityHandler, AbstractEntity entity,
 			boolean isNew, boolean addEmptyItem) {
-
 		combo.removeAllItems();
-
 		ListCellRenderer renderer = entityHandler.getListCellRenderer();
-		if (renderer != null)
-			combo.setRenderer(renderer);
-
+		if (renderer != null) combo.setRenderer(renderer);
 		int i = 0;
 		if (addEmptyItem) {
 			++i;
 			combo.addItem("");
 		}
-
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SbGenericDAOImpl<?, ?> dao = entityHandler.createDAO();
 		dao.setSession(session);
@@ -1419,37 +1415,23 @@ public class EntityUtil {
 	}
 
 	public static Icon getEntityIcon(AbstractEntity entity) {
-		if (entity instanceof Scene)
-			return I18N.getIcon("icon.small.scene");
-		if (entity instanceof Chapter)
-			return I18N.getIcon("icon.small.chapter");
-		if (entity instanceof Part)
-			return I18N.getIcon("icon.small.part");
-		if (entity instanceof Location)
-			return I18N.getIcon("icon.small.location");
+		if (entity instanceof Scene) return I18N.getIcon("icon.small.scene");
+		if (entity instanceof Chapter) return I18N.getIcon("icon.small.chapter");
+		if (entity instanceof Part) return I18N.getIcon("icon.small.part");
+		if (entity instanceof Location) return I18N.getIcon("icon.small.location");
 		if (entity instanceof Person) {
-			if (entity.isTransient())
-				return I18N.getIcon("icon.small.person");
+			if (entity.isTransient()) return I18N.getIcon("icon.small.person");
 			return ((Person) entity).getIcon();
 		}
-		if (entity instanceof Gender)
-			return I18N.getIcon("icon.small.gender");
-		if (entity instanceof Category)
-			return I18N.getIcon("icon.small.category");
-		if (entity instanceof Strand)
-			return I18N.getIcon("icon.small.strand");
-		if (entity instanceof Idea)
-			return I18N.getIcon("icon.small.idea");
-		if (entity instanceof Tag)
-			return I18N.getIcon("icon.small.tag");
-		if (entity instanceof Item)
-			return I18N.getIcon("icon.small.item");
-		if (entity instanceof TagLink)
-			return I18N.getIcon("icon.small.link");
-		if (entity instanceof ItemLink)
-			return I18N.getIcon("icon.small.link");
-		if (entity instanceof Internal)
-			return I18N.getIcon("icon.small.hammer");
+		if (entity instanceof Gender) return I18N.getIcon("icon.small.gender");
+		if (entity instanceof Category) return I18N.getIcon("icon.small.category");
+		if (entity instanceof Strand) return I18N.getIcon("icon.small.strand");
+		if (entity instanceof Idea) return I18N.getIcon("icon.small.idea");
+		if (entity instanceof Tag) return I18N.getIcon("icon.small.tag");
+		if (entity instanceof Item) return I18N.getIcon("icon.small.item");
+		if (entity instanceof TagLink) return I18N.getIcon("icon.small.link");
+		if (entity instanceof ItemLink) return I18N.getIcon("icon.small.link");
+		if (entity instanceof Internal) return I18N.getIcon("icon.small.hammer");
 		return new ImageIcon();
 	}
 
@@ -1476,76 +1458,61 @@ public class EntityUtil {
 	public static String getEntityTitle(AbstractEntity entity,
 			Boolean setIsTransient) {
 		boolean isTransient = entity.isTransient();
-		if (setIsTransient != null)
-			isTransient = setIsTransient;
+		if (setIsTransient != null) isTransient = setIsTransient;
 		if (entity instanceof Scene) {
-			if (isTransient)
-				return I18N.getMsg("msg.common.scene.add");
+			if (isTransient) return I18N.getMsg("msg.common.scene.add");
 			return I18N.getMsg("msg.common.scene");
 		}
 		if (entity instanceof Chapter) {
-			if (isTransient)
-				return I18N.getMsg("msg.common.chapter.add");
+			if (isTransient) return I18N.getMsg("msg.common.chapter.add");
 			return I18N.getMsg("msg.common.chapter");
 		}
 		if (entity instanceof Part) {
-			if (isTransient)
-				return I18N.getMsg("msg.common.part.new");
+			if (isTransient) return I18N.getMsg("msg.common.part.new");
 			return I18N.getMsg("msg.common.part");
 		}
 		if (entity instanceof Location) {
-			if (isTransient)
-				return I18N.getMsg("msg.common.location.new");
+			if (isTransient) return I18N.getMsg("msg.common.location.new");
 			return I18N.getMsg("msg.common.location");
 		}
 		if (entity instanceof Person) {
-			if (isTransient)
-				return I18N.getMsg("msg.common.person.new");
+			if (isTransient) return I18N.getMsg("msg.common.person.new");
 			return I18N.getMsg("msg.common.person");
 		}
 		if (entity instanceof Gender) {
-			if (isTransient)
-				return I18N.getMsg("msg.dlg.mng.persons.gender.new");
+			if (isTransient) return I18N.getMsg("msg.dlg.mng.persons.gender.new");
 			return I18N.getMsg("msg.dlg.person.gender");
 		}
 		if (entity instanceof Category) {
-			if (isTransient)
-				return I18N.getMsg("msg.persons.category");
+			if (isTransient) return I18N.getMsg("msg.persons.category");
 			return I18N.getMsg("msg.common.category");
 		}
 		if (entity instanceof Strand) {
-			if (isTransient)
-				return I18N.getMsg("msg.common.strand.new");
+			if (isTransient) return I18N.getMsg("msg.common.strand.new");
 			return I18N.getMsg("msg.common.strand");
 		}
 		if (entity instanceof Idea) {
-			if (isTransient)
-				return I18N.getMsg("msg.idea.new");
+			if (isTransient) return I18N.getMsg("msg.idea.new");
 			return I18N.getMsg("msg.idea.table.idea");
 		}
 		if (entity instanceof Tag) {
-			if (isTransient)
-				return I18N.getMsg("msg.tag.new");
+			if (isTransient) return I18N.getMsg("msg.tag.new");
 			return I18N.getMsg("msg.tag");
 		}
 		if (entity instanceof Item) {
-			if (isTransient)
-				return I18N.getMsg("msg.item.new");
+			if (isTransient) return I18N.getMsg("msg.item.new");
 			return I18N.getMsg("msg.item");
 		}
 		if (entity instanceof TagLink) {
-			if (isTransient)
-				return I18N.getMsg("msg.new.tag.link");
+			if (isTransient) return I18N.getMsg("msg.new.tag.link");
 			return I18N.getMsg("msg.common.link");
 		}
 		if (entity instanceof ItemLink) {
-			if (isTransient)
-				return I18N.getMsg("msg.new.item.link");
+			if (isTransient) return I18N.getMsg("msg.new.item.link");
 			return I18N.getMsg("msg.common.link");
 		}
 		if (entity instanceof Internal) {
-			if (isTransient)
-				return "New Internal";
+			if (isTransient) return "New Internal";
 			return I18N.getMsg("msg.internal");
 		}
 		return "";

@@ -25,9 +25,9 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
 
@@ -56,11 +56,11 @@ public class ReadingOptionsDialog extends AbstractOptionsDialog {
 		setZoomMaxValue(200);
 
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.READING_ZOOM, SbConstants.DEFAULT_READING_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.READING_ZOOM, SbConstants.DEFAULT_READING_ZOOM);
 			zoomValue = internal.getIntegerValue();
-			internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.READING_FONT_SIZE,
+			internal = BookUtil.get(mainFrame,
+					BookKey.READING_FONT_SIZE,
 					SbConstants.DEFAULT_READING_FONT_SIZE);
 			fontSize = internal.getIntegerValue();
 		} catch (Exception e) {
@@ -94,9 +94,9 @@ public class ReadingOptionsDialog extends AbstractOptionsDialog {
 			JSlider slider = (JSlider) e.getSource();
 			if (!slider.getValueIsAdjusting()) {
 				int val = slider.getValue();
-				mainFrame.getDocumentController().readingSetFontSize(val);
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.READING_FONT_SIZE, val);
+				mainFrame.getBookController().readingSetFontSize(val);
+				BookUtil.store(mainFrame,
+						BookKey.READING_FONT_SIZE, val);
 				return;
 			}
 		}
@@ -105,7 +105,7 @@ public class ReadingOptionsDialog extends AbstractOptionsDialog {
 
 	@Override
 	protected void zoom(int val) {
-		DocumentUtil.storeInternal(mainFrame, InternalKey.READING_ZOOM, val);
-		mainFrame.getDocumentController().readingSetZoom(val);
+		BookUtil.store(mainFrame, BookKey.READING_ZOOM, val);
+		mainFrame.getBookController().readingSetZoom(val);
 	}
 }

@@ -31,7 +31,7 @@
                           <Component id="txID" min="-2" pref="48" max="-2" attributes="0"/>
                           <Component id="txNumber" min="-2" pref="48" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="294" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="371" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -65,7 +65,7 @@
     <Component class="javax.swing.JLabel" name="lbId">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="storybook/resources/messages.properties" key="msg.common.id" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="storybook/msg/messages.properties" key="msg.common.id" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -78,7 +78,7 @@
     <Component class="javax.swing.JLabel" name="lbName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="storybook/resources/messages.properties" key="mag.common.name" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="storybook/msg/messages.properties" key="msg.common.name" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -90,7 +90,7 @@
     <Component class="javax.swing.JLabel" name="lbNumber">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="storybook/resources/messages.properties" key="msg.common.number" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="storybook/msg/messages.properties" key="msg.common.number" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

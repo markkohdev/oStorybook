@@ -52,7 +52,7 @@ public class StrandTableCellRenderer extends DefaultTableCellRenderer {
 		} catch (LazyInitializationException lie) {
 			MainFrame mainFrame = (MainFrame) table
 					.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			session.refresh((Strand) value);
 			lbStrand = new StrandLabel((Strand) value);

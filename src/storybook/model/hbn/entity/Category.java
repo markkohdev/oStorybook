@@ -26,8 +26,6 @@ package storybook.model.hbn.entity;
  */
 public class Category extends AbstractEntity implements Comparable<Category> {
 
-	private static final long serialVersionUID = 8783392970442966840L;
-
 	private Integer sort;
 	private String name;
 

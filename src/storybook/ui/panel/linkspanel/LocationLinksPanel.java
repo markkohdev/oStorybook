@@ -68,7 +68,7 @@ public class LocationLinksPanel extends AbstractPanel {
 		ta.setLineWrap(true);
 		ta.setWrapStyleWord(true);
 		ta.setEditable(false);
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		session.refresh(scene);
 		List<Location> locations = scene.getLocations();

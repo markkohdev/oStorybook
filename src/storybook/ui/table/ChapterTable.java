@@ -111,7 +111,7 @@ public class ChapterTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		Chapter chapter = dao.find(id);

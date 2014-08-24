@@ -55,7 +55,7 @@ public class StrandsTableCellRenderer extends DefaultTableCellRenderer {
 				abbrList.add(strand.getAbbr());
 			}
 		} catch (LazyInitializationException lie) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			@SuppressWarnings("unchecked")
 			List<Strand> list = (List<Strand>) value;

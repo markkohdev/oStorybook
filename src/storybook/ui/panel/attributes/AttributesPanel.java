@@ -65,7 +65,7 @@ public class AttributesPanel extends AbstractPanel {
 	public void initUi() {
 		setLayout(new MigLayout("wrap 2,fillx", "[grow][]", ""));
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		AttributeDAOImpl dao = new AttributeDAOImpl(session);
 		keys = dao.findKeys();

@@ -123,9 +123,10 @@ public class FindDatePanel extends AbstractPanel implements ItemListener {
 		add(btFind, "right");
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refreshDateCombo() {
 		Strand strand = (Strand) strandCombo.getSelectedItem();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		List<Date> dates = dao.findDistinctDatesByStrand(strand);

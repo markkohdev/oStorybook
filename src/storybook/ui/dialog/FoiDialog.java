@@ -85,7 +85,7 @@ public class FoiDialog extends AbstractDialog {
 				idea.setStatus(0);
 				idea.setCategory(I18N.getMsg("msg.foi.title"));
 				idea.setNotes(ideaEditor.getText());
-				mainFrame.getDocumentController().newIdea(idea);
+				mainFrame.getBookController().newIdea(idea);
 			}
 		};
 	}

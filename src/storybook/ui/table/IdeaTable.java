@@ -97,7 +97,7 @@ public class IdeaTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		IdeaDAOImpl dao = new IdeaDAOImpl(session);
 		Idea idea = dao.find(id);

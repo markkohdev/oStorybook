@@ -19,7 +19,7 @@ import storybook.model.hbn.entity.Person;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Tag;
 import storybook.model.hbn.entity.TagLink;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.EnvUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.IOUtil;
@@ -85,7 +85,7 @@ import org.apache.commons.collections15.Transformer;
 import org.hibernate.Session;
 import org.jdesktop.swingx.icon.EmptyIcon;
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.controller.BookController;
 
 public class MemoriaPanel extends AbstractPanel
@@ -196,6 +196,7 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void init() {
 		try {
 			this.chosenDate = new Date(0L);
@@ -204,13 +205,13 @@ public class MemoriaPanel extends AbstractPanel
 			this.involvedTags = new HashSet();
 			this.scaler = new CrossoverScalingControl();
 			try {
-				Internal internal = DocumentUtil.restoreInternal(this.mainFrame, SbConstants.InternalKey.MEMORIA_BALLOON, Boolean.valueOf(true));
+				Internal internal = BookUtil.get(this.mainFrame, SbConstants.BookKey.MEMORIA_BALLOON, Boolean.valueOf(true));
 				this.showBalloonLayout = internal.getBooleanValue().booleanValue();
 			} catch (Exception exc) {
 				this.showBalloonLayout = true;
 			}
 		} catch (Exception exc2) {
-			StorybookApp.error("MemoriaPanel.init()",exc2);
+			SbApp.error("MemoriaPanel.init()",exc2);
 		}
 	}
 
@@ -229,12 +230,13 @@ public class MemoriaPanel extends AbstractPanel
 			add(this.controlPanel, "alignx center");
 			add(this.graphPanel, "grow");
 		} catch (Exception exc) {
-			StorybookApp.error("MemoriaPanel.modelPropertyChange()",exc);
+			SbApp.error("MemoriaPanel.modelPropertyChange()",exc);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refreshEntityCombo(EntityTypeCbItem.Type type) {
-		BookModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		Object object;
 		List list;
@@ -271,8 +273,9 @@ public class MemoriaPanel extends AbstractPanel
 		model.commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refreshControlPanel() {
-		BookModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		List scenes = dao.findAll();
@@ -363,6 +366,7 @@ public class MemoriaPanel extends AbstractPanel
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void makeLayoutTransition() {
 		if (this.vv == null) {
 			return;
@@ -378,6 +382,7 @@ public class MemoriaPanel extends AbstractPanel
 		this.vv.repaint();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void clearGraph() {
 		try {
 			if (this.graph == null) {
@@ -410,7 +415,7 @@ public class MemoriaPanel extends AbstractPanel
 			if (this.shownEntity == null) {
 				return;
 			}
-			Internal internal = DocumentUtil.restoreInternal(this.mainFrame, SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(this.mainFrame));
+			Internal internal = BookUtil.get(this.mainFrame, SbConstants.BookKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(this.mainFrame));
 			File file1 = new File(internal.getStringValue());
 			JFileChooser chooser = new JFileChooser(file1);
 			chooser.setFileFilter(new PngFileFilter());
@@ -428,10 +433,11 @@ public class MemoriaPanel extends AbstractPanel
 			ScreenImage.createImage(this.graphPanel, file2.toString());
 			JOptionPane.showMessageDialog(getThis(), I18N.getMsg("msg.common.export.success") + "\n" + file2.getAbsolutePath(), I18N.getMsg("msg.common.export"), 1);
 		} catch (IOException exc) {
-			StorybookApp.error("MemoriaPanel.export()",exc);
+			SbApp.error("MemoriaPanel.export()",exc);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refreshCombo(AbstractEntity pEntity, List<? extends AbstractEntity> pList, boolean b) {
 		try {
 			this.processActionListener = false;
@@ -445,11 +451,12 @@ public class MemoriaPanel extends AbstractPanel
 			}
 			this.processActionListener = true;
 		} catch (Exception exc) {
-			StorybookApp.error("MemoriaPanel.refreshCombo("
+			SbApp.error("MemoriaPanel.refreshCombo("
 				+pEntity.toString()+", list"+", "+b +")",exc);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initGraph() {
 		try {
 			labelMap = new HashMap();
@@ -478,7 +485,7 @@ public class MemoriaPanel extends AbstractPanel
 			vv.getRenderContext().setVertexShapeTransformer(transformer);
 			vv.getRenderContext().setVertexIconTransformer(iconTransformer);
 		} catch (Exception exc) {
-			StorybookApp.error("MemoriaPanel.initGraph()",exc);
+			SbApp.error("MemoriaPanel.initGraph()",exc);
 		}
 	}
 
@@ -486,6 +493,7 @@ public class MemoriaPanel extends AbstractPanel
 		refreshGraph(null);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refreshGraph(AbstractEntity entity) {
 		try {
 			clearGraph();
@@ -552,9 +560,10 @@ public class MemoriaPanel extends AbstractPanel
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createSceneGraph() {
 		this.graphIndex = 0L;
-		BookModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl daoScene = new SceneDAOImpl(session);
 		Scene scene = (Scene) daoScene.find(Long.valueOf(this.entityId));
@@ -741,6 +750,7 @@ public class MemoriaPanel extends AbstractPanel
 		model.commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void removeDoublesFromInvolvedTags(Set<Tag> paramSet, Set<Item> paramSet1) {
 		ArrayList localArrayList = new ArrayList();
 		Iterator localIterator1 = this.involvedTags.iterator();
@@ -770,8 +780,9 @@ public class MemoriaPanel extends AbstractPanel
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createTagGraph() {
-		BookModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl localTagDAOImpl = new TagDAOImpl(session);
 		Tag tag = (Tag) localTagDAOImpl.find(Long.valueOf(this.entityId));
@@ -902,8 +913,9 @@ public class MemoriaPanel extends AbstractPanel
 		addToVertexInvolvedTags();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createItemGraph() {
-		BookModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl localItemDAOImpl = new ItemDAOImpl(session);
 		Item localItem = (Item) localItemDAOImpl.find(Long.valueOf(this.entityId));
@@ -1069,7 +1081,7 @@ public class MemoriaPanel extends AbstractPanel
 
 	private void createLocationGraph() {
 		try {
-			BookModel localDocumentModel = this.mainFrame.getDocumentModel();
+			BookModel localDocumentModel = this.mainFrame.getBookModel();
 			Session localSession = localDocumentModel.beginTransaction();
 			LocationDAOImpl localLocationDAOImpl = new LocationDAOImpl(localSession);
 			Location localLocation = (Location) localLocationDAOImpl.find(Long.valueOf(this.entityId));
@@ -1260,7 +1272,7 @@ public class MemoriaPanel extends AbstractPanel
 	}
 
 	private void createPersonGraph() {
-		BookModel localDocumentModel = this.mainFrame.getDocumentModel();
+		BookModel localDocumentModel = this.mainFrame.getBookModel();
 		Session localSession = localDocumentModel.beginTransaction();
 		PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
 		Person localPerson = (Person) localPersonDAOImpl.find(Long.valueOf(this.entityId));
@@ -1458,6 +1470,7 @@ public class MemoriaPanel extends AbstractPanel
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initVertices(AbstractEntity paramAbstractEntity) {
 		addVertexScene(paramAbstractEntity);
 		addVertexCharachter(paramAbstractEntity);
@@ -1672,6 +1685,7 @@ public class MemoriaPanel extends AbstractPanel
 		return this.mainFrame;
 	}
 
+	@SuppressWarnings("unchecked")
 	class VertexStringerImpl<V> implements Transformer<V, String> {
 
 		Map<V, String> map = new HashMap();

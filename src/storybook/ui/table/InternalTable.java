@@ -97,7 +97,7 @@ public class InternalTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		InternalDAOImpl dao = new InternalDAOImpl(session);
 		Internal internal = dao.find(id);

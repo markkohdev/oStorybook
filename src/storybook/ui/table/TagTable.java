@@ -98,7 +98,7 @@ public class TagTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl dao = new TagDAOImpl(session);
 		Tag tag = dao.find(id);

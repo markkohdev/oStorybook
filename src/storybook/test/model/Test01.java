@@ -66,7 +66,7 @@ public class Test01 {
 
 		// DB 2
 		sessionFactory = new SbSessionFactory();
-		sessionFactory.init("/home/martin/tmp/Demo", "hibernate.cfg.xml");
+		sessionFactory.init("/home/martin/tmp/Demo");
 		session = sessionFactory.getSession();
 
 		// query entities
@@ -179,20 +179,17 @@ public class Test01 {
 		session.save(idea);
 	}
 
-	private static void queryScenes(Session session) {
+	private static void queryScenes(Session session) {/*
 		System.out.println("\nTest01.queryScenes(): ");
 		Query query = session.createQuery("from Scene");
-		List<Scene> list = query.list();
-		Iterator<Scene> iter = list.iterator();
-		while (iter.hasNext()) {
-			Scene scene = iter.next();
+		List list = (List) query.list();
+		for (Scene scene : (List<Scene>)list) {
 			System.out.println("Scene: " + scene.getTitle());
 			if (scene.getStrand() != null) {
 				System.out.println("  Strand: " + scene.getStrand().getName());
 			}
 			if (scene.getStrands() != null) {
-				for (Object obj : scene.getStrands()) {
-					Strand strand = (Strand) obj;
+				for (Strand strand : scene.getStrands()) {
 					if (strand == null) {
 						continue;
 					}
@@ -224,5 +221,5 @@ public class Test01 {
 				System.out.println("  Location: " + location.getName());
 			}
 		}
-	}
+	*/}
 }

@@ -110,7 +110,7 @@ public class CreateChaptersDialog extends AbstractDialog {
 		for (int i = 0; i < quant; ++i) {
 			Chapter ch = (Chapter) handler.createNewEntity();
 			ch.setPart(part);
-			BookController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getBookController();
 			ctrl.newChapter(ch);
 		}
 	}

@@ -51,7 +51,7 @@ public class SceneIdTableCellRenderer extends DefaultTableCellRenderer {
 		try {
 			MainFrame mainFrame = (MainFrame) table
 					.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			Long id = (Long) value;
 			Scene scene = (Scene) session.get(Scene.class, id);

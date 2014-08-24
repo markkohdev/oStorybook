@@ -44,7 +44,7 @@ import storybook.SbConstants;
 import storybook.SbConstants.ActionCommand;
 import storybook.SbConstants.ClientPropertyName;
 import storybook.SbConstants.ComponentName;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.action.DeleteEntityAction;
 import storybook.controller.BookController;
 import storybook.model.BookModel;
@@ -57,6 +57,7 @@ import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Person;
+import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.model.state.IdeaState;
 import storybook.model.state.SceneState;
@@ -76,8 +77,7 @@ import storybook.ui.table.renderer.ColorTableCellRenderer;
 import storybook.ui.table.renderer.DateTableCellRenderer;
 
 @SuppressWarnings("serial")
-public abstract class AbstractTable extends AbstractPanel implements
-		ActionListener, ListSelectionListener {
+public abstract class AbstractTable extends AbstractPanel implements ActionListener, ListSelectionListener {
 
 	protected List<SbColumn> columns;
 	protected BookController ctrl;
@@ -95,7 +95,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	public AbstractTable(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-		ctrl = mainFrame.getDocumentController();
+		ctrl = mainFrame.getBookController();
 	}
 
 	abstract protected AbstractEntity getNewEntity();
@@ -123,9 +123,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	@SuppressWarnings("unchecked")
 	protected List<AbstractEntity> getAllEntities() {
-		AbstractEntityHandler handler = EntityUtil.getEntityHandler(mainFrame,
-				getNewEntity());
-		BookModel model = mainFrame.getDocumentModel();
+		AbstractEntityHandler handler = EntityUtil.getEntityHandler(mainFrame, getNewEntity());
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SbGenericDAOImpl<?, ?> dao = handler.createDAO();
 		dao.setSession(session);
@@ -136,6 +135,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
+		SbApp.trace("AbstractTable.modelPropertyChange(evt)");
 		String propName = evt.getPropertyName();
 		if (BookController.CommonProps.REFRESH.check(propName)) {
 			View newView = (View) evt.getNewValue();
@@ -165,9 +165,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 				}
 			}
 		}
-
 		modelPropertyChangeLocal(evt);
-
 		SwingUtil.forceRevalidate(this);
 	}
 
@@ -209,8 +207,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 						if (col.getVerifier() instanceof IntegerVerifier) {
 							ext.setComparator(new StringIntegerComparator());
 						} else if (col.getVerifier() instanceof VerifierGroup) {
-							VerifierGroup gr = (VerifierGroup) col
-									.getVerifier();
+							VerifierGroup gr = (VerifierGroup) col.getVerifier();
 							if (gr.isInteger()) {
 								ext.setComparator(new StringIntegerComparator());
 							}
@@ -242,17 +239,13 @@ public abstract class AbstractTable extends AbstractPanel implements
 		table.getSelectionModel().addListSelectionListener(this);
 
 		// hot keys
-		table.registerKeyboardAction(this,
-				SbConstants.ActionCommand.EDIT.toString(),
+		table.registerKeyboardAction(this, SbConstants.ActionCommand.EDIT.toString(),
 				SwingUtil.getKeyStrokeEnter(), JComponent.WHEN_FOCUSED);
-		table.registerKeyboardAction(this,
-				SbConstants.ActionCommand.NEW.toString(),
+		table.registerKeyboardAction(this, SbConstants.ActionCommand.NEW.toString(),
 				SwingUtil.getKeyStrokeInsert(), JComponent.WHEN_FOCUSED);
-		table.registerKeyboardAction(this,
-				SbConstants.ActionCommand.COPY.toString(),
+		table.registerKeyboardAction(this, SbConstants.ActionCommand.COPY.toString(),
 				SwingUtil.getKeyStrokeCopy(), JComponent.WHEN_FOCUSED);
-		table.registerKeyboardAction(this,
-				SbConstants.ActionCommand.DELETE.toString(),
+		table.registerKeyboardAction(this, SbConstants.ActionCommand.DELETE.toString(),
 				SwingUtil.getKeyStrokeDelete(), JComponent.WHEN_FOCUSED);
 
 		// column widths
@@ -267,8 +260,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 		}
 
 		JScrollPane scroller = new JScrollPane(table);
-		scroller.setPreferredSize(new Dimension(Integer.MAX_VALUE,
-				Integer.MAX_VALUE));
+		scroller.setPreferredSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
 		btNew = new JButton(I18N.getMsg("msg.common.new"));
 		btNew.setIcon(I18N.getIcon("icon.small.new"));
@@ -326,37 +318,30 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 	protected void initTableModel(PropertyChangeEvent evt) {
 		table.putClientProperty(ClientPropertyName.MAIN_FRAME.toString(), mainFrame);
-
 		// clear table
 		for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
 			tableModel.removeRow(i);
 		}
 		// fill in data
 		try {
-			// old
-			// @SuppressWarnings("unchecked")
-			// List<AbstractEntity> entities = (List<AbstractEntity>) evt
-			// .getNewValue();
 			List<AbstractEntity> entities = getAllEntities();
 
 			for (AbstractEntity entity : entities) {
 				// show only scenes from current part
-				// if (entity instanceof Scene) {
-				// Part currentPart = mainFrame.getCurrentPart();
-				// Scene scene = (Scene) entity;
-				// if (scene.hasChapter()) {
-				// if (scene.getChapter().getPart().getId() != currentPart
-				// .getId()) {
-				// continue;
-				// }
-				// }
-				// }
+				if (entity instanceof Scene) {
+					Part currentPart = mainFrame.getCurrentPart();
+					Scene scene = (Scene) entity;
+					if (scene.hasChapter()) {
+						if (scene.getChapter().getPart().getId() != currentPart.getId()) {
+							continue;
+						}
+					}
+				}
 				List<Object> cols = getRow(entity);
 				tableModel.addRow(cols.toArray());
 			}
 		} catch (ClassCastException e) {
 		}
-
 		table.packAll();
 	}
 
@@ -373,7 +358,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	}
 
 	protected List<Object> getRow(AbstractEntity entity) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		session.refresh(entity);
 		List<Object> cols = new ArrayList<>();
@@ -408,7 +393,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 				} else {
 					cols.add(ret.toString());
 				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException ex) {
 			}
 		}
 		model.commit();
@@ -438,8 +424,7 @@ public abstract class AbstractTable extends AbstractPanel implements
 	}
 
 	protected void sortByColumn(int col) {
-		DefaultRowSorter<?, ?> sorter = ((DefaultRowSorter<?, ?>) table
-				.getRowSorter());
+		DefaultRowSorter<?, ?> sorter = ((DefaultRowSorter<?, ?>) table.getRowSorter());
 		ArrayList<SortKey> list = new ArrayList<>();
 		list.add(new RowSorter.SortKey(col, SortOrder.ASCENDING));
 		sorter.setSortKeys(list);
@@ -476,19 +461,19 @@ public abstract class AbstractTable extends AbstractPanel implements
 			Long id = Long.parseLong(dataVector.get(modelIndex).get(0));
 			return getEntity(id);
 		} catch (NumberFormatException ex) {
-			StorybookApp.error("AbstractTable.getEntityFromRow("+row+")", ex);
+			SbApp.error("AbstractTable.getEntityFromRow("+row+")", ex);
 		}
 		return null;
 	}
 
 	@Override
 	public synchronized void actionPerformed(ActionEvent e) {
-		StorybookApp.trace("AbstractTable.actionPerformed("+e.toString()+")");
+		SbApp.trace("AbstractTable.actionPerformed("+e.toString()+")");
 		String actCmd = e.getActionCommand();
 		Component comp = (Component) e.getSource();
 		String compName = comp.getName();
 		int row = table.getSelectedRow();
-		StorybookApp.trace("actCmd=" + actCmd + ",comp="+compName + ",row="+row);
+		SbApp.trace("actCmd=" + actCmd + ",comp="+compName + ",row="+row);
 		if (ComponentName.BT_EDIT.check(compName) || ActionCommand.EDIT.check(actCmd)) {
 			sendSetEntityToEdit(row);
 			return;
@@ -534,12 +519,8 @@ public abstract class AbstractTable extends AbstractPanel implements
 
 		if (ComponentName.BT_ORDER_UP.check(compName)) {
 			sendOrderUpEntity(row);
-			return;
-		}
-
-		if (ComponentName.BT_ORDER_DOWN.check(compName)) {
+		} else if (ComponentName.BT_ORDER_DOWN.check(compName)) {
 			sendOrderDownEntity(row);
-//			return;
 		}
 	}
 
@@ -559,22 +540,14 @@ public abstract class AbstractTable extends AbstractPanel implements
 		}
 		int row = selectionModel.getMinSelectionIndex();
 		AbstractEntity entity = getEntityFromRow(row);
-		if (entity == null) {
-			btEdit.setEnabled(false);
-			btCopy.setEnabled(false);
-			btDelete.setEnabled(false);
-			if (hasOrder) {
-				btOrderUp.setEnabled(false);
-				btOrderDown.setEnabled(false);
-			}
-			return;
-		}
-		btEdit.setEnabled(true);
-		btCopy.setEnabled(true);
-		btDelete.setEnabled(true);
+		boolean b=true;
+		if (entity == null) b=false;
+		btEdit.setEnabled(b);
+		btCopy.setEnabled(b);
+		btDelete.setEnabled(b);
 		if (hasOrder) {
-			btOrderUp.setEnabled(true);
-			btOrderDown.setEnabled(true);
+			btOrderUp.setEnabled(b);
+			btOrderDown.setEnabled(b);
 		}
 	}
 
@@ -617,11 +590,10 @@ public abstract class AbstractTable extends AbstractPanel implements
 				source.changeSelection(row, column, false, false);
 			}
 			AbstractEntity entity = getEntityFromRow(row);
-			if (entity == null) {
-				return;
+			if (entity != null) {
+				JPopupMenu popup = EntityUtil.createPopupMenu(mainFrame, entity);
+				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
-			JPopupMenu popup = EntityUtil.createPopupMenu(mainFrame, entity);
-			popup.show(e.getComponent(), e.getX(), e.getY());
 		}
 	}
 }

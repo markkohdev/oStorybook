@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.commons.collections.list.SetUniqueList;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.SbConstants.PreferenceKey;
 import storybook.model.DbFile;
 import storybook.model.PreferenceModel;
@@ -40,7 +40,7 @@ public class PrefUtil {
 
 	public static Preference get(PreferenceKey prefKey, Object defaultVal) {
 		String key = prefKey.toString();
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		Preference pref = dao.findByKey(key);
@@ -58,7 +58,7 @@ public class PrefUtil {
 	}
 
 	public static Preference get(String strPrefKey, Object defaultVal) {
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		Preference pref = dao.findByKey(strPrefKey);
@@ -76,7 +76,7 @@ public class PrefUtil {
 	}
 
 	public static void set(PreferenceKey prefKey, Object val) {
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		dao.saveOrUpdate(prefKey.toString(), val);
@@ -84,7 +84,7 @@ public class PrefUtil {
 	}
 
 	public static void set(String strPrefKey, Object val) {
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		dao.saveOrUpdate(strPrefKey, val);
@@ -96,7 +96,7 @@ public class PrefUtil {
 		if (pref == null) {
 			return;
 		}
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		dao.remove(pref.getKey());
@@ -104,7 +104,7 @@ public class PrefUtil {
 	}
 
 	public static List<DbFile> getDbFileList() {
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		Preference pref = dao.findByKey(PreferenceKey.RECENT_FILES.toString());
@@ -121,7 +121,7 @@ public class PrefUtil {
 	}
 
 	public static void setDbFileList(List<DbFile> list) {
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		@SuppressWarnings("unchecked")
@@ -140,7 +140,7 @@ public class PrefUtil {
 	}
 
 	public static void dump() {
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		List<Preference> preferences = dao.findAll();

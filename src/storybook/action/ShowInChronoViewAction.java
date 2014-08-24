@@ -45,7 +45,7 @@ public class ShowInChronoViewAction extends AbstractEntityAction {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				BookController ctrl = mainFrame.getDocumentController();
+				BookController ctrl = mainFrame.getBookController();
 				ctrl.chronoShowEntity(entity);
 			}
 		});

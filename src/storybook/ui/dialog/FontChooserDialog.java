@@ -95,8 +95,7 @@ public class FontChooserDialog extends JDialog {
 	}
 
 	private void addLists() {
-		FontList = new NwList(GraphicsEnvironment.getLocalGraphicsEnvironment()
-				.getAvailableFontFamilyNames());
+		FontList = new NwList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
 		StyleList = new NwList(styleList);
 		SizeList = new NwList(sizeList);
 		FontList.setBounds(10, 10, 260, 295);
@@ -157,6 +156,7 @@ public class FontChooserDialog extends JDialog {
 		JLabel jt;
 		String si = " ";
 
+	@SuppressWarnings("unchecked")
 		public NwList(String[] values) {
 			setLayout(null);
 			jl = new JList(values);

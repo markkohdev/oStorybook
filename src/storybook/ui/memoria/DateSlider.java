@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -30,8 +29,9 @@ import javax.swing.JSlider;
 public class DateSlider extends JSlider
 	implements ComponentListener {
 
-	private ArrayList<Date> dates = new ArrayList();
-	private Hashtable<Integer, JLabel> labelTable = new Hashtable();
+	private List<Date> dates = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	private final Hashtable<Integer, JLabel> labelTable = new Hashtable();
 	private int startDateIndex = 0;
 	private int numberOfTickers = 1;
 	private int value = -1;
@@ -57,9 +57,7 @@ public class DateSlider extends JSlider
 		} else {
 			i = -1;
 			int j = 0;
-			Iterator localIterator = this.dates.iterator();
-			while (localIterator.hasNext()) {
-				Date localDate = (Date) localIterator.next();
+			for (Date localDate : this.dates) {
 				if (localDate.compareTo(paramDate) == 0) {
 					i = j;
 				}
@@ -130,9 +128,7 @@ public class DateSlider extends JSlider
 			this.startDateIndex = 0;
 		}
 		int j = 0;
-		Iterator localIterator = this.dates.subList(this.startDateIndex, i).iterator();
-		while (localIterator.hasNext()) {
-			Date localDate = (Date) localIterator.next();
+		for (Date localDate : this.dates.subList(this.startDateIndex, i)) {
 			this.labelTable.put(new Integer(j), new JLabel(localDate.toString()));
 			j++;
 		}

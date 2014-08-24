@@ -66,7 +66,7 @@ public class DebugInfoPanel extends JPanel implements IPaintable,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		BookController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getBookController();
 		int n = ctrl.getNumberOfAttachedViews();
 		lbAttachedViews.setText("Attached Views: " + Integer.toString(n));
 		lbAttachedViews.setToolTipText("<html>"+ctrl.getInfoAttachedViews(true));

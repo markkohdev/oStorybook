@@ -27,6 +27,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import org.hibernate.Session;
+import storybook.SbApp;
 import storybook.SbConstants;
 import storybook.SbConstants.ViewName;
 import storybook.controller.BookController;
@@ -47,7 +48,6 @@ import storybook.ui.combo.SceneStateListCellRenderer;
  */
 
 public class SceneTable extends AbstractTable {
-	private boolean trace=false;
 
 	private JComboBox sceneStateCombo;
 
@@ -63,7 +63,7 @@ public class SceneTable extends AbstractTable {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<AbstractEntity> getAllEntities() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		SceneState state = (SceneState) sceneStateCombo.getSelectedItem();
@@ -78,11 +78,11 @@ public class SceneTable extends AbstractTable {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void initOptionsPanel() {
 		JLabel lbState = new JLabel(I18N.getMsgColon("msg.status"));
 		sceneStateCombo = new JComboBox(new SceneStateComboModel());
-		sceneStateCombo.setName(SbConstants.ComponentName.COMBO_SCENE_STATES
-				.toString());
+		sceneStateCombo.setName(SbConstants.ComponentName.COMBO_SCENE_STATES.toString());
 		// set "show all"
 		sceneStateCombo.setSelectedIndex(6);
 		sceneStateCombo.setRenderer(new SceneStateListCellRenderer());
@@ -93,13 +93,12 @@ public class SceneTable extends AbstractTable {
 
 	@Override
 	public synchronized void actionPerformed(ActionEvent e) {
+		SbApp.trace("SceneTable.actionPerformed("+e.toString()+")");
 		if (e.getSource() instanceof JComboBox) {
 			JComboBox cb = (JComboBox) e.getSource();
-			if (SbConstants.ComponentName.COMBO_SCENE_STATES.toString().equals(
-					cb.getName())) {
-				SceneState state = (SceneState) sceneStateCombo
-						.getSelectedItem();
-				mainFrame.getDocumentController().filterScenes(state);
+			if (SbConstants.ComponentName.COMBO_SCENE_STATES.toString().equals(cb.getName())) {
+				SceneState state = (SceneState) sceneStateCombo.getSelectedItem();
+				mainFrame.getBookController().filterScenes(state);
 				return;
 			}
 		}
@@ -108,6 +107,7 @@ public class SceneTable extends AbstractTable {
 
 	@Override
 	protected void modelPropertyChangeLocal(PropertyChangeEvent evt) {
+		SbApp.trace("SceneTable.modelPropertyChangeLocal("+evt.getPropertyName()+")");
 		try {
 			String propName = evt.getPropertyName();
 			Object newValue = evt.getNewValue();
@@ -138,14 +138,13 @@ public class SceneTable extends AbstractTable {
 
 			// show only scenes from current part
 //			if (BookController.PartProps.CHANGE.check(propName)) {
-//				BookModel model = mainFrame.getDocumentModel();
+//				BookModel model = mainFrame.getBookModel();
 //				Session session = model.beginTransaction();
 //				SceneDAOImpl dao = new SceneDAOImpl(session);
 //				Part curPart = mainFrame.getCurrentPart();
 //				List<Scene> scenes = dao.findByPart(curPart);
 //				model.commit();
-//				PropertyChangeEvent evt2 = new PropertyChangeEvent(
-//						evt.getSource(), evt.getPropertyName(), null, scenes);
+//				PropertyChangeEvent evt2 = new PropertyChangeEvent(evt.getSource(), evt.getPropertyName(), null, scenes);
 //				initTableModel(evt2);
 //			}
 		} catch (Exception e) {
@@ -154,7 +153,7 @@ public class SceneTable extends AbstractTable {
 
 	@Override
 	protected void sendSetEntityToEdit(int row) {
-		if (trace) {System.out.println("AbstractTable.sendSetEntitytToEdit("+row+")");}
+		SbApp.trace("SceneTable.sendSetEntityToEdit("+row+")");
 		if (row == -1) {
 			return;
 		}
@@ -187,7 +186,7 @@ public class SceneTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		Scene scene = dao.find(id);

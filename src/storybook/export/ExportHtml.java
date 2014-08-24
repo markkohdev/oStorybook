@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.toolkit.I18N;
 import storybook.toolkit.TextUtil;
 
@@ -63,7 +63,7 @@ public class ExportHtml {
 				outStream.flush();
 				isOpened=true;
 			} catch (IOException ex) {
-				StorybookApp.error("ExportHtml.open()", ex);
+				SbApp.error("ExportHtml.open()", ex);
 			}
 			if (isTable)
 				if (headers != null) {
@@ -76,7 +76,7 @@ public class ExportHtml {
 					outStream.flush();
 				}
 		} catch (IOException ex) {
-			StorybookApp.error("ExportHtml.open()", ex);
+			SbApp.error("ExportHtml.open()", ex);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class ExportHtml {
 			outStream.write(str, 0, str.length());
 			outStream.flush();
 		} catch (IOException ex) {
-			StorybookApp.error("ExportHtml.writeRow()", ex);
+			SbApp.error("ExportHtml.writeRow()", ex);
 		}
 	}
 
@@ -177,7 +177,7 @@ public class ExportHtml {
 
 	public void writeText(String str, boolean withParagraph) {
 		if ("".equals(str)) return;
-		StorybookApp.trace("ExportHtml.writeText("+TextUtil.truncateString(str, 32)+")");
+		SbApp.trace("ExportHtml.writeText("+TextUtil.truncateString(str, 32)+")");
 		try {
 			String s = "<p>" + str + "</p>";
 			if (!withParagraph)
@@ -185,7 +185,7 @@ public class ExportHtml {
 			outStream.write(s, 0, s.length());
 			outStream.flush();
 		} catch (IOException ex) {
-			StorybookApp.error("ExportHtml.writeText(" + str + ")", ex);
+			SbApp.error("ExportHtml.writeText(" + str + ")", ex);
 		}
 	}
 
@@ -204,7 +204,7 @@ public class ExportHtml {
 			outStream.close();
 			isOpened=false;
 		} catch (IOException ex) {
-			StorybookApp.error("ExportHtml.close()", ex);
+			SbApp.error("ExportHtml.close()", ex);
 		}
 	}
 

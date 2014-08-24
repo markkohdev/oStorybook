@@ -42,11 +42,12 @@ public class RelativeSceneComboModel extends DefaultComboBoxModel implements
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void refresh() {
 		if (mainFrame == null) {
 			return;
 		}
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		List<Scene> scenes = dao.findAll();
@@ -60,7 +61,7 @@ public class RelativeSceneComboModel extends DefaultComboBoxModel implements
 	public void setSelectedItem(Object obj) {
 		Scene scene;
 		if (obj instanceof Long) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			scene = (Scene) session.get(Scene.class, (Long) obj);
 			model.commit();

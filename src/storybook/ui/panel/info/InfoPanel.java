@@ -29,14 +29,14 @@ import net.infonode.docking.View;
 import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.controller.BookController;
 import storybook.model.DbFile;
 import storybook.model.BookModel;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.net.NetUtil;
 import storybook.toolkit.swing.SwingUtil;
@@ -78,7 +78,7 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 				if (entity.isTransient()) {
 					return;
 				}
-				BookModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getBookModel();
 				Session session = model.beginTransaction();
 				session.refresh(entity);
 				model.commit();
@@ -90,38 +90,38 @@ public class InfoPanel extends AbstractPanel implements HyperlinkListener {
 				buf.append("<p><b>\n");
 				buf.append(I18N.getMsgColon("msg.common.title"));
 				buf.append("</b></p><p>\n");
-				Internal internal = DocumentUtil.restoreInternal(mainFrame,
-						InternalKey.TITLE, "");
+				Internal internal = BookUtil.get(mainFrame,
+						BookKey.TITLE, "");
 				buf.append(internal.getStringValue());
 				buf.append("</p><p style='padding-top:10px'><b>\n");
 				buf.append(I18N.getMsgColon("msg.common.subtitle"));
 				buf.append("</b></p><p>\n");
-				internal = DocumentUtil.restoreInternal(mainFrame,
-						InternalKey.SUBTITLE, "");
+				internal = BookUtil.get(mainFrame,
+						BookKey.SUBTITLE, "");
 				buf.append(internal.getStringValue());
 				buf.append("</p><p style='padding-top:10px'><b>\n");
 				buf.append(I18N.getMsgColon("msg.common.author_s"));
 				buf.append("</b></p><p>\n");
-				internal = DocumentUtil.restoreInternal(mainFrame,
-						InternalKey.AUTHOR, "");
+				internal = BookUtil.get(mainFrame,
+						BookKey.AUTHOR, "");
 				buf.append(internal.getStringValue());
 				buf.append("</p><p style='padding-top:10px'><b>\n");
 				buf.append(I18N.getMsgColon("msg.common.copyright"));
 				buf.append("</b></p><p>\n");
-				internal = DocumentUtil.restoreInternal(mainFrame,
-						InternalKey.COPYRIGHT, "");
+				internal = BookUtil.get(mainFrame,
+						BookKey.COPYRIGHT, "");
 				buf.append(internal.getStringValue());
 				buf.append("</p><p style='padding-top:10px'><b>\n");
 				buf.append(I18N.getMsgColon("msg.common.blurb"));
 				buf.append("</b></p><p>\n");
-				internal = DocumentUtil.restoreInternal(mainFrame,
-						InternalKey.BLURB, "");
+				internal = BookUtil.get(mainFrame,
+						BookKey.BLURB, "");
 				buf.append(internal.getStringValue());
 				buf.append("</p><p style='padding-top:10px'><b>\n");
 				buf.append(I18N.getMsgColon("msg.common.notes"));
 				buf.append("</b></p><p>\n");
-				internal = DocumentUtil.restoreInternal(mainFrame,
-						InternalKey.NOTES, "");
+				internal = BookUtil.get(mainFrame,
+						BookKey.NOTES, "");
 				buf.append(internal.getStringValue());
 				buf.append("<p>\n");
 				infoPane.setText(buf.toString());

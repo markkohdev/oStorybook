@@ -26,9 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
 
@@ -50,8 +50,8 @@ public class MemoriaOptionsDialog extends AbstractOptionsDialog implements
 	@Override
 	public void init() {
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.MEMORIA_BALLOON,
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.MEMORIA_BALLOON,
 					SbConstants.DEFAULT_MEMORIA_BALLOON);
 			balloon = internal.getBooleanValue();
 		} catch (Exception e) {
@@ -90,7 +90,7 @@ public class MemoriaOptionsDialog extends AbstractOptionsDialog implements
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		boolean val = rbBalloon.isSelected();
-		mainFrame.getDocumentController().memoriaSetBalloonLayout(val);
-		DocumentUtil.storeInternal(mainFrame, InternalKey.MEMORIA_BALLOON, val);
+		mainFrame.getBookController().memoriaSetBalloonLayout(val);
+		BookUtil.store(mainFrame, BookKey.MEMORIA_BALLOON, val);
 	}
 }

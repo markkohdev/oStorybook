@@ -94,7 +94,7 @@ public class StrandTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Strand strand = (Strand)entity;
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
@@ -107,7 +107,7 @@ public class StrandTable extends AbstractTable {
 		model.commit();
 
 		SbView view = mainFrame.getView(ViewName.STRANDS);
-		mainFrame.getDocumentController().refresh(view);
+		mainFrame.getBookController().refresh(view);
 
 		sortByColumn(4);
 	}
@@ -117,7 +117,7 @@ public class StrandTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Strand strand = (Strand)entity;
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
@@ -130,7 +130,7 @@ public class StrandTable extends AbstractTable {
 		model.commit();
 
 		SbView view = mainFrame.getView(ViewName.STRANDS);
-		mainFrame.getDocumentController().refresh(view);
+		mainFrame.getBookController().refresh(view);
 
 		sortByColumn(4);
 	}
@@ -169,7 +169,7 @@ public class StrandTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		Strand strand = dao.find(id);

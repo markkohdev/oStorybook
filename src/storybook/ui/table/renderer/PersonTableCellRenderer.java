@@ -49,7 +49,7 @@ public class PersonTableCellRenderer extends DefaultTableCellRenderer {
 		if (value instanceof String) {
 			panel.add(new JLabel());
 		} else {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			Long id = ((Person) value).getId();
 			Person person = (Person) session.get(Person.class, id);

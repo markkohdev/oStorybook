@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.ui.MainFrame;
@@ -70,7 +70,7 @@ public class IOUtil {
 				try {
 					f.close();
 				} catch (IOException e) {
-					StorybookApp.logErr("IOUtil.readFileAsString(" + filePath + ")", e);
+					SbApp.error("IOUtil.readFileAsString(" + filePath + ")", e);
 				}
 			}
 		}

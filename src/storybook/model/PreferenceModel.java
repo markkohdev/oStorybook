@@ -26,9 +26,10 @@ import java.io.IOException;
 import org.hibernate.Session;
 import storybook.SbConstants;
 import storybook.SbConstants.PreferenceKey;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.model.hbn.dao.PreferenceDAOImpl;
 import storybook.toolkit.CommonTools;
+import storybook.ui.MainFrame;
 
 /**
  * @author martin
@@ -36,8 +37,8 @@ import storybook.toolkit.CommonTools;
  */
 public class PreferenceModel extends AbstractModel {
 
-	public PreferenceModel() {
-		super();
+	public PreferenceModel(MainFrame m) {
+		super(m);
 		init();
 	}
 
@@ -52,16 +53,15 @@ public class PreferenceModel extends AbstractModel {
 			if (!x.exists()) {
 				createPreferenceFile(x);
 			}
-			initSession(dbName, configFile);
+			initSession(dbName);
 
 			// update application version
 			Session session = beginTransaction();
 			PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
-			dao.saveOrUpdate(PreferenceKey.STORYBOOK_VERSION.toString(),
-					SbConstants.Storybook.PRODUCT_VERSION.toString());
+			dao.saveOrUpdate(PreferenceKey.STORYBOOK_VERSION.toString(), SbConstants.Storybook.PRODUCT_VERSION.toString());
 			commit();
 		} catch (Exception e) {
-			StorybookApp.logErr("PreferenceModel.init() Exception:",e);
+			SbApp.error("PreferenceModel.init()",e);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class PreferenceModel extends AbstractModel {
 		try {
 			x.createNewFile();
 		} catch (IOException e) {
-			StorybookApp.trace("Unable to create " + x.getAbsolutePath());
+			SbApp.trace("Unable to create " + x.getAbsolutePath());
 		}
 		try {
 			FileOutputStream f = new FileOutputStream(x);
@@ -119,7 +119,7 @@ public class PreferenceModel extends AbstractModel {
 			f.flush();
 			try { f.close(); } catch (IOException e) { }
 		} catch (IOException e) {
-			StorybookApp.trace("Impossible de trouver le fichier");
+			SbApp.trace("Impossible de trouver le fichier");
 		}
 
 

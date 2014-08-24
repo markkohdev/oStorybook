@@ -49,6 +49,7 @@ public class OccurrenceOfLocationsChart extends AbstractChartPanel {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void initChart() {
 		this.countryCbList = EntityUtil.createCountryCheckBoxes(this.mainFrame, this);
 		this.selectedCountries = new ArrayList();
@@ -113,7 +114,7 @@ public class OccurrenceOfLocationsChart extends AbstractChartPanel {
 	private CategoryDataset createDataset() {
 		DefaultCategoryDataset localDefaultCategoryDataset = new DefaultCategoryDataset();
 		try {
-			BookModel localDocumentModel = this.mainFrame.getDocumentModel();
+			BookModel localDocumentModel = this.mainFrame.getBookModel();
 			Session localSession = localDocumentModel.beginTransaction();
 			LocationDAOImpl localLocationDAOImpl = new LocationDAOImpl(localSession);
 			SceneDAOImpl localSceneDAOImpl = new SceneDAOImpl(localSession);

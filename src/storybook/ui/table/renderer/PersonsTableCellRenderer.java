@@ -58,7 +58,7 @@ public class PersonsTableCellRenderer extends DefaultTableCellRenderer {
 		} catch (LazyInitializationException lie) {
 			MainFrame mainFrame = (MainFrame) table
 					.getClientProperty(ClientPropertyName.MAIN_FRAME.toString());
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			for (Person person : list) {
 				session.refresh(person);

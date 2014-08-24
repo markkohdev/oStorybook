@@ -97,7 +97,7 @@ public class GenderTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		GenderDAOImpl dao = new GenderDAOImpl(session);
 		Gender gender = dao.find(id);

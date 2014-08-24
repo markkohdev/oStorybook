@@ -18,11 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package storybook.model;
 
+import storybook.ui.MainFrame;
+
 /**
  * @author martin
  *
  */
 public class BlankModel extends AbstractModel {
+
+	public BlankModel(MainFrame m) {
+		super(m);
+	}
 
 	@Override
 	public void fireAgain() {

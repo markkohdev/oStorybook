@@ -56,7 +56,7 @@ public class RowPanel extends AbstractStrandDatePanel {
 			add(lbDate, "wrap");
 
 			// scenes by strand and date
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			SceneDAOImpl sceneDao = new SceneDAOImpl(session);
 			List<Scene> sceneList = sceneDao.findByStrandAndDate(strand, date);

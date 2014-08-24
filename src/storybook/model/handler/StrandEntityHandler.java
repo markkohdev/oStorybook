@@ -43,7 +43,7 @@ public class StrandEntityHandler extends AbstractEntityHandler {
 
 	@Override
 	public AbstractEntity createNewEntity() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		Integer nextSort = dao.getNextSort();

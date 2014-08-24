@@ -42,7 +42,7 @@ public class WiWWContainer
     this.location = paramLocation;
     this.inPersonList = paramList;
     this.date = DateUtil.getZeroTimeDate(paramDate);
-    this.outPersonList = new ArrayList();
+    this.outPersonList = new ArrayList<>();
     init();
   }
 
@@ -52,7 +52,7 @@ public class WiWWContainer
     while (localIterator.hasNext())
     {
       Person localPerson = (Person)localIterator.next();
-      BookModel localDocumentModel = this.mainFrame.getDocumentModel();
+      BookModel localDocumentModel = this.mainFrame.getBookModel();
       Session localSession = localDocumentModel.beginTransaction();
       LocationDAOImpl localLocationDAOImpl = new LocationDAOImpl(localSession);
       long l = localLocationDAOImpl.countByPersonLocationDate(localPerson, this.location, this.date);

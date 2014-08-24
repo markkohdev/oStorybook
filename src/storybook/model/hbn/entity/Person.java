@@ -32,8 +32,6 @@ import storybook.toolkit.swing.ColorUtil;
  */
 public class Person extends AbstractEntity implements Comparable<Person> {
 
-	private static final long serialVersionUID = -7799295983395071175L;
-
 	private Gender gender;
 	private String firstname;
 	private String lastname;

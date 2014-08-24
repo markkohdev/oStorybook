@@ -140,7 +140,7 @@ public class FindChapterPanel extends AbstractPanel {
 
 	private void scrollToChapter() {
 		Chapter chapter = (Chapter) chapterCombo.getSelectedItem();
-		BookController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getBookController();
 		if (viewsRbPanel.isChronoSelected()) {
 			mainFrame.showView(ViewName.CHRONO);
 			ctrl.chronoShowEntity(chapter);

@@ -45,6 +45,7 @@ import org.jfree.ui.TextAnchor;
  */
 public class ChartUtil {
 
+	@SuppressWarnings("unchecked")
 	public static TreeSet<Date> correctDates(TreeSet<Date> paramTreeSet) {
 		TreeSet localTreeSet = new TreeSet();
 		Date localDate1 = (Date) paramTreeSet.first();
@@ -54,9 +55,7 @@ public class ChartUtil {
 		if (i > 1900) {
 			return paramTreeSet;
 		}
-		Iterator localIterator = paramTreeSet.iterator();
-		while (localIterator.hasNext()) {
-			Date localDate2 = (Date) localIterator.next();
+		for (Date localDate2 : paramTreeSet) {
 			Calendar localCalendar2 = Calendar.getInstance();
 			localCalendar2.setTime(localDate2);
 			int j = localCalendar2.get(1);

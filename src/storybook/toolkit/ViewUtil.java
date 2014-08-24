@@ -99,24 +99,20 @@ public class ViewUtil {
 		});
 	}
 
-	public static boolean scrollToStrandDate(AbstractPanel container,
-			JPanel panel, Strand strand, Date date) {
+	public static boolean scrollToStrandDate(AbstractPanel container, JPanel panel, Strand strand, Date date) {
 		if (strand == null || date == null) {
 			return false;
 		}
 		return doScrolling(container, panel, strand, date);
 	}
 
-	public static boolean scrollToChapter(AbstractPanel container, JPanel panel,
-			Chapter chapter) {
+	public static boolean scrollToChapter(AbstractPanel container, JPanel panel, Chapter chapter) {
 		if (container instanceof ManagePanel) {
 			if (chapter == null) {
 				return false;
 			}
-			boolean partChanged = changeCurrentPart(container, panel,
-					chapter.getPart());
-			final ScrollToEntityAction action = new ScrollToEntityAction(
-					container, panel, chapter);
+			boolean partChanged = changeCurrentPart(container, panel, chapter.getPart());
+			final ScrollToEntityAction action = new ScrollToEntityAction(container, panel, chapter);
 			int delay = 1;
 			if (partChanged) {
 				delay = 200;
@@ -135,7 +131,7 @@ public class ViewUtil {
 
 		// chrono and book view
 		MainFrame mainFrame = container.getMainFrame();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		Scene scene = dao.findFirstScene(chapter);
@@ -143,14 +139,12 @@ public class ViewUtil {
 		return scrollToScene(container, panel, scene);
 	}
 
-	public static boolean scrollToScene(AbstractPanel container, JPanel panel,
-			Scene scene) {
+	public static boolean scrollToScene(AbstractPanel container, JPanel panel, Scene scene) {
 		if (scene == null) {
 			return false;
 		}
 		boolean partChanged = changeCurrentPart(container, panel, scene);
-		final ScrollToEntityAction action = new ScrollToEntityAction(container,
-				panel, scene);
+		final ScrollToEntityAction action = new ScrollToEntityAction(container, panel, scene);
 		int delay = 1;
 		if (partChanged) {
 			delay = 200;
@@ -167,8 +161,7 @@ public class ViewUtil {
 		return action.isFound();
 	}
 
-	public static boolean changeCurrentPart(AbstractPanel container, JPanel panel,
-			Scene scene) {
+	public static boolean changeCurrentPart(AbstractPanel container, JPanel panel, Scene scene) {
 		if (scene == null) {
 			return false;
 		}
@@ -177,24 +170,21 @@ public class ViewUtil {
 			MainFrame mainFrame = container.getMainFrame();
 			Part part = scene.getChapter().getPart();
 			if (mainFrame.getCurrentPart().getId() != part.getId()) {
-				mainFrame.getSbActionManager().getActionHandler()
-						.handleChangePart(part);
+				mainFrame.getSbActionManager().getActionHandler().handleChangePart(part);
 				changed = true;
 			}
 		}
 		return changed;
 	}
 
-	public static boolean changeCurrentPart(AbstractPanel container,
-			JPanel panel, Part part) {
+	public static boolean changeCurrentPart(AbstractPanel container, JPanel panel, Part part) {
 		if (part == null) {
 			return false;
 		}
 		boolean changed = false;
 		MainFrame mainFrame = container.getMainFrame();
 		if (!mainFrame.getCurrentPart().getId().equals(part.getId())) {
-			mainFrame.getSbActionManager().getActionHandler()
-					.handleChangePart(part);
+			mainFrame.getSbActionManager().getActionHandler().handleChangePart(part);
 			changed = true;
 		}
 		return changed;
@@ -212,12 +202,10 @@ public class ViewUtil {
 			if (scene.getId().equals(sc.getId())) {
 				Rectangle rect = scenePanel.getBounds();
 				if (container instanceof ChronoPanel) {
-					rect = SwingUtilities.convertRectangle(
-							scenePanel.getParent(), rect, panel);
+					rect = SwingUtilities.convertRectangle(scenePanel.getParent(), rect, panel);
 				}
 				if (container instanceof ManagePanel) {
-					rect = SwingUtilities.convertRectangle(
-							scenePanel.getParent(), rect, panel);
+					rect = SwingUtilities.convertRectangle(scenePanel.getParent(), rect, panel);
 				}
 				SwingUtil.expandRectangle(rect);
 				// scroll
@@ -231,8 +219,7 @@ public class ViewUtil {
 		return found;
 	}
 
-	public static boolean doScrolling(AbstractPanel container, JPanel panel,
-			Chapter chapter) {
+	public static boolean doScrolling(AbstractPanel container, JPanel panel, Chapter chapter) {
 		boolean found = false;
 		List<ChapterPanel> panels = findChapterPanels(container);
 		for (ChapterPanel scenePanel : panels) {
@@ -254,8 +241,7 @@ public class ViewUtil {
 		return found;
 	}
 
-	public static boolean doScrolling(AbstractPanel container, JPanel panel,
-			Strand strand, Date date) {
+	public static boolean doScrolling(AbstractPanel container, JPanel panel, Strand strand, Date date) {
 		boolean found = false;
 		List<StrandDateLabel> panels = findStrandDateLabels(container);
 		for (StrandDateLabel sdPanel : panels) {
@@ -294,14 +280,13 @@ public class ViewUtil {
 		if (cont instanceof ManagePanel) {
 			return findManageScenePanels(cont);
 		}
-		return new ArrayList<AbstractScenePanel>();
+		return new ArrayList<>();
 	}
 
 	private static List<AbstractScenePanel> findBookScenePanels(Container cont) {
-		List<Component> components = new ArrayList<Component>();
-		components = SwingUtil.findComponentsByClass(cont,
-				BookScenePanel.class, components);
-		List<AbstractScenePanel> panels = new ArrayList<AbstractScenePanel>();
+		List<Component> components = new ArrayList<>();
+		components = SwingUtil.findComponentsByClass(cont, BookScenePanel.class, components);
+		List<AbstractScenePanel> panels = new ArrayList<>();
 		for (Component comp : components) {
 			panels.add((AbstractScenePanel) comp);
 		}
@@ -309,10 +294,10 @@ public class ViewUtil {
 	}
 
 	private static List<AbstractScenePanel> findChronoScenePanels(Container cont) {
-		List<Component> components = new ArrayList<Component>();
+		List<Component> components = new ArrayList<>();
 		components = SwingUtil.findComponentsByClass(cont,
 				ChronoScenePanel.class, components);
-		List<AbstractScenePanel> panels = new ArrayList<AbstractScenePanel>();
+		List<AbstractScenePanel> panels = new ArrayList<>();
 		for (Component comp : components) {
 			panels.add((AbstractScenePanel) comp);
 		}
@@ -320,10 +305,10 @@ public class ViewUtil {
 	}
 
 	private static List<AbstractScenePanel> findManageScenePanels(Container cont) {
-		List<Component> components = new ArrayList<Component>();
+		List<Component> components = new ArrayList<>();
 		components = SwingUtil.findComponentsByClass(cont, ScenePanel.class,
 				components);
-		List<AbstractScenePanel> panels = new ArrayList<AbstractScenePanel>();
+		List<AbstractScenePanel> panels = new ArrayList<>();
 		for (Component comp : components) {
 			panels.add((AbstractScenePanel) comp);
 		}
@@ -331,10 +316,9 @@ public class ViewUtil {
 	}
 
 	private static List<ChapterPanel> findChapterPanels(Container cont) {
-		List<Component> components = new ArrayList<Component>();
-		components = SwingUtil.findComponentsByClass(cont, ChapterPanel.class,
-				components);
-		List<ChapterPanel> panels = new ArrayList<ChapterPanel>();
+		List<Component> components = new ArrayList<>();
+		components = SwingUtil.findComponentsByClass(cont, ChapterPanel.class, components);
+		List<ChapterPanel> panels = new ArrayList<>();
 		for (Component comp : components) {
 			panels.add((ChapterPanel) comp);
 		}
@@ -342,10 +326,9 @@ public class ViewUtil {
 	}
 
 	private static List<StrandDateLabel> findStrandDateLabels(Container cont) {
-		List<Component> components = new ArrayList<Component>();
-		components = SwingUtil.findComponentsByClass(cont,
-				StrandDateLabel.class, components);
-		List<StrandDateLabel> labels = new ArrayList<StrandDateLabel>();
+		List<Component> components = new ArrayList<>();
+		components = SwingUtil.findComponentsByClass(cont, StrandDateLabel.class, components);
+		List<StrandDateLabel> labels = new ArrayList<>();
 		for (Component comp : components) {
 			labels.add((StrandDateLabel) comp);
 		}

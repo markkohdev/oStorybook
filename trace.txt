@@ -1,0 +1,446 @@
+ant -f /home/favdb/ext/SB4/code -Dnb.internal.action.name=run run
+init:
+Deleting: /home/favdb/ext/SB4/code/build/built-jar.properties
+deps-jar:
+Updating property file: /home/favdb/ext/SB4/code/build/built-jar.properties
+Compiling 1 source file to /home/favdb/ext/SB4/code/build/classes
+compile:
+run:
+Storybook execution in trace mode
+SbApp.init()
+new AbstractController()
+AbstractModel.initSession(/home/favdb/.storybook5/preference)
+SbSessionFactory.init()
+2014-08-09 11:42:18,164 INFO  [AWT-EventQueue-0] log.MLog (MLog.java:80) - MLog clients using log4j logging.
+2014-08-09 11:42:18,457 INFO  [AWT-EventQueue-0] c3p0.C3P0Registry (C3P0Registry.java:204) - Initializing c3p0-0.9.1 [built 16-January-2007 14:46:42; debug? true; trace: 10]
+2014-08-09 11:42:18,697 INFO  [AWT-EventQueue-0] impl.AbstractPoolBackedDataSource (AbstractPoolBackedDataSource.java:462) - Initializing c3p0 pool... com.mchange.v2.c3p0.PoolBackedDataSource@1d1b7e1b [ connectionPoolDataSource -> com.mchange.v2.c3p0.WrapperConnectionPoolDataSource@184b5e84 [ acquireIncrement -> 2, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, debugUnreturnedConnectionStackTraces -> false, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, identityToken -> z8kfsx931fndf9fw073m5|4246e1, idleConnectionTestPeriod -> 300, initialPoolSize -> 0, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 5000, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 1, maxStatements -> 100, maxStatementsPerConnection -> 0, minPoolSize -> 0, nestedDataSource -> com.mchange.v2.c3p0.DriverManagerDataSource@1138d1f1 [ description -> null, driverClass -> null, factoryClassLocation -> null, identityToken -> z8kfsx931fndf9fw073m5|85b66d, jdbcUrl -> jdbc:h2:/home/favdb/.storybook5/preference;TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0, properties -> {user=******, password=******} ], preferredTestQuery -> null, propertyCycle -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, usesTraditionalReflectiveProxies -> false; userOverrides: {} ], dataSourceName -> null, factoryClassLocation -> null, identityToken -> z8kfsx931fndf9fw073m5|16cf7d, numHelperThreads -> 3 ]
+AbstractController.attachModel(storybook.model.PreferenceModel@1784d10)
+AbstractModel.addPropertyChangeListener(storybook.controller.PreferenceController@10b6fd6)
+AbstractController.printAttachedModels()
+Attached model ->storybook.model.PreferenceModel@1784d10
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 1
+AbstractController.printAttachedViews()
+attached view 0/1: SbApp
+
+SbApp.initI18N()
+MainFrame.init()
+SbActionManager.init()
+SbActionManager.initActions()
+SbActionManager.registerActions()
+SbActionManager.initUiFactory()
+SbActionManager.reloadRecentMenu(file-menu-command)
+SbActionManager.reloadPartMenu(file-menu-command)
+SbActionManager.reloadWindowMenu(file-menu-command)
+new AbstractController()
+AbstractController.attachModel(storybook.model.BlankModel@1e5087c)
+AbstractModel.addPropertyChangeListener(storybook.controller.BookController@1900c04)
+AbstractController.printAttachedModels()
+Attached model ->storybook.model.BlankModel@1e5087c
+SbActionManager.init()
+SbActionManager.initActions()
+SbActionManager.registerActions()
+SbActionManager.initUiFactory()
+SbActionManager.reloadRecentMenu(file-menu-command)
+SbActionManager.reloadPartMenu(file-menu-command)
+SbActionManager.reloadWindowMenu(file-menu-command)
+SbApp.addMainFrame(frame0)
+SbApp.openFile(/home/favdb/ext/JulesVerne/De la terre à la lune)
+SbApp.checkIfAlreadyOpened(/home/favdb/ext/JulesVerne/De la terre à la lune)
+ModelMigration.getInstance()
+ModelMigration.open(/home/favdb/ext/JulesVerne/De la terre à la lune)
+ModelMigration.getConnection()
+ModelMigration.getConnection() to jdbc:h2:/home/favdb/ext/JulesVerne/De la terre à la lune;IFEXISTS=TRUE;TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0
+ModelMigration.open(/home/favdb/ext/JulesVerne/De la terre à la lune)
+ModelMigration.getInstance()
+ModelMigration.getConnection()
+ModelMigration.closeConnection()
+MainFrame.init(/home/favdb/ext/JulesVerne/De la terre à la lune)
+SbActionManager.init()
+SbActionManager.initActions()
+SbActionManager.registerActions()
+SbActionManager.initUiFactory()
+SbActionManager.reloadRecentMenu(file-menu-command)
+SbActionManager.reloadPartMenu(file-menu-command)
+SbActionManager.reloadWindowMenu(file-menu-command)
+new AbstractController()
+BookModel.initSession(/home/favdb/ext/JulesVerne/De la terre à la lune)
+AbstractModel.initSession(/home/favdb/ext/JulesVerne/De la terre à la lune)
+SbSessionFactory.init()
+2014-08-09 11:42:32,246 INFO  [AWT-EventQueue-0] impl.AbstractPoolBackedDataSource (AbstractPoolBackedDataSource.java:462) - Initializing c3p0 pool... com.mchange.v2.c3p0.PoolBackedDataSource@93158230 [ connectionPoolDataSource -> com.mchange.v2.c3p0.WrapperConnectionPoolDataSource@84a7ebb5 [ acquireIncrement -> 2, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, debugUnreturnedConnectionStackTraces -> false, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, identityToken -> z8kfsx931fndf9fw073m5|17d3a6c, idleConnectionTestPeriod -> 300, initialPoolSize -> 0, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 5000, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 1, maxStatements -> 100, maxStatementsPerConnection -> 0, minPoolSize -> 0, nestedDataSource -> com.mchange.v2.c3p0.DriverManagerDataSource@3d254715 [ description -> null, driverClass -> null, factoryClassLocation -> null, identityToken -> z8kfsx931fndf9fw073m5|1aa6b95, jdbcUrl -> jdbc:h2:/home/favdb/ext/JulesVerne/De la terre à la lune;TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0, properties -> {user=******, password=******} ], preferredTestQuery -> null, propertyCycle -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, usesTraditionalReflectiveProxies -> false; userOverrides: {} ], dataSourceName -> null, factoryClassLocation -> null, identityToken -> z8kfsx931fndf9fw073m5|10715ce, numHelperThreads -> 3 ]
+SbSessionFactory.query(): PartDAOImpl
+SbSessionFactory.query(): ChapterDAOImpl
+test query OK
+AbstractController.attachModel(storybook.model.BookModel@1972c26)
+AbstractModel.addPropertyChangeListener(storybook.controller.BookController@1d39053)
+AbstractController.printAttachedModels()
+Attached model ->storybook.model.BookModel@1972c26
+NetUtil.setGoogleMapUrl(http://maps.google.com)
+SpellCheckerUtil.registerDictionaries()
+MainFrame.initUi()
+SbActionManager.init()
+SbActionManager.initActions()
+SbActionManager.registerActions()
+SbActionManager.initUiFactory()
+SbActionManager.reloadRecentMenu(file-menu-command)
+SbActionManager.reloadPartMenu(file-menu-command)
+SbActionManager.reloadWindowMenu(file-menu-command)
+MainFrame.initRootWindow()
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 1
+AbstractController.printAttachedViews()
+attached view 0/1: EntityEditor
+
+ViewFactory.getScenesView()
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 2
+AbstractController.printAttachedViews()
+attached view 0/2: EntityEditor
+attached view 1/2: StatusBarPanel
+
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 3
+AbstractController.printAttachedViews()
+attached view 0/3: EntityEditor
+attached view 1/3: StatusBarPanel
+attached view 2/3: SceneTable
+
+BookModel.fireAgain(Scenes)
+BookModel.fireAgainScenes()
+AbstractModel.firePropertyChange(InitScene,oldValue...,newValue...)
+AbstractController.propertyChange(java.beans.PropertyChangeEvent[propertyName=InitScene; oldValue=null; newValue=[1.1: 1.1, 1.2: 1.2, 1.3: 1.3, 1.4: 1.4, 2.1: scene 1, 2.2: scene 2, 2.3: 2.3, 2.4: 2.4, 2.5: 2.5, 3.x: 3.1, 3.x: 3.2, 3.x: 3.3, 4.1: 4.1, 4.2: 4.2, 4.3: 4.3]; propagationId=null; source=storybook.model.BookModel@1972c26])
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 4
+AbstractController.printAttachedViews()
+attached view 0/4: EntityEditor
+attached view 1/4: StatusBarPanel
+attached view 2/4: SceneTable
+attached view 3/4: PersonTable
+
+BookModel.fireAgain(Persons)
+BookModel.fireAgainPersons()
+AbstractModel.firePropertyChange(InitPersons,oldValue...,newValue...)
+AbstractController.propertyChange(java.beans.PropertyChangeEvent[propertyName=InitPersons; oldValue=null; newValue=[Tom Hunter [Hunter], Bilsby  [Bilsby], colonel Blomsberry  [Blomsberry], J.-T. Maston [Maston], Impey Barbicane [Barbicane]]; propagationId=null; source=storybook.model.BookModel@1972c26])
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 5
+AbstractController.printAttachedViews()
+attached view 0/5: EntityEditor
+attached view 1/5: StatusBarPanel
+attached view 2/5: SceneTable
+attached view 3/5: PersonTable
+attached view 4/5: LocationTable
+
+BookModel.fireAgain(Locations)
+BookModel.fireAgainLocations()
+AbstractModel.firePropertyChange(InitLocations,oldValue...,newValue...)
+AbstractController.propertyChange(java.beans.PropertyChangeEvent[propertyName=InitLocations; oldValue=null; newValue=[Le Gun Club]; propagationId=null; source=storybook.model.BookModel@1972c26])
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,false)
+AbstractEntityAction(frame1,1.1: 1.1,Supprimer,icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.1: 1.1,Supprimer,icon)
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,false)
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,true)
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,true)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,false)
+AbstractEntityAction(frame1,1.2: 1.2,Supprimer,icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.2: 1.2,Supprimer,icon)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,false)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,true)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,true)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,false)
+AbstractEntityAction(frame1,1.3: 1.3,Supprimer,icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.3: 1.3,Supprimer,icon)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,false)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,true)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,true)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,false)
+AbstractEntityAction(frame1,1.4: 1.4,Supprimer,icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.4: 1.4,Supprimer,icon)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,false)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,true)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,true)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,false)
+AbstractEntityAction(frame1,2.1: scene 1,Supprimer,icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Nouveau Scène,icon)
+AbstractEntityAction(frame1,2.1: scene 1,Supprimer,icon)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,false)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,true)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,true)
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 6
+AbstractController.printAttachedViews()
+attached view 0/6: EntityEditor
+attached view 1/6: StatusBarPanel
+attached view 2/6: SceneTable
+attached view 3/6: PersonTable
+attached view 4/6: LocationTable
+attached view 5/6: ChronoPanel
+
+BookModel.fireAgain(Chrono)
+BookModel.fireAgainScenes()
+AbstractModel.firePropertyChange(InitScene,oldValue...,newValue...)
+AbstractController.propertyChange(java.beans.PropertyChangeEvent[propertyName=InitScene; oldValue=null; newValue=[1.1: 1.1, 1.2: 1.2, 1.3: 1.3, 1.4: 1.4, 2.1: scene 1, 2.2: scene 2, 2.3: 2.3, 2.4: 2.4, 2.5: 2.5, 3.x: 3.1, 3.x: 3.2, 3.x: 3.3, 4.1: 4.1, 4.2: 4.2, 4.3: 4.3]; propagationId=null; source=storybook.model.BookModel@1972c26])
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,false)
+AbstractEntityAction(frame1,1.1: 1.1,Supprimer,icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.1: 1.1,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.1: 1.1,Supprimer,icon)
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,false)
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,true)
+AbstractEntityAction(frame1,1.1: 1.1,Editer,icon)
+EditEntityAction(frame1,1.1: 1.1,true)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,false)
+AbstractEntityAction(frame1,1.2: 1.2,Supprimer,icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.2: 1.2,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.2: 1.2,Supprimer,icon)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,false)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,true)
+AbstractEntityAction(frame1,1.2: 1.2,Editer,icon)
+EditEntityAction(frame1,1.2: 1.2,true)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,false)
+AbstractEntityAction(frame1,1.3: 1.3,Supprimer,icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.3: 1.3,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.3: 1.3,Supprimer,icon)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,false)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,true)
+AbstractEntityAction(frame1,1.3: 1.3,Editer,icon)
+EditEntityAction(frame1,1.3: 1.3,true)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,false)
+AbstractEntityAction(frame1,1.4: 1.4,Supprimer,icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,1.4: 1.4,Nouveau Scène,icon)
+AbstractEntityAction(frame1,1.4: 1.4,Supprimer,icon)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,false)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,true)
+AbstractEntityAction(frame1,1.4: 1.4,Editer,icon)
+EditEntityAction(frame1,1.4: 1.4,true)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,false)
+AbstractEntityAction(frame1,2.1: scene 1,Supprimer,icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Vue Chronologique",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Vue Livre",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Vue de Gestion",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la vue "Info",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Montrer dans la "Memoria",icon)
+AbstractEntityAction(frame1,2.1: scene 1,Nouveau Scène,icon)
+AbstractEntityAction(frame1,2.1: scene 1,Supprimer,icon)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,false)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,true)
+AbstractEntityAction(frame1,2.1: scene 1,Editer,icon)
+EditEntityAction(frame1,2.1: scene 1,true)
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 7
+AbstractController.printAttachedViews()
+attached view 0/7: EntityEditor
+attached view 1/7: StatusBarPanel
+attached view 2/7: SceneTable
+attached view 3/7: PersonTable
+attached view 4/7: LocationTable
+attached view 5/7: ChronoPanel
+attached view 6/7: TreePanel
+
+BookModel.fireAgain(Tree)
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 8
+AbstractController.printAttachedViews()
+attached view 0/8: EntityEditor
+attached view 1/8: StatusBarPanel
+attached view 2/8: SceneTable
+attached view 3/8: PersonTable
+attached view 4/8: LocationTable
+attached view 5/8: ChronoPanel
+attached view 6/8: TreePanel
+attached view 7/8: InfoPanel
+
+BookModel.fireAgain(Info)
+AbstractController.attachView(null)
+AbstractController.printNumberOfAttachedViews(): attached views size: 9
+AbstractController.printAttachedViews()
+attached view 0/9: EntityEditor
+attached view 1/9: StatusBarPanel
+attached view 2/9: SceneTable
+attached view 3/9: PersonTable
+attached view 4/9: LocationTable
+attached view 5/9: ChronoPanel
+attached view 6/9: TreePanel
+attached view 7/9: InfoPanel
+attached view 8/9: NavigationPanel
+
+BookModel.fireAgain(Navigation)
+AbstractController.detachView(file-menu-command)
+AbstractController.printAttachedViews()
+attached view 0/9: EntityEditor
+attached view 1/9: StatusBarPanel
+attached view 2/9: SceneTable
+attached view 3/9: PersonTable
+attached view 4/9: LocationTable
+attached view 5/9: ChronoPanel
+attached view 6/9: TreePanel
+attached view 7/9: InfoPanel
+attached view 8/9: NavigationPanel
+
+AbstractController.attachView(file-menu-command)
+AbstractController.printNumberOfAttachedViews(): attached views size: 10
+AbstractController.printAttachedViews()
+attached view 0/10: EntityEditor
+attached view 1/10: StatusBarPanel
+attached view 2/10: SceneTable
+attached view 3/10: PersonTable
+attached view 4/10: LocationTable
+attached view 5/10: ChronoPanel
+attached view 6/10: TreePanel
+attached view 7/10: InfoPanel
+attached view 8/10: NavigationPanel
+attached view 9/10: JMenuBar
+
+AbstractController.detachView(null)
+AbstractController.printAttachedViews()
+attached view 0/9: StatusBarPanel
+attached view 1/9: SceneTable
+attached view 2/9: PersonTable
+attached view 3/9: LocationTable
+attached view 4/9: ChronoPanel
+attached view 5/9: TreePanel
+attached view 6/9: InfoPanel
+attached view 7/9: NavigationPanel
+attached view 8/9: JMenuBar
+
+AbstractController.detachView(null)
+AbstractController.printAttachedViews()
+attached view 0/8: StatusBarPanel
+attached view 1/8: SceneTable
+attached view 2/8: PersonTable
+attached view 3/8: ChronoPanel
+attached view 4/8: TreePanel
+attached view 5/8: InfoPanel
+attached view 6/8: NavigationPanel
+attached view 7/8: JMenuBar
+
+AbstractController.detachView(null)
+AbstractController.printAttachedViews()
+attached view 0/7: StatusBarPanel
+attached view 1/7: SceneTable
+attached view 2/7: ChronoPanel
+attached view 3/7: TreePanel
+attached view 4/7: InfoPanel
+attached view 5/7: NavigationPanel
+attached view 6/7: JMenuBar
+
+AbstractController.detachView(null)
+AbstractController.printAttachedViews()
+attached view 0/6: StatusBarPanel
+attached view 1/6: SceneTable
+attached view 2/6: TreePanel
+attached view 3/6: InfoPanel
+attached view 4/6: NavigationPanel
+attached view 5/6: JMenuBar
+
+SbActionManager.getActionHandler()
+SbApp.addMainFrame(frame1)
+SbApp.closeBlank()
+SbApp.updateFilePref(/home/favdb/ext/JulesVerne/De la terre à la lune)
+SbActionManager.init()
+SbActionManager.initActions()
+SbActionManager.registerActions()
+SbActionManager.initUiFactory()
+SbActionManager.reloadRecentMenu(file-menu-command)
+SbActionManager.reloadPartMenu(file-menu-command)
+SbActionManager.reloadWindowMenu(file-menu-command)
+SbActionManager.init()
+SbActionManager.initActions()
+SbActionManager.registerActions()
+SbActionManager.initUiFactory()
+SbActionManager.reloadRecentMenu(file-menu-command)
+SbActionManager.reloadPartMenu(file-menu-command)
+SbActionManager.reloadWindowMenu(file-menu-command)
+SbActionManager.getActionHandler()
+SbActionManager.init()
+SbActionManager.initActions()
+SbActionManager.registerActions()
+SbActionManager.initUiFactory()
+SbActionManager.reloadRecentMenu(file-menu-command)
+SbActionManager.reloadPartMenu(file-menu-command)
+SbActionManager.reloadWindowMenu(file-menu-command)
+SbApp.removeMainFrame(frame1)
+SbApp.exit()
+BUILD SUCCESSFUL (total time: 49 seconds)

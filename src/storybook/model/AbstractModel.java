@@ -2,18 +2,23 @@ package storybook.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeEvent;
 
 import org.hibernate.Session;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.model.hbn.SbSessionFactory;
+import storybook.model.hbn.entity.AbstractEntity;
+import storybook.ui.MainFrame;
 
 public abstract class AbstractModel {
 
 	protected PropertyChangeSupport propertyChangeSupport;
 
 	protected SbSessionFactory sessionFactory;
+	MainFrame mainFrame;
 
-	public AbstractModel() {
+	public AbstractModel(MainFrame m) {
+		mainFrame=m;
 		propertyChangeSupport = new PropertyChangeSupport(this);
 		sessionFactory = new SbSessionFactory();
 	}
@@ -21,9 +26,9 @@ public abstract class AbstractModel {
 	public abstract void fireAgain();
 
 
-	public void initSession(String dbName, String configFile) {
-		StorybookApp.trace("AbstractModel.initSession("+dbName+","+configFile+")");
-		sessionFactory.init(dbName, configFile);
+	public void initSession(String dbName) {
+		SbApp.trace("AbstractModel.initSession("+dbName+")");
+		sessionFactory.init(dbName);
 	}
 
 	public void initDefault() {
@@ -46,7 +51,7 @@ public abstract class AbstractModel {
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
-		StorybookApp.trace("AbstractModel.addPropertyChangeListener("+l.toString()+")");
+		SbApp.trace("AbstractModel.addPropertyChangeListener("+l.toString()+")");
 		propertyChangeSupport.addPropertyChangeListener(l);
 	}
 
@@ -54,13 +59,16 @@ public abstract class AbstractModel {
 		propertyChangeSupport.removePropertyChangeListener(l);
 	}
 
-	protected void firePropertyChange(String propertyName, Object oldValue,
-			Object newValue) {
-		propertyChangeSupport.firePropertyChange(propertyName, oldValue,
-				newValue);
+	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+		SbApp.trace("AbstractModel.firePropertyChange("+propertyName+","+"oldValue..."+","+"newValue..."+")");
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
 	public SbSessionFactory getSessionFactory() {
 		return sessionFactory;
+	}
+
+	public void editEntity(AbstractEntity entity) {
+		mainFrame.showEditorAsDialog(entity);
 	}
 }

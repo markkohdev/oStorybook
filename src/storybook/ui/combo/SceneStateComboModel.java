@@ -34,6 +34,7 @@ public class SceneStateComboModel extends DefaultComboBoxModel {
 		this(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	public SceneStateComboModel(boolean addPseudoStates) {
 		SceneStateModel model = new SceneStateModel(addPseudoStates);
 		for (AbstractState state : model.getStates()) {

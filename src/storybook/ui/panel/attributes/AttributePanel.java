@@ -61,6 +61,7 @@ public class AttributePanel extends AbstractPanel {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void initUi() {
 		setLayout(new MigLayout("ins 0,flowx,fillx", "[][grow]", ""));
 

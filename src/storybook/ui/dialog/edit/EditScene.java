@@ -73,12 +73,12 @@ public class EditScene extends javax.swing.JPanel {
 		txID.setText(Long.toString(scene.getId()));
 		txNumber.setText(scene.getChapterSceneNo());
 		txTitle.setText(scene.getTitle());
-		CommonBox.loadCbChapters(parent.parent, cbChapters, scene);
+		CommonBox.loadCbChapters(parent.mainFrame, cbChapters, scene);
 		CommonBox.loadCbStatus(cbStatus, scene);
-		CommonBox.loadCbLocations(parent.parent, cbLocations, scene);
-		CommonBox.loadLbStrands(parent.parent, lbStrands, scene);
-		CommonBox.loadLbPersons(parent.parent, lbPersons, scene);
-		CommonBox.loadLbItems(parent.parent, lbItems, scene);
+		CommonBox.loadCbLocations(parent.mainFrame, cbLocations, scene);
+		CommonBox.loadLbStrands(parent.mainFrame, lbStrands, scene);
+		CommonBox.loadLbPersons(parent.mainFrame, lbPersons, scene);
+		CommonBox.loadLbItems(parent.mainFrame, lbItems, scene);
 		//TODO date fixed or relative
 		if (scene.hasSceneTs()) {
 			rbFixed.setSelected(true);
@@ -137,7 +137,7 @@ public class EditScene extends javax.swing.JPanel {
         paneNotes = new javax.swing.JPanel();
         paneText = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         lbId.setText(bundle.getString("msg.common.id")); // NOI18N
 
         txID.setEditable(false);
@@ -216,11 +216,11 @@ public class EditScene extends javax.swing.JPanel {
         paneStrands.setLayout(paneStrandsLayout);
         paneStrandsLayout.setHorizontalGroup(
             paneStrandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
         );
         paneStrandsLayout.setVerticalGroup(
             paneStrandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
         );
 
         panePersons.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("msg.common.persons"))); // NOI18N
@@ -236,7 +236,7 @@ public class EditScene extends javax.swing.JPanel {
         panePersons.setLayout(panePersonsLayout);
         panePersonsLayout.setHorizontalGroup(
             panePersonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
         );
         panePersonsLayout.setVerticalGroup(
             panePersonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,11 +257,11 @@ public class EditScene extends javax.swing.JPanel {
         paneItems.setLayout(paneItemsLayout);
         paneItemsLayout.setHorizontalGroup(
             paneItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
         );
         paneItemsLayout.setVerticalGroup(
             paneItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
         );
 
         bAddStrand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/plus.png"))); // NOI18N
@@ -331,42 +331,39 @@ public class EditScene extends javax.swing.JPanel {
                                     .addComponent(txID, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                                     .addComponent(txNumber))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbStatus)
-                                    .addComponent(lbChapter))
+                                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lbChapter, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                                    .addComponent(lbStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(paneCommonLayout.createSequentialGroup()
-                                        .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 88, Short.MAX_VALUE))
+                                    .addComponent(cbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cbChapters, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btClearChapter))))
-                    .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(paneCommonLayout.createSequentialGroup()
-                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(paneStrands, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(bAddStrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(bAddPersons, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                .addComponent(panePersons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(paneItems, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(bAddItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(paneCommonLayout.createSequentialGroup()
-                            .addComponent(lbDate)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(rbNone)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(paneCommonLayout.createSequentialGroup()
-                                    .addComponent(rbFixed)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(rbRelative)
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                                .addComponent(paneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(paneStrands, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bAddStrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panePersons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bAddPersons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(paneItems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bAddItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addComponent(lbDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rbNone)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(paneCommonLayout.createSequentialGroup()
+                                .addComponent(rbFixed)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbRelative)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(paneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         paneCommonLayout.setVerticalGroup(
@@ -407,9 +404,6 @@ public class EditScene extends javax.swing.JPanel {
                             .addComponent(paneStrands, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panePersons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(paneCommonLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(lbChapter))
-                    .addGroup(paneCommonLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(txID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(paneCommonLayout.createSequentialGroup()
@@ -417,7 +411,10 @@ public class EditScene extends javax.swing.JPanel {
                         .addComponent(lbId))
                     .addGroup(paneCommonLayout.createSequentialGroup()
                         .addGap(107, 107, 107)
-                        .addComponent(lbLocation)))
+                        .addComponent(lbLocation))
+                    .addGroup(paneCommonLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(lbChapter)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneCommonLayout.createSequentialGroup()
@@ -438,7 +435,7 @@ public class EditScene extends javax.swing.JPanel {
         paneNotes.setLayout(paneNotesLayout);
         paneNotesLayout.setHorizontalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 438, Short.MAX_VALUE)
+            .addGap(0, 524, Short.MAX_VALUE)
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -451,7 +448,7 @@ public class EditScene extends javax.swing.JPanel {
         paneText.setLayout(paneTextLayout);
         paneTextLayout.setHorizontalGroup(
             paneTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 438, Short.MAX_VALUE)
+            .addGap(0, 524, Short.MAX_VALUE)
         );
         paneTextLayout.setVerticalGroup(
             paneTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

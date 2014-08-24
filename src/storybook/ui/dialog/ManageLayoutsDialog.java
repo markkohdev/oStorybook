@@ -34,7 +34,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.SbConstants.PreferenceKey;
 import storybook.model.PreferenceModel;
 import storybook.model.hbn.dao.PreferenceDAOImpl;
@@ -75,7 +75,7 @@ public class ManageLayoutsDialog extends AbstractDialog {
 		panel.setLayout(new MigLayout("wrap,fillx", "[grow]"));
 		panel.add(new JLabel(I18N.getMsg("msg.common.delete")), "span,right");
 
-		PreferenceModel model = StorybookApp.getInstance().getPreferenceModel();
+		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
 		Session session = model.beginTransaction();
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		List<Preference> preferences = dao.findAll();
@@ -83,7 +83,7 @@ public class ManageLayoutsDialog extends AbstractDialog {
 		for (Preference pref : preferences) {
 			if (pref.getKey().startsWith(
 					PreferenceKey.DOCKING_LAYOUT.toString())) {
-				if (SbConstants.InternalKey.LAST_USED_LAYOUT.toString().equals(
+				if (SbConstants.BookKey.LAST_USED_LAYOUT.toString().equals(
 						pref.getStringValue())) {
 					continue;
 				}
@@ -128,8 +128,8 @@ public class ManageLayoutsDialog extends AbstractDialog {
 				PrefUtil.delete(key);
 			}
 		}
-		StorybookApp.getInstance().reloadMenuBars();
-		StorybookApp.getInstance().reloadStatusBars();
+		SbApp.getInstance().reloadMenuBars();
+		SbApp.getInstance().reloadStatusBars();
 	}
 
 	private ManageLayoutsDialog getThis() {

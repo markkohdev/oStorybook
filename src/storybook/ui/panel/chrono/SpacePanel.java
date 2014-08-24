@@ -100,7 +100,7 @@ public class SpacePanel extends AbstractPanel implements MouseListener {
 			newSceneAction = new AbstractAction() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					BookController ctrl = mainFrame.getDocumentController();
+					BookController ctrl = mainFrame.getBookController();
 					Scene scene = new Scene();
 					scene.setStrand(strand);
 					scene.setDate(date);

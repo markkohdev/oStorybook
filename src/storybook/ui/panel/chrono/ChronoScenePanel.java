@@ -33,14 +33,14 @@ import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.action.EditEntityAction;
 import storybook.controller.BookController;
 import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.DateUtil;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.toolkit.swing.undo.UndoableTextArea;
@@ -128,8 +128,8 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 	@Override
 	public void init() {
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.CHRONO_ZOOM, SbConstants.DEFAULT_CHRONO_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.CHRONO_ZOOM, SbConstants.DEFAULT_CHRONO_ZOOM);
 			setZoomedSize(internal.getIntegerValue());
 		} catch (Exception e) {
 			setZoomedSize(SbConstants.DEFAULT_CHRONO_ZOOM);
@@ -311,7 +311,7 @@ public class ChronoScenePanel extends AbstractScenePanel implements FocusListene
 					scene.setSummary(tc.getText());
 					break;
 			}
-			mainFrame.getDocumentController().updateScene(scene);
+			mainFrame.getBookController().updateScene(scene);
 		}
 	}
 }

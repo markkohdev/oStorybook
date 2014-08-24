@@ -33,7 +33,7 @@ public class EditGender extends javax.swing.JPanel {
 
 	public EditGender(Editor m, Gender g) {
 		parent = m;
-		mainFrame = parent.parent;
+		mainFrame = parent.mainFrame;
 		gender = g;
 		initUI();
 	}
@@ -73,7 +73,7 @@ public class EditGender extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         txRetirement = new javax.swing.JTextField();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         lbId.setText(bundle.getString("msg.common.id")); // NOI18N
 
         txtId.setEditable(false);
@@ -102,7 +102,7 @@ public class EditGender extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbId)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                        .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                         .addGap(289, 289, 289))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -114,7 +114,7 @@ public class EditGender extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(23, 23, 23)
-                                .addComponent(txAdulthood, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE))
+                                .addComponent(txAdulthood))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -122,7 +122,7 @@ public class EditGender extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
-                                .addComponent(txRetirement))
+                                .addComponent(txRetirement, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
@@ -197,7 +197,7 @@ public class EditGender extends javax.swing.JPanel {
 	}
 
 	private Gender createNewGender() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		GenderDAOImpl dao = new GenderDAOImpl(session);
 		model.commit();

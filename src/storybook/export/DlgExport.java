@@ -16,7 +16,7 @@ import org.apache.commons.io.FileUtils;
 
 import storybook.SbConstants;
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.EnvUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
@@ -45,7 +45,7 @@ public class DlgExport extends javax.swing.JDialog {
 	
 	public DlgExport(MainFrame parent) {
 		super(parent, true);
-		exports = new ArrayList();
+		exports = new ArrayList<>();
 		exports.add(new ExportData("summary", "msg.export.book.summary"));
 		exports.add(new ExportData("part", "msg.export.part.list"));
 		exports.add(new ExportData("chapter", "msg.export.chapter.list"));
@@ -62,14 +62,14 @@ public class DlgExport extends javax.swing.JDialog {
 		initUI();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void initUI() {
 		paramExport = new ParamExport(mainFrame);
 		paramExport.load();
-		Internal internal = DocumentUtil.restoreInternal(mainFrame,
-				SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(mainFrame));
+		Internal internal = BookUtil.get(mainFrame,
+				SbConstants.BookKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(mainFrame));
 		txFolder.setText(internal.getStringValue());
-		if (txFolder.getText().isEmpty())
-			txFolder.setText(FileUtils.getUserDirectoryPath());
+		if (txFolder.getText().isEmpty()) txFolder.setText(FileUtils.getUserDirectoryPath());
 		cbReport.removeAllItems();
 		for (ExportData export : exports) {
 			cbReport.addItem(export);
@@ -105,7 +105,7 @@ public class DlgExport extends javax.swing.JDialog {
         btOptions = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         setTitle(bundle.getString("msg.dlg.export.title")); // NOI18N
         setResizable(false);
 
@@ -195,8 +195,8 @@ public class DlgExport extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txFolder)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btFolder))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -206,7 +206,7 @@ public class DlgExport extends javax.swing.JDialog {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 133, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btClose, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,7 +268,7 @@ public class DlgExport extends javax.swing.JDialog {
     }//GEN-LAST:event_btExportActionPerformed
 
     private void btCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCloseActionPerformed
-        DocumentUtil.storeInternal(mainFrame, SbConstants.InternalKey.EXPORT_DIRECTORY, txFolder.getText());
+        BookUtil.store(mainFrame, SbConstants.BookKey.EXPORT_DIRECTORY, txFolder.getText());
 		dispose();
     }//GEN-LAST:event_btCloseActionPerformed
 

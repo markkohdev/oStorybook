@@ -72,7 +72,7 @@ public class PersonLinksPanel extends AbstractPanel {
 			setMaximumSize(new Dimension(170, 50));
 		}
 		setOpaque(false);
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		session.refresh(scene);
 		List<Person> list = scene.getPersons();

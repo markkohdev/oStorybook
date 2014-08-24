@@ -43,7 +43,7 @@ import javax.swing.border.BevelBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.ItemDAOImpl;
@@ -55,7 +55,7 @@ import storybook.model.hbn.dao.TagDAOImpl;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.DateUtil;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.TextUtil;
 import storybook.toolkit.html.HtmlSelection;
@@ -72,6 +72,7 @@ public class BookPropertiesDialog extends AbstractDialog {
 
 	private JTabbedPane tabbedPane;
 
+	private JCheckBox cbUseLibreOffice;
 	private JCheckBox cbUseHtmlScenes;
 	private JCheckBox cbUseHtmlDescr;
 	private JCheckBox cbEditorFullToolbar;
@@ -110,10 +111,8 @@ public class BookPropertiesDialog extends AbstractDialog {
 		setMinimumSize(dim);
 
 		tabbedPane = new JTabbedPane();
-		tabbedPane.addTab(I18N.getMsg("msg.dlg.preference.global"),
-				createGeneralTab());
-		tabbedPane.addTab(I18N.getMsg("msg.common.properties"),
-				createPropertyTab());
+		tabbedPane.addTab(I18N.getMsg("msg.dlg.preference.global"), createGeneralTab());
+		tabbedPane.addTab(I18N.getMsg("msg.common.properties"), createPropertyTab());
 		tabbedPane.addTab(I18N.getMsg("msg.file.info"), createInfoTab());
 
 		// layout
@@ -129,26 +128,22 @@ public class BookPropertiesDialog extends AbstractDialog {
 
 		JLabel lbTitle = new JLabel(I18N.getMsgColon("msg.common.title"));
 		tfTitle = new JTextField();
-		Internal internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.TITLE, "");
+		Internal internal = BookUtil.get(mainFrame, BookKey.TITLE, "");
 		tfTitle.setText(internal.getStringValue());
 
 		JLabel lbSubtitle = new JLabel(I18N.getMsgColon("msg.common.subtitle"));
 		tfSubtitle = new JTextField();
-		internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.SUBTITLE, "");
+		internal = BookUtil.get(mainFrame, BookKey.SUBTITLE, "");
 		tfSubtitle.setText(internal.getStringValue());
 
 		JLabel lbAuthor = new JLabel(I18N.getMsgColon("msg.common.author_s"));
 		tfAuthor = new JTextField();
-		internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.AUTHOR, "");
+		internal = BookUtil.get(mainFrame, BookKey.AUTHOR, "");
 		tfAuthor.setText(internal.getStringValue());
 
 		JLabel lbCopyright = new JLabel(I18N.getMsgColon("msg.common.copyright"));
 		tfCopyright = new JTextField();
-		internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.COPYRIGHT, "");
+		internal = BookUtil.get(mainFrame, BookKey.COPYRIGHT, "");
 		tfCopyright.setText(internal.getStringValue());
 
 		JLabel lbNotes = new JLabel(I18N.getMsgColon("msg.common.notes"));
@@ -156,8 +151,7 @@ public class BookPropertiesDialog extends AbstractDialog {
 		taNotes.setLineWrap(true);
 		taNotes.setWrapStyleWord(true);
 		taNotes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.NOTES, "");
+		internal = BookUtil.get(mainFrame, BookKey.NOTES, "");
 		taNotes.setText(internal.getStringValue());
 		taNotes.setCaretPosition(0);
 
@@ -166,8 +160,7 @@ public class BookPropertiesDialog extends AbstractDialog {
 		taBlurb.setLineWrap(true);
 		taBlurb.setWrapStyleWord(true);
 		taBlurb.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		internal = DocumentUtil.restoreInternal(mainFrame, InternalKey.BLURB,
-				"");
+		internal = BookUtil.get(mainFrame, BookKey.BLURB, "");
 		taBlurb.setText(internal.getStringValue());
 		taBlurb.setCaretPosition(0);
 
@@ -202,7 +195,7 @@ public class BookPropertiesDialog extends AbstractDialog {
 		MigLayout layout = new MigLayout("wrap,fill", "[]", "[grow][]");
 		panel.setLayout(layout);
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 
 		int textLength = 0;
@@ -228,34 +221,19 @@ public class BookPropertiesDialog extends AbstractDialog {
 		buf.append("<html>");
 		buf.append(HtmlUtil.getHeadWithCSS());
 		buf.append("<body><table>");
-		buf.append(HtmlUtil.getRow2Cols(
-				I18N.getMsgColon("msg.file.info.filename"), file.toString()));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.file.info.filename"), file.toString()));
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(file.lastModified());
-		buf.append(HtmlUtil.getRow2Cols(
-				I18N.getMsgColon("msg.file.info.last.mod"),
-				DateUtil.calendarToString(cal)));
-		buf.append(HtmlUtil.getRow2Cols(
-				I18N.getMsgColon("msg.file.info.text.length"),
-				Integer.toString(textLength)));
-		buf.append(HtmlUtil.getRow2Cols(
-				I18N.getMsgColon("msg.file.info.words"),
-				Integer.toString(words)));
-		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.common.parts"),
-				Integer.toString(partDao.count(null))));
-		buf.append(HtmlUtil.getRow2Cols(
-				I18N.getMsgColon("msg.common.chapters"),
-				Integer.toString(chapterDao.count(null))));
-		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.common.scenes"),
-				Integer.toString(sceneDao.count(null))));
-		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.common.persons"),
-				Integer.toString(personDao.count(null))));
-		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.menu.locations"),
-				Integer.toString(locationDao.count(null))));
-		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.tags"),
-				Integer.toString(tagDao.count(null))));
-		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.items"),
-				Integer.toString(itemDao.count(null))));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.file.info.last.mod"), DateUtil.calendarToString(cal)));
+		buf.append(HtmlUtil.getRow2Cols( I18N.getMsgColon("msg.file.info.text.length"), Integer.toString(textLength)));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.file.info.words"), Integer.toString(words)));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.common.parts"), Integer.toString(partDao.count(null))));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.common.chapters"), Integer.toString(chapterDao.count(null))));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.common.scenes"), Integer.toString(sceneDao.count(null))));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.common.persons"), Integer.toString(personDao.count(null))));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.menu.locations"), Integer.toString(locationDao.count(null))));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.tags"), Integer.toString(tagDao.count(null))));
+		buf.append(HtmlUtil.getRow2Cols(I18N.getMsgColon("msg.items"), Integer.toString(itemDao.count(null))));
 		buf.append("</table></body></html>");
 
 		model.commit();
@@ -287,56 +265,50 @@ public class BookPropertiesDialog extends AbstractDialog {
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("wrap 2"));
 
+		cbUseLibreOffice = new JCheckBox();
+		cbUseLibreOffice.setText(I18N.getMsg("msg.document.preference.use.libreoffice"));
+		cbUseLibreOffice.setSelected(BookUtil.isUseLibreOffice(mainFrame));
+
 		cbUseHtmlScenes = new JCheckBox();
-		cbUseHtmlScenes.setText(I18N
-				.getMsg("msg.document.preference.use.html.scenes"));
-		cbUseHtmlScenes.setSelected(DocumentUtil.isUseHtmlScenes(mainFrame));
+		cbUseHtmlScenes.setText(I18N.getMsg("msg.document.preference.use.html.scenes"));
+		cbUseHtmlScenes.setSelected(BookUtil.isUseHtmlScenes(mainFrame));
 
 		cbUseHtmlDescr = new JCheckBox();
-		cbUseHtmlDescr.setText(I18N
-				.getMsg("msg.document.preference.use.html.descr"));
-		cbUseHtmlDescr.setSelected(DocumentUtil.isUseHtmlDescr(mainFrame));
+		cbUseHtmlDescr.setText(I18N.getMsg("msg.document.preference.use.html.descr"));
+		cbUseHtmlDescr.setSelected(BookUtil.isUseHtmlDescr(mainFrame));
 
 		cbEditorFullToolbar = new JCheckBox();
-		cbEditorFullToolbar.setText(I18N
-				.getMsg("msg.document.preference.editor.full.toolbar"));
-		cbEditorFullToolbar.setSelected(DocumentUtil
-				.isEditorFullToolbar(mainFrame));
+		cbEditorFullToolbar.setText(I18N.getMsg("msg.document.preference.editor.full.toolbar"));
+		cbEditorFullToolbar.setSelected(BookUtil.isEditorFullToolbar(mainFrame));
 
 		cbExportChapterNumbers = new JCheckBox();
-		cbExportChapterNumbers.setText(I18N
-				.getMsg("msg.export.chapter.numbers"));
-		cbExportChapterNumbers.setSelected(DocumentUtil
-				.isExportChapterNumbers(mainFrame));
+		cbExportChapterNumbers.setText(I18N.getMsg("msg.export.chapter.numbers"));
+		cbExportChapterNumbers.setSelected(BookUtil.isExportChapterNumbers(mainFrame));
 
 		cbExportRomanNumerals = new JCheckBox();
 		cbExportRomanNumerals.setText(I18N.getMsg("msg.export.roman.numerals"));
-		cbExportRomanNumerals.setSelected(DocumentUtil
-				.isExportRomanNumerals(mainFrame));
+		cbExportRomanNumerals.setSelected(BookUtil.isExportRomanNumerals(mainFrame));
 
 		cbExportChapterTitles = new JCheckBox();
 		cbExportChapterTitles.setText(I18N.getMsg("msg.export.chapter.titles"));
-		cbExportChapterTitles.setSelected(DocumentUtil
-				.isExportChapterTitles(mainFrame));
+		cbExportChapterTitles.setSelected(BookUtil.isExportChapterTitles(mainFrame));
 
 		cbExportChapterDatesLocations = new JCheckBox();
-		cbExportChapterDatesLocations.setText(I18N
-				.getMsg("msg.export.chapter.dates.locations"));
-		cbExportChapterDatesLocations.setSelected(DocumentUtil
-				.isExportChapterDatesLocations(mainFrame));
+		cbExportChapterDatesLocations.setText(I18N.getMsg("msg.export.chapter.dates.locations"));
+		cbExportChapterDatesLocations.setSelected(BookUtil.isExportChapterDatesLocations(mainFrame));
 
 		cbExportSceneTitles = new JCheckBox();
 		cbExportSceneTitles.setText(I18N.getMsg("msg.export.scene.titles"));
-		cbExportSceneTitles.setSelected(DocumentUtil
-				.isExportSceneTitle(mainFrame));
+		cbExportSceneTitles.setSelected(BookUtil.isExportSceneTitle(mainFrame));
 
 		cbExportPartTitles = new JCheckBox();
 		cbExportPartTitles.setText(I18N.getMsg("msg.export.part.titles"));
-		cbExportPartTitles.setSelected(DocumentUtil
-				.isExportPartTitles(mainFrame));
+		cbExportPartTitles.setSelected(BookUtil.isExportPartTitles(mainFrame));
 
 		// layout
 		addTitle(panel, "msg.document.preference.formatted.title");
+		panel.add(new JLabel());
+		panel.add(cbUseLibreOffice);
 		panel.add(new JLabel());
 		panel.add(cbUseHtmlScenes);
 		panel.add(new JLabel());
@@ -373,52 +345,27 @@ public class BookPropertiesDialog extends AbstractDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// general settings
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.USE_HTML_SCENES,
-						cbUseHtmlScenes.isSelected());
-				DocumentUtil
-						.storeInternal(mainFrame, InternalKey.USE_HTML_DESCR,
-								cbUseHtmlDescr.isSelected());
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.EDITOR_FULL_TOOLBAR,
-						cbEditorFullToolbar.isSelected());
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.EXPORT_CHAPTER_NUMBERS,
-						cbExportChapterNumbers.isSelected());
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.EXPORT_ROMAN_NUMERALS,
-						cbExportRomanNumerals.isSelected());
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.EXPORT_CHAPTER_TITLES,
-						cbExportChapterTitles.isSelected());
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.EXPORT_CHAPTER_DATES_LOCATIONS,
-						cbExportChapterDatesLocations.isSelected());
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.EXPORT_SCENE_TITLES,
-						cbExportSceneTitles.isSelected());
-				DocumentUtil.storeInternal(mainFrame,
-						InternalKey.EXPORT_PART_TITLES,
-						cbExportPartTitles.isSelected());
-
+				BookUtil.store(mainFrame, BookKey.USE_LIBREOFFICE, cbUseLibreOffice.isSelected());
+				BookUtil.store(mainFrame, BookKey.USE_HTML_SCENES, cbUseHtmlScenes.isSelected());
+				BookUtil.store(mainFrame, BookKey.USE_HTML_DESCR, cbUseHtmlDescr.isSelected());
+				BookUtil.store(mainFrame, BookKey.EDITOR_FULL_TOOLBAR, cbEditorFullToolbar.isSelected());
+				BookUtil.store(mainFrame, BookKey.EXPORT_CHAPTER_NUMBERS, cbExportChapterNumbers.isSelected());
+				BookUtil.store(mainFrame, BookKey.EXPORT_ROMAN_NUMERALS, cbExportRomanNumerals.isSelected());
+				BookUtil.store(mainFrame, BookKey.EXPORT_CHAPTER_TITLES, cbExportChapterTitles.isSelected());
+				BookUtil.store(mainFrame, BookKey.EXPORT_CHAPTER_DATES_LOCATIONS, cbExportChapterDatesLocations.isSelected());
+				BookUtil.store(mainFrame, BookKey.EXPORT_SCENE_TITLES, cbExportSceneTitles.isSelected());
+				BookUtil.store(mainFrame, BookKey.EXPORT_PART_TITLES, cbExportPartTitles.isSelected());
 				// properties
-				DocumentUtil.storeInternal(mainFrame, InternalKey.TITLE,
-						tfTitle.getText());
-				DocumentUtil.storeInternal(mainFrame, InternalKey.SUBTITLE,
-						tfSubtitle.getText());
-				DocumentUtil.storeInternal(mainFrame, InternalKey.AUTHOR,
-						tfAuthor.getText());
-				DocumentUtil.storeInternal(mainFrame, InternalKey.COPYRIGHT,
-						tfCopyright.getText());
-				DocumentUtil.storeInternal(mainFrame, InternalKey.BLURB,
-						taBlurb.getText());
-				DocumentUtil.storeInternal(mainFrame, InternalKey.NOTES,
-						taNotes.getText());
-
+				BookUtil.store(mainFrame, BookKey.TITLE, tfTitle.getText());
+				BookUtil.store(mainFrame, BookKey.SUBTITLE, tfSubtitle.getText());
+				BookUtil.store(mainFrame, BookKey.AUTHOR, tfAuthor.getText());
+				BookUtil.store(mainFrame, BookKey.COPYRIGHT, tfCopyright.getText());
+				BookUtil.store(mainFrame, BookKey.BLURB, taBlurb.getText());
+				BookUtil.store(mainFrame, BookKey.NOTES, taNotes.getText());
 				canceled = false;
 				dispose();
 				mainFrame.setTitle();
-				mainFrame.getDocumentController().fireAgain();
+				mainFrame.getBookController().fireAgain();
 			}
 		};
 	}

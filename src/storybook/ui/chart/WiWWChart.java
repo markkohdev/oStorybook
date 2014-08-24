@@ -33,6 +33,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.Session;
+import storybook.model.hbn.entity.Scene;
 
 public class WiWWChart extends AbstractPersonsChart
 	implements ChangeListener {
@@ -49,6 +50,7 @@ public class WiWWChart extends AbstractPersonsChart
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void initChart() {
 		super.initChart();
 		this.foundCharacters = new TreeSet();
@@ -88,21 +90,22 @@ public class WiWWChart extends AbstractPersonsChart
 		setTableColumnWidth();
 	}
 
+	@SuppressWarnings("unchecked")
 	private JTable createTable() {
 		Part part = this.mainFrame.getCurrentPart();
-		BookModel documentModel = this.mainFrame.getDocumentModel();
+		BookModel documentModel = this.mainFrame.getBookModel();
 		Session session = documentModel.beginTransaction();
 		PersonDAOImpl personDAO = new PersonDAOImpl(session);
-		List localList1 = personDAO.findByCategories(this.selectedCategories);
+		List<Person> persons = personDAO.findByCategories(this.selectedCategories);
 		SceneDAOImpl sceneDAO = new SceneDAOImpl(session);
-		List localList2 = sceneDAO.findDistinctDates(part);
+		List<Date> dates = sceneDAO.findDistinctDates(part);
 		LocationDAOImpl locationDAO = new LocationDAOImpl(session);
-		List localList3 = locationDAO.findAll();
+		List<Location> locations = locationDAO.findAll();
 		documentModel.commit();
-		Object[] arrayOfObject1 = ArrayUtils.addAll(new Object[]{I18N.getMsg("msg.common.location"), ""}, localList2.toArray());
+		Object[] arrayOfObject1 = ArrayUtils.addAll(new Object[]{I18N.getMsg("msg.common.location"), ""}, dates.toArray());
 		this.foundCharacters.clear();
 		ArrayList localArrayList = new ArrayList();
-		Object localObject1 = localList3.iterator();
+		Object localObject1 = locations.iterator();
 		while (((Iterator) localObject1).hasNext()) {
 			Location location = (Location) ((Iterator) localObject1).next();
 			Object[] localObject2 = new Object[arrayOfObject1.length];
@@ -110,10 +113,10 @@ public class WiWWChart extends AbstractPersonsChart
 			localObject2[(j++)] = location.getName();
 			localObject2[(j++)] = location.getCountryCity();
 			int m = 0;
-			Iterator localIterator = localList2.iterator();
+			Iterator localIterator = dates.iterator();
 			while (localIterator.hasNext()) {
 				Date localDate = (Date) localIterator.next();
-				WiWWContainer localWiWWContainer = new WiWWContainer(this.mainFrame, localDate, location, localList1);
+				WiWWContainer localWiWWContainer = new WiWWContainer(this.mainFrame, localDate, location, persons);
 				localObject2[j] = localWiWWContainer;
 				if (localWiWWContainer.isFound()) {
 					this.foundCharacters.addAll(localWiWWContainer.getCharacterList());
@@ -127,13 +130,13 @@ public class WiWWChart extends AbstractPersonsChart
 		}
 		localObject1 = new Object[localArrayList.size()][];
 		int i = 0;
-		Object localObject2 = localArrayList.iterator();
 		/* Obfuscator ?
+		Object localObject2 = localArrayList.iterator();
 		while (((Iterator) localObject2).hasNext()) {
 			Object[] arrayOfObject2 = (Object[]) ((Iterator) localObject2).next();
 			localObject1[(i++)] = arrayOfObject2;
 		}*/
-		localObject2 = new ReadOnlyTable((Object[][]) localObject1, arrayOfObject1);
+		Object localObject2 = new ReadOnlyTable((Object[][]) localObject1, arrayOfObject1);
 		for (int k = 2; k < ((JTable) localObject2).getColumnCount(); k++) {
 			TableColumn localTableColumn = ((JTable) localObject2).getColumnModel().getColumn(k);
 			localTableColumn.setPreferredWidth(120);

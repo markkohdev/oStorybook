@@ -85,7 +85,7 @@ abstract public class AbstractScenePanel extends AbstractGradientPanel {
 			newAction = new AbstractAction() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					BookController ctrl = mainFrame.getDocumentController();
+					BookController ctrl = mainFrame.getBookController();
 					Scene newScene = new Scene();
 					newScene.setStrand(scene.getStrand());
 					newScene.setSceneTs(scene.getSceneTs());

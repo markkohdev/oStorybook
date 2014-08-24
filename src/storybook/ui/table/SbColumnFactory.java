@@ -57,6 +57,7 @@ import storybook.ui.table.renderer.StrandTableCellRenderer;
 import storybook.ui.table.renderer.StrandsTableCellRenderer;
 
 import com.googlecode.genericdao.search.Search;
+import java.util.List;
 import storybook.ui.RadioButtonGroup;
 
 /**
@@ -357,6 +358,30 @@ public class SbColumnFactory {
 		return columns;
 	}
 
+	public Vector<SbColumn> getAttributesColumns() {
+		Vector<SbColumn> columns = new Vector<SbColumn>();
+		columns.add(getIdColumn());
+
+		SbColumn col = new SbColumn(1, "Name", "msg.attribute.key");
+		col.setMaxLength(255);
+		col.setGrowX(true);
+		VerifierGroup group = new VerifierGroup();
+		group.addVerifier(new NotEmptyVerifier());
+		group.addVerifier(new LengthVerifier(col.getMaxLength()));
+		col.setVerifier(group);
+		columns.add(col);
+
+		col = new SbColumn(2, "Value", "msg.attribute.value");
+		col.setMaxLength(2048);
+		col.setGrowX(true);
+		VerifierGroup group2 = new VerifierGroup();
+		group2.addVerifier(new LengthVerifier(col.getMaxLength()));
+		col.setVerifier(group2);
+		columns.add(col);
+
+		return columns;
+	}
+
 	public Vector<SbColumn> getStrandColumns() {
 		Vector<SbColumn> columns = new Vector<SbColumn>();
 		columns.add(getIdColumn());
@@ -378,8 +403,7 @@ public class SbColumnFactory {
 		col.setVerifier(group2);
 		columns.add(col);
 
-		col = new SbColumn(3, "JColor", InputType.COLOR,
-				"msg.dlg.mng.strands.color");
+		col = new SbColumn(3, "JColor", InputType.COLOR, "msg.dlg.mng.strands.color");
 		col.setAllowNoColor(false);
 		columns.add(col);
 
@@ -405,8 +429,7 @@ public class SbColumnFactory {
 		Vector<SbColumn> columns = new Vector<SbColumn>();
 		columns.add(getIdColumn());
 
-		SbColumn col = new SbColumn(1, "IdeaState", InputType.COMBOBOX,
-				"msg.idea.table.status");
+		SbColumn col = new SbColumn(1, "IdeaState", InputType.COMBOBOX, "msg.idea.table.status");
 		col.setComboModel(new IdeaStateComboModel());
 		col.setDefaultSort(true);
 		columns.add(col);
@@ -450,8 +473,7 @@ public class SbColumnFactory {
 		col.setAutoCompleteDaoMethod("findCategories");
 		columns.add(col);
 
-		col = new SbColumn(3, "Description", InputType.TEXTAREA,
-				"msg.dlg.location.description");
+		col = new SbColumn(3, "Description", InputType.TEXTAREA, "msg.dlg.location.description");
 		col.setMaxLength(32768);
 		col.setVerifier(new LengthVerifier(col.getMaxLength()));
 		col.setTableCellRenderer(new HtmlTableCellRenderer());
@@ -490,8 +512,7 @@ public class SbColumnFactory {
 		col.setAutoCompleteDaoMethod("findCategories");
 		columns.add(col);
 
-		col = new SbColumn(3, "Description", InputType.TEXTAREA,
-				"msg.dlg.location.description");
+		col = new SbColumn(3, "Description", InputType.TEXTAREA, "msg.dlg.location.description");
 		col.setMaxLength(32768);
 		col.setVerifier(new LengthVerifier(col.getMaxLength()));
 		col.setTableCellRenderer(new HtmlTableCellRenderer());
@@ -521,18 +542,15 @@ public class SbColumnFactory {
 		col.setTableCellRenderer(new PersonTableCellRenderer());
 		columns.add(col);
 
-		col = new SbColumn(3, "Location", InputType.COMBOBOX,
-				"msg.common.location");
+		col = new SbColumn(3, "Location", InputType.COMBOBOX, "msg.common.location");
 		col.setEmptyComboItem(true);
 		columns.add(col);
 
-		col = new SbColumn(4, "StartScene", InputType.COMBOBOX,
-				"msg.tag.start.scene");
+		col = new SbColumn(4, "StartScene", InputType.COMBOBOX, "msg.tag.start.scene");
 		col.setEmptyComboItem(true);
 		columns.add(col);
 
-		col = new SbColumn(5, "EndScene", InputType.COMBOBOX,
-				"msg.tag.end.scene");
+		col = new SbColumn(5, "EndScene", InputType.COMBOBOX, "msg.tag.end.scene");
 		col.setEmptyComboItem(true);
 		columns.add(col);
 
@@ -552,18 +570,15 @@ public class SbColumnFactory {
 		col.setTableCellRenderer(new PersonTableCellRenderer());
 		columns.add(col);
 
-		col = new SbColumn(3, "Location", InputType.COMBOBOX,
-				"msg.common.location");
+		col = new SbColumn(3, "Location", InputType.COMBOBOX, "msg.common.location");
 		col.setEmptyComboItem(true);
 		columns.add(col);
 
-		col = new SbColumn(4, "StartScene", InputType.COMBOBOX,
-				"msg.tag.start.scene");
+		col = new SbColumn(4, "StartScene", InputType.COMBOBOX, "msg.tag.start.scene");
 		col.setEmptyComboItem(true);
 		columns.add(col);
 
-		col = new SbColumn(5, "EndScene", InputType.COMBOBOX,
-				"msg.tag.end.scene");
+		col = new SbColumn(5, "EndScene", InputType.COMBOBOX, "msg.tag.end.scene");
 		col.setEmptyComboItem(true);
 		columns.add(col);
 
@@ -580,13 +595,11 @@ public class SbColumnFactory {
 		col.setGrowX(true);
 		columns.add(col);
 
-		col = new SbColumn(2, "Strand", InputType.COMBOBOX,
-				"msg.dlg.scene.strand");
+		col = new SbColumn(2, "Strand", InputType.COMBOBOX, "msg.dlg.scene.strand");
 		col.setTableCellRenderer(new StrandTableCellRenderer());
 		columns.add(col);
 
-		col = new SbColumn(3, "Chapter", InputType.COMBOBOX,
-				"msg.dlg.scene.chapter");
+		col = new SbColumn(3, "Chapter", InputType.COMBOBOX, "msg.dlg.scene.chapter");
 		col.setEmptyComboItem(true);
 		col.setTableCellRenderer(new ChapterTableCellRenderer());
 		col.setComparator(new SafeChapterComparator());
@@ -606,8 +619,7 @@ public class SbColumnFactory {
 		col.setTableCellRenderer(new SceneStateTableCellRenderer());
 		columns.add(col);
 
-		col = new SbColumn(6, "Informative", InputType.CHECKBOX,
-				"msg.common.informative");
+		col = new SbColumn(6, "Informative", InputType.CHECKBOX, "msg.common.informative");
 		col.setTableCellRenderer(new BooleanTableCellRenderer());
 		col.setHideOnStart(true);
 		columns.add(col);
@@ -617,8 +629,7 @@ public class SbColumnFactory {
 		rbg.add(2, "sceneTs", I18N.getMsg("msg.scenedialog.fixeddate"));
 		rbg.add(3, "relativeScene", I18N.getMsg("msg.scenedialog.relativedate"));
 
-		col = new SbColumn(7, "NoSceneTs", InputType.NONE,
-				"msg.scenedialog.nodate");
+		col = new SbColumn(7, "NoSceneTs", InputType.NONE, "msg.scenedialog.nodate");
 		col.setRadioButtonGroup(rbg);
 		col.setRadioButtonIndex(1);
 		col.setHideOnStart(true);
@@ -631,16 +642,14 @@ public class SbColumnFactory {
 		col.setRadioButtonIndex(2);
 		columns.add(col);
 
-		col = new SbColumn(9, "RelativeDateDifference",
-				"msg.scenedialog.relativedate.occurs");
+		col = new SbColumn(9, "RelativeDateDifference", "msg.scenedialog.relativedate.occurs");
 		col.setVerifier(new IntegerVerifier(false));
 		col.setRadioButtonGroup(rbg);
 		col.setRadioButtonIndex(3);
 		col.setHideOnStart(true);
 		columns.add(col);
 
-		col = new SbColumn(10, "RelativeSceneId", InputType.COMBOBOX,
-				"msg.scenedialog.relativedate.after");
+		col = new SbColumn(10, "RelativeSceneId", InputType.COMBOBOX, "msg.scenedialog.relativedate.after");
 		col.setTableCellRenderer(new SceneIdTableCellRenderer());
 		col.setComboModel(new RelativeSceneComboModel());
 		col.setRadioButtonGroup(rbg);
@@ -648,15 +657,13 @@ public class SbColumnFactory {
 		col.setHideOnStart(true);
 		columns.add(col);
 
-		col = new SbColumn(11, "Strands", InputType.LIST,
-				"msg.dlg.scene.strand.links");
+		col = new SbColumn(11, "Strands", InputType.LIST, "msg.dlg.scene.strand.links");
 		col.setTableCellRenderer(new StrandsTableCellRenderer());
 		col.setCbDecorator(new StrandCbPanelDecorator());
 		col.setHideOnStart(true);
 		columns.add(col);
 
-		col = new SbColumn(12, "Summary", InputType.TEXTAREA,
-				"msg.dlg.scene.summary");
+		col = new SbColumn(12, "Summary", InputType.TEXTAREA, "msg.dlg.scene.summary");
 		col.setMaxLength(32768);
 		col.setVerifier(new LengthVerifier(col.getMaxLength()));
 		col.setShowInSeparateTab(true);
@@ -664,8 +671,7 @@ public class SbColumnFactory {
 		col.setHideOnStart(true);
 		columns.add(col);
 
-		col = new SbColumn(13, "Persons", InputType.LIST,
-				"msg.dlg.scene.person.links");
+		col = new SbColumn(13, "Persons", InputType.LIST, "msg.dlg.scene.person.links");
 		col.setShowInSeparateTab(true);
 		Search search = new Search(Person.class);
 		search.addSort("category.sort", false);
@@ -674,8 +680,7 @@ public class SbColumnFactory {
 		col.setCbDecorator(new PersonCbPanelDecorator());
 		columns.add(col);
 
-		col = new SbColumn(14, "Locations", InputType.LIST,
-				"msg.dlg.scene.location.links");
+		col = new SbColumn(14, "Locations", InputType.LIST, "msg.dlg.scene.location.links");
 		col.setShowInSeparateTab(true);
 		col.setTableCellRenderer(new LocationsTableCellRenderer());
 		col.setCbDecorator(new LocationCbPanelDecorator());
@@ -722,6 +727,10 @@ public class SbColumnFactory {
 		col.setVerifier(new IntegerVerifier());
 		col.setHideOnStart(true);
 		return col;
+	}
+
+	List<SbColumn> getAttributeColumns() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }

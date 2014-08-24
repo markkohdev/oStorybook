@@ -52,7 +52,7 @@ public class LocationsTableCellRenderer extends DefaultTableCellRenderer {
 				MainFrame mainFrame = (MainFrame) table
 						.getClientProperty(ClientPropertyName.MAIN_FRAME
 								.toString());
-				BookModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getBookModel();
 				Session session = model.beginTransaction();
 				for (Location location : list) {
 					session.refresh(location);

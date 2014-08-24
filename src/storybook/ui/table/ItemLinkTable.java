@@ -97,7 +97,7 @@ public class ItemLinkTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ItemLinkDAOImpl dao = new ItemLinkDAOImpl(session);
 		ItemLink itemLink = dao.find(id);

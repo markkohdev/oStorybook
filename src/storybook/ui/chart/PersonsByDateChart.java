@@ -36,99 +36,87 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.Week;
 import org.jfree.ui.TextAnchor;
 
-public class PersonsByDateChart extends AbstractPersonsChart
-{
-  private ChartPanel chartPanel;
-  private String domainAxisLabel = I18N.getMsg("msg.common.person");
-  private String rangeAxisLabel = I18N.getMsg("msg.common.date");
+public class PersonsByDateChart extends AbstractPersonsChart {
 
-  public PersonsByDateChart(MainFrame paramMainFrame)
-  {
-    super(paramMainFrame, "msg.menu.tools.charts.overall.character.date");
-    this.partRelated = true;
-  }
+	private ChartPanel chartPanel;
+	private String domainAxisLabel = I18N.getMsg("msg.common.person");
+	private String rangeAxisLabel = I18N.getMsg("msg.common.date");
 
-  protected void initChartUi()
-  {
-    IntervalCategoryDataset localIntervalCategoryDataset = createDataset();
-    JFreeChart localJFreeChart = createChart(localIntervalCategoryDataset);
-    this.chartPanel = new ChartPanel(localJFreeChart);
-    this.panel.add(this.chartPanel, "grow");
-  }
+	public PersonsByDateChart(MainFrame paramMainFrame) {
+		super(paramMainFrame, "msg.menu.tools.charts.overall.character.date");
+		this.partRelated = true;
+	}
 
-  private JFreeChart createChart(IntervalCategoryDataset paramIntervalCategoryDataset)
-  {
-    JFreeChart localJFreeChart = ChartFactory.createGanttChart(this.chartTitle, this.domainAxisLabel, this.rangeAxisLabel, paramIntervalCategoryDataset, true, true, false);
-    CategoryPlot localCategoryPlot = (CategoryPlot)localJFreeChart.getPlot();
-    GanttRenderer localGanttRenderer = (GanttRenderer)localCategoryPlot.getRenderer();
-    ChartUtil.hideLegend(localCategoryPlot);
-    StandardCategoryItemLabelGenerator localStandardCategoryItemLabelGenerator = new StandardCategoryItemLabelGenerator();
-    localGanttRenderer.setBaseItemLabelGenerator(localStandardCategoryItemLabelGenerator);
-    localGanttRenderer.setBaseItemLabelsVisible(true);
-    ItemLabelPosition localItemLabelPosition = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER);
-    localGanttRenderer.setBasePositiveItemLabelPosition(localItemLabelPosition);
-    ChartUtil.setNiceSeriesColors(paramIntervalCategoryDataset, localGanttRenderer);
-    return localJFreeChart;
-  }
+	protected void initChartUi() {
+		IntervalCategoryDataset localIntervalCategoryDataset = createDataset();
+		JFreeChart localJFreeChart = createChart(localIntervalCategoryDataset);
+		this.chartPanel = new ChartPanel(localJFreeChart);
+		this.panel.add(this.chartPanel, "grow");
+	}
 
-  private IntervalCategoryDataset createDataset()
-  {
-    TaskSeriesCollection localTaskSeriesCollection = new TaskSeriesCollection();
-    try
-    {
-      Part localPart = this.mainFrame.getCurrentPart();
-      BookModel localDocumentModel = this.mainFrame.getDocumentModel();
-      Session localSession = localDocumentModel.beginTransaction();
-      PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
-      List localList1 = localPersonDAOImpl.findByCategories(this.selectedCategories);
-      ChapterDAOImpl localChapterDAOImpl = new ChapterDAOImpl(localSession);
-      List localList2 = localChapterDAOImpl.findAll(localPart);
-      TaskSeries localTaskSeries = new TaskSeries("Serie 1");
-      Iterator localIterator = localList1.iterator();
-      while (localIterator.hasNext())
-      {
-        Person localPerson = (Person)localIterator.next();
-        TreeSet localTreeSet = new TreeSet();
-        Object localObject1 = localList2.iterator();
-        Object localObject2;
-        Object localObject3;
-        Object localObject4;
-        while (((Iterator)localObject1).hasNext())
-        {
-          localObject2 = (Chapter)((Iterator)localObject1).next();
-          localObject3 = localChapterDAOImpl.findScenes((Chapter)localObject2);
-          localObject4 = ((List)localObject3).iterator();
-          while (((Iterator)localObject4).hasNext())
-          {
-            Scene localScene = (Scene)((Iterator)localObject4).next();
-            if (localScene.hasSceneTs())
-            {
-              List localList3 = localScene.getPersons();
-              if ((!localList3.isEmpty()) && (localList3.contains(localPerson)))
-                localTreeSet.add(localScene.getSceneTs());
-            }
-          }
-        }
-        if (!localTreeSet.isEmpty())
-        {
-          localTreeSet = ChartUtil.correctDates(localTreeSet);
-          localObject1 = new Task(localPerson.toString(), new Week((Date)localTreeSet.first()));
-          localObject2 = localTreeSet.iterator();
-          while (((Iterator)localObject2).hasNext())
-          {
-            localObject3 = (Date)((Iterator)localObject2).next();
-            localObject4 = new Task(localPerson.toString(), new Day((Date)localObject3));
-            ((Task)localObject1).addSubtask((Task)localObject4);
-          }
-          localTaskSeries.add((Task)localObject1);
-        }
-      }
-      localDocumentModel.commit();
-      localTaskSeriesCollection.add(localTaskSeries);
-    }
-    catch (Exception localException)
-    {
-    }
-    return localTaskSeriesCollection;
-  }
+	private JFreeChart createChart(IntervalCategoryDataset paramIntervalCategoryDataset) {
+		JFreeChart localJFreeChart = ChartFactory.createGanttChart(this.chartTitle, this.domainAxisLabel, this.rangeAxisLabel, paramIntervalCategoryDataset, true, true, false);
+		CategoryPlot localCategoryPlot = (CategoryPlot) localJFreeChart.getPlot();
+		GanttRenderer localGanttRenderer = (GanttRenderer) localCategoryPlot.getRenderer();
+		ChartUtil.hideLegend(localCategoryPlot);
+		StandardCategoryItemLabelGenerator localStandardCategoryItemLabelGenerator = new StandardCategoryItemLabelGenerator();
+		localGanttRenderer.setBaseItemLabelGenerator(localStandardCategoryItemLabelGenerator);
+		localGanttRenderer.setBaseItemLabelsVisible(true);
+		ItemLabelPosition localItemLabelPosition = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER);
+		localGanttRenderer.setBasePositiveItemLabelPosition(localItemLabelPosition);
+		ChartUtil.setNiceSeriesColors(paramIntervalCategoryDataset, localGanttRenderer);
+		return localJFreeChart;
+	}
+
+	@SuppressWarnings("unchecked")
+	private IntervalCategoryDataset createDataset() {
+		TaskSeriesCollection localTaskSeriesCollection = new TaskSeriesCollection();
+		try {
+			Part localPart = this.mainFrame.getCurrentPart();
+			BookModel localDocumentModel = this.mainFrame.getBookModel();
+			Session localSession = localDocumentModel.beginTransaction();
+			PersonDAOImpl localPersonDAOImpl = new PersonDAOImpl(localSession);
+			List localList1 = localPersonDAOImpl.findByCategories(this.selectedCategories);
+			ChapterDAOImpl localChapterDAOImpl = new ChapterDAOImpl(localSession);
+			List localList2 = localChapterDAOImpl.findAll(localPart);
+			TaskSeries localTaskSeries = new TaskSeries("Serie 1");
+			Iterator localIterator = localList1.iterator();
+			while (localIterator.hasNext()) {
+				Person localPerson = (Person) localIterator.next();
+				TreeSet localTreeSet = new TreeSet();
+				Object localObject1 = localList2.iterator();
+				Object localObject2;
+				Object localObject3;
+				Object localObject4;
+				while (((Iterator) localObject1).hasNext()) {
+					localObject2 = (Chapter) ((Iterator) localObject1).next();
+					localObject3 = localChapterDAOImpl.findScenes((Chapter) localObject2);
+					localObject4 = ((List) localObject3).iterator();
+					while (((Iterator) localObject4).hasNext()) {
+						Scene localScene = (Scene) ((Iterator) localObject4).next();
+						if (localScene.hasSceneTs()) {
+							List localList3 = localScene.getPersons();
+							if ((!localList3.isEmpty()) && (localList3.contains(localPerson)))
+								localTreeSet.add(localScene.getSceneTs());
+						}
+					}
+				}
+				if (!localTreeSet.isEmpty()) {
+					localTreeSet = ChartUtil.correctDates(localTreeSet);
+					localObject1 = new Task(localPerson.toString(), new Week((Date) localTreeSet.first()));
+					localObject2 = localTreeSet.iterator();
+					while (((Iterator) localObject2).hasNext()) {
+						localObject3 = (Date) ((Iterator) localObject2).next();
+						localObject4 = new Task(localPerson.toString(), new Day((Date) localObject3));
+						((Task) localObject1).addSubtask((Task) localObject4);
+					}
+					localTaskSeries.add((Task) localObject1);
+				}
+			}
+			localDocumentModel.commit();
+			localTaskSeriesCollection.add(localTaskSeries);
+		} catch (Exception localException) {
+		}
+		return localTaskSeriesCollection;
+	}
 }

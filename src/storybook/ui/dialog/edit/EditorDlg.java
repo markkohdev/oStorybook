@@ -17,6 +17,9 @@
 package storybook.ui.dialog.edit;
 
 import java.awt.CardLayout;
+
+import storybook.SbApp;
+import storybook.model.hbn.entity.AbstractEntity;
 import storybook.ui.MainFrame;
 
 /**
@@ -27,18 +30,23 @@ public class EditorDlg extends javax.swing.JDialog {
 	private MainFrame mainFrame;
 	public boolean isModified;
 
-	/**
-	 * Creates new form EditorDlg
-	 */
 	public EditorDlg(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
 	}
 
-	public EditorDlg(MainFrame mainFrame) {
-		super(mainFrame, true);
-		this.mainFrame=mainFrame;
+	public EditorDlg(MainFrame m) {
+		super(m, true);
+		this.mainFrame=m;
 		initComponents();
+	}
+
+	public EditorDlg(MainFrame m, AbstractEntity e) {
+		super(m, true);
+		this.mainFrame=m;
+		initComponents();
+		Editor edt=new Editor(this,mainFrame,e);
+		setPanel(edt);
 	}
 
 	/**
@@ -52,7 +60,7 @@ public class EditorDlg extends javax.swing.JDialog {
         panelEditor = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         setTitle(bundle.getString("msg.common.editor")); // NOI18N
         setModal(true);
 
@@ -60,11 +68,11 @@ public class EditorDlg extends javax.swing.JDialog {
         panelEditor.setLayout(panelEditorLayout);
         panelEditorLayout.setHorizontalGroup(
             panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 439, Short.MAX_VALUE)
+            .addGap(0, 626, Short.MAX_VALUE)
         );
         panelEditorLayout.setVerticalGroup(
             panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 361, Short.MAX_VALUE)
+            .addGap(0, 576, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -104,19 +112,15 @@ public class EditorDlg extends javax.swing.JDialog {
 					break;
 				}
 			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(EditorDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(EditorDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(EditorDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+		} catch (ClassNotFoundException | InstantiationException 
+				| IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(EditorDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
         //</editor-fold>
 
 		/* Create and display the dialog */
 		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				EditorDlg dialog = new EditorDlg(new javax.swing.JFrame(), true);
 				dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -134,7 +138,8 @@ public class EditorDlg extends javax.swing.JDialog {
     private javax.swing.JPanel panelEditor;
     // End of variables declaration//GEN-END:variables
 
-	public void setPanel(Editor e) {
+	public final void setPanel(Editor e) {
+		SbApp.trace("EditorDlg.setPanel(e)");
 		CardLayout card = new CardLayout(0, 0);
 		panelEditor.setLayout(card);
 		panelEditor.add(e);

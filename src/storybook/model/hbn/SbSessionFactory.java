@@ -29,7 +29,7 @@ import com.mchange.v2.log.MLevel;
 import static com.mchange.v2.log.MLevel.OFF;
 import java.util.logging.Level;
 import org.hibernate.HibernateException;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 public class SbSessionFactory {
 
@@ -40,21 +40,21 @@ public class SbSessionFactory {
 
 	public SessionFactory getSessionFactory() {
 		if (sessionFactory == null) {
-			StorybookApp.trace("*** Call init() first.");
+			SbApp.trace("*** Call init() first.");
 		}
 		return sessionFactory;
 	}
 
 	public Session getSession() {
 		if (sessionFactory == null) {
-			StorybookApp.trace("*** Call init() first.");
+			SbApp.trace("*** Call init() first.");
 		}
 		return sessionFactory.getCurrentSession();
 	}
 
-	public void init(String filename, String configFile) {
-		StorybookApp.trace("SbSessionFactory.init()");
-		if (StorybookApp.getTraceHibernate()) {
+	public void init(String filename) {
+		SbApp.trace("SbSessionFactory.init()");
+		if (SbApp.getTraceHibernate()) {
 			java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.INFO);
 		} else {
 			java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
@@ -69,7 +69,7 @@ public class SbSessionFactory {
 			config.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 			config.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
 			String dbURL = "jdbc:h2:" + filename;
-			if (StorybookApp.getTraceHibernate()) {
+			if (SbApp.getTraceHibernate()) {
 				dbURL += ";TRACE_LEVEL_FILE=3;TRACE_LEVEL_SYSTEM_OUT=3";
 			} else {
 				dbURL += ";TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0";
@@ -78,7 +78,7 @@ public class SbSessionFactory {
 			config.setProperty("hibernate.connection.username", "sa");
 			config.setProperty("hibernate.connection.password", "");
 			config.setProperty("hibernate.hbm2ddl.auto", "update");
-			if (StorybookApp.getTraceHibernate()) {
+			if (SbApp.getTraceHibernate()) {
 				java.util.Properties p = new java.util.Properties(System.getProperties());
 				p.put("com.mchange.v2.log.MLog", "com.mchange.v2.log.FallbackMLog");
 				p.put("com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL", "OFF");
@@ -95,9 +95,9 @@ public class SbSessionFactory {
 			config.setProperty("current_session_context_class", "thread");
 			config.setProperty("hibernate.cache.provider_class", "org.hibernate.cache.HashtableCacheProvider");
 			config.setProperty("hibernate.current_session_context_class", "thread");
-			if (configFile.contains("preference")) {
+			//if (configFile.contains("preference")) {
 				config.addClass(storybook.model.hbn.entity.Preference.class);
-			} else {
+			//} else {
 				config.addClass(storybook.model.hbn.entity.Part.class);
 				config.addClass(storybook.model.hbn.entity.Chapter.class);
 				config.addClass(storybook.model.hbn.entity.Scene.class);
@@ -111,7 +111,7 @@ public class SbSessionFactory {
 				config.addClass(storybook.model.hbn.entity.Internal.class);
 				config.addClass(storybook.model.hbn.entity.Category.class);
 				config.addClass(storybook.model.hbn.entity.Attribute.class);
-			}
+			//}
 			sessionFactory = config.buildSessionFactory();
 		} catch (SecurityException | HibernateException ex) {
 			// make sure you log the exception, as it might be swallowed
@@ -123,7 +123,7 @@ public class SbSessionFactory {
 	}
 
 	public void query(GenericDAOImpl<? extends AbstractEntity, ?> dao) {
-		if (StorybookApp.getTrace()) {
+		if (SbApp.getTrace()) {
 			System.out.println("SbSessionFactory.query(): "
 				+ dao.getClass().getSimpleName());
 			List<? extends AbstractEntity> entities = dao.findAll();

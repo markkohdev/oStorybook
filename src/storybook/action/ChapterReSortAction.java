@@ -32,7 +32,7 @@ import storybook.ui.MainFrame;
  */
 public class ChapterReSortAction extends AbstractEntityAction {
 
-	private Chapter chapter;
+	private final Chapter chapter;
 
 	public ChapterReSortAction(MainFrame mainFrame, Chapter chapter) {
 		super(mainFrame, chapter, I18N.getMsg("msg.common.re-sort"),

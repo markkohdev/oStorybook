@@ -19,9 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package storybook.toolkit.net;
 
 import java.awt.Desktop;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import storybook.SbApp;
 
 import storybook.SbConstants;
 
@@ -30,31 +33,36 @@ public class NetUtil {
 	private static String googleMapUrl;
 
 	public static void openBrowser(String path) {
+		SbApp.trace("NetUtil.openBrowser("+path+")");
 		try {
 			Desktop.getDesktop().browse(new URI(path));
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (URISyntaxException | IOException e) {
+			SbApp.error("NetUtil.openBrowser("+path+")", e);
 		}
 	}
 
 	public static void openGoogleMap(String query) {
+		SbApp.trace("NetUtil.openGoogleMap("+query+")");
 		try {
 			String queryEnc = URLEncoder.encode(query, "UTF-8");
 			String path = getGoogleMapsUrl() + "/?q=" + queryEnc;
 			openBrowser(path);
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			SbApp.error("NetUtil.openGoogleMap("+query+")", e);
 		}
 	}
 
 	public static String getGoogleMapsUrl() {
+		SbApp.trace("NetUtil.getGoogleMapsUrl()");
 		if (googleMapUrl == null || googleMapUrl.isEmpty()) {
 			return SbConstants.DEFAULT_GOOGLE_MAPS_URL;
 		}
 		return googleMapUrl;
 	}
 
-	public static void setGoogleMapUrl(String googleMapUrl) {
-		NetUtil.googleMapUrl = googleMapUrl;
+	public static void setGoogleMapUrl(String url) {
+		SbApp.trace("NetUtil.setGoogleMapUrl("+url+")");
+		NetUtil.googleMapUrl = url;
 	}
+
 }

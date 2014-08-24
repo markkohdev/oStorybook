@@ -24,9 +24,11 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
+
 import storybook.SbConstants.ViewName;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.controller.BookController;
+import storybook.model.hbn.dao.AttributeDAOImpl;
 import storybook.model.hbn.dao.CategoryDAOImpl;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.GenderDAOImpl;
@@ -42,6 +44,7 @@ import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.dao.TagDAOImpl;
 import storybook.model.hbn.dao.TagLinkDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
+import storybook.model.hbn.entity.Attribute;
 import storybook.model.hbn.entity.Category;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Gender;
@@ -59,6 +62,7 @@ import storybook.model.hbn.entity.TagLink;
 import storybook.model.state.SceneState;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.ColorUtil;
+import storybook.ui.MainFrame;
 import storybook.ui.SbView;
 import storybook.ui.panel.book.BookPanel;
 import storybook.ui.panel.chrono.ChronoPanel;
@@ -71,8 +75,12 @@ import storybook.ui.panel.reading.ReadingPanel;
  */
 public class BookModel extends AbstractModel {
 
+	public BookModel(MainFrame m) {
+		super(m);
+	}
+
 	public synchronized void initEntites() {
-		StorybookApp.trace("DocumentModel.initEntities()");
+		SbApp.trace("BookModel.initEntities()");
 		Session session = beginTransaction();
 
 		// default strand
@@ -102,64 +110,57 @@ public class BookModel extends AbstractModel {
 		session.save(scene);
 
 		// default genders
-		Gender male = new Gender(I18N.getMsg("msg.dlg.person.gender.male"), 12,
-				6, 47, 14);
+		Gender male = new Gender(I18N.getMsg("msg.dlg.person.gender.male"), 12, 6, 47, 14);
 		session.save(male);
-		Gender female = new Gender(I18N.getMsg("msg.dlg.person.gender.female"),
-				12, 6, 47, 14);
+		Gender female = new Gender(I18N.getMsg("msg.dlg.person.gender.female"), 12, 6, 47, 14);
 		session.save(female);
 
 		// default categories
-		Category major = new Category(1,
-				I18N.getMsg("msg.category.central.character"));
+		Category major = new Category(1, I18N.getMsg("msg.category.central.character"));
 		session.save(major);
-		Category minor = new Category(2,
-				I18N.getMsg("msg.category.minor.character"));
+		Category minor = new Category(2, I18N.getMsg("msg.category.minor.character"));
 		session.save(minor);
 
 		commit();
 	}
 
 	public synchronized void initSession(String dbName) {
-		StorybookApp.trace("DocumentModel.initSession("+dbName+")");
+		SbApp.trace("BookModel.initSession("+dbName+")");
 		try {
-			super.initSession(dbName, "hibernate.cfg.xml");
+			super.initSession(dbName);
 			Session session = beginTransaction();
 			// test queries
 			sessionFactory.query(new PartDAOImpl(session));
 			sessionFactory.query(new ChapterDAOImpl(session));
 			commit();
+			SbApp.trace("test query OK");
 		} catch (Exception e) {
+			SbApp.trace("test query not OK");
 		}
 	}
 
 	@Override
 	public void fireAgain() {
-		StorybookApp.trace("DocumentModel.fireAgain()");
+		SbApp.trace("BookModel.fireAgain()");
 
 		fireAgainScenes();
 		fireAgainChapters();
 		fireAgainParts();
-
 		fireAgainLocations();
-
 		fireAgainPersons();
 		fireAgainGenders();
 		fireAgainCategories();
-
 		fireAgainStrands();
 		fireAgainIdeas();
-
 		fireAgainTags();
 		fireAgainItems();
 		fireAgainTagLinks();
 		fireAgainItemLinks();
-
 		fireAgainInternals();
 	}
 
 	public void fireAgain(SbView view) {
-		StorybookApp.trace("DocumentModel.fireAgain("+view.getName()+")");
+		SbApp.trace("BookModel.fireAgain("+view.getName()+")");
 		if (ViewName.CHRONO.compare(view)) {
 			fireAgainScenes();
 		} else if (ViewName.BOOK.compare(view)) {
@@ -200,151 +201,136 @@ public class BookModel extends AbstractModel {
 	}
 
 	private void fireAgainScenes() {
-		StorybookApp.trace("DocumentModel.fireAgainScenes()");
+		SbApp.trace("BookModel.fireAgainScenes()");
 		Session session = beginTransaction();
 		SceneDAOImpl sceneDao = new SceneDAOImpl(session);
 		List<Scene> scenes = sceneDao.findAll();
 		commit();
-		firePropertyChange(BookController.SceneProps.INIT.toString(), null,
-				scenes);
+		firePropertyChange(BookController.SceneProps.INIT.toString(), null, scenes);
 	}
 
 	private void fireAgainChapters() {
-		StorybookApp.trace("DocumentModel.fireAgainChapters()");
+		SbApp.trace("BookModel.fireAgainChapters()");
 		Session session = beginTransaction();
 		ChapterDAOImpl chapterDao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = chapterDao.findAll();
 		commit();
-		firePropertyChange(BookController.ChapterProps.INIT.toString(),
-				null, chapters);
+		firePropertyChange(BookController.ChapterProps.INIT.toString(), null, chapters);
 	}
 
 	private void fireAgainParts() {
-		StorybookApp.trace("DocumentModel.fireAgainParts()");
+		SbApp.trace("BookModel.fireAgainParts()");
 		Session session = beginTransaction();
 		PartDAOImpl partDao = new PartDAOImpl(session);
 		List<Part> parts = partDao.findAll();
 		commit();
-		firePropertyChange(BookController.PartProps.INIT.toString(), null,
-				parts);
+		firePropertyChange(BookController.PartProps.INIT.toString(), null, parts);
 	}
 
 	private void fireAgainLocations() {
-		StorybookApp.trace("DocumentModel.fireAgainLocations()");
+		SbApp.trace("BookModel.fireAgainLocations()");
 		Session session = beginTransaction();
 		LocationDAOImpl locationDao = new LocationDAOImpl(session);
 		List<Location> locations = locationDao.findAll();
 		commit();
-		firePropertyChange(BookController.LocationProps.INIT.toString(),
-				null, locations);
+		firePropertyChange(BookController.LocationProps.INIT.toString(), null, locations);
 	}
 
 	private void fireAgainPersons() {
-		StorybookApp.trace("DocumentModel.fireAgainPersons()");
+		SbApp.trace("BookModel.fireAgainPersons()");
 		Session session = beginTransaction();
 		PersonDAOImpl personDao = new PersonDAOImpl(session);
 		List<Person> persons = personDao.findAll();
 		commit();
-		firePropertyChange(BookController.PersonProps.INIT.toString(),
-				null, persons);
+		firePropertyChange(BookController.PersonProps.INIT.toString(), null, persons);
 	}
 
 	private void fireAgainGenders() {
-		StorybookApp.trace("DocumentModel.fireAgainGenders()");
+		SbApp.trace("BookModel.fireAgainGenders()");
 		Session session = beginTransaction();
 		GenderDAOImpl genderDao = new GenderDAOImpl(session);
 		List<Gender> genders = genderDao.findAll();
 		commit();
-		firePropertyChange(BookController.GenderProps.INIT.toString(),
-				null, genders);
+		firePropertyChange(BookController.GenderProps.INIT.toString(), null, genders);
 	}
 
 	private void fireAgainCategories() {
-		StorybookApp.trace("DocumentModel.fireAgainCategories()");
+		SbApp.trace("BookModel.fireAgainCategories()");
 		Session session = beginTransaction();
 		CategoryDAOImpl categoryDao = new CategoryDAOImpl(session);
 		List<Category> categories = categoryDao.findAll();
 		commit();
-		firePropertyChange(BookController.CategoryProps.INIT.toString(),
-				null, categories);
+		firePropertyChange(BookController.CategoryProps.INIT.toString(), null, categories);
 	}
 
 	private void fireAgainStrands() {
-		StorybookApp.trace("DocumentModel.fireAgainStrands()");
+		SbApp.trace("BookModel.fireAgainStrands()");
 		Session session = beginTransaction();
 		StrandDAOImpl strandDao = new StrandDAOImpl(session);
 		List<Strand> strands = strandDao.findAll();
 		commit();
-		firePropertyChange(BookController.StrandProps.INIT.toString(),
-				null, strands);
+		firePropertyChange(BookController.StrandProps.INIT.toString(), null, strands);
 	}
 
 	private void fireAgainIdeas() {
-		StorybookApp.trace("DocumentModel.fireAgainIdeas()");
+		SbApp.trace("BookModel.fireAgainIdeas()");
 		Session session = beginTransaction();
 		IdeaDAOImpl ideaDao = new IdeaDAOImpl(session);
 		List<Idea> ideas = ideaDao.findAll();
 		commit();
-		firePropertyChange(BookController.IdeaProps.INIT.toString(), null,
-				ideas);
+		firePropertyChange(BookController.IdeaProps.INIT.toString(), null, ideas);
 	}
 
 	private void fireAgainTags() {
-		StorybookApp.trace("DocumentModel.fireAgainTags()");
+		SbApp.trace("BookModel.fireAgainTags()");
 		Session session = beginTransaction();
 		TagDAOImpl tagDao = new TagDAOImpl(session);
 		List<Tag> tags = tagDao.findAll();
 		commit();
-		firePropertyChange(BookController.TagProps.INIT.toString(), null,
-				tags);
+		firePropertyChange(BookController.TagProps.INIT.toString(), null, tags);
 	}
 
 	private void fireAgainItems() {
-		StorybookApp.trace("DocumentModel.fireAgainItems()");
+		SbApp.trace("BookModel.fireAgainItems()");
 		Session session = beginTransaction();
 		ItemDAOImpl itemDao = new ItemDAOImpl(session);
 		List<Item> items = itemDao.findAll();
 		commit();
-		firePropertyChange(BookController.ItemProps.INIT.toString(), null,
-				items);
+		firePropertyChange(BookController.ItemProps.INIT.toString(), null, items);
 	}
 
 	private void fireAgainTagLinks() {
-		StorybookApp.trace("DocumentModel.fireAgainTagLinks()");
+		SbApp.trace("BookModel.fireAgainTagLinks()");
 		Session session = beginTransaction();
 		TagLinkDAOImpl tagLinkDao = new TagLinkDAOImpl(session);
 		List<TagLink> tagLinks = tagLinkDao.findAll();
 		commit();
-		firePropertyChange(BookController.TagLinkProps.INIT.toString(),
-				null, tagLinks);
+		firePropertyChange(BookController.TagLinkProps.INIT.toString(), null, tagLinks);
 	}
 
 	private void fireAgainItemLinks() {
-		StorybookApp.trace("DocumentModel.fireAgainItemLinks()");
+		SbApp.trace("BookModel.fireAgainItemLinks()");
 		Session session = beginTransaction();
 		ItemLinkDAOImpl itemLinkDao = new ItemLinkDAOImpl(session);
 		List<ItemLink> itemLinks = itemLinkDao.findAll();
 		commit();
-		firePropertyChange(BookController.ItemLinkProps.INIT.toString(),
-				null, itemLinks);
+		firePropertyChange(BookController.ItemLinkProps.INIT.toString(), null, itemLinks);
 	}
 
 	private void fireAgainInternals() {
-		StorybookApp.trace("DocumentModel.fireAgainInternals()");
+		SbApp.trace("BookModel.fireAgainInternals()");
 		Session session = beginTransaction();
 		InternalDAOImpl internalDao = new InternalDAOImpl(session);
 		List<Internal> internals = internalDao.findAll();
 		commit();
-		firePropertyChange(BookController.InternalProps.INIT.toString(),
-				null, internals);
+		firePropertyChange(BookController.InternalProps.INIT.toString(), null, internals);
 	}
 
 
 	// common
 	public void setRefresh(SbView view) {
-		StorybookApp.trace("DocumentModel.setRefresh("+view.getName()+")");
-		firePropertyChange(BookController.CommonProps.REFRESH.toString(),
-				null, view);
+		SbApp.trace("BookModel.setRefresh("+view.getName()+")");
+		firePropertyChange(BookController.CommonProps.REFRESH.toString(), null, view);
 		try {
 			if (view.getComponentCount() == 0) {
 				return;
@@ -419,13 +405,11 @@ public class BookModel extends AbstractModel {
 	}
 
 	public void setShowInfo(AbstractEntity entity) {
-		firePropertyChange(BookController.CommonProps.SHOW_INFO.toString(),
-				null, entity);
+		firePropertyChange(BookController.CommonProps.SHOW_INFO.toString(), null, entity);
 	}
 
 	public void setShowInfo(DbFile dbFile) {
-		firePropertyChange(BookController.CommonProps.SHOW_INFO.toString(),
-				null, dbFile);
+		firePropertyChange(BookController.CommonProps.SHOW_INFO.toString(), null, dbFile);
 	}
 
 	public void setShowInMemoria(Person person) {
@@ -449,133 +433,98 @@ public class BookModel extends AbstractModel {
 	}
 
 	public void setShowInMemoria(AbstractEntity entity) {
-		firePropertyChange(
-				BookController.CommonProps.SHOW_IN_MEMORIA.toString(),
-				null, entity);
+		firePropertyChange(BookController.CommonProps.SHOW_IN_MEMORIA.toString(), null, entity);
 	}
 
 	public void setUnloadEditor() {
-		firePropertyChange(
-				BookController.CommonProps.UNLOAD_EDITOR.toString(), null,
-				null);
+		firePropertyChange(BookController.CommonProps.UNLOAD_EDITOR.toString(), null, null);
 	}
 
 	public void setFilterScenes(SceneState state) {
-		firePropertyChange(BookController.SceneProps.FILTER.toString(),
-				null, state);
+		firePropertyChange(BookController.SceneProps.FILTER.toString(), null, state);
 	}
 
 	public void setPrint(SbView view) {
-		firePropertyChange(BookController.CommonProps.PRINT.toString(),
-				null, view);
+		firePropertyChange(BookController.CommonProps.PRINT.toString(), null, view);
 	}
 
 	public void setExport(SbView view) {
-		firePropertyChange(BookController.CommonProps.EXPORT.toString(),
-				null, view);
+		firePropertyChange(BookController.CommonProps.EXPORT.toString(), null, view);
 	}
 
 	// chrono view
 	public void setChronoZoom(Integer val) {
-		firePropertyChange(BookController.ChronoViewProps.ZOOM.toString(),
-				null, val);
+		firePropertyChange(BookController.ChronoViewProps.ZOOM.toString(), null, val);
 	}
 
 	public void setChronoLayoutDirection(Boolean val) {
-		firePropertyChange(
-				BookController.ChronoViewProps.LAYOUT_DIRECTION.toString(),
-				null, val);
+		firePropertyChange(BookController.ChronoViewProps.LAYOUT_DIRECTION.toString(), null, val);
 	}
 
 	public void setChronoShowDateDifference(Boolean val) {
-		firePropertyChange(
-				BookController.ChronoViewProps.SHOW_DATE_DIFFERENCE
-						.toString(),
-				null, val);
+		firePropertyChange(BookController.ChronoViewProps.SHOW_DATE_DIFFERENCE.toString(), null, val);
 	}
 
 	public void setChronoShowEntity(Scene scene) {
-		firePropertyChange(
-				BookController.ChronoViewProps.SHOW_ENTITY.toString(),
-				null, scene);
+		firePropertyChange(BookController.ChronoViewProps.SHOW_ENTITY.toString(), null, scene);
 	}
 
 	public void setChronoShowEntity(Chapter chapter) {
-		firePropertyChange(
-				BookController.ChronoViewProps.SHOW_ENTITY.toString(),
-				null, chapter);
+		firePropertyChange(BookController.ChronoViewProps.SHOW_ENTITY.toString(), null, chapter);
 	}
 
 	// book view
 	public void setBookZoom(Integer val) {
-		firePropertyChange(BookController.BookViewProps.ZOOM.toString(),
-				null, val);
+		firePropertyChange(BookController.BookViewProps.ZOOM.toString(), null, val);
 	}
 
 	public void setBookHeightFactor(Integer val) {
-		firePropertyChange(
-				BookController.BookViewProps.HEIGHT_FACTOR.toString(),
-				null, val);
+		firePropertyChange(BookController.BookViewProps.HEIGHT_FACTOR.toString(), null, val);
 	}
 
 	public void setBookShowEntity(Scene scene) {
-		firePropertyChange(
-				BookController.BookViewProps.SHOW_ENTITY.toString(), null,
-				scene);
+		firePropertyChange(BookController.BookViewProps.SHOW_ENTITY.toString(), null, scene);
 	}
 
 	public void setBookShowEntity(Chapter chapter) {
-		firePropertyChange(
-				BookController.BookViewProps.SHOW_ENTITY.toString(), null,
-				chapter);
+		firePropertyChange(BookController.BookViewProps.SHOW_ENTITY.toString(), null, chapter);
 	}
 
 	// manage view
 	public void setManageZoom(Integer val) {
-		firePropertyChange(BookController.ManageViewProps.ZOOM.toString(),
-				null, val);
+		firePropertyChange(BookController.ManageViewProps.ZOOM.toString(), null, val);
 	}
 
 	public void setManageColumns(Integer val) {
-		firePropertyChange(BookController.ManageViewProps.COLUMNS.toString(),
-				null, val);
+		firePropertyChange(BookController.ManageViewProps.COLUMNS.toString(), null, val);
 	}
 
 	public void setManageShowEntity(Scene scene) {
-		firePropertyChange(
-				BookController.ManageViewProps.SHOW_ENTITY.toString(),
-				null, scene);
+		firePropertyChange(BookController.ManageViewProps.SHOW_ENTITY.toString(), null, scene);
 	}
 
 	public void setManageShowEntity(Chapter chapter) {
-		firePropertyChange(
-				BookController.ManageViewProps.SHOW_ENTITY.toString(),
-				null, chapter);
+		firePropertyChange(BookController.ManageViewProps.SHOW_ENTITY.toString(), null, chapter);
 	}
 
 	// reading view
 	public void setReadingZoom(Integer val) {
-		firePropertyChange(BookController.ReadingViewProps.ZOOM.toString(),
-				null, val);
+		firePropertyChange(BookController.ReadingViewProps.ZOOM.toString(), null, val);
 	}
 
 	public void setReadingFontSize(Integer val) {
-		firePropertyChange(
-				BookController.ReadingViewProps.FONT_SIZE.toString(), null,
-				val);
+		firePropertyChange(BookController.ReadingViewProps.FONT_SIZE.toString(), null, val);
 	}
 
 	// memoria view
 	public void setMemoriaBalloon(Boolean val) {
-		firePropertyChange(
-				BookController.MemoriaViewProps.BALLOON.toString(), null,
-				val);
+		firePropertyChange(BookController.MemoriaViewProps.BALLOON.toString(), null, val);
 	}
 
 	// chapter
-	public void setEditChapter(Chapter editChapter) {
-		firePropertyChange(BookController.ChapterProps.EDIT.toString(),
-				null, editChapter);
+	public void setEditChapter(Chapter entity) {
+		//firePropertyChange(BookController.ChapterProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateChapter(Chapter chapter) {
@@ -583,29 +532,23 @@ public class BookModel extends AbstractModel {
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		Chapter old = dao.find(chapter.getId());
 		commit();
-
 		session = beginTransaction();
 		session.update(chapter);
 		commit();
-
-		firePropertyChange(BookController.ChapterProps.UPDATE.toString(),
-				old, chapter);
+		firePropertyChange(BookController.ChapterProps.UPDATE.toString(), old, chapter);
 	}
 
 	public synchronized void setNewChapter(Chapter chapter) {
 		Session session = beginTransaction();
 		session.save(chapter);
 		commit();
-
-		firePropertyChange(BookController.ChapterProps.NEW.toString(),
-				null, chapter);
+		firePropertyChange(BookController.ChapterProps.NEW.toString(), null, chapter);
 	}
 
 	public synchronized void setDeleteChapter(Chapter chapter) {
 		if (chapter.getId() == null) {
 			return;
 		}
-
 		Session session = beginTransaction();
 		// find scenes, set chapter to null
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
@@ -619,9 +562,7 @@ public class BookModel extends AbstractModel {
 		session = beginTransaction();
 		session.delete(chapter);
 		commit();
-
-		firePropertyChange(BookController.ChapterProps.DELETE.toString(),
-				chapter, null);
+		firePropertyChange(BookController.ChapterProps.DELETE.toString(), chapter, null);
 	}
 
 	public synchronized void setDeleteMultiChapters(ArrayList<Long> ids) {
@@ -630,22 +571,18 @@ public class BookModel extends AbstractModel {
 			ChapterDAOImpl dao = new ChapterDAOImpl(session);
 			Chapter old = dao.find(id);
 			commit();
-
 			session = beginTransaction();
 			dao = new ChapterDAOImpl(session);
 			dao.removeById(id);
 			commit();
-
-			firePropertyChange(
-					BookController.ChapterProps.DELETE.toString(), old,
-					null);
+			firePropertyChange(BookController.ChapterProps.DELETE.toString(), old, null);
 		}
 	}
 
 	// part
-	public void setEditPart(Part editPart) {
-		firePropertyChange(BookController.PartProps.EDIT.toString(), null,
-				editPart);
+	public void setEditPart(Part entity) {
+		//firePropertyChange(BookController.PartProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdatePart(Part part) {
@@ -653,29 +590,24 @@ public class BookModel extends AbstractModel {
 		PartDAOImpl dao = new PartDAOImpl(session);
 		Part old = dao.find(part.getId());
 		commit();
-
 		session = beginTransaction();
 		session.update(part);
 		commit();
 
-		firePropertyChange(BookController.PartProps.UPDATE.toString(), old,
-				part);
+		firePropertyChange(BookController.PartProps.UPDATE.toString(), old, part);
 	}
 
 	public synchronized void setNewPart(Part part) {
 		Session session = beginTransaction();
 		session.save(part);
 		commit();
-
-		firePropertyChange(BookController.PartProps.NEW.toString(), null,
-				part);
+		firePropertyChange(BookController.PartProps.NEW.toString(), null, part);
 	}
 
 	public synchronized void setDeletePart(Part part) {
 		if (part.getId() == null) {
 			return;
 		}
-
 		Session session = beginTransaction();
 		// delete chapters
 		PartDAOImpl dao = new PartDAOImpl(session);
@@ -688,9 +620,7 @@ public class BookModel extends AbstractModel {
 		session = beginTransaction();
 		session.delete(part);
 		commit();
-
-		firePropertyChange(BookController.PartProps.DELETE.toString(),
-				part, null);
+		firePropertyChange(BookController.PartProps.DELETE.toString(), part, null);
 	}
 
 	public synchronized void setDeleteMultiParts(ArrayList<Long> ids) {
@@ -704,14 +634,13 @@ public class BookModel extends AbstractModel {
 	}
 
 	public synchronized void setChangePart(Part part) {
-		firePropertyChange(BookController.PartProps.CHANGE.toString(),
-				null, part);
+		firePropertyChange(BookController.PartProps.CHANGE.toString(), null, part);
 	}
 
 	// location
-	public void setEditLocation(Location editLocation) {
-		firePropertyChange(BookController.LocationProps.EDIT.toString(),
-				null, editLocation);
+	public void setEditLocation(Location entity) {
+		//firePropertyChange(BookController.LocationProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateLocation(Location location) {
@@ -719,22 +648,17 @@ public class BookModel extends AbstractModel {
 		LocationDAOImpl dao = new LocationDAOImpl(session);
 		Location old = dao.find(location.getId());
 		commit();
-
 		session = beginTransaction();
 		session.update(location);
 		commit();
-
-		firePropertyChange(BookController.LocationProps.UPDATE.toString(),
-				old, location);
+		firePropertyChange(BookController.LocationProps.UPDATE.toString(), old, location);
 	}
 
 	public synchronized void setNewLocation(Location location) {
 		Session session = beginTransaction();
 		session.save(location);
 		commit();
-
-		firePropertyChange(BookController.LocationProps.NEW.toString(),
-				null, location);
+		firePropertyChange(BookController.LocationProps.NEW.toString(), null, location);
 	}
 
 	public synchronized void setDeleteLocation(Location location) {
@@ -754,16 +678,14 @@ public class BookModel extends AbstractModel {
 			for (Scene scene : scenes) {
 				setUpdateScene(scene);
 			}
-
 			// delete tag / item links
 			EntityUtil.deleteTagAndItemLinks(this, location);
-
 			// delete location
 			session = beginTransaction();
 			session.delete(location);
 			commit();
 		} catch (ConstraintViolationException e) {
-			StorybookApp.error("DocumentModel.setDeleteLocation("+location.getName()+")", e);
+			SbApp.error("BookModel.setDeleteLocation("+location.getName()+")", e);
 		}
 		firePropertyChange(BookController.LocationProps.DELETE.toString(),location, null);
 	}
@@ -779,8 +701,9 @@ public class BookModel extends AbstractModel {
 	}
 
 	// person
-	public void setEditPerson(Person editPerson) {
-		firePropertyChange(BookController.PersonProps.EDIT.toString(),null, editPerson);
+	public void setEditPerson(Person entity) {
+		//firePropertyChange(BookController.PersonProps.EDIT.toString(),null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdatePerson(Person person) {
@@ -788,22 +711,17 @@ public class BookModel extends AbstractModel {
 		PersonDAOImpl dao = new PersonDAOImpl(session);
 		Person old = dao.find(person.getId());
 		commit();
-
 		session = beginTransaction();
 		session.update(person);
 		commit();
-
-		firePropertyChange(BookController.PersonProps.UPDATE.toString(),
-				old, person);
+		firePropertyChange(BookController.PersonProps.UPDATE.toString(), old, person);
 	}
 
 	public synchronized void setNewPerson(Person person) {
 		Session session = beginTransaction();
 		session.save(person);
 		commit();
-
-		firePropertyChange(BookController.PersonProps.NEW.toString(),
-				null, person);
+		firePropertyChange(BookController.PersonProps.NEW.toString(), null, person);
 	}
 
 	public synchronized void setDeletePerson(Person person) {
@@ -823,16 +741,14 @@ public class BookModel extends AbstractModel {
 			for (Scene scene : scenes) {
 				setUpdateScene(scene);
 			}
-
 			// delete tag / item links
 			EntityUtil.deleteTagAndItemLinks(this, person);
-
 			// delete person
 			session = beginTransaction();
 			session.delete(person);
 			commit();
 		} catch (ConstraintViolationException e) {
-			StorybookApp.error("DocumentModel.setDeletePerson("+person.getFullName()+")", e);
+			SbApp.error("BookModel.setDeletePerson("+person.getFullName()+")", e);
 		}
 		firePropertyChange(BookController.PersonProps.DELETE.toString(),person, null);
 	}
@@ -848,9 +764,9 @@ public class BookModel extends AbstractModel {
 	}
 
 	// gender
-	public void setEditGender(Gender editGender) {
-		firePropertyChange(BookController.GenderProps.EDIT.toString(),
-				null, editGender);
+	public void setEditGender(Gender entity) {
+		//firePropertyChange(BookController.GenderProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateGender(Gender gender) {
@@ -863,8 +779,7 @@ public class BookModel extends AbstractModel {
 		session.update(gender);
 		commit();
 
-		firePropertyChange(BookController.GenderProps.UPDATE.toString(),
-				old, gender);
+		firePropertyChange(BookController.GenderProps.UPDATE.toString(), old, gender);
 	}
 
 	public synchronized void setNewGender(Gender gender) {
@@ -872,8 +787,7 @@ public class BookModel extends AbstractModel {
 		session.save(gender);
 		commit();
 
-		firePropertyChange(BookController.GenderProps.NEW.toString(), null,
-				gender);
+		firePropertyChange(BookController.GenderProps.NEW.toString(), null, gender);
 	}
 
 	public synchronized void setDeleteGender(Gender gender) {
@@ -896,8 +810,7 @@ public class BookModel extends AbstractModel {
 		session.delete(gender);
 		commit();
 
-		firePropertyChange(BookController.GenderProps.DELETE.toString(),
-				gender, null);
+		firePropertyChange(BookController.GenderProps.DELETE.toString(), gender, null);
 	}
 
 	public synchronized void setDeleteMultiGenders(ArrayList<Long> ids) {
@@ -912,15 +825,14 @@ public class BookModel extends AbstractModel {
 			dao.removeById(id);
 			commit();
 
-			firePropertyChange(
-					BookController.GenderProps.DELETE.toString(), old, null);
+			firePropertyChange(BookController.GenderProps.DELETE.toString(), old, null);
 		}
 	}
 
 	// category
-	public void setEditCategory(Category editCategory) {
-		firePropertyChange(BookController.CategoryProps.EDIT.toString(),
-				null, editCategory);
+	public void setEditCategory(Category entity) {
+		//firePropertyChange(BookController.CategoryProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateCategory(Category category) {
@@ -933,8 +845,7 @@ public class BookModel extends AbstractModel {
 		session.update(category);
 		commit();
 
-		firePropertyChange(BookController.CategoryProps.UPDATE.toString(),
-				old, category);
+		firePropertyChange(BookController.CategoryProps.UPDATE.toString(), old, category);
 	}
 
 	public synchronized void setNewCategory(Category category) {
@@ -942,8 +853,7 @@ public class BookModel extends AbstractModel {
 		session.save(category);
 		commit();
 
-		firePropertyChange(BookController.CategoryProps.NEW.toString(),
-				null, category);
+		firePropertyChange(BookController.CategoryProps.NEW.toString(), null, category);
 	}
 
 	public synchronized void setDeleteCategory(Category category) {
@@ -966,8 +876,7 @@ public class BookModel extends AbstractModel {
 		session.delete(category);
 		commit();
 
-		firePropertyChange(BookController.CategoryProps.DELETE.toString(),
-				category, null);
+		firePropertyChange(BookController.CategoryProps.DELETE.toString(), category, null);
 	}
 
 	public synchronized void setDeleteMultiCategories(ArrayList<Long> ids) {
@@ -982,28 +891,22 @@ public class BookModel extends AbstractModel {
 			dao.removeById(id);
 			commit();
 
-			firePropertyChange(
-					BookController.CategoryProps.DELETE.toString(), old,
-					null);
+			firePropertyChange(BookController.CategoryProps.DELETE.toString(), old, null);
 		}
 	}
 
 	public synchronized void setOrderUpCategory(Category category) {
-		firePropertyChange(
-				BookController.CategoryProps.ORDER_UP.toString(), null,
-				category);
+		firePropertyChange(BookController.CategoryProps.ORDER_UP.toString(), null, category);
 	}
 
 	public synchronized void setOrderDownCategory(Category category) {
-		firePropertyChange(
-				BookController.CategoryProps.ORDER_DOWN.toString(), null,
-				category);
+		firePropertyChange(BookController.CategoryProps.ORDER_DOWN.toString(), null, category);
 	}
 
 	// strand
-	public void setEditStrand(Strand editStrand) {
-		firePropertyChange(BookController.StrandProps.EDIT.toString(),
-				null, editStrand);
+	public void setEditStrand(Strand entity) {
+		//firePropertyChange(BookController.StrandProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateStrand(Strand strand) {
@@ -1016,8 +919,7 @@ public class BookModel extends AbstractModel {
 		session.update(strand);
 		commit();
 
-		firePropertyChange(BookController.StrandProps.UPDATE.toString(),
-				old, strand);
+		firePropertyChange(BookController.StrandProps.UPDATE.toString(), old, strand);
 	}
 
 	public synchronized void setNewStrand(Strand strand) {
@@ -1025,8 +927,7 @@ public class BookModel extends AbstractModel {
 		session.save(strand);
 		commit();
 
-		firePropertyChange(BookController.StrandProps.NEW.toString(), null,
-				strand);
+		firePropertyChange(BookController.StrandProps.NEW.toString(), null, strand);
 	}
 
 	public synchronized void setDeleteStrand(Strand strand) {
@@ -1061,7 +962,7 @@ public class BookModel extends AbstractModel {
 			session.delete(strand);
 			commit();
 		} catch (ConstraintViolationException e) {
-			StorybookApp.error("DocumentModel.setDeleteStrand("+strand.getName()+")", e);
+			SbApp.error("BookModel.setDeleteStrand("+strand.getName()+")", e);
 		}
 		firePropertyChange(BookController.StrandProps.DELETE.toString(),strand, null);
 	}
@@ -1081,14 +982,14 @@ public class BookModel extends AbstractModel {
 	}
 
 	public synchronized void setOrderDownStrand(Strand strand) {
-		firePropertyChange(
-				BookController.StrandProps.ORDER_DOWN.toString(), null,strand);
+		firePropertyChange(BookController.StrandProps.ORDER_DOWN.toString(), null,strand);
 	}
 
 
 	// idea
-	public void setEditIdea(Idea editIdea) {
-		firePropertyChange(BookController.IdeaProps.EDIT.toString(), null,editIdea);
+	public void setEditIdea(Idea entity) {
+		//firePropertyChange(BookController.IdeaProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateIdea(Idea idea) {
@@ -1139,8 +1040,9 @@ public class BookModel extends AbstractModel {
 	}
 
 	// tags
-	public void setEditTag(Tag editTag) {
-		firePropertyChange(BookController.TagProps.EDIT.toString(), null,editTag);
+	public void setEditTag(Tag entity) {
+		//firePropertyChange(BookController.TagProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateTag(Tag tag) {
@@ -1194,8 +1096,9 @@ public class BookModel extends AbstractModel {
 	}
 
 	// items
-	public void setEditItem(Item editItem) {
-		firePropertyChange(BookController.ItemProps.EDIT.toString(), null, editItem);
+	public void setEditItem(Item entity) {
+		//firePropertyChange(BookController.ItemProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateItem(Item item) {
@@ -1249,8 +1152,9 @@ public class BookModel extends AbstractModel {
 	}
 
 	// tag links
-	public void setEditTagLink(TagLink editTagLink) {
-		firePropertyChange(BookController.TagLinkProps.EDIT.toString(), null, editTagLink);
+	public void setEditTagLink(TagLink entity) {
+		//firePropertyChange(BookController.TagLinkProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateTagLink(TagLink tagLink) {
@@ -1295,8 +1199,9 @@ public class BookModel extends AbstractModel {
 	}
 
 	// item links
-	public void setEditItemLink(ItemLink editItemLink) {
-		firePropertyChange(BookController.ItemLinkProps.EDIT.toString(), null, editItemLink);
+	public void setEditItemLink(ItemLink entity) {
+		//firePropertyChange(BookController.ItemLinkProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateItemLink(ItemLink itemLink) {
@@ -1341,8 +1246,10 @@ public class BookModel extends AbstractModel {
 	}
 
 	// scenes
-	public void setEditScene(Scene editScene) {
-		firePropertyChange(BookController.SceneProps.EDIT.toString(), null, editScene);
+	public void setEditScene(Scene entity) {
+		SbApp.trace("BookModel.setEditScene("+entity.toString()+")");
+		//firePropertyChange(BookController.SceneProps.EDIT.toString(), null, editScene);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateScene(Scene scene) {
@@ -1355,7 +1262,7 @@ public class BookModel extends AbstractModel {
 			session.update(scene);
 			commit();
 		} catch (ConstraintViolationException e) {
-			StorybookApp.error("DocumentModel.setUpdateScene("+scene.getTitle()+")", e);
+			SbApp.error("BookModel.setUpdateScene("+scene.getTitle()+")", e);
 		}
 		firePropertyChange(BookController.SceneProps.UPDATE.toString(), old, scene);
 	}
@@ -1401,8 +1308,9 @@ public class BookModel extends AbstractModel {
 	}
 
 	// internals
-	public void setEditInternal(Internal editInternal) {
-		firePropertyChange(BookController.InternalProps.EDIT.toString(), null, editInternal);
+	public void setEditInternal(Internal entity) {
+		//firePropertyChange(BookController.InternalProps.EDIT.toString(), null, entity);
+		editEntity((AbstractEntity)entity);
 	}
 
 	public synchronized void setUpdateInternal(Internal internal) {

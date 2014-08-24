@@ -27,8 +27,6 @@ package storybook.model.hbn.entity;
  */
 public class Location extends AbstractEntity implements Comparable<Location> {
 
-	private static final long serialVersionUID = 6467051806017046344L;
-
 	private String name;
 	private String address;
 	private String city;

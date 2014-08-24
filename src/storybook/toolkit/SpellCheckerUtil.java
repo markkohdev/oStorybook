@@ -24,14 +24,14 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+import com.inet.jortho.FileUserDictionary;
+import com.inet.jortho.SpellChecker;
+
 import storybook.SbConstants;
 import storybook.SbConstants.PreferenceKey;
 import storybook.SbConstants.Spelling;
 import storybook.model.hbn.entity.Preference;
-
-import com.inet.jortho.FileUserDictionary;
-import com.inet.jortho.SpellChecker;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 public class SpellCheckerUtil {
 
@@ -40,50 +40,42 @@ public class SpellCheckerUtil {
 	public static File getDictionaryDir() throws IOException {
 		try {
 			File dir = new File(".");
-			File file = new File(
-					dir.getCanonicalPath()
-					+ File.separator
-					+ SbConstants.Directory.DICTIONARIES);
+			File file = new File(dir.getCanonicalPath() + File.separator + SbConstants.Directory.DICTIONARIES);
 			return file;
 		} catch (IOException e) {
-			StorybookApp.logErr("SpellCheckerUtil.getDictionaryDir()", e);
+			SbApp.error("SpellCheckerUtil.getDictionaryDir()", e);
 		}
 		return null;
 	}
 
-	public static URL getDictionaryDirAsURL() throws MalformedURLException,
-			IOException {
+	public static URL getDictionaryDirAsURL() throws MalformedURLException, IOException {
 		URI uri = getDictionaryDir().toURI();
 		return uri.toURL();
 	}
 
 	public static void registerDictionaries() {
+		SbApp.trace("SpellCheckerUtil.registerDictionaries()");
 		try {
 			URL url = getDictionaryDirAsURL();
-			Preference pref = PrefUtil.get(PreferenceKey.SPELLING,Spelling.none.toString());
+			Preference pref = PrefUtil.get(PreferenceKey.SPELLING, Spelling.none.toString());
 			String spelling = pref.getStringValue();
 			String lang = spelling.substring(0, 2);
 
 			SpellChecker.registerDictionaries(url, "en,de,es,fr,it,nl,pl", lang);
 
 			// user dictionary directory
-			File userDictDir = initUserDictDir();
-			FileUserDictionary fud = new FileUserDictionary(userDictDir.toString());
+			File usrDictDir = initUserDictDir();
+			FileUserDictionary fud = new FileUserDictionary(usrDictDir.toString());
 			SpellChecker.setUserDictionaryProvider(fud);
-		} catch (Exception e) {
-			StorybookApp.logErr("SpellCheckerUtil.registerDictionaries()",e);
+		} catch (IOException e) {
+			SbApp.error("SpellCheckerUtil.registerDictionaries()",e);
 		}
 	}
 
 	public static File initUserDictDir() {
 		if (userDictDir == null) {
 			File dir = new File(System.getProperty("user.home"));
-			userDictDir = new File(
-					dir
-					+ File.separator
-					+ ".storybook"
-					+ File.separator
-					+ SbConstants.Directory.USER_DICTS);
+			userDictDir = new File(dir + File.separator + ".storybook" + File.separator + SbConstants.Directory.USER_DICTS);
 			userDictDir.mkdir();
 		}
 		return userDictDir;

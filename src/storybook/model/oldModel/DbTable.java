@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 //@Deprecated
 public abstract class DbTable implements Serializable {
@@ -110,11 +110,11 @@ public abstract class DbTable implements Serializable {
                     this.id = oldId;
                     throw new SQLException("update failed, newId: " + newId);
                 }
-                StorybookApp.trace("ID manually changed: oldId=" + oldId + ", newId=" + getId() + " " + this.getTablename());
+                SbApp.trace("ID manually changed: oldId=" + oldId + ", newId=" + getId() + " " + this.getTablename());
                 retour = true;
             }
         } catch (SQLException e) {
-            StorybookApp.error("oldModel.DbTable.changeId("+newId+")",e);
+            SbApp.error("oldModel.DbTable.changeId("+newId+")",e);
         } finally {
             ModelMigration.getInstance().closePrepareStatement(stmt);
         }
@@ -134,7 +134,7 @@ public abstract class DbTable implements Serializable {
 		try {
 			return this.getId() == ((DbTable) obj).getId();
 		} catch (ClassCastException e) {
-			StorybookApp.error("oldModel.DbTable.equals("+obj.toString()+")",e);
+			SbApp.error("oldModel.DbTable.equals("+obj.toString()+")",e);
 		}
 		return false;
 	}

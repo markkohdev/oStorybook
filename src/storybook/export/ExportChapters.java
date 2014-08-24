@@ -30,7 +30,7 @@ public class ExportChapters {
 
 	ExportChapters(Export m) {
 		parent=m;
-		headers=new ArrayList();
+		headers=new ArrayList<>();
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.id"),5));
 		headers.add(new ExportHeader(I18N.getMsg("msg.dlg.chapter.number"), 10));
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.title"), 80));
@@ -39,7 +39,7 @@ public class ExportChapters {
 	public String get(Chapter obj) {
 		if (obj!=null) return(EntityUtil.getInfo(parent.mainFrame, obj));
 		String str = debut(obj);
-		BookModel model = parent.mainFrame.getDocumentModel();
+		BookModel model = parent.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = dao.findAll();

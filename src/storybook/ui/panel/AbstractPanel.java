@@ -9,8 +9,7 @@ import storybook.ui.interfaces.IPaintable;
 import storybook.ui.interfaces.IRefreshable;
 
 @SuppressWarnings("serial")
-public abstract class AbstractPanel extends JPanel implements IRefreshable,
-		IPaintable {
+public abstract class AbstractPanel extends JPanel implements IRefreshable, IPaintable {
 
 	protected MainFrame mainFrame;
 

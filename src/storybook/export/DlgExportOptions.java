@@ -32,6 +32,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
 		initUI();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initUI() {
 		csvSingleQuotes.setSelected(param.csvSingleQuotes);
 		csvDoubleQuotes.setSelected(param.csvDoubleQuotes);
@@ -129,7 +130,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
 
         paneCSV.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         jLabel2.setText(bundle.getString("msg.export.options.csv.quoted")); // NOI18N
 
         csvGroupQuotes.add(csvSingleQuotes);
@@ -221,7 +222,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
                 .addComponent(txtOther)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addContainerGap(224, Short.MAX_VALUE))
         );
         paneTXTLayout.setVerticalGroup(
             paneTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,7 +266,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
                         .addComponent(btCssDirectory))
                     .addGroup(paneHTMLLayout.createSequentialGroup()
                         .addComponent(htmlUseCss)
-                        .addGap(0, 345, Short.MAX_VALUE)))
+                        .addGap(0, 318, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         paneHTMLLayout.setVerticalGroup(
@@ -370,7 +371,7 @@ public class DlgExportOptions extends javax.swing.JDialog {
                     .addComponent(ckExportChapterNumbers)
                     .addComponent(ckExportSceneTitles)
                     .addComponent(ckExportSceneSeparator))
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
         paneBookLayout.setVerticalGroup(
             paneBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,16 +398,15 @@ public class DlgExportOptions extends javax.swing.JDialog {
 
         jTabbedPane1.addTab(bundle.getString("msg.export.book.text"), paneBook); // NOI18N
 
-        btCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shef/ui/resources/images/x16/cancel.png"))); // NOI18N
+        btCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/cancel.png"))); // NOI18N
         btCancel.setText(bundle.getString("msg.common.cancel")); // NOI18N
-        btCancel.setActionCommand(bundle.getString("msg.common.cancel")); // NOI18N
         btCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btCancelActionPerformed(evt);
             }
         });
 
-        btOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shef/ui/resources/images/x16/complete.png"))); // NOI18N
+        btOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/ok.png"))); // NOI18N
         btOK.setText(bundle.getString("msg.common.ok")); // NOI18N
         btOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -443,8 +443,26 @@ public class DlgExportOptions extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void htmlUseCssItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_htmlUseCssItemStateChanged
+		if (evt.getStateChange()==ItemEvent.SELECTED) {
+			htmlCssFile.setVisible(true);
+			btCssDirectory.setVisible(true);
+		} else {
+			htmlCssFile.setVisible(false);
+			btCssDirectory.setVisible(false);
+		}
+    }//GEN-LAST:event_htmlUseCssItemStateChanged
+
+    private void txtOtherItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtOtherItemStateChanged
+        if (evt.getStateChange()==ItemEvent.SELECTED) {
+			txtSeparator.setVisible(true);
+		} else {
+			txtSeparator.setVisible(false);
+		}
+    }//GEN-LAST:event_txtOtherItemStateChanged
+
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
-        dispose();
+		dispose();
     }//GEN-LAST:event_btCancelActionPerformed
 
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
@@ -467,24 +485,6 @@ public class DlgExportOptions extends javax.swing.JDialog {
 		param.save();
 		dispose();
     }//GEN-LAST:event_btOKActionPerformed
-
-    private void htmlUseCssItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_htmlUseCssItemStateChanged
-		if (evt.getStateChange()==ItemEvent.SELECTED) {
-			htmlCssFile.setVisible(true);
-			btCssDirectory.setVisible(true);
-		} else {
-			htmlCssFile.setVisible(false);
-			btCssDirectory.setVisible(false);
-		}
-    }//GEN-LAST:event_htmlUseCssItemStateChanged
-
-    private void txtOtherItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtOtherItemStateChanged
-        if (evt.getStateChange()==ItemEvent.SELECTED) {
-			txtSeparator.setVisible(true);
-		} else {
-			txtSeparator.setVisible(false);
-		}
-    }//GEN-LAST:event_txtOtherItemStateChanged
 
 	/**
 	 * @param args the command line arguments

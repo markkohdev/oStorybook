@@ -97,7 +97,7 @@ public class TagLinkTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		TagLinkDAOImpl dao = new TagLinkDAOImpl(session);
 		TagLink tagLink = dao.find(id);

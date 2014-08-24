@@ -50,7 +50,7 @@ public class GenderTableCellRenderer extends DefaultTableCellRenderer {
 			lbText.setText(gender.toString());
 			lbText.setIcon(gender.getIcon());
 		} catch (LazyInitializationException lie) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			Gender gender = (Gender) value;
 			session.refresh(gender);

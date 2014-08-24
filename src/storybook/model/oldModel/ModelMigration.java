@@ -30,7 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.model.DbFile;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.SwingUtil;
@@ -60,7 +60,7 @@ public class ModelMigration {
 	}
 
 	public void open(DbFile dbFile) {
-		StorybookApp.trace("ModelMigration.open("+dbFile.getDbName()+")");
+		SbApp.trace("ModelMigration.open("+dbFile.getDbName()+")");
 		this.file = dbFile.getFile();
 		this.databaseName = dbFile.getDbName();
 		this.openOnlyIfExists = true;
@@ -68,13 +68,13 @@ public class ModelMigration {
 		try {
 			getConnection();
 		} catch (Exception e) {
-			StorybookApp.error("ModelMigration.open(" + dbFile.getName() + ")", e);
+			SbApp.error("ModelMigration.open(" + dbFile.getName() + ")", e);
 		}
-		StorybookApp.trace("ModelMigration.open(" + this.databaseName+")");
+		SbApp.trace("ModelMigration.open(" + this.databaseName+")");
 	}
 
 	public static ModelMigration getInstance() {
-		StorybookApp.trace("ModelMigration.getInstance()");
+		SbApp.trace("ModelMigration.getInstance()");
 		if (thePersistenceManager == null) {
 			thePersistenceManager = new ModelMigration();
 		}
@@ -82,7 +82,7 @@ public class ModelMigration {
 	}
 
 	public Connection getConnection() {
-		StorybookApp.trace("ModelMigration.getConnection()");
+		SbApp.trace("ModelMigration.getConnection()");
 		if (!init) {
 			return null;
 		}
@@ -91,24 +91,24 @@ public class ModelMigration {
 			if (openOnlyIfExists) {
 				connectionStr = connectionStr + ";IFEXISTS=TRUE";
 			}
-			if (StorybookApp.getTraceHibernate()) {
+			if (SbApp.getTraceHibernate()) {
 				connectionStr+=";TRACE_LEVEL_FILE=3;TRACE_LEVEL_SYSTEM_OUT=3";
 			} else {
 				connectionStr+=";TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0";
 			}
-			StorybookApp.trace("ModelMigration.getConnection() to " + connectionStr);
+			SbApp.trace("ModelMigration.getConnection() to " + connectionStr);
 			try {
 				Class.forName("org.h2.Driver");
 				connection = DriverManager.getConnection(connectionStr, "sa", "");
 			} catch (ClassNotFoundException | SQLException e) {
-				StorybookApp.error("ModelMigration.getConnection()", e);
+				SbApp.error("ModelMigration.getConnection()", e);
 			}
 		}
 		return connection;
 	}
 
 	public void closeConnection() {
-		StorybookApp.trace("ModelMigration.closeConnection()");
+		SbApp.trace("ModelMigration.closeConnection()");
 		if (!isConnectionOpen()) {
 			return;
 		}
@@ -118,7 +118,7 @@ public class ModelMigration {
 			this.connection = null;
 			this.databaseName = null;
 		} catch (SQLException e) {
-			StorybookApp.error("ModelMigration.closeConnection()", e);
+			SbApp.error("ModelMigration.closeConnection()", e);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class ModelMigration {
 				result.close();
 			}
 		} catch (SQLException se) {
-			StorybookApp.error("*** ModelMigration.closeResultSet(" + result.toString() + ")", se);
+			SbApp.error("*** ModelMigration.closeResultSet(" + result.toString() + ")", se);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class ModelMigration {
 				prepare.close();
 			}
 		} catch (SQLException se) {
-			StorybookApp.error("*** ModelMigration.closePrepareStatement(" + prepare.toString() + ")", se);
+			SbApp.error("*** ModelMigration.closePrepareStatement(" + prepare.toString() + ")", se);
 		}
 	}
 
@@ -175,7 +175,7 @@ public class ModelMigration {
 				stmt.close();
 			}
 		} catch (SQLException se) {
-			StorybookApp.error("*** ModelMigration.closeStatement(" + stmt.toString() + ")", se);
+			SbApp.error("*** ModelMigration.closeStatement(" + stmt.toString() + ")", se);
 		}
 	}
 
@@ -193,7 +193,7 @@ public class ModelMigration {
 				++count;
 			}
 		} catch (SQLException exc) {
-			StorybookApp.error("*** ModelMigration.getGeneratedId(" + stmt.toString() + ")", exc);
+			SbApp.error("*** ModelMigration.getGeneratedId(" + stmt.toString() + ")", exc);
 		} finally {
 			this.closeResultSet(rs);
 		}
@@ -258,7 +258,7 @@ public class ModelMigration {
 	}
 
 	private void alterFrom1_5to4_0() throws Exception {
-		StorybookApp.trace("Updating file version from 1.4 to 1.5 ...");
+		SbApp.trace("Updating file version from 1.4 to 1.5 ...");
 		String sql = "";
 
 		// location
@@ -385,11 +385,11 @@ public class ModelMigration {
 	}
 
 	private void executeSQLStatement(String sql, Statement stmt) {
-		StorybookApp.trace("ModelMigration.executeSQLStatement("+sql.toString()+","+stmt.toString()+")");
+		SbApp.trace("ModelMigration.executeSQLStatement("+sql.toString()+","+stmt.toString()+")");
 		try {
 			stmt.execute(sql);
 		} catch (SQLException e) {
-			StorybookApp.error("ModelMigration.executeSQLStatement(" + sql + "," + stmt.toString() + ")", e);
+			SbApp.error("ModelMigration.executeSQLStatement(" + sql + "," + stmt.toString() + ")", e);
 			ExceptionDialog dlg = new ExceptionDialog(e);
 			SwingUtil.showModalDialog(dlg, mainFrame);
 		}

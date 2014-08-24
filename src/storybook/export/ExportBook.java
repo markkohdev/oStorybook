@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.List;
 import org.hibernate.Session;
 import storybook.SbConstants;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.model.BookModel;
 import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.dao.PartDAOImpl;
@@ -17,7 +17,7 @@ import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Scene;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 
 /**
  *
@@ -39,7 +39,7 @@ public class ExportBook {
 		parent = m;
 		bookExporter = new BookExporter(m.mainFrame);
 		baseFilename=parent.directory+File.separator;
-		baseFilename+=DocumentUtil.restoreInternal(parent.mainFrame, SbConstants.InternalKey.TITLE, "").getStringValue();
+		baseFilename+=BookUtil.get(parent.mainFrame, SbConstants.BookKey.TITLE, "").getStringValue();
 		isMultiHtml=parent.parent.paramExport.htmlBookMulti;
 	}
 	
@@ -56,7 +56,7 @@ public class ExportBook {
 			rc = debut();
 			if (!"".equals(rc)) return (rc);
 		}
-		BookModel model = parent.mainFrame.getDocumentModel();
+		BookModel model = parent.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl PartDAO = new PartDAOImpl(session);
 		ChapterDAOImpl ChapterDAO = new ChapterDAOImpl(session);
@@ -103,7 +103,7 @@ public class ExportBook {
 	}
 
 	private void getPart(Part part) {
-		StorybookApp.trace("getPart("+part.getName()+")");
+		SbApp.trace("getPart("+part.getName()+")");
 		switch (parent.format) {
 			case "html":
 				if (!isMultiHtml) {

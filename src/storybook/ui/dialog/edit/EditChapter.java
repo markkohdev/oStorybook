@@ -53,7 +53,7 @@ public class EditChapter extends javax.swing.JPanel {
 	public EditChapter(Editor m, Chapter c) {
 		initComponents();
 		parent = m;
-		mainFrame = parent.parent;
+		mainFrame = parent.mainFrame;
 		chapter = c;
 		initUI();
 	}
@@ -79,7 +79,7 @@ public class EditChapter extends javax.swing.JPanel {
 			description.setText("");
 			notes.setText("");
 		}
-		loadCbParts(parent.parent, cbPart, chapter);
+		loadCbParts(parent.mainFrame, cbPart, chapter);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class EditChapter extends javax.swing.JPanel {
         paneDescription = new javax.swing.JPanel();
         paneNotes = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         lbId.setText(bundle.getString("msg.common.id")); // NOI18N
 
         txtId.setEditable(false);
@@ -128,7 +128,7 @@ public class EditChapter extends javax.swing.JPanel {
         );
         paneDescriptionLayout.setVerticalGroup(
             paneDescriptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 252, Short.MAX_VALUE)
+            .addGap(0, 251, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout paneCommonLayout = new javax.swing.GroupLayout(paneCommon);
@@ -150,7 +150,7 @@ public class EditChapter extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbPart)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbPart, 0, 296, Short.MAX_VALUE))
+                        .addComponent(cbPart, 0, 323, Short.MAX_VALUE))
                     .addComponent(txTitle))
                 .addGap(12, 12, 12))
             .addComponent(paneDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -182,11 +182,11 @@ public class EditChapter extends javax.swing.JPanel {
         paneNotes.setLayout(paneNotesLayout);
         paneNotesLayout.setHorizontalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 431, Short.MAX_VALUE)
+            .addGap(0, 492, Short.MAX_VALUE)
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(bundle.getString("msg.common.notes"), paneNotes); // NOI18N
@@ -195,7 +195,7 @@ public class EditChapter extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,7 +228,7 @@ public class EditChapter extends javax.swing.JPanel {
 	}
 
 	private Chapter createNewChapter() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		Integer nextNumber = dao.getNextChapterNumber();
@@ -267,7 +267,7 @@ public class EditChapter extends javax.swing.JPanel {
 			chapter.setTitle(txTitle.getText());
 			chapter.setDescription(description.getText());
 			chapter.setNotes(notes.getText());
-			chapter.setPart(findPart(parent.parent, cbPart.getSelectedItem().toString()));
+			chapter.setPart(findPart(parent.mainFrame, cbPart.getSelectedItem().toString()));
 		}
 		return (rt);
 	}

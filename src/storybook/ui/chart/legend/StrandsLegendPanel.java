@@ -39,7 +39,7 @@ public class StrandsLegendPanel extends AbstractLegendPanel
   public void initUi()
   {
     setOpaque(false);
-    BookModel localDocumentModel = this.mainFrame.getDocumentModel();
+    BookModel localDocumentModel = this.mainFrame.getBookModel();
     Session localSession = localDocumentModel.beginTransaction();
     StrandDAOImpl localStrandDAOImpl = new StrandDAOImpl(localSession);
     add(new JLabel(I18N.getMsg("msg.report.caption.strands")), "gapright 5");

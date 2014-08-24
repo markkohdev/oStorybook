@@ -61,7 +61,7 @@ public class LangToolAction extends AbstractAction {
 					try {
 						String text = "";
 						if (scene != null) {
-							BookModel model = mainFrame.getDocumentModel();
+							BookModel model = mainFrame.getBookModel();
 							Session session = model.beginTransaction();
 							session.refresh(scene);
 							text = HtmlUtil.htmlToText(scene.getText(), true);

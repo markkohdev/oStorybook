@@ -50,7 +50,7 @@ public class CheckBoxPanel extends AbstractPanel implements IRefreshable {
 	public void init() {
 		cbMap.clear();
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SbGenericDAOImpl<?, ?> dao = entityHandler.createDAO();
 		dao.setSession(session);

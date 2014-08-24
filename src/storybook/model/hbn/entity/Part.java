@@ -27,8 +27,6 @@ package storybook.model.hbn.entity;
  */
 public class Part extends AbstractEntity {
 
-	private static final long serialVersionUID = 1953637439611721689L;
-
 	private Integer number;
 	private String name;
 

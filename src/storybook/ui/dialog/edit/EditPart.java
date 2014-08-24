@@ -70,13 +70,13 @@ public class EditPart extends javax.swing.JPanel {
         lbNumber = new javax.swing.JLabel();
         txNumber = new javax.swing.JTextField();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         lbId.setText(bundle.getString("msg.common.id")); // NOI18N
 
         txID.setEditable(false);
         txID.setText(" ");
 
-        lbName.setText(bundle.getString("mag.common.name")); // NOI18N
+        lbName.setText(bundle.getString("msg.common.name")); // NOI18N
 
         txName.setText(" ");
 
@@ -99,7 +99,7 @@ public class EditPart extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txID, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 294, Short.MAX_VALUE)))
+                        .addGap(0, 371, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

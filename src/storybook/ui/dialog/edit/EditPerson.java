@@ -86,10 +86,10 @@ public class EditPerson extends javax.swing.JPanel {
 		txOccupation.setText(person.getOccupation());
 		dateBirthday.setDate(person.getBirthday());
 		dateDayOfDeath.setDate(person.getDayofdeath());
-		txColor.setBackground(ColorUtil.darker(person.getJColor(), 0.05D));
-		CommonBox.loadCbCategory(parent.parent, cbCategory, person);
-		CommonBox.loadCbGenders(parent.parent, cbGender, person);
-		CommonBox.loadLbAttributes(parent.parent, lbAttributes, person);
+		if (person.getJColor()!=null) txColor.setBackground(ColorUtil.darker(person.getJColor(), 0.05D));
+		CommonBox.loadCbCategory(parent.mainFrame, cbCategory, person);
+		CommonBox.loadCbGenders(parent.mainFrame, cbGender, person);
+		CommonBox.loadLbAttributes(parent.mainFrame, lbAttributes, person);
 		notes.setText(person.getNotes());
 		text.setText(person.getDescription());
 		parent.setSize(500, 325);
@@ -104,7 +104,7 @@ public class EditPerson extends javax.swing.JPanel {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        paneCommon = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txId = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -135,17 +135,17 @@ public class EditPerson extends javax.swing.JPanel {
         txAbbreviation = new javax.swing.JTextField();
         paneDayOfDeath = new javax.swing.JPanel();
         paneBirthday = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        paneAttributes = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lbAttributes = new javax.swing.JList();
         btAddAttributes = new javax.swing.JButton();
         btAttributesRemove = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        paneDescrition = new javax.swing.JPanel();
         paneText = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         paneNotes = new javax.swing.JPanel();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         jLabel4.setText(bundle.getString("msg.common.id")); // NOI18N
 
         txId.setEditable(false);
@@ -233,13 +233,13 @@ public class EditPerson extends javax.swing.JPanel {
             .addGap(0, 20, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout paneCommonLayout = new javax.swing.GroupLayout(paneCommon);
+        paneCommon.setLayout(paneCommonLayout);
+        paneCommonLayout.setHorizontalGroup(
+            paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneCommonLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
@@ -249,26 +249,26 @@ public class EditPerson extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(jLabel1)
                     .addComponent(jLabel7))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(paneCommonLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbGender, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(paneCommonLayout.createSequentialGroup()
                                 .addComponent(txLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txAbbreviation, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
+                                .addComponent(txAbbreviation, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
                             .addComponent(txFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txId, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(paneCommonLayout.createSequentialGroup()
+                                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(paneDayOfDeath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(paneBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(paneCommonLayout.createSequentialGroup()
                                         .addComponent(btFirstBirthday)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btPreviousBirthday)
@@ -276,7 +276,7 @@ public class EditPerson extends javax.swing.JPanel {
                                         .addComponent(btNextBirthday)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btLastBirthday))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneCommonLayout.createSequentialGroup()
                                         .addComponent(btFirstDeath)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btPreviousDeath)
@@ -284,48 +284,48 @@ public class EditPerson extends javax.swing.JPanel {
                                         .addComponent(btNextDeath)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btLastDeath))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(paneCommonLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txOccupation, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(paneCommonLayout.createSequentialGroup()
                                 .addComponent(txColor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btColor)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btColorDelete))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneCommonLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        paneCommonLayout.setVerticalGroup(
+            paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneCommonLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(txAbbreviation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cbGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(cbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btNextBirthday)
                     .addComponent(jLabel6)
                     .addComponent(btLastBirthday)
@@ -333,7 +333,7 @@ public class EditPerson extends javax.swing.JPanel {
                     .addComponent(btFirstBirthday)
                     .addComponent(paneBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(paneDayOfDeath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btFirstDeath)
                     .addComponent(btNextDeath)
@@ -341,11 +341,11 @@ public class EditPerson extends javax.swing.JPanel {
                     .addComponent(btPreviousDeath)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txOccupation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(paneCommonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btColorDelete)
                     .addComponent(btColor)
                     .addComponent(txColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -353,7 +353,7 @@ public class EditPerson extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab(bundle.getString("msg.common"), jPanel1); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("msg.common"), paneCommon); // NOI18N
 
         lbAttributes.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -366,34 +366,34 @@ public class EditPerson extends javax.swing.JPanel {
 
         btAttributesRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/minus.png"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout paneAttributesLayout = new javax.swing.GroupLayout(paneAttributes);
+        paneAttributes.setLayout(paneAttributesLayout);
+        paneAttributesLayout.setHorizontalGroup(
+            paneAttributesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneAttributesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(paneAttributesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btAddAttributes)
                     .addComponent(btAttributesRemove))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        paneAttributesLayout.setVerticalGroup(
+            paneAttributesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneAttributesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(paneAttributesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(paneAttributesLayout.createSequentialGroup()
                         .addComponent(btAddAttributes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btAttributesRemove)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab(bundle.getString("msg.common.attributes"), jPanel2); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("msg.common.attributes"), paneAttributes); // NOI18N
 
         javax.swing.GroupLayout paneTextLayout = new javax.swing.GroupLayout(paneText);
         paneText.setLayout(paneTextLayout);
@@ -403,21 +403,21 @@ public class EditPerson extends javax.swing.JPanel {
         );
         paneTextLayout.setVerticalGroup(
             paneTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
+            .addGap(0, 304, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout paneDescritionLayout = new javax.swing.GroupLayout(paneDescrition);
+        paneDescrition.setLayout(paneDescritionLayout);
+        paneDescritionLayout.setHorizontalGroup(
+            paneDescritionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(paneText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        paneDescritionLayout.setVerticalGroup(
+            paneDescritionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(paneText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab(bundle.getString("msg.common.description"), jPanel3); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("msg.common.description"), paneDescrition); // NOI18N
 
         javax.swing.GroupLayout paneNotesLayout = new javax.swing.GroupLayout(paneNotes);
         paneNotes.setLayout(paneNotesLayout);
@@ -427,7 +427,7 @@ public class EditPerson extends javax.swing.JPanel {
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
+            .addGap(0, 304, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -481,15 +481,15 @@ public class EditPerson extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JList lbAttributes;
+    private javax.swing.JPanel paneAttributes;
     private javax.swing.JPanel paneBirthday;
+    private javax.swing.JPanel paneCommon;
     private javax.swing.JPanel paneDayOfDeath;
+    private javax.swing.JPanel paneDescrition;
     private javax.swing.JPanel paneNotes;
     private javax.swing.JPanel paneText;
     private javax.swing.JTextField txAbbreviation;
@@ -557,8 +557,8 @@ public class EditPerson extends javax.swing.JPanel {
 			person.setOccupation(txOccupation.getText());
 			person.setBirthday(dateBirthday.getDate());
 			person.setDayofdeath(dateDayOfDeath.getDate());
-			person.setCategory(getCbCategory(parent.parent, cbCategory));
-			Gender gender = findGender(parent.parent, cbGender.getSelectedItem().toString());
+			person.setCategory(getCbCategory(parent.mainFrame, cbCategory));
+			Gender gender = findGender(parent.mainFrame, cbGender.getSelectedItem().toString());
 			person.setGender(gender);
 		}
 		return (rt);
@@ -572,7 +572,7 @@ public class EditPerson extends javax.swing.JPanel {
 				txAbbreviation.setText(txFirstName.getText().substring(0, 2));
 			else if (!"".equals(txLastName.getText()))
 				txAbbreviation.setText(txLastName.getText().substring(0, 2));
-		if (findPersonAbbreviation(parent.parent, txAbbreviation.getText()))
+		if (findPersonAbbreviation(parent.mainFrame, txAbbreviation.getText()))
 			return (abbreviationExists("msg.dlg.person.abbr"));
 		return ("");
 	}

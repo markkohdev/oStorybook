@@ -33,7 +33,7 @@ import net.miginfocom.swing.MigLayout;
 import storybook.SbConstants;
 import storybook.controller.BookController;
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.EnvUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.IOUtil;
@@ -151,7 +151,7 @@ public abstract class AbstractChartPanel extends AbstractPanel
 				@Override
 				public void actionPerformed(ActionEvent paramAnonymousActionEvent) {
 					try {
-						Internal localInternal = DocumentUtil.restoreInternal(AbstractChartPanel.this.mainFrame, SbConstants.InternalKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(AbstractChartPanel.this.mainFrame));
+						Internal localInternal = BookUtil.get(AbstractChartPanel.this.mainFrame, SbConstants.BookKey.EXPORT_DIRECTORY, EnvUtil.getDefaultExportDir(AbstractChartPanel.this.mainFrame));
 						File localFile1 = new File(localInternal.getStringValue());
 						JFileChooser localJFileChooser = new JFileChooser(localFile1);
 						localJFileChooser.setFileFilter(new PngFileFilter());

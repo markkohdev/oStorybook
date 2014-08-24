@@ -27,8 +27,8 @@ InfoNode Docking Windows is developed by NNL Technology AB. Visit
 Interface graphique pour la gestion des fenêtres dockables.
 
 JAPURA : LGPL v3
-Japura is a Java Swing project. It is an application framework and collection of components.
-http://www.japura.org/
+Japura is a Java Swing project. It is an application framework and collection
+of components. Visit http://www.japura.org/
 
 JCalendar : Copyright (c) 2003, Bodo Tasche (http://www.wannawork.de)
 Composant calendrier pour interface utilisateur
@@ -84,3 +84,8 @@ Analyseur pour le Polonais
 novaworx : n'existe plus
 
 sam : org.bushe aucune information
+
+jOpenDocument : ILM informatique,licence GPL version 3
+http://www.jopendocument.org
+jOpenDocument est une librairie permettant de manipuler des fichiers
+OpenDocument.

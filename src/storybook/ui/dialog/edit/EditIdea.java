@@ -54,7 +54,7 @@ public class EditIdea extends javax.swing.JPanel {
 	private void initUI() {
 		if (idea == null)
 			idea = createNewIdea();
-		loadCbCategory(parent.parent, cbCategory, idea);
+		loadCbCategory(parent.mainFrame, cbCategory, idea);
 		loadCbStatus(cbStatus, idea);
 	}
 
@@ -76,7 +76,7 @@ public class EditIdea extends javax.swing.JPanel {
         btStatusClear = new javax.swing.JButton();
         btCategoryClear = new javax.swing.JButton();
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         lbId.setText(bundle.getString("msg.common.id")); // NOI18N
 
         txtId.setEditable(false);
@@ -101,7 +101,7 @@ public class EditIdea extends javax.swing.JPanel {
         );
         paneNotesLayout.setVerticalGroup(
             paneNotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGap(0, 207, Short.MAX_VALUE)
         );
 
         btStatusClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/clear.png"))); // NOI18N
@@ -123,7 +123,7 @@ public class EditIdea extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                        .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                         .addGap(253, 253, 253))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

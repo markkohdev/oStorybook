@@ -22,7 +22,7 @@ package storybook.action;
 import java.awt.event.ActionEvent;
 
 import storybook.SbConstants.ViewName;
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.controller.BookController;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.toolkit.I18N;
@@ -37,21 +37,20 @@ public class EditEntityAction extends AbstractEntityAction {
 	private boolean saveBeforeEdit;
 
 	public EditEntityAction(MainFrame mainFrame, AbstractEntity entity, boolean b) {
-		super(mainFrame, entity,
-			I18N.getMsg("msg.common.edit"),
-			I18N.getIcon("icon.small.edit"));
+		super(mainFrame, entity, I18N.getMsg("msg.common.edit"), I18N.getIcon("icon.small.edit"));
 		saveBeforeEdit = b;
-		StorybookApp.trace("EditEntityAction("+mainFrame.getName()+","+entity.toString()+","+b+")");
+		SbApp.trace("EditEntityAction("+mainFrame.getName()+","+entity.toString()+","+b+")");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		StorybookApp.trace("EditEntityAction.actionPerformed("+e.toString()+")");
+		SbApp.trace("EditEntityAction.actionPerformed(...) entity="+entity.toString());
 		if (this.saveBeforeEdit) {
-			mainFrame.getActionController().handleSave();
+			mainFrame.getActionController().handleFileSave();
 		}
-		BookController ctrl = mainFrame.getDocumentController();
-		ctrl.setEntityToEdit(entity);
-		mainFrame.showView(ViewName.EDITOR);
+		//BookController ctrl = mainFrame.getBookController();
+		//ctrl.setEntityToEdit(entity);
+		//mainFrame.showView(ViewName.EDITOR);
+		mainFrame.showEditorAsDialog(entity);
 	}
 }

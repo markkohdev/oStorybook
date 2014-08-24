@@ -139,6 +139,7 @@ public class ClientHttpRequest {
 	 * @param value cookie value
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	public void setCookie(String name, String value) throws IOException {
 		cookies.put(name, value);
 	}
@@ -149,6 +150,7 @@ public class ClientHttpRequest {
 	 * @param cookies the cookie "name-to-value" map
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	public void setCookies(Map cookies) throws IOException {
 		if (cookies == null) {
 			return;

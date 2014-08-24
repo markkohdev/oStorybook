@@ -31,7 +31,7 @@ public class ExportScenes {
 
 	ExportScenes(Export m) {
 		parent=m;
-		headers=new ArrayList();
+		headers=new ArrayList<>();
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.id"),5));
 		headers.add(new ExportHeader(I18N.getMsg("msg.dlg.scene.scene.no"), 15));
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.chapter"), 15));
@@ -44,7 +44,7 @@ public class ExportScenes {
 	public String get(Scene obj) {
 		if (obj!=null) return(EntityUtil.getInfo(parent.mainFrame, obj));
 		String str = debut(obj);
-		BookModel model = parent.mainFrame.getDocumentModel();
+		BookModel model = parent.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl dao = new SceneDAOImpl(session);
 		List<Scene> scenes = dao.findAll();

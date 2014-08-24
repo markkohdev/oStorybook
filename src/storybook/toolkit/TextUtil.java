@@ -45,10 +45,10 @@ public class TextUtil {
     }
 
     public static String trimText(String str) {
-	StringBuffer buf = new StringBuffer();
+	StringBuilder buf = new StringBuilder();
 	String[] lines = getTextLines(str);
 	for (String line : lines) {
-	    buf.append(line.trim() + "\n");
+	    buf.append(line.trim()).append("\n");
 	}
 	return buf.toString();
     }

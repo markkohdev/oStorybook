@@ -20,7 +20,7 @@ package storybook.export;
  * @author favdb
  */
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.EnvUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.filefilter.HtmlFileFilter;
@@ -54,8 +54,8 @@ public abstract class AbstractExporter {
 	}
 
 	public boolean exportToTxtFile() {
-		Internal internal = DocumentUtil.restoreInternal(this.mainFrame,
-			SbConstants.InternalKey.EXPORT_DIRECTORY,
+		Internal internal = BookUtil.get(this.mainFrame,
+			SbConstants.BookKey.EXPORT_DIRECTORY,
 			EnvUtil.getDefaultExportDir(this.mainFrame));
 		File file1 = new File(internal.getStringValue());
 		JFileChooser chooser = new JFileChooser(file1);
@@ -87,12 +87,12 @@ public abstract class AbstractExporter {
 		return true;
 	}
 	public boolean exportToHtmlFile() {
-		boolean bool = DocumentUtil.isUseHtmlScenes(this.mainFrame);
+		boolean bool = BookUtil.isUseHtmlScenes(this.mainFrame);
 		if (this.onlyHtmlExport) {
 			bool = true;
 		}
-		Internal internal = DocumentUtil.restoreInternal(this.mainFrame,
-			SbConstants.InternalKey.EXPORT_DIRECTORY,
+		Internal internal = BookUtil.get(this.mainFrame,
+			SbConstants.BookKey.EXPORT_DIRECTORY,
 			EnvUtil.getDefaultExportDir(this.mainFrame));
 		File file1 = new File(internal.getStringValue());
 		JFileChooser chooser = new JFileChooser(file1);

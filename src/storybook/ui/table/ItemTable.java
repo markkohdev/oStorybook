@@ -97,7 +97,7 @@ public class ItemTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl dao = new ItemDAOImpl(session);
 		Item item = dao.find(id);

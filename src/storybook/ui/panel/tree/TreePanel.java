@@ -220,42 +220,34 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 		toggleButtonList = new ArrayList<>();
 
-		btTooglePersons = new ToggleIconButton("icon.small.person",
-				"msg.tree.show.characters", getTogglePersonsAction());
+		btTooglePersons = new ToggleIconButton("icon.small.person", "msg.tree.show.characters", getTogglePersonsAction());
 		btTooglePersons.setSelected(true);
 		toggleButtonList.add(btTooglePersons);
 
-		btToogleLocations = new ToggleIconButton("icon.small.location",
-				"msg.tree.show.locations", getToggleLocationsAction());
+		btToogleLocations = new ToggleIconButton("icon.small.location", "msg.tree.show.locations", getToggleLocationsAction());
 		btToogleLocations.setSelected(true);
 		toggleButtonList.add(btToogleLocations);
 
-		btToogleScenes = new ToggleIconButton("icon.small.chapter",
-				"msg.tree.show.chapters", getToggleScenesAction());
+		btToogleScenes = new ToggleIconButton("icon.small.chapter", "msg.tree.show.chapters", getToggleScenesAction());
 		btToogleScenes.setSelected(true);
 		toggleButtonList.add(btToogleScenes);
 
-		btToogleTags = new ToggleIconButton("icon.small.tag",
-				"msg.tree.show.tags", getToggleTagsAction());
+		btToogleTags = new ToggleIconButton("icon.small.tag", "msg.tree.show.tags", getToggleTagsAction());
 		btToogleTags.setSelected(true);
 		toggleButtonList.add(btToogleTags);
 
-		btToogleItems = new ToggleIconButton("icon.small.item",
-				"msg.tree.show.items", getToggleItemsAction());
+		btToogleItems = new ToggleIconButton("icon.small.item", "msg.tree.show.items", getToggleItemsAction());
 		btToogleItems.setSelected(true);
 		toggleButtonList.add(btToogleItems);
 
-		btToogleIdeas = new ToggleIconButton("icon.small.bulb",
-				"msg.tree.show.ideas", getToggleIdeaAction());
+		btToogleIdeas = new ToggleIconButton("icon.small.bulb", "msg.tree.show.ideas", getToggleIdeaAction());
 		btToogleIdeas.setSelected(true);
 		toggleButtonList.add(btToogleIdeas);
 
-		btToogleStrands = new ToggleIconButton("icon.small.strand",
-				"msg.tree.show.strands", getToggleStrandsAction());
+		btToogleStrands = new ToggleIconButton("icon.small.strand", "msg.tree.show.strands", getToggleStrandsAction());
 		toggleButtonList.add(btToogleStrands);
 
-		btToogleParts = new ToggleIconButton("icon.small.part",
-				"msg.tree.show.parts", getTogglePartsAction());
+		btToogleParts = new ToggleIconButton("icon.small.part", "msg.tree.show.parts", getTogglePartsAction());
 		toggleButtonList.add(btToogleParts);
 
 
@@ -273,8 +265,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		// top node
 		topNode = new DefaultMutableTreeNode(mainFrame.getDbFile().getName());
 		tree = new JTree(topNode);
-		tree.getSelectionModel().setSelectionMode(
-				TreeSelectionModel.SINGLE_TREE_SELECTION);
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setCellRenderer(new EntityTreeCellRenderer());
 		scroller = new JScrollPane(tree);
 		SwingUtil.setMaxPreferredSize(scroller);
@@ -296,10 +287,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			return;
 		}
 		toolbar = new JToolBar();
-		MigLayout layout = new MigLayout(
-				"ins 0,gapx 2",
-				"[][][][][][][][]push[][][][]",
-				"");
+		MigLayout layout = new MigLayout("ins 0,gapx 2", "[][][][][][][][]push[][][][]", "");
 		toolbar.setLayout(layout);
 		toolbar.setFloatable(false);
 
@@ -310,20 +298,16 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		}
 
 		// tree control buttons
-		IconButton btShowAll = new IconButton("icon.small.all",
-				"msg.tree.show.all", getShowAllAction());
+		IconButton btShowAll = new IconButton("icon.small.all", "msg.tree.show.all", getShowAllAction());
 		btShowAll.setControlButton();
 		toolbar.add(btShowAll, "top,gap push");
-		IconButton btShowNone = new IconButton("icon.small.none",
-				"msg.tree.show.none", getShowNoneAction());
+		IconButton btShowNone = new IconButton("icon.small.none", "msg.tree.show.none", getShowNoneAction());
 		btShowNone.setControlButton();
 		toolbar.add(btShowNone, "top");
-		IconButton btExpand = new IconButton("icon.small.expand",
-				"msg.tree.expand.all", getExpandAction());
+		IconButton btExpand = new IconButton("icon.small.expand", "msg.tree.expand.all", getExpandAction());
 		btExpand.setControlButton();
 		toolbar.add(btExpand, "top");
-		IconButton btCollapse = new IconButton("icon.small.collapse",
-				"msg.tree.collapse.all", getCollapseAction());
+		IconButton btCollapse = new IconButton("icon.small.collapse", "msg.tree.collapse.all", getCollapseAction());
 		btCollapse.setControlButton();
 		toolbar.add(btCollapse, "top");
 	}
@@ -333,18 +317,15 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		topNode.removeAllChildren();
 
 		if (btTooglePersons.isSelected()) {
-			personsByCategoryNode = new EntityNode(
-					"msg.tree.persons.by.category", new Person());
+			personsByCategoryNode = new EntityNode("msg.tree.persons.by.category", new Person());
 			topNode.add(personsByCategoryNode);
 			refreshPersonsByCategory();
-			personsByGendersNode = new EntityNode("msg.tree.persons.by.gender",
-					new Gender());
+			personsByGendersNode = new EntityNode("msg.tree.persons.by.gender", new Gender());
 			topNode.add(personsByGendersNode);
 			refreshPersonsByGender();
 		}
 		if (btToogleLocations.isSelected()) {
-			locationsNode = new EntityNode("msg.common.locations",
-					new Location());
+			locationsNode = new EntityNode("msg.common.locations", new Location());
 			topNode.add(locationsNode);
 			refreshLocations();
 		}
@@ -393,7 +374,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshStrands() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		List<Strand> strands = dao.findAll();
@@ -405,7 +386,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshParts() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -417,7 +398,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshIdeas() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		IdeaDAOImpl dao = new IdeaDAOImpl(session);
 		IdeaStateModel stateModel = new IdeaStateModel();
@@ -434,19 +415,17 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshPersonsByCategory() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl categroyDao = new CategoryDAOImpl(session);
 		List<Category> categories = categroyDao.findAll();
 		PersonDAOImpl personDao = new PersonDAOImpl(session);
 		for (Category category : categories) {
-			DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(
-					category);
+			DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(category);
 			personsByCategoryNode.add(categoryNode);
 			List<Person> persons = personDao.findByCategory(category);
 			for (Person person : persons) {
-				DefaultMutableTreeNode personNode = new DefaultMutableTreeNode(
-						person);
+				DefaultMutableTreeNode personNode = new DefaultMutableTreeNode(person);
 				categoryNode.add(personNode);
 			}
 		}
@@ -454,18 +433,16 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshPersonsByGender() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		GenderDAOImpl genderDao = new GenderDAOImpl(session);
 		List<Gender> genders = genderDao.findAll();
 		for (Gender gender : genders) {
-			DefaultMutableTreeNode genderNode = new DefaultMutableTreeNode(
-					gender);
+			DefaultMutableTreeNode genderNode = new DefaultMutableTreeNode(gender);
 			personsByGendersNode.add(genderNode);
 			List<Person> persons = genderDao.findPersons(gender);
 			for (Person person : persons) {
-				DefaultMutableTreeNode personNode = new DefaultMutableTreeNode(
-						person);
+				DefaultMutableTreeNode personNode = new DefaultMutableTreeNode(person);
 				genderNode.add(personNode);
 			}
 		}
@@ -473,7 +450,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshLocations() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl locationDao = new LocationDAOImpl(session);
 		List<String> countries = locationDao.findCountries();
@@ -483,8 +460,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 				countryName = "-";
 			}
 			CountryCategory cat1 = new CountryCategory(countryName);
-			DefaultMutableTreeNode countryNode = new DefaultMutableTreeNode(
-					cat1);
+			DefaultMutableTreeNode countryNode = new DefaultMutableTreeNode(cat1);
 			locationsNode.add(countryNode);
 			List<String> cities = locationDao.findCitiesByCountry(country);
 			for (String city : cities) {
@@ -493,14 +469,12 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 					cityName = "-";
 				}
 				CityCategory cat2 = new CityCategory(cityName);
-				DefaultMutableTreeNode cityNode = new DefaultMutableTreeNode(
-						cat2);
+				DefaultMutableTreeNode cityNode = new DefaultMutableTreeNode(cat2);
 				countryNode.add(cityNode);
 				List<Location> locations = locationDao.findByCountryCity(
 						country, city);
 				for (Location location : locations) {
-					DefaultMutableTreeNode locationNode = new DefaultMutableTreeNode(
-							location);
+					DefaultMutableTreeNode locationNode = new DefaultMutableTreeNode(location);
 					cityNode.add(locationNode);
 				}
 			}
@@ -509,14 +483,13 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshScenes() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 
 		ChapterDAOImpl chapterDao = new ChapterDAOImpl(session);
 
 		// unassigned scenes
-		DefaultMutableTreeNode unassingedNode = new DefaultMutableTreeNode(
-				new Chapter());
+		DefaultMutableTreeNode unassingedNode = new DefaultMutableTreeNode(new Chapter());
 		scenesNode.add(unassingedNode);
 		List<Scene> unassignedScenes = chapterDao.findUnassignedScenes();
 		for (Scene scene : unassignedScenes) {
@@ -531,13 +504,11 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			scenesNode.add(partNode);
 			List<Chapter> chapters = partDao.findChapters(part);
 			for (Chapter chapter : chapters) {
-				DefaultMutableTreeNode chapterNode = new DefaultMutableTreeNode(
-						chapter);
+				DefaultMutableTreeNode chapterNode = new DefaultMutableTreeNode(chapter);
 				partNode.add(chapterNode);
 				List<Scene> scenes = chapterDao.findScenes(chapter);
 				for (Scene scene : scenes) {
-					DefaultMutableTreeNode sceneNode = new DefaultMutableTreeNode(
-							scene);
+					DefaultMutableTreeNode sceneNode = new DefaultMutableTreeNode(scene);
 					chapterNode.add(sceneNode);
 				}
 			}
@@ -546,7 +517,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshTags() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl tagDao = new TagDAOImpl(session);
 		TagLinkDAOImpl tagLinkDao = new TagLinkDAOImpl(session);
@@ -557,8 +528,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 				categoryName = "-";
 			}
 			TagCategory cat = new TagCategory(categoryName);
-			DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(
-					cat);
+			DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(cat);
 			tagsNode.add(categoryNode);
 			List<Tag> tags = tagDao.findByCategory(category);
 			for (Tag tag : tags) {
@@ -566,8 +536,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 				categoryNode.add(tagNode);
 				List<TagLink> links = tagLinkDao.findByTag(tag);
 				for (TagLink link : links) {
-					DefaultMutableTreeNode linkNode = new DefaultMutableTreeNode(
-							link);
+					DefaultMutableTreeNode linkNode = new DefaultMutableTreeNode(link);
 					tagNode.add(linkNode);
 				}
 			}
@@ -576,7 +545,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	}
 
 	private void refreshItems() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl itemDao = new ItemDAOImpl(session);
 		ItemLinkDAOImpl itemLinkDao = new ItemLinkDAOImpl(session);
@@ -587,18 +556,15 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 				categoryName = "-";
 			}
 			ItemCategory cat = new ItemCategory(categoryName);
-			DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(
-					cat);
+			DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(cat);
 			itemsNode.add(categoryNode);
 			List<Item> items = itemDao.findByCategory(category);
 			for (Item item : items) {
-				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(
-						item);
+				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(item);
 				categoryNode.add(itemNode);
 				List<ItemLink> links = itemLinkDao.findByItem(item);
 				for (ItemLink link : links) {
-					DefaultMutableTreeNode linkNode = new DefaultMutableTreeNode(
-							link);
+					DefaultMutableTreeNode linkNode = new DefaultMutableTreeNode(link);
 					itemNode.add(linkNode);
 				}
 			}
@@ -608,8 +574,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
-				.getLastSelectedPathComponent();
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 		if (node == null) {
 			return;
 		}
@@ -618,7 +583,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			return;
 		}
 		if (node.isRoot()) {
-			BookController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getBookController();
 			ctrl.showInfo(mainFrame.getDbFile());
 		}
 		if (!(value instanceof AbstractEntity)) {
@@ -627,7 +592,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		SbView view = mainFrame.getView(ViewName.INFO);
 		view.cleverRestoreFocus();
 		AbstractEntity entity = (AbstractEntity) value;
-		BookController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getBookController();
 		ctrl.showInfo(entity);
 	}
 
@@ -819,8 +784,7 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 		TreePath selectedPath = tree.getPathForLocation(evt.getX(), evt.getY());
 		DefaultMutableTreeNode selectedNode = null;
 		try {
-			selectedNode = (DefaultMutableTreeNode) selectedPath
-					.getLastPathComponent();
+			selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
 		} catch (Exception ex) {
 			// ignore
 		}
@@ -828,7 +792,6 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 			return;
 		}
 		// tree.setSelectionPath(selectedPath);
-
 		if (selectedNode.isLeaf()) {
 			Object value = selectedNode.getUserObject();
 			if (value instanceof AbstractEntity) {

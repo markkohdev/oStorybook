@@ -52,135 +52,135 @@ import org.languagetool.language.LanguageBuilder;
  */
 public class LanguageManagerDialog implements ActionListener {
 
-    private JDialog dialog;
-    private JList list;
-    private JButton addButton;
-    private JButton removeButton;
-    private JButton closeButton;
-    private final List<File> ruleFiles = new ArrayList<File>();
-    private final Frame owner;
-    //private ResourceBundle messages = null;
+	private JDialog dialog;
+	private JList list;
+	private JButton addButton;
+	private JButton removeButton;
+	private JButton closeButton;
+	private final List<File> ruleFiles = new ArrayList<File>();
+	private final Frame owner;
+	//private ResourceBundle messages = null;
 
-    public LanguageManagerDialog(Frame owner, List<Language> languages) {
-	this.owner = owner;
-	for (Language lang : languages) {
-	    ruleFiles.add(new File(lang.getRuleFileName()));
+	public LanguageManagerDialog(Frame owner, List<Language> languages) {
+		this.owner = owner;
+		for (Language lang : languages) {
+			ruleFiles.add(new File(lang.getRuleFileName()));
+		}
+		//messages = JLanguageTool.getMessageBundle();
 	}
-	//messages = JLanguageTool.getMessageBundle();
-    }
 
-    public void show() {
-	dialog = new JDialog(owner, true);
-	dialog.setTitle(Messages.getString("guiLanguageManagerDialog"));
+	@SuppressWarnings("unchecked")
+	public void show() {
+		dialog = new JDialog(owner, true);
+		dialog.setTitle(Messages.getString("guiLanguageManagerDialog"));
 
-	// close dialog when user presses Escape key:
-	final KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-	final ActionListener actionListener = new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent actionEvent) {
-		dialog.setVisible(false);
-	    }
-	};
-	final JRootPane rootPane = dialog.getRootPane();
-	rootPane.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+		// close dialog when user presses Escape key:
+		final KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+		final ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				dialog.setVisible(false);
+			}
+		};
+		final JRootPane rootPane = dialog.getRootPane();
+		rootPane.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	final Container contentPane = dialog.getContentPane();
-	contentPane.setLayout(new GridBagLayout());
+		final Container contentPane = dialog.getContentPane();
+		contentPane.setLayout(new GridBagLayout());
 
-	list = new JList(ruleFiles.toArray(new File[]{}));
-	GridBagConstraints cons = new GridBagConstraints();
-	cons.insets = new Insets(4, 4, 4, 4);
-	cons.gridx = 0;
-	cons.gridy = 0;
-	cons.fill = GridBagConstraints.BOTH;
-	cons.weightx = 2.0f;
-	cons.weighty = 2.0f;
-	contentPane.add(new JScrollPane(list), cons);
+		list = new JList(ruleFiles.toArray(new File[]{}));
+		GridBagConstraints cons = new GridBagConstraints();
+		cons.insets = new Insets(4, 4, 4, 4);
+		cons.gridx = 0;
+		cons.gridy = 0;
+		cons.fill = GridBagConstraints.BOTH;
+		cons.weightx = 2.0f;
+		cons.weighty = 2.0f;
+		contentPane.add(new JScrollPane(list), cons);
 
-	cons = new GridBagConstraints();
-	cons.insets = new Insets(4, 4, 4, 4);
-	cons.fill = GridBagConstraints.HORIZONTAL;
+		cons = new GridBagConstraints();
+		cons.insets = new Insets(4, 4, 4, 4);
+		cons.fill = GridBagConstraints.HORIZONTAL;
 
-	final JPanel buttonPanel = new JPanel();
-	buttonPanel.setLayout(new GridBagLayout());
-	addButton = new JButton(Messages.getString("guiAddButton"));
-	addButton.addActionListener(this);
-	cons.gridx = 1;
-	cons.gridy = 0;
-	buttonPanel.add(addButton, cons);
+		final JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridBagLayout());
+		addButton = new JButton(Messages.getString("guiAddButton"));
+		addButton.addActionListener(this);
+		cons.gridx = 1;
+		cons.gridy = 0;
+		buttonPanel.add(addButton, cons);
 
-	removeButton = new JButton(Messages.getString("guiRemoveButton"));
-	removeButton.addActionListener(this);
-	cons.gridx = 1;
-	cons.gridy = 1;
-	buttonPanel.add(removeButton, cons);
+		removeButton = new JButton(Messages.getString("guiRemoveButton"));
+		removeButton.addActionListener(this);
+		cons.gridx = 1;
+		cons.gridy = 1;
+		buttonPanel.add(removeButton, cons);
 
-	closeButton = new JButton(Messages.getString("guiCloseButton"));
-	closeButton.addActionListener(this);
-	cons.gridx = 1;
-	cons.gridy = 2;
-	buttonPanel.add(closeButton, cons);
+		closeButton = new JButton(Messages.getString("guiCloseButton"));
+		closeButton.addActionListener(this);
+		cons.gridx = 1;
+		cons.gridy = 2;
+		buttonPanel.add(closeButton, cons);
 
-	cons.gridx = 1;
-	cons.gridy = 0;
-	cons = new GridBagConstraints();
-	cons.anchor = GridBagConstraints.NORTH;
-	contentPane.add(buttonPanel, cons);
+		cons.gridx = 1;
+		cons.gridy = 0;
+		cons = new GridBagConstraints();
+		cons.anchor = GridBagConstraints.NORTH;
+		contentPane.add(buttonPanel, cons);
 
-	dialog.pack();
-	dialog.setSize(300, 200);
-	// center on screen:
-	final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	final Dimension frameSize = dialog.getSize();
-	dialog.setLocation(screenSize.width / 2 - (frameSize.width / 2), screenSize.height / 2 - (frameSize.height / 2));
-	dialog.setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-	if (e.getSource() == addButton) {
-	    final File ruleFile = Tools.openFileDialog(null, new XMLFileFilter());
-	    ruleFiles.add(ruleFile);
-	    list.setListData(ruleFiles.toArray(new File[]{}));
-	} else if (e.getSource() == removeButton) {
-	    if (list.getSelectedIndex() != -1) {
-		ruleFiles.remove(list.getSelectedIndex());
-		list.setListData(ruleFiles.toArray(new File[]{}));
-	    }
-	} else if (e.getSource() == closeButton) {
-	    dialog.setVisible(false);
-	} else {
-	    throw new IllegalArgumentException("Don't know how to handle " + e); //$NON-NLS-1$
-	}
-    }
-
-    /**
-     * Return all external Languages.
-     */
-    List<Language> getLanguages() {
-	final List<Language> languages = new ArrayList<Language>();
-	for (File ruleFile : ruleFiles) {
-	    if (ruleFile != null) {
-		final Language newLanguage = LanguageBuilder.makeAdditionalLanguage(ruleFile);
-		languages.add(newLanguage);
-	    }
-	}
-	return languages;
-    }
-
-    static class XMLFileFilter extends FileFilter {
-
-	@Override
-	public boolean accept(final File f) {
-	    if (f.getName().toLowerCase().endsWith(".xml") || f.isDirectory()) { //$NON-NLS-1$
-		return true;
-	    }
-	    return false;
+		dialog.pack();
+		dialog.setSize(300, 200);
+		// center on screen:
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		final Dimension frameSize = dialog.getSize();
+		dialog.setLocation(screenSize.width / 2 - (frameSize.width / 2), screenSize.height / 2 - (frameSize.height / 2));
+		dialog.setVisible(true);
 	}
 
 	@Override
-	public String getDescription() {
-	    return "*.xml"; //$NON-NLS-1$
+	@SuppressWarnings("unchecked")
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == addButton) {
+			final File ruleFile = Tools.openFileDialog(null, new XMLFileFilter());
+			ruleFiles.add(ruleFile);
+			list.setListData(ruleFiles.toArray(new File[]{}));
+		} else if (e.getSource() == removeButton) {
+			if (list.getSelectedIndex() != -1) {
+				ruleFiles.remove(list.getSelectedIndex());
+				list.setListData(ruleFiles.toArray(new File[]{}));
+			}
+		} else if (e.getSource() == closeButton)
+			dialog.setVisible(false);
+		else
+			throw new IllegalArgumentException("Don't know how to handle " + e); //$NON-NLS-1$
 	}
-    }
+
+	/**
+	 * Return all external Languages.
+	 */
+	List<Language> getLanguages() {
+		final List<Language> languages = new ArrayList<Language>();
+		for (File ruleFile : ruleFiles) {
+			if (ruleFile != null) {
+				final Language newLanguage = LanguageBuilder.makeAdditionalLanguage(ruleFile);
+				languages.add(newLanguage);
+			}
+		}
+		return languages;
+	}
+
+	static class XMLFileFilter extends FileFilter {
+
+		@Override
+		public boolean accept(final File f) {
+			if (f.getName().toLowerCase().endsWith(".xml") || f.isDirectory()) //$NON-NLS-1$
+				return true;
+			return false;
+		}
+
+		@Override
+		public String getDescription() {
+			return "*.xml"; //$NON-NLS-1$
+		}
+	}
 }

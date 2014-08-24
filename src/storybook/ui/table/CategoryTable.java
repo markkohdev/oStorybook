@@ -94,7 +94,7 @@ public class CategoryTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Category category = (Category)entity;
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
@@ -107,7 +107,7 @@ public class CategoryTable extends AbstractTable {
 		model.commit();
 
 		SbView view = mainFrame.getView(ViewName.CATEGORIES);
-		mainFrame.getDocumentController().refresh(view);
+		mainFrame.getBookController().refresh(view);
 
 		sortByColumn(2);
 	}
@@ -117,7 +117,7 @@ public class CategoryTable extends AbstractTable {
 		AbstractEntity entity = (AbstractEntity) evt.getNewValue();
 		Category category = (Category)entity;
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
@@ -130,7 +130,7 @@ public class CategoryTable extends AbstractTable {
 		model.commit();
 
 		SbView view = mainFrame.getView(ViewName.CATEGORIES);
-		mainFrame.getDocumentController().refresh(view);
+		mainFrame.getBookController().refresh(view);
 
 		sortByColumn(2);
 	}
@@ -169,7 +169,7 @@ public class CategoryTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
 		Category category = dao.find(id);

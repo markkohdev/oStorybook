@@ -31,12 +31,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 
 public class I18N {
-	private static Logger logger = Logger.getLogger(I18N.class);
 	public final static String TIME_FORMAT = "HH:mm:ss";
 	public final static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	private static ResourceBundle iconResourceBundle = null;
@@ -110,13 +108,12 @@ public class I18N {
 		messageResourceBundle = null;
 		Locale.setDefault(locale);
 		UIManager.getDefaults().setDefaultLocale(locale);
-		StorybookApp.getInstance().setLocale(locale);
+		SbApp.getInstance().setLocale(locale);
 	}
 
 	public static final ResourceBundle getMessageResourceBundle() {
 		if (messageResourceBundle == null) {
-			messageResourceBundle = ResourceBundle.getBundle(
-					"storybook.resources.messages", Locale.getDefault());
+			messageResourceBundle = ResourceBundle.getBundle("storybook.msg.messages", Locale.getDefault());
 		}
 		return messageResourceBundle;
 	}
@@ -157,8 +154,7 @@ public class I18N {
 
 	public static final ResourceBundle getIconResourceBundle() {
 		if (iconResourceBundle == null) {
-			iconResourceBundle = ResourceBundle.getBundle(
-					"storybook.resources.icons.icons", Locale.getDefault());
+			iconResourceBundle = ResourceBundle.getBundle("storybook.resources.icons.icons", Locale.getDefault());
 		}
 		return iconResourceBundle;
 	}
@@ -174,7 +170,7 @@ public class I18N {
 	public static ImageIcon getImageIcon(String resourceKey) {
 		ResourceBundle rb = getIconResourceBundle();
 		String name = rb.getString(resourceKey);
-		ImageIcon icon = createImageIcon(StorybookApp.class, name);
+		ImageIcon icon = createImageIcon(SbApp.class, name);
 		return icon;
 	}
 
@@ -183,7 +179,7 @@ public class I18N {
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
-			logger.error("Couldn't find file: " + path);
+			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
 	}

@@ -37,7 +37,7 @@ public class RenameItemCategoryDialog extends AbstractRenameDialog {
 
 	@Override
 	protected List<String> getList() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl dao = new ItemDAOImpl(session);
 		List<String> ret = dao.findCategories();
@@ -47,8 +47,8 @@ public class RenameItemCategoryDialog extends AbstractRenameDialog {
 
 	@Override
 	protected void rename(String oldValue, String newValue) {
-		BookModel model = mainFrame.getDocumentModel();
-		BookController ctrl = mainFrame.getDocumentController();
+		BookModel model = mainFrame.getBookModel();
+		BookController ctrl = mainFrame.getBookController();
 		Session session = model.beginTransaction();
 		ItemDAOImpl dao = new ItemDAOImpl(session);
 		List<Item> items = dao.findByCategory(oldValue);

@@ -25,9 +25,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
 
@@ -58,15 +58,15 @@ public class ChronoOptionsDialog extends AbstractOptionsDialog implements
 		setZoomMinValue(SbConstants.MIN_CHRONO_ZOOM);
 		setZoomMaxValue(SbConstants.MAX_CHRONO_ZOOM);
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.CHRONO_ZOOM, SbConstants.DEFAULT_CHRONO_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.CHRONO_ZOOM, SbConstants.DEFAULT_CHRONO_ZOOM);
 			zoomValue = internal.getIntegerValue();
-			internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.CHRONO_LAYOUT_DIRECTION,
+			internal = BookUtil.get(mainFrame,
+					BookKey.CHRONO_LAYOUT_DIRECTION,
 					SbConstants.DEFAULT_CHRONO_LAYOUT_DIRECTION);
 			layoutDirection = internal.getBooleanValue();
-			internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.CHRONO_SHOW_DATE_DIFFERENCE,
+			internal = BookUtil.get(mainFrame,
+					BookKey.CHRONO_SHOW_DATE_DIFFERENCE,
 					SbConstants.DEFAULT_CHRONO_SHOW_DATE_DIFFERENCE);
 			showDateDifference = internal.getBooleanValue();
 		} catch (Exception e) {
@@ -108,8 +108,8 @@ public class ChronoOptionsDialog extends AbstractOptionsDialog implements
 
 	@Override
 	protected void zoom(int val) {
-		DocumentUtil.storeInternal(mainFrame, InternalKey.CHRONO_ZOOM, val);
-		mainFrame.getDocumentController().chronoSetZoom(val);
+		BookUtil.store(mainFrame, BookKey.CHRONO_ZOOM, val);
+		mainFrame.getBookController().chronoSetZoom(val);
 	}
 
 	@Override
@@ -118,17 +118,17 @@ public class ChronoOptionsDialog extends AbstractOptionsDialog implements
 		boolean val = cb.isSelected();
 
 		if (cb.getName().equals(CN_LAYOUT_DIRECTION)) {
-			mainFrame.getDocumentController().chronoSetLayoutDirection(val);
-			DocumentUtil.storeInternal(mainFrame, InternalKey.CHRONO_LAYOUT_DIRECTION,
+			mainFrame.getBookController().chronoSetLayoutDirection(val);
+			BookUtil.store(mainFrame, BookKey.CHRONO_LAYOUT_DIRECTION,
 					val);
 			return;
 		}
 
 		if (cb.getName().equals(CN_DATE_DIFFERENCE)) {
-			mainFrame.getDocumentController().chronoSetShowDateDifference(
+			mainFrame.getBookController().chronoSetShowDateDifference(
 					cb.isSelected());
-			DocumentUtil.storeInternal(mainFrame,
-					InternalKey.CHRONO_SHOW_DATE_DIFFERENCE, val);
+			BookUtil.store(mainFrame,
+					BookKey.CHRONO_SHOW_DATE_DIFFERENCE, val);
 			return;
 		}
 	}

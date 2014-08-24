@@ -14,7 +14,7 @@ import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.toolkit.DateUtil;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.LangUtil;
 import storybook.toolkit.html.HtmlSelection;
@@ -29,7 +29,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 /**
  *
@@ -62,11 +62,11 @@ public class BookExporter extends AbstractExporter {
 		super(m);
 		setFileName(m.getDbFile().getName());
 		getParam();
-		StorybookApp.trace("BookExporter(" + m.getName() + ")");
+		SbApp.trace("BookExporter(" + m.getName() + ")");
 	}
 
 	public boolean exportToClipboard() {
-		StorybookApp.trace("BookExporter.exportToClipboard()");
+		SbApp.trace("BookExporter.exportToClipboard()");
 		try {
 			StringBuffer str = getContent();
 			HtmlSelection html = new HtmlSelection(str.toString());
@@ -82,38 +82,38 @@ public class BookExporter extends AbstractExporter {
 	}
 
 	private void getParam() {
-		isUseHtmlScenes			= DocumentUtil.isUseHtmlScenes(mainFrame);
-		isExportChapterNumbers	= DocumentUtil.isExportChapterNumbers(mainFrame);
-		isExportRomanNumerals	= DocumentUtil.isExportRomanNumerals(mainFrame);
-		isExportChapterTitles	= DocumentUtil.isExportChapterTitles(mainFrame);
-		isExportChapterDatLoc	= DocumentUtil.isExportChapterDatesLocations(mainFrame);
-		isExportSceneTitle		= DocumentUtil.isExportSceneTitle(mainFrame);
-		isExportSceneSeparator	= DocumentUtil.isExportSceneSeparator(mainFrame);
-		isExportPartTitles		= DocumentUtil.isExportPartTitles(mainFrame);
+		isUseHtmlScenes			= BookUtil.isUseHtmlScenes(mainFrame);
+		isExportChapterNumbers	= BookUtil.isExportChapterNumbers(mainFrame);
+		isExportRomanNumerals	= BookUtil.isExportRomanNumerals(mainFrame);
+		isExportChapterTitles	= BookUtil.isExportChapterTitles(mainFrame);
+		isExportChapterDatLoc	= BookUtil.isExportChapterDatesLocations(mainFrame);
+		isExportSceneTitle		= BookUtil.isExportSceneTitle(mainFrame);
+		isExportSceneSeparator	= BookUtil.isExportSceneSeparator(mainFrame);
+		isExportPartTitles		= BookUtil.isExportPartTitles(mainFrame);
 
 		if ((!isUseHtmlScenes) && (exportForOpenOffice == true))
 			tHtml = false;
 		else
 			tHtml = true; //buf.append(getHtmlHead());
-		isBookHtmlMulti=DocumentUtil.isExportBookHtmlMulti(mainFrame);
+		isBookHtmlMulti=BookUtil.isExportBookHtmlMulti(mainFrame);
 	}
 
 	@Override
 	public StringBuffer getContent() {
 		// warning : getContent ne retourne que le contenu du body en mode HTML
-		StorybookApp.trace("BookExporter.getContent()");
+		SbApp.trace("BookExporter.getContent()");
 		Part Part1 = mainFrame.getCurrentPart();
 		StringBuffer buf = new StringBuffer();
 		getParam();
 		try {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			PartDAOImpl PartDAO = new PartDAOImpl(session);
 			ChapterDAOImpl ChapterDAO = new ChapterDAOImpl(session);
 			SceneDAOImpl SceneDAO = new SceneDAOImpl(session);
 			List<Part> listParts;
 			if (exportOnlyCurrentPart) {
-				listParts = new ArrayList();
+				listParts = new ArrayList<>();
 				listParts.add(Part1);
 			} else
 				listParts = PartDAO.findAll();
@@ -145,9 +145,9 @@ public class BookExporter extends AbstractExporter {
 				} // fin export TXT
 			model.commit();
 		} catch (Exception exc) {
-			StorybookApp.logErr("BookExport.getContent()", exc);
+			SbApp.error("BookExport.getContent()", exc);
 		}
-		StorybookApp.trace("getContent returns bufsize=" + buf.length());
+		SbApp.trace("getContent returns bufsize=" + buf.length());
 		return buf;
 	}
 
@@ -190,6 +190,7 @@ public class BookExporter extends AbstractExporter {
 		return (buf);
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getChapterAsTxt(Chapter chapter, ChapterDAOImpl ChapterDAO) {
 		String buf = "";
 		buf += chapter.getChapternoStr() + "\n";
@@ -234,6 +235,7 @@ public class BookExporter extends AbstractExporter {
 		return (buf);
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getChapterAsHtml(Chapter chapter, ChapterDAOImpl ChapterDAO) {
 		String buf = "<a name='" + chapter.getChapternoStr() + "'>";
 		buf += bH2;
@@ -272,7 +274,7 @@ public class BookExporter extends AbstractExporter {
 				buf += chapter.getTitle();
 		}
 		buf += eH2;
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		SceneDAOImpl SceneDAO = new SceneDAOImpl(session);
 		List<Scene> scenes = SceneDAO.findByChapter(chapter);

@@ -29,49 +29,48 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class LanguageComboBox extends JComboBox {
 
-  private final ResourceBundle messages;
+	private final ResourceBundle messages;
 
-  public LanguageComboBox(ResourceBundle messages) {
-    this.messages = messages;
-    populateLanguageBox();
-  }
+	public LanguageComboBox(ResourceBundle messages) {
+		this.messages = messages;
+		populateLanguageBox();
+	}
 
-  void populateLanguageBox() {
-    removeAllItems();
-    final List<I18nLanguage> i18nLanguages = getAllLanguages();
-    preselectDefaultLanguage(i18nLanguages);
-  }
+	void populateLanguageBox() {
+		removeAllItems();
+		final List<I18nLanguage> i18nLanguages = getAllLanguages();
+		preselectDefaultLanguage(i18nLanguages);
+	}
 
-  private List<I18nLanguage> getAllLanguages() {
-    final List<I18nLanguage> i18nLanguages = new ArrayList<I18nLanguage>();
-    for (Language language : Language.LANGUAGES) {
-      if (language != Language.DEMO) {
-        i18nLanguages.add(new I18nLanguage(language, messages));
-      }
-    }
-    Collections.sort(i18nLanguages);
-    return i18nLanguages;
-  }
+	private List<I18nLanguage> getAllLanguages() {
+		final List<I18nLanguage> i18nLanguages = new ArrayList<I18nLanguage>();
+		for (Language language : Language.LANGUAGES) {
+			if (language != Language.DEMO)
+				i18nLanguages.add(new I18nLanguage(language, messages));
+		}
+		Collections.sort(i18nLanguages);
+		return i18nLanguages;
+	}
 
-  private void preselectDefaultLanguage(List<I18nLanguage> i18nLanguages) {
-    final String defaultLocale = Locale.getDefault().getLanguage();
-    final String defaultGuiLocale = getDefaultGuiLanguage(defaultLocale);
-    for (final I18nLanguage i18nLanguage : i18nLanguages) {
-      addItem(i18nLanguage);
-      if (i18nLanguage.toString().equals(defaultGuiLocale)) {
-        setSelectedItem(i18nLanguage);
-      }
-    }
-  }
+	@SuppressWarnings("unchecked")
+	private void preselectDefaultLanguage(List<I18nLanguage> i18nLanguages) {
+		final String defaultLocale = Locale.getDefault().getLanguage();
+		final String defaultGuiLocale = getDefaultGuiLanguage(defaultLocale);
+		for (final I18nLanguage i18nLanguage : i18nLanguages) {
+			addItem(i18nLanguage);
+			if (i18nLanguage.toString().equals(defaultGuiLocale))
+				setSelectedItem(i18nLanguage);
+		}
+	}
 
-  private String getDefaultGuiLanguage(String defaultLocale) {
-    String defaultGuiLocale = null;
-    try {
-      defaultGuiLocale = messages.getString(defaultLocale);
-    } catch (final MissingResourceException e) {
-      // language not supported, so don't select a default
-    }
-    return defaultGuiLocale;
-  }
+	private String getDefaultGuiLanguage(String defaultLocale) {
+		String defaultGuiLocale = null;
+		try {
+			defaultGuiLocale = messages.getString(defaultLocale);
+		} catch (final MissingResourceException e) {
+			// language not supported, so don't select a default
+		}
+		return defaultGuiLocale;
+	}
 
 }

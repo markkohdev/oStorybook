@@ -111,6 +111,7 @@ abstract public class AbstractRenameDialog extends AbstractDialog implements
 		combo.setSelectedItem(obj);
 	}
 
+	@SuppressWarnings("unchecked")
 	private JComboBox createCategoryCombo(List<String> list) {
 		DefaultComboBoxModel model = new DefaultComboBoxModel();
 		for (String category : list) {

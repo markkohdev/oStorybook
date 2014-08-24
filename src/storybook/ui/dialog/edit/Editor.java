@@ -17,7 +17,8 @@ package storybook.ui.dialog.edit;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.util.ResourceBundle;
+import storybook.SbApp;
+import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Idea;
@@ -39,150 +40,141 @@ import storybook.ui.MainFrame;
  */
 public class Editor extends javax.swing.JPanel {
 
-    MainFrame parent;
-    String currentView = "NONE";
-    String[] typeEdit = {
-        "NONE", "strand", "part", "chapter", "scene", "person",
-        "location", "item", "itemlink", "tag", "taglink", "idea","gender"
-    };
-    ResourceBundle bundle;
-    private final CardLayout card = new CardLayout(0, 0);
-    EditBlank editBlank;
-    EditStrand editStrand;
-    EditPart editPart;
-    EditChapter editChapter;
-    EditScene editScene;
-    EditPerson editPerson;
-    EditLocation editLocation;
-    EditItem editItem;
-    EditItemLinks editItemLinks;
-    EditTag editTag;
-    EditTagLinks editTagLinks;
-    EditIdea editIdea;
+	EditorDlg editorDlg;
+	MainFrame mainFrame;
+	String currentView = "NONE";
+	String[] typeEdit = {
+		"NONE", "Strand", "Part", "Chapter", "Scene", "Person",
+		"Location", "Item", "ItemLink", "Tag", "TagLink", "Idea", "Gender"
+	};
+	private final CardLayout card = new CardLayout(0, 0);
+	EditBlank editBlank;
+	EditStrand editStrand;
+	EditPart editPart;
+	EditChapter editChapter;
+	EditScene editScene;
+	EditPerson editPerson;
+	EditLocation editLocation;
+	EditItem editItem;
+	EditItemLinks editItemLinks;
+	EditTag editTag;
+	EditTagLinks editTagLinks;
+	EditIdea editIdea;
 	EditGender editGender;
 
-    /**
-     * Creates new form Editor
-     *
-     * @param m (MainFrame)
-     */
-    public Editor(MainFrame m) {
-        initComponents();
-        parent = m;
-        bundle = ResourceBundle.getBundle("storybook/resources/messages");
-        editBlank = new EditBlank();
-        editPart = new EditPart(this, null);
-        editChapter = new EditChapter(this, null);
-        editScene = new EditScene(this, null);
-        editPerson = new EditPerson(this, null);
-        editLocation = new EditLocation(this, null);
-        editItem = new EditItem(this, null);
-        editItemLinks = new EditItemLinks(this, null);
-        editTag = new EditTag(this, null);
-        editTagLinks = new EditTagLinks(this, null);
-        editIdea = new EditIdea(this, null);
-		editGender=new EditGender(this,null);
-        editorPane.setLayout(card);
-        currentView = "NONE";
-        card.show(editorPane, currentView);
-        //setEdit("NONE",null);
-    }
+	/**
+	 * Creates new form Editor
+	 *
+	 * @param m (MainFrame)
+	 */
+	public Editor(MainFrame m) {
+		initComponents();
+		mainFrame = m;
+		editBlank = new EditBlank();
+		editPart = new EditPart(this, null);
+		editChapter = new EditChapter(this, null);
+		editScene = new EditScene(this, null);
+		editPerson = new EditPerson(this, null);
+		editLocation = new EditLocation(this, null);
+		editItem = new EditItem(this, null);
+		editItemLinks = new EditItemLinks(this, null);
+		editTag = new EditTag(this, null);
+		editTagLinks = new EditTagLinks(this, null);
+		editIdea = new EditIdea(this, null);
+		editGender = new EditGender(this, null);
+		editorPane.setLayout(card);
+		currentView = "NONE";
+		card.show(editorPane, currentView);
+	}
 
-    public Editor(MainFrame m, Object obj) {
-        initComponents();
-        parent = m;
-        bundle = ResourceBundle.getBundle("storybook/resources/messages");
-        editorPane.setLayout(card);
-        currentView = "NONE";
-        card.show(editorPane, currentView);
-    }
+	public Editor(EditorDlg dlg, MainFrame m, AbstractEntity obj) {
+		SbApp.trace("Editor(EditorDlg, MainFrame, Object)");
+		initComponents();
+		editorDlg=dlg;
+		mainFrame = m;
+		editorPane.setLayout(card);
+		currentView = "NONE";
+		setEdit(obj);
+		card.show(editorPane, currentView);
+	}
 
-    public final void setEdit(String v, Object obj) {
-        if (currentView.equals(v)) {
-            return;
-        }
-        // TODO save before change
-        if (isModified()) {
-            // TODO interdiction Edit si modification en cours
-            return;
-        }
-        if (editorPane.getComponentCount() > 0) {
-            editorPane.remove(0);
-        }
-        switch (v) {
-            case "strand":
-                currentView = "strand";
-                editStrand = new EditStrand(this, (Strand) obj);
-                editorPane.add(editStrand, currentView);
-                break;
-            case "part":
-                currentView = "part";
-                editPart = new EditPart(this, (Part) obj);
-                editorPane.add(editPart, currentView);
-                break;
-            case "chapter":
-                currentView = "chapter";
-                editChapter = new EditChapter(this, (Chapter) obj);
-                editorPane.add(editChapter, currentView);
-                break;
-            case "scene":
-                currentView = "scene";
-                editScene = new EditScene(this, (Scene) obj);
-                editorPane.add(editScene, currentView);
-                break;
-            case "person":
-                currentView = "person";
-                editPerson = new EditPerson(this, (Person) obj);
-                editorPane.add(editPerson, currentView);
-                break;
-            case "location":
-                currentView = "location";
-                editLocation = new EditLocation(this, (Location) obj);
-                editorPane.add(editLocation, currentView);
-                break;
-            case "item":
-                currentView = "item";
-                editItem = new EditItem(this, (Item) obj);
-                editorPane.add(editItem, currentView);
-                break;
-            case "itemlink":
-                currentView = "itemlink";
-                editorPane.add(editItemLinks, currentView);
-                break;
-            case "tag":
-                currentView = "tag";
-                editorPane.add(editTag, currentView);
-                break;
-            case "taglink":
-                currentView = "taglinks";
-                editorPane.add(editTagLinks, currentView);
-                break;
-            case "idea":
-                currentView = "idea";
-                editIdea = new EditIdea(this, (Idea) obj);
-                editorPane.add(editIdea, currentView);
-                break;
-			case "gender":
-				currentView="gender";
-				editGender = new EditGender(this,(Gender) obj);
+	public final void setEdit(AbstractEntity obj) {
+		String v=obj.getClass().getName();
+		v=v.substring(v.lastIndexOf(".")+1);
+		if (currentView.equals(v))
+			return;
+		// TODO save before change
+		if (isModified()) {
+			// TODO interdiction Edit si modification en cours
+			return;
+		}
+		if (editorPane.getComponentCount() > 0)
+			editorPane.removeAll();
+		switch (v) {
+			case "Strand":
+				editStrand = new EditStrand(this, (Strand) obj);
+				editorPane.add(editStrand, currentView);
 				break;
-            case "NONE":
-                currentView = "NONE";
-                editorPane.add(editBlank, currentView);
-        }
-        card.show(editorPane, currentView);
-        lbEditor.setText(I18N.getMsg("msg.common." + currentView));
-    }
+			case "Part":
+				editPart = new EditPart(this, (Part) obj);
+				editorPane.add(editPart, currentView);
+				break;
+			case "Chapter":
+				editChapter = new EditChapter(this, (Chapter) obj);
+				editorPane.add(editChapter, currentView);
+				break;
+			case "Scene":
+				editScene = new EditScene(this, (Scene) obj);
+				editorPane.add(editScene, currentView);
+				break;
+			case "Person":
+				editPerson = new EditPerson(this, (Person) obj);
+				editorPane.add(editPerson, currentView);
+				break;
+			case "Location":
+				editLocation = new EditLocation(this, (Location) obj);
+				editorPane.add(editLocation, currentView);
+				break;
+			case "Item":
+				editItem = new EditItem(this, (Item) obj);
+				editorPane.add(editItem, currentView);
+				break;
+			case "ItemLink":
+				editItemLinks = new EditItemLinks(this, (ItemLink) obj);
+				editorPane.add(editItemLinks, currentView);
+				break;
+			case "Tag":
+				editTag = new EditTag(this, (Tag) obj);
+				editorPane.add(editTag, currentView);
+				break;
+			case "TagLink":
+				editTagLinks = new EditTagLinks(this, (TagLink) obj);
+				editorPane.add(editTagLinks, currentView);
+				break;
+			case "Idea":
+				editIdea = new EditIdea(this, (Idea) obj);
+				editorPane.add(editIdea, currentView);
+				break;
+			case "Gender":
+				editGender = new EditGender(this, (Gender) obj);
+				break;
+			case "NONE":
+				editorPane.add(editBlank, currentView);
+		}
+		currentView=v;
+		card.show(editorPane, currentView);
+		lbEditor.setText(I18N.getMsg("msg.common." + currentView.toLowerCase()));
+	}
 
-    public void removeEdit() {
-        this.setVisible(false);
-    }
+	public void removeEdit() {
+		this.setVisible(false);
+	}
 
-    /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
-     * content of this method is always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+	/**
+	 * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of
+	 * this method is always regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -213,7 +205,7 @@ public class Editor extends javax.swing.JPanel {
         editorScrollPane.setViewportView(editorPane);
 
         btSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-save.png"))); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/resources/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("storybook/msg/messages"); // NOI18N
         btSave.setText(bundle.getString("msg.common.save")); // NOI18N
         btSave.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btSave.addActionListener(new java.awt.event.ActionListener() {
@@ -268,13 +260,13 @@ public class Editor extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSaveActionPerformed
-        if (isModified()) {
-            saveData();
-        }
+		if (isModified())
+			saveData();
     }//GEN-LAST:event_btSaveActionPerformed
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
-        parent.hideEditor();
+		//mainFrame.hideEditor();
+		editorDlg.dispose();
     }//GEN-LAST:event_btCancelActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -286,56 +278,96 @@ public class Editor extends javax.swing.JPanel {
     private javax.swing.JLabel lbError;
     // End of variables declaration//GEN-END:variables
 
-    public void setError(String msg) {
-        lbError.setText(msg);
-        lbError.setForeground(Color.red);
-    }
+	public void setError(String msg) {
+		lbError.setText(msg);
+		lbError.setForeground(Color.red);
+	}
 
-    private boolean isModified() {
-        boolean rt = false;
-        switch (currentView) {
-            case "strand":
-                rt = editStrand.isModified();
-                break;
-            case "part":
-                rt = editPart.isModified();
-                break;
-            case "chapter":
-                rt = editChapter.isModified();
-                break;
-            case "scene":
-                rt = editScene.isModified();
-                break;
-            case "person":
-                rt = editPerson.isModified();
-                break;
-            case "location":
-                rt = editLocation.isModified();
-                break;
-            case "item":
-                rt = editIdea.isModified();
-                break;
-            case "itemlink":
-                rt = editItemLinks.isModified();
-                break;
-            case "tag":
-                rt = editTag.isModified();
-                break;
-            case "taglink":
-                //rt=editTagLinks,isModified();
-                break;
-            case "idea":
-                rt = editIdea.isModified();
-                break;
-			case "gender":
-				rt=editGender.isModified();
+	private boolean isModified() {
+		boolean rt = false;
+		switch (currentView) {
+			case "Strand":
+				rt = editStrand.isModified();
 				break;
-        }
-        return (rt);
-    }
+			case "Part":
+				rt = editPart.isModified();
+				break;
+			case "Chapter":
+				rt = editChapter.isModified();
+				break;
+			case "Scene":
+				rt = editScene.isModified();
+				break;
+			case "Person":
+				rt = editPerson.isModified();
+				break;
+			case "Location":
+				rt = editLocation.isModified();
+				break;
+			case "Item":
+				rt = editIdea.isModified();
+				break;
+			case "ItemLink":
+				rt = editItemLinks.isModified();
+				break;
+			case "Tag":
+				rt = editTag.isModified();
+				break;
+			case "TagLink":
+				rt = editTagLinks.isModified();
+				break;
+			case "Idea":
+				rt = editIdea.isModified();
+				break;
+			case "Gender":
+				rt = editGender.isModified();
+				break;
+		}
+		return (rt);
+	}
 
-    private void saveData() {
-		// TODO Editor.saveData
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	private void saveData() {
+		boolean r = isModified();
+		switch (currentView) {
+			case "Strand":
+				editStrand.saveData();
+				break;
+			case "Part":
+				editPart.saveData();
+				break;
+			case "Chapter":
+				editChapter.saveData();
+				break;
+			case "Scene":
+				editScene.saveData();
+				break;
+			case "Person":
+				editPerson.saveData();
+				break;
+			case "Location":
+				editLocation.saveData();
+				break;
+			case "Item":
+				editIdea.saveData();
+				break;
+			case "ItemLink":
+				editItemLinks.saveData();
+				break;
+			case "Tag":
+				editTag.saveData();
+				break;
+			case "TagLink":
+				editTagLinks.saveData();
+				break;
+			case "Idea":
+				editIdea.saveData();
+				break;
+			case "Gender":
+				editGender.saveData();
+				break;
+		}
+		if (r) {
+			mainFrame.refresh();
+		}
+	}
 }

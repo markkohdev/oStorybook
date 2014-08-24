@@ -20,13 +20,7 @@ package storybook.model.hbn.entity;
 
 import storybook.SbConstants.PreferenceKey;
 
-/**
- * @hibernate.class
- *   table="PREFERENCE"
- */
 public class Preference extends AbstractEntity {
-
-	private static final long serialVersionUID = 3276015358483874574L;
 
 	private String key;
 	private String stringValue;
@@ -73,12 +67,7 @@ public class Preference extends AbstractEntity {
 		this.binValue = binValue;
 	}
 
-	/**
-	 * @hibernate.id
-	 *   column="ID"
-	 *   generator-class="increment"
-	 *   unsaved-value="null"
-	 */
+	@Override
 	public Long getId() {
 		return this.id;
 	}
@@ -87,10 +76,6 @@ public class Preference extends AbstractEntity {
 		this.id = id;
 	}
 
-	/**
-	 * @hibernate.property
-	 *   unique="true"
-	 */
 	public String getKey() {
 		return key;
 	}
@@ -99,9 +84,6 @@ public class Preference extends AbstractEntity {
 		this.key = key;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getStringValue() {
 		return stringValue;
 	}
@@ -110,9 +92,6 @@ public class Preference extends AbstractEntity {
 		this.stringValue = stringValue;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public Integer getIntegerValue() {
 		return integerValue;
 	}
@@ -121,9 +100,6 @@ public class Preference extends AbstractEntity {
 		this.integerValue = integerValue;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public Boolean getBooleanValue() {
 		return booleanValue;
 	}
@@ -132,11 +108,6 @@ public class Preference extends AbstractEntity {
 		this.booleanValue = booleanValue;
 	}
 
-	/**
-	 * @hibernate.property
-	 *   type="binary"
-	 *   length="4096"
-	 */
 	public byte[] getBinValue() {
 		return binValue;
 	}
@@ -145,8 +116,8 @@ public class Preference extends AbstractEntity {
 		this.binValue = binValue;
 	}
 
+	@Override
 	public String toString() {
-		return getKey() + ": '" + getStringValue() + "' / " + getIntegerValue()
-				+ " / " + getBooleanValue();
+		return getKey() + ": '" + getStringValue() + "' / " + getIntegerValue() + " / " + getBooleanValue();
 	}
 }

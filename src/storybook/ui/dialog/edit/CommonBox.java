@@ -32,6 +32,7 @@ import storybook.model.hbn.dao.ItemLinkDAOImpl;
 import storybook.model.hbn.dao.LocationDAOImpl;
 import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.dao.PersonDAOImpl;
+import storybook.model.hbn.dao.SceneDAOImpl;
 import storybook.model.hbn.dao.StrandDAOImpl;
 import storybook.model.hbn.dao.TagDAOImpl;
 import storybook.model.hbn.dao.TagLinkDAOImpl;
@@ -58,8 +59,9 @@ import storybook.toolkit.I18N;
  */
 public class CommonBox {
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbChapters(MainFrame mainFrame, JComboBox cb, Scene scene) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = dao.findAll();
@@ -84,32 +86,40 @@ public class CommonBox {
 			I18N.getMsg("msg.status.done")
 		};
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbStatus(JComboBox cb, Scene scene) {
 		cb.removeAllItems();
+		Integer ix=0,i=0;
 		for (String x : lbStatus) {
 			cb.addItem(x);
+			if ((scene.hasChapter()) && (scene.getStatus().equals(i))) {
+				ix = i;
+			}
+			i++;
 		}
-		cb.setSelectedIndex(scene.getStatus());
+		cb.setSelectedIndex(ix);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbStatus(JComboBox cb, Idea idea) {
-		String[] lbStatus = {
+		String[] lbSt = {
 			I18N.getMsg("msg.ideas.status.not_started"),
 			I18N.getMsg("msg.ideas.status.started"),
 			I18N.getMsg("msg.ideas.status.completed"),
 			I18N.getMsg("msg.ideas.status.abandoned")
 		};
 		cb.removeAllItems();
-		for (String x : lbStatus) {
+		for (String x : lbSt) {
 			cb.addItem(x);
 		}
-		cb.setSelectedIndex(idea.getStatus());
+		if (idea.getStatus()!=null) cb.setSelectedIndex(idea.getStatus());
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadLbStrands(MainFrame mainFrame, JList lb, Scene scene) {
 		DefaultListModel listModel = new DefaultListModel();
 		if (!"".equals(scene.getTitle())) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			StrandDAOImpl dao = new StrandDAOImpl(session);
 			List<Strand> strands = dao.findAll();
@@ -129,8 +139,9 @@ public class CommonBox {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbGenders(MainFrame mainFrame, JComboBox cb, Person person) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		GenderDAOImpl dao = new GenderDAOImpl(session);
 		List<Gender> genders = dao.findAll();
@@ -149,7 +160,7 @@ public class CommonBox {
 
 	public static Gender findGender(MainFrame mainFrame, String str) {
 		Gender rgender = null;
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		GenderDAOImpl dao = new GenderDAOImpl(session);
 		List<Gender> genders = dao.findAll();
@@ -164,10 +175,11 @@ public class CommonBox {
 		return (rgender);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadLbPersons(MainFrame mainFrame, JList lb, Scene scene) {
 		DefaultListModel listModel = new DefaultListModel();
 		if (!"".equals(scene.getTitle())) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			PersonDAOImpl dao = new PersonDAOImpl(session);
 			List<Person> persons = dao.findAll();
@@ -192,7 +204,7 @@ public class CommonBox {
 		if (!"".equals(str)) {
 			return (false);
 		}
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl dao = new PersonDAOImpl(session);
 		List<Person> persons = dao.findAll();
@@ -207,19 +219,23 @@ public class CommonBox {
 		return (r);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbLocations(MainFrame mainFrame, JComboBox cb, Scene scene) {
 		if (!"".equals(scene.getTitle())) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			LocationDAOImpl dao = new LocationDAOImpl(session);
 			List<Location> locations = dao.findAll();
 			int ix = -1, i = 0;
 			cb.removeAllItems();
+			List<Location> sceneloc=scene.getLocations();
 			for (Location location : locations) {
 				cb.addItem(location.getFullName());
-				if ((scene.getLocations() != null) && (scene.getLocations().contains(location))) {
-					ix = i;
-				}
+				/*if ((sceneloc != null) && (!sceneloc.isEmpty())) {*/
+					if ((sceneloc.contains(location))) {
+						ix = i;
+					}
+				/*}*/
 				i++;
 			}
 			cb.setSelectedIndex(ix);
@@ -227,8 +243,9 @@ public class CommonBox {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbParts(MainFrame mainFrame, JComboBox cb, Chapter chapter) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -249,7 +266,7 @@ public class CommonBox {
 		if ("".equals(str)) {
 			return (null);
 		}
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		List<Part> parts = dao.findAll();
@@ -264,8 +281,9 @@ public class CommonBox {
 		return (rpart);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbCategory(MainFrame mainFrame, JComboBox cb, Person person) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
 		List<Category> categories = dao.findAll();
@@ -288,12 +306,12 @@ public class CommonBox {
 			return (rcategory);
 		}
 		String str = cb.getSelectedItem().toString();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
 		List<Category> categories = dao.findAll();
 		for (Category category : categories) {
-			if (category.getName() == str) {
+			if (category.getName().equals(str)) {
 				rcategory = category;
 				break;
 			}
@@ -302,8 +320,9 @@ public class CommonBox {
 		return (rcategory);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbCategory(MainFrame mainFrame, JComboBox cb, Idea idea) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		IdeaDAOImpl dao = new IdeaDAOImpl(session);
 		List<String> ideas = dao.findCategories();
@@ -321,10 +340,11 @@ public class CommonBox {
 		model.commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadLbAttributes(MainFrame mainFrame, JList lb, Person person) {
 		DefaultListModel listModel = new DefaultListModel();
 		if (person.getAttributes() != null) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			AttributeDAOImpl dao = new AttributeDAOImpl(session);
 			List<Attribute> attributes = dao.findAll();
@@ -344,8 +364,9 @@ public class CommonBox {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbCities(MainFrame mainFrame, JComboBox cb, Location location) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl dao = new LocationDAOImpl(session);
 		List<String> cities = dao.findCities();
@@ -353,7 +374,7 @@ public class CommonBox {
 		int ix = -1, i = 0;
 		for (String city : cities) {
 			cb.addItem(city);
-			if ((location.hasCity()) && (location.getCity().equals(city))) {
+			if ((location.getId()!=-1) && (location.getCity().equals(city))) {
 				ix = i;
 			}
 			i++;
@@ -362,8 +383,9 @@ public class CommonBox {
 		model.commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbCountries(MainFrame mainFrame, JComboBox cb, Location location) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		LocationDAOImpl dao = new LocationDAOImpl(session);
 		List<String> countries = dao.findCountries();
@@ -371,7 +393,7 @@ public class CommonBox {
 		int ix = -1, i = 0;
 		for (String country : countries) {
 			cb.addItem(country);
-			if ((location.hasCountry()) && (location.getCountry().equals(country))) {
+			if ((location.getCountry()!=null) && (location.getCountry().equals(country))) {
 				ix = i;
 			}
 			i++;
@@ -380,8 +402,9 @@ public class CommonBox {
 		model.commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbCategories(MainFrame mainFrame, JComboBox cb, Item item) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl dao = new ItemDAOImpl(session);
 		List<String> categories = dao.findCategories();
@@ -399,8 +422,9 @@ public class CommonBox {
 		model.commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadCbCategories(MainFrame mainFrame, JComboBox cb, Tag tag) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl dao = new TagDAOImpl(session);
 		List<String> categories = dao.findCategories();
@@ -442,9 +466,10 @@ public class CommonBox {
 		return (false);
 	}
 
+	@SuppressWarnings("unchecked")
 	static DefaultListModel loadLbItems(MainFrame mainFrame, JList lb) {
 		DefaultListModel listModel = new DefaultListModel();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ItemDAOImpl dao = new ItemDAOImpl(session);
 		List<Item> items = dao.findAll();
@@ -453,15 +478,16 @@ public class CommonBox {
 		}
 		return(listModel);
 	}
+	@SuppressWarnings("unchecked")
 	static void loadLbItems(MainFrame mainFrame, JList lb, Scene scene) {
 		DefaultListModel listModel = loadLbItems(mainFrame,lb);
 		lb.setModel(listModel);
 		if (!"".equals(scene.getTitle())) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			ItemLinkDAOImpl dao = new ItemLinkDAOImpl(session);
 			List<ItemLink> items = dao.findByScene(scene);
-			int i = 0;
+			int i;
 			int[] indices = {};
 			for (ItemLink item : items) {
 				i=lb.getNextMatch(item.getItem().getName(),0,Position.Bias.Forward);
@@ -470,6 +496,189 @@ public class CommonBox {
 			lb.setSelectedIndices(indices);
 			model.commit();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void loadCbTags(MainFrame mainFrame, JComboBox cb, Tag tag) {
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		TagDAOImpl dao = new TagDAOImpl(session);
+		List<Tag> tags = dao.findAll();
+		cb.removeAllItems();
+		int ix = -1, i = 0;
+		String x = tag.getName();
+		for (Tag u : tags) {
+			cb.addItem((String)u.getName());
+			if ((!x.isEmpty()) && (x.equals(u.getName()))) {
+				ix = i;
+			}
+			i++;
+		}
+		cb.setSelectedIndex(ix);
+		model.commit();
+	}
+	
+	public static Tag findTag(MainFrame mainFrame, String str) {
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		TagDAOImpl dao = new TagDAOImpl(session);
+		List<Tag> tags = dao.findAll();
+		Tag r = null;
+		for (Tag u : tags) {
+			if (u.getName().equals(str)) {
+				r = u;
+				break;
+			}
+		}
+		model.commit();
+		return (r);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void loadCbItems(MainFrame mainFrame, JComboBox cb, Item item) {
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		ItemDAOImpl dao = new ItemDAOImpl(session);
+		List<Item> items = dao.findAll();
+		cb.removeAllItems();
+		int ix = -1, i = 0;
+		String x = item.getName();
+		for (Item u : items) {
+			cb.addItem((String)u.getName());
+			if ((!x.isEmpty()) && (x.equals(u.getName()))) {
+				ix = i;
+			}
+			i++;
+		}
+		cb.setSelectedIndex(ix);
+		model.commit();
+	}
+
+	public static Item findItem(MainFrame mainFrame, String str) {
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		ItemDAOImpl dao = new ItemDAOImpl(session);
+		List<Item> items = dao.findAll();
+		Item r = null;
+		for (Item u : items) {
+			if (u.getName().equals(str)) {
+				r = u;
+				break;
+			}
+		}
+		model.commit();
+		return (r);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void loadCbPersons(MainFrame mainFrame, JComboBox cb, Person person) {
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		PersonDAOImpl dao = new PersonDAOImpl(session);
+		List<Person> persons = dao.findAll();
+		cb.removeAllItems();
+		int ix = -1, i = 0;
+		String x = person.getFullName();
+		for (Person u : persons) {
+			cb.addItem(u.getFullName());
+			if ((!x.isEmpty()) && (x.equals(u.getFullName()))) {
+				ix = i;
+			}
+			i++;
+		}
+		cb.setSelectedIndex(ix);
+		model.commit();
+	}
+
+	public static Person findPerson(MainFrame mainFrame, String str) {
+		if ("".equals(str)) return (null);
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		PersonDAOImpl dao = new PersonDAOImpl(session);
+		List<Person> persons = dao.findAll();
+		Person r = null;
+		for (Person person : persons) {
+			if (person.getFullName().equals(str)) {
+				r = person;
+				break;
+			}
+		}
+		model.commit();
+		return (r);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void loadCbLocations(MainFrame mainFrame, JComboBox cb, Location location) {
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		LocationDAOImpl dao = new LocationDAOImpl(session);
+		List<Location> locations = dao.findAll();
+		cb.removeAllItems();
+		int ix = -1, i = 0;
+		String x = location.getFullName();
+		for (Location u : locations) {
+			cb.addItem(u.getFullName());
+			if ((!x.isEmpty()) && (x.equals(u.getFullName()))) {
+				ix = i;
+			}
+			i++;
+		}
+		cb.setSelectedIndex(ix);
+		model.commit();
+	}
+
+	public static Location findLocation(MainFrame mainFrame, String str) {
+		if ("".equals(str)) return (null);
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		LocationDAOImpl dao = new LocationDAOImpl(session);
+		List<Location> locations = dao.findAll();
+		Location r = null;
+		for (Location location : locations) {
+			if (location.getFullName().equals(str)) {
+				r = location;
+				break;
+			}
+		}
+		model.commit();
+		return (r);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void loadCbScenes(MainFrame mainFrame, JComboBox cb, Scene scene) {
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		SceneDAOImpl dao = new SceneDAOImpl(session);
+		List<Scene> scenes = dao.findAll();
+		cb.removeAllItems();
+		int ix = -1, i = 0;
+		String x = scene.getFullTitle();
+		for (Scene u : scenes) {
+			cb.addItem(u.getFullTitle());
+			if ((!x.isEmpty()) && (x.equals(u.getFullTitle()))) {
+				ix = i;
+			}
+			i++;
+		}
+		cb.setSelectedIndex(ix);
+		model.commit();
+	}
+
+	public static Scene findScene(MainFrame mainFrame, String str) {
+		if ("".equals(str)) return (null);
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		SceneDAOImpl dao = new SceneDAOImpl(session);
+		List<Scene> scenes = dao.findAll();
+		Scene r = null;
+		for (Scene scene : scenes) {
+			if (scene.getFullTitle().equals(str)) {
+				r = scene;
+				break;
+			}
+		}
+		model.commit();
+		return (r);
 	}
 
 }

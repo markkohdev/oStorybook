@@ -45,6 +45,7 @@ public class MemoriaGraphMouse extends AbstractPopupGraphMousePlugin
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void handlePopup(MouseEvent paramMouseEvent) {
 		VisualizationViewer localVisualizationViewer = (VisualizationViewer) paramMouseEvent.getSource();
 		Point localPoint = paramMouseEvent.getPoint();
@@ -59,6 +60,7 @@ public class MemoriaGraphMouse extends AbstractPopupGraphMousePlugin
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void mouseClicked(MouseEvent paramMouseEvent) {
 		if (paramMouseEvent.getClickCount() == 2) {
 			VisualizationViewer localVisualizationViewer = (VisualizationViewer) paramMouseEvent.getSource();

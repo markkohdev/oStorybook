@@ -38,7 +38,7 @@ public class CategoryEntityHandler extends AbstractEntityHandler {
 
 	@Override
 	public AbstractEntity createNewEntity() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		CategoryDAOImpl dao = new CategoryDAOImpl(session);
 		Integer nextSort = dao.getNextSort();

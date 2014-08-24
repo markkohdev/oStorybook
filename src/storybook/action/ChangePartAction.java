@@ -31,8 +31,8 @@ import storybook.model.hbn.entity.Part;
  */
 public class ChangePartAction extends AbstractAction {
 
-	private ActionHandler actionHandler;
-	private Part part;
+	private final ActionHandler actionHandler;
+	private final Part part;
 
 	public ChangePartAction(String name, ActionHandler actionHandler, Part part) {
 		super(name);

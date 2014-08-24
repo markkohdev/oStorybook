@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import storybook.StorybookApp;
+import storybook.SbApp;
 import storybook.model.DbFile;
 
 /**
@@ -40,7 +40,7 @@ public class OpenFileAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		StorybookApp app = StorybookApp.getInstance();
+		SbApp app = SbApp.getInstance();
 		app.openFile(dbFile);
 	}
 

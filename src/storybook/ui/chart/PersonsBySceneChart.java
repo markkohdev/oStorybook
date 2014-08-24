@@ -93,9 +93,10 @@ public class PersonsBySceneChart extends AbstractPersonsChart
 		setTableColumnWidth();
 	}
 
+	@SuppressWarnings("unchecked")
 	private JTable createTable() {
 		Part part = mainFrame.getCurrentPart();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl personDAO = new PersonDAOImpl(session);
 		List persons = personDAO.findByCategories(selectedCategories);
@@ -134,12 +135,12 @@ public class PersonsBySceneChart extends AbstractPersonsChart
 				j++;
 			}
 			if ((cbShowUnusedPersons == null) || (cbShowUnusedPersons.isSelected()) || (n != 0)) {
-				((ArrayList) scenesIterator).add(string3);
+				((List) scenesIterator).add(string3);
 			}
 		}
-		Object[][] localObject31 = new Object[((ArrayList) scenesIterator).size()][];
+		Object[][] localObject31 = new Object[((List) scenesIterator).size()][];
 		i = 0;
-		Iterator localObject4 = ((ArrayList) scenesIterator).iterator();
+		Iterator localObject4 = ((List) scenesIterator).iterator();
 		while (((Iterator) localObject4).hasNext()) {
 			Object[] arrayOfObject1 = (Object[]) ((Iterator) localObject4).next();
 			localObject31[(i++)] = arrayOfObject1;

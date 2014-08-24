@@ -124,7 +124,7 @@ public class PersonTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl dao = new PersonDAOImpl(session);
 		Person person = dao.find(id);

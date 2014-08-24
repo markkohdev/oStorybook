@@ -11,7 +11,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import storybook.StorybookApp;
+import storybook.SbApp;
 
 /**
  *
@@ -40,7 +40,7 @@ class ExportTxt {
 			try {
 				outStream = new BufferedWriter(new FileWriter(fileName));
 			} catch (IOException ex) {
-				StorybookApp.error("ExportCsv.open()", ex);
+				SbApp.error("ExportCsv.open()", ex);
 			}
 			if (headers==null) return;
 			String str="";
@@ -51,7 +51,7 @@ class ExportTxt {
 			outStream.write(str,0,str.length());
 			outStream.flush();
 		} catch (IOException ex) {
-			StorybookApp.error("ExportCsv.open()", ex);
+			SbApp.error("ExportCsv.open()", ex);
 		}
 	}
 	
@@ -67,7 +67,7 @@ class ExportTxt {
 			outStream.write(str,0,str.length());
 			outStream.flush();
 		} catch (IOException ex) {
-			StorybookApp.error("ExportCsv.createRow(...)", ex);
+			SbApp.error("ExportCsv.createRow(...)", ex);
 		}
 	}
 	
@@ -76,7 +76,7 @@ class ExportTxt {
 			outStream.write(str+"\n",0,str.length()+1);
 			outStream.flush();
 		} catch (IOException ex) {
-			StorybookApp.error("ExportCsv.writeText("+str+")", ex);
+			SbApp.error("ExportCsv.writeText("+str+")", ex);
 		}
 	}
 	
@@ -85,7 +85,7 @@ class ExportTxt {
 			outStream.flush();
 			outStream.close();
 		} catch (IOException ex) {
-			StorybookApp.error("ExportCsv.close()", ex);
+			SbApp.error("ExportCsv.close()", ex);
 		}
 	}
 

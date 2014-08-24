@@ -34,7 +34,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.SbConstants.ViewName;
 import storybook.controller.BookController;
 import storybook.model.BookModel;
@@ -43,7 +43,7 @@ import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Scene;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.ViewUtil;
 import storybook.toolkit.swing.SwingUtil;
@@ -65,13 +65,13 @@ public class ManagePanel extends AbstractScrollPanel {
 	}
 
 	protected void setZoomValue(int val) {
-		DocumentUtil.storeInternal(mainFrame, InternalKey.MANAGE_ZOOM, val);
-		mainFrame.getDocumentController().manageSetZoom(val);
+		BookUtil.store(mainFrame, BookKey.MANAGE_ZOOM, val);
+		mainFrame.getBookController().manageSetZoom(val);
 	}
 
 	protected int getZoomValue() {
-		Internal internal = DocumentUtil.restoreInternal(mainFrame,
-				InternalKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
+		Internal internal = BookUtil.get(mainFrame,
+				BookKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
 		return internal.getIntegerValue();
 	}
 
@@ -151,8 +151,8 @@ public class ManagePanel extends AbstractScrollPanel {
 	@Override
 	public void init() {
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.MANAGE_COLUMNS,
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.MANAGE_COLUMNS,
 					SbConstants.DEFAULT_MANAGE_COLUMNS);
 			cols = internal.getIntegerValue();
 		} catch (Exception e) {
@@ -179,7 +179,7 @@ public class ManagePanel extends AbstractScrollPanel {
 	@Override
 	public void refresh() {
 		Part currentPart = mainFrame.getCurrentPart();
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = dao.findAll(currentPart);

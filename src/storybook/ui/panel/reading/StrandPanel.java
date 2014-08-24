@@ -60,7 +60,7 @@ public class StrandPanel extends AbstractPanel implements ItemListener {
 		setBackground(Color.white);
 		setBorder(SwingUtil.getBorderDefault());
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		List<Strand> list = dao.findAll();
@@ -118,7 +118,7 @@ public class StrandPanel extends AbstractPanel implements ItemListener {
 	}
 
 	private void addAllStrands() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl dao = new StrandDAOImpl(session);
 		List<Strand> list = dao.findAll();

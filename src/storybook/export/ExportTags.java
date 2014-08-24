@@ -30,7 +30,7 @@ public class ExportTags {
 	
 	ExportTags(Export m) {
 		parent=m;
-		headers=new ArrayList();
+		headers=new ArrayList<>();
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.id"),5));
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.category"), 20));
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.name"), 75));
@@ -39,7 +39,7 @@ public class ExportTags {
 	public String get(Tag obj) {
 		if (obj!=null) return(EntityUtil.getInfo(parent.mainFrame, obj));
 		String str = debut(obj);
-		BookModel model = parent.mainFrame.getDocumentModel();
+		BookModel model = parent.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		TagDAOImpl dao = new TagDAOImpl(session);
 		List<Tag> tags = dao.findAll();

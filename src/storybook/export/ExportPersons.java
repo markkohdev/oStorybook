@@ -30,7 +30,7 @@ public class ExportPersons {
 	
 	ExportPersons(Export m) {
 		parent=m;
-		headers=new ArrayList();
+		headers=new ArrayList<>();
 		headers.add(new ExportHeader(I18N.getMsg("msg.common.id"),5));
 		headers.add(new ExportHeader(I18N.getMsg("msg.dlg.person.abbr"), 5));
 		headers.add(new ExportHeader(I18N.getMsg("msg.dlg.person.firstname"), 25));
@@ -42,7 +42,7 @@ public class ExportPersons {
 	public String get(Person obj) {
 		if (obj!=null) return(EntityUtil.getInfo(parent.mainFrame, obj));
 		String str = debut(obj);
-		BookModel model = parent.mainFrame.getDocumentModel();
+		BookModel model = parent.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PersonDAOImpl dao = new PersonDAOImpl(session);
 		List<Person> persons = dao.findAll();

@@ -25,9 +25,9 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.model.hbn.entity.Internal;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.ui.MainFrame;
 
@@ -55,11 +55,11 @@ public class ManageOptionsDialog extends AbstractOptionsDialog {
 		setZoomMinValue(SbConstants.MIN_MANAGE_ZOOM);
 		setZoomMaxValue(SbConstants.MAX_MANAGE_ZOOM);
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.MANAGE_ZOOM, SbConstants.DEFAULT_MANAGE_ZOOM);
 			zoomValue = internal.getIntegerValue();
-			internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.MANAGE_COLUMNS,
+			internal = BookUtil.get(mainFrame,
+					BookKey.MANAGE_COLUMNS,
 					SbConstants.DEFAULT_MANAGE_COLUMNS);
 			columns = internal.getIntegerValue();
 		} catch (Exception e) {
@@ -93,9 +93,9 @@ public class ManageOptionsDialog extends AbstractOptionsDialog {
 			JSlider slider = (JSlider) e.getSource();
 			if (!slider.getValueIsAdjusting()) {
 				int val = slider.getValue();
-				DocumentUtil.storeInternal(mainFrame, InternalKey.MANAGE_COLUMNS,
+				BookUtil.store(mainFrame, BookKey.MANAGE_COLUMNS,
 						val);
-				mainFrame.getDocumentController().manageSetColumns(val);
+				mainFrame.getBookController().manageSetColumns(val);
 				return;
 			}
 		}
@@ -104,7 +104,7 @@ public class ManageOptionsDialog extends AbstractOptionsDialog {
 
 	@Override
 	protected void zoom(int val) {
-		DocumentUtil.storeInternal(mainFrame, InternalKey.MANAGE_ZOOM, val);
-		mainFrame.getDocumentController().manageSetZoom(val);
+		BookUtil.store(mainFrame, BookKey.MANAGE_ZOOM, val);
+		mainFrame.getBookController().manageSetZoom(val);
 	}
 }

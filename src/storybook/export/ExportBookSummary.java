@@ -6,7 +6,7 @@
 package storybook.export;
 
 import storybook.SbConstants;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 
 /**
@@ -46,17 +46,17 @@ public class ExportBookSummary {
 		}
 		String str = debut();
 		ligne(I18N.getMsgColon("msg.common.title"),
-				DocumentUtil.restoreInternal(parent.mainFrame, SbConstants.InternalKey.TITLE, "").getStringValue());
+				BookUtil.get(parent.mainFrame, SbConstants.BookKey.TITLE, "").getStringValue());
 		ligne(I18N.getMsgColon("msg.common.subtitle"),
-				DocumentUtil.restoreInternal(parent.mainFrame, SbConstants.InternalKey.SUBTITLE, "").getStringValue());
+				BookUtil.get(parent.mainFrame, SbConstants.BookKey.SUBTITLE, "").getStringValue());
 		ligne(I18N.getMsgColon("msg.common.author_s"),
-				DocumentUtil.restoreInternal(parent.mainFrame, SbConstants.InternalKey.AUTHOR, "").getStringValue());
+				BookUtil.get(parent.mainFrame, SbConstants.BookKey.AUTHOR, "").getStringValue());
 		ligne(I18N.getMsgColon("msg.common.copyright"),
-				DocumentUtil.restoreInternal(parent.mainFrame, SbConstants.InternalKey.COPYRIGHT, "").getStringValue());
+				BookUtil.get(parent.mainFrame, SbConstants.BookKey.COPYRIGHT, "").getStringValue());
 		ligne(I18N.getMsgColon("msg.common.notes"),
-				DocumentUtil.restoreInternal(parent.mainFrame, SbConstants.InternalKey.NOTES, "").getStringValue());
+				BookUtil.get(parent.mainFrame, SbConstants.BookKey.NOTES, "").getStringValue());
 		ligne(I18N.getMsgColon("msg.common.blurb"),
-				DocumentUtil.restoreInternal(parent.mainFrame, SbConstants.InternalKey.BLURB, "").getStringValue());
+				BookUtil.get(parent.mainFrame, SbConstants.BookKey.BLURB, "").getStringValue());
 		fin();
 		return (str);
 	}

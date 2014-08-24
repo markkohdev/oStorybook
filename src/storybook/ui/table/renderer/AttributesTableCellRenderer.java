@@ -58,7 +58,7 @@ public class AttributesTableCellRenderer extends DefaultTableCellRenderer {
 				// ignore
 			}
 		} catch (LazyInitializationException lie) {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			@SuppressWarnings("unchecked")
 			List<Attribute> list = (List<Attribute>) value;

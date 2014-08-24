@@ -98,7 +98,7 @@ public class PartTable extends AbstractTable {
 
 	@Override
 	protected AbstractEntity getEntity(Long id) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		Part part = dao.find(id);

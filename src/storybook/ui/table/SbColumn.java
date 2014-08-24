@@ -52,8 +52,7 @@ public class SbColumn {
 		this(colId, methodName, InputType.TEXTFIELD, resourceKey);
 	}
 
-	public SbColumn(int colId, String methodName, InputType inputType,
-			String resourceKey) {
+	public SbColumn(int colId, String methodName, InputType inputType, String resourceKey) {
 		this.colId = colId;
 		this.methodName = methodName;
 		this.inputType = inputType;

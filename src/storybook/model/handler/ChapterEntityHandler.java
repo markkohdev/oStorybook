@@ -39,7 +39,7 @@ public class ChapterEntityHandler extends AbstractEntityHandler {
 
 	@Override
 	public AbstractEntity createNewEntity() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		Integer nextNumber = dao.getNextChapterNumber();

@@ -64,6 +64,7 @@ public class DeleteEntityAction extends AbstractEntityAction {
 		}
 
 		// check if an entity is loaded
+		/*
 		Component comp = mainFrame.getView(ViewName.EDITOR).getComponent();
 		if (comp != null && comp instanceof EntityEditor) {
 			EntityEditor editor = (EntityEditor) comp;
@@ -80,18 +81,18 @@ public class DeleteEntityAction extends AbstractEntityAction {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-		}
+		}*/
 
 		dlgConfirmDelete dlg = new dlgConfirmDelete(mainFrame, entity);
 		showModalDialog(dlg, mainFrame, true);
 		if (dlg.isCanceled()) {
 			return;
 		}
-		BookController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getBookController();
 		if (entity instanceof Part) {
 			if (mainFrame.getCurrentPart().getId().equals(entity.getId())) {
 				// current part will be delete, change to first part
-				BookModel model = mainFrame.getDocumentModel();
+				BookModel model = mainFrame.getBookModel();
 				Session session = model.beginTransaction();
 				PartDAOImpl dao = new PartDAOImpl(session);
 				Part firstPart = dao.findFirst();

@@ -40,7 +40,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.hibernate.Session;
 import storybook.SbConstants;
-import storybook.SbConstants.InternalKey;
+import storybook.SbConstants.BookKey;
 import storybook.SbConstants.ViewName;
 import storybook.controller.BookController;
 import storybook.export.BookExporter;
@@ -49,7 +49,7 @@ import storybook.model.hbn.dao.ChapterDAOImpl;
 import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Internal;
 import storybook.model.hbn.entity.Part;
-import storybook.toolkit.DocumentUtil;
+import storybook.toolkit.BookUtil;
 import storybook.toolkit.I18N;
 import storybook.toolkit.ViewUtil;
 import storybook.toolkit.html.HtmlUtil;
@@ -158,11 +158,11 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 		strandPanel.init();
 
 		try {
-			Internal internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.READING_ZOOM, SbConstants.DEFAULT_READING_ZOOM);
+			Internal internal = BookUtil.get(mainFrame,
+					BookKey.READING_ZOOM, SbConstants.DEFAULT_READING_ZOOM);
 			setZoomedSize(internal.getIntegerValue());
-			internal = DocumentUtil.restoreInternal(mainFrame,
-					InternalKey.READING_FONT_SIZE,
+			internal = BookUtil.get(mainFrame,
+					BookKey.READING_FONT_SIZE,
 					SbConstants.DEFAULT_READING_FONT_SIZE);
 			setFontSize(internal.getIntegerValue());
 		} catch (Exception e) {
@@ -199,10 +199,10 @@ public class ReadingPanel extends AbstractPanel implements HyperlinkListener {
 	@Override
 	public void refresh() {
 		Part currentPart = mainFrame.getCurrentPart();
-		boolean isUsehtmlText = DocumentUtil.isUseHtmlScenes(mainFrame);
-		boolean expPartTitles = DocumentUtil.isExportPartTitles(mainFrame);
+		boolean isUsehtmlText = BookUtil.isUseHtmlScenes(mainFrame);
+		boolean expPartTitles = BookUtil.isExportPartTitles(mainFrame);
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		ChapterDAOImpl dao = new ChapterDAOImpl(session);
 		List<Chapter> chapters = dao

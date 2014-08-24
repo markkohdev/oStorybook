@@ -80,9 +80,9 @@ public class SceneTransferHandler extends TransferHandler {
 
 	private boolean unassignScene(long sourceSceneId) {
 		try {
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
-			BookController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getBookController();
 			Scene scene = (Scene) session.get(Scene.class, sourceSceneId);
 			// detach scene from session
 			session.close();
@@ -100,9 +100,9 @@ public class SceneTransferHandler extends TransferHandler {
 					.getParent();
 			Chapter destChapter = destChapterPanel.getChapter();
 			int sceneNo = destDtScene.getPreviousNumber() + 1;
-			BookModel model = mainFrame.getDocumentModel();
+			BookModel model = mainFrame.getBookModel();
 			Session session = model.beginTransaction();
-			BookController ctrl = mainFrame.getDocumentController();
+			BookController ctrl = mainFrame.getBookController();
 			Scene scene = (Scene) session.get(Scene.class, sourceSceneId);
 			// detach scene from session
 			session.close();
@@ -145,9 +145,9 @@ public class SceneTransferHandler extends TransferHandler {
 		ChapterPanel destChapterPanel = (ChapterPanel) destDtScene.getParent();
 		Chapter destChapter = destChapterPanel.getChapter();
 
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
-		BookController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getBookController();
 		Scene scene = (Scene) session.get(Scene.class, sourceSceneId);
 		session.close();
 		if (destChapter != null) {
@@ -160,9 +160,9 @@ public class SceneTransferHandler extends TransferHandler {
 	}
 
 	private boolean swapScenes(long sourceSceneId, DTScenePanel destDtScene) {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
-		BookController ctrl = mainFrame.getDocumentController();
+		BookController ctrl = mainFrame.getBookController();
 		Scene sourceScene = (Scene) session.get(Scene.class, sourceSceneId);
 		Scene destScene = destDtScene.getScene();
 		session.close();

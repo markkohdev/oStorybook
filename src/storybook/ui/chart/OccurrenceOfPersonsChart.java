@@ -78,7 +78,7 @@ public class OccurrenceOfPersonsChart extends AbstractPersonsChart {
 	private CategoryDataset createDataset() {
 		DefaultCategoryDataset setCategory = new DefaultCategoryDataset();
 		try {
-			BookModel model = this.mainFrame.getDocumentModel();
+			BookModel model = this.mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			PersonDAOImpl dao = new PersonDAOImpl(session);
 			List categories = dao.findByCategories(this.selectedCategories);

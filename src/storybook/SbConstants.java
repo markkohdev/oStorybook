@@ -52,6 +52,7 @@ public class SbConstants {
 	public final static int DEFAULT_READING_ZOOM = 60;
 	public final static int DEFAULT_READING_FONT_SIZE = 11;
 	public final static boolean DEFAULT_LEAVE_EDITOR_OPEN = false;
+	public final static boolean DEFAULT_USE_LIBREOFFICE = false;
 	public final static boolean DEFAULT_USE_HTML_SCENES = true;
 	public final static boolean DEFAULT_USE_HTML_DESCR = true;
 	public final static boolean DEFAULT_MEMORIA_BALLOON = true;
@@ -71,9 +72,9 @@ public class SbConstants {
 
 	public enum Storybook {
 		PRODUCT_NAME("oStorybook"),
-		PRODUCT_VERSION("4.9.14"),
+		PRODUCT_VERSION("4.9.15"),
 		PRODUCT_FULL_NAME(PRODUCT_NAME + " " + PRODUCT_VERSION),
-		PRODUCT_RELEASE_DATE("2014-04-21"),
+		PRODUCT_RELEASE_DATE("2014-08-01"),
 		COPYRIGHT_YEAR("2012-2013-2014"),
 		COPYRIGHT_COMPANY("The Storybook Team"),
 		PREFERENCE_DB_NAME("preference"),
@@ -221,6 +222,15 @@ public class SbConstants {
 		}
 	}
 
+	public static enum SpellingToGet {
+		en_US, de_DE, es_ES, it_IT, fr_FR, ru_RU, nl_NL, pl_PL;
+		public String getI18N() {
+		//	if (this == none)
+		//		return I18N.getMsg("msg.pref.spelling.no");
+			return I18N.getMsg("msg.common.language." + name());
+		}
+	}
+
 	public static enum LookAndFeel {
 		cross, /*system*/;
 		public String getI18N() {
@@ -236,6 +246,7 @@ public class SbConstants {
 		PERSONS("Persons"),
 		GENDERS("Genders"),
 		CATEGORIES("Categories"),
+		ATTRIBUTES("Attributes"),
 		STRANDS("Strands"),
 		IDEAS("Ideas"),
 		TAGS("Tags"),
@@ -301,6 +312,7 @@ public class SbConstants {
 		BT_PREVIOUS("BtPrevious"),
 		BT_FIRST("BtFirst"),
 		BT_LAST("BtLast"),
+		BT_ODT("BtODT"),
 		TB_MAIN("MainToolbar"),
 		CB_CATEGORY("CbCategory"),
 		CB_PERSON("CbPerson"),
@@ -407,7 +419,7 @@ public class SbConstants {
 		}
 	}
 
-	public enum InternalKey {
+	public enum BookKey {
 		CHRONO_ZOOM("ChronoZoom"),
 		CHRONO_LAYOUT_DIRECTION("ChornoLayoutDirection"),
 		CHRONO_SHOW_DATE_DIFFERENCE("ChornoShowDateDiff"),
@@ -419,6 +431,7 @@ public class SbConstants {
 		READING_FONT_SIZE("ReadingFontSize"),
 		LEAVE_EDITOR_OPEN("LeaveEditorOpen"),
 		LAST_USED_PART("LastUsedPart"),
+		USE_LIBREOFFICE("UseLibreOffice"),
 		USE_HTML_SCENES("UseHtmlScenes"),
 		USE_HTML_DESCR("UseHtmlDescr"),
 		MEMORIA_BALLOON("MemoriaBalloon"),
@@ -438,17 +451,17 @@ public class SbConstants {
 		BLURB("Blurb"),
 		NOTES("Notes"),
 		LAST_USED_LAYOUT("_internal_last_used_layout_"),
-		CSV_QUOTES("CSV quotes"),
-		CSV_COMMA("CSV comma separator"),
-		TXT_TAB("TXT tab separator"),
-		TXT_OTHER("TXT other separator"),
-		HTML_USE_CSS("HTML use CSS"),
-		HTML_CSS_FILE("HTLM css file"),
-		HTML_BOOK_MULTI("HTML Book multifile"),
-		PDF_PAGE_SIZE("PDF page size"),
-		PDF_LANDSCAPE("PDF landscape");
+		CSV_QUOTES("CSVQuotes"),
+		CSV_COMMA("CSVCommaSeparator"),
+		TXT_TAB("TXTTabSeparator"),
+		TXT_OTHER("TXTOtherSeparator"),
+		HTML_USE_CSS("HTMLUseCSS"),
+		HTML_CSS_FILE("HTLMCssFile"),
+		HTML_BOOK_MULTI("HTMLBookMultifile"),
+		PDF_PAGE_SIZE("PDFPageSize"),
+		PDF_LANDSCAPE("PDFLandscape");
 		final private String text;
-		private InternalKey(String text) {
+		private BookKey(String text) {
 			this.text = text;
 		}
 		@Override

@@ -63,7 +63,7 @@ public class StrandsByDateChart extends AbstractChartPanel {
 		JFreeChart chart = ChartFactory.createBarChart(this.chartTitle, "", "", setCategory, PlotOrientation.VERTICAL, true, true, false);
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		plot.addRangeMarker(ChartUtil.getAverageMarker(this.average), Layer.FOREGROUND);
-		BookModel model = this.mainFrame.getDocumentModel();
+		BookModel model = this.mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		StrandDAOImpl daoStrand = new StrandDAOImpl(session);
 		List strands = daoStrand.findAll();
@@ -88,7 +88,7 @@ public class StrandsByDateChart extends AbstractChartPanel {
 		DefaultCategoryDataset setCategory = new DefaultCategoryDataset();
 		try {
 			Part part = this.mainFrame.getCurrentPart();
-			BookModel model = this.mainFrame.getDocumentModel();
+			BookModel model = this.mainFrame.getBookModel();
 			Session session = model.beginTransaction();
 			StrandDAOImpl daoStrand = new StrandDAOImpl(session);
 			List strands = daoStrand.findAll();

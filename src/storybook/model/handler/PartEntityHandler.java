@@ -39,7 +39,7 @@ public class PartEntityHandler extends AbstractEntityHandler {
 
 	@Override
 	public AbstractEntity createNewEntity() {
-		BookModel model = mainFrame.getDocumentModel();
+		BookModel model = mainFrame.getBookModel();
 		Session session = model.beginTransaction();
 		PartDAOImpl dao = new PartDAOImpl(session);
 		Integer nextNumber = dao.getNextPartNumber();

@@ -30,6 +30,7 @@ import storybook.model.state.IdeaStateModel;
 @SuppressWarnings("serial")
 public class IdeaStateComboModel extends DefaultComboBoxModel {
 
+	@SuppressWarnings("unchecked")
 	public IdeaStateComboModel() {
 		IdeaStateModel model = new IdeaStateModel();
 		for (AbstractState state : model.getStates()) {
