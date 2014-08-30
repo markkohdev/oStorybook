@@ -1,0 +1,15 @@
+How to install?
+
+Linux
+- Create the directory opt/Storybook in your home.
+- Unzip the downloaded file there.
+- Change file acces for the files oStorybook.jar and oStorybook.sh to allow execute.
+- Start oStorybook with oStorybook.sh
+
+Windows
+- In your program directory create the oStorybook subdirectory.
+- Unzip the downloaded file there.
+- Start oStorybook with oStorybook.bat
+
+NOTE : this package is only for english and french users. If your language is
+other you have to install language tool for it. Ask me if it is not to download.

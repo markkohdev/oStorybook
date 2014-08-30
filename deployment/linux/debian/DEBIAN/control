@@ -1,0 +1,13 @@
+Package: oStorybook
+Version: @version@
+Section: editors
+Priority: optional
+Architecture: all
+Installed-Size: 69000
+Depends: sun-java5-jre | sun-java6-jre | openjdk-6-jre | openjdk-7-jre
+Maintainer: favdb <favdb@sourceforge.net>
+Homepage: http://ostorybook.sourceforge.net
+Description: oStorybook is an open source software for writers, novelists,
+ authors. From the draft to the final book, oStorybook you can never lose
+ sight of the overall story. oStorybook helps you maintain control over the
+ various developments of your story.

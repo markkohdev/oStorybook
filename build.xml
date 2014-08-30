@@ -12,8 +12,11 @@
     <import file="nbproject/build-impl.xml"/>
 	<property name="sb.version" value="4.9.15" />
 	<property name="sb.distdir" value="${basedir}/../../Storybook-dist" />
+	<property name="sb.debian.distdir" value="${basedir}/../../Storybook-dist/debian-package" />
 	<property name="sb.file.name" value="oStorybook" />
 	<property name="sb.jar.name" value="${sb.file.name}.jar" />
+	<property name="sb.linux.deployment.dir" value="${basedir}/deployment/linux" />
+	<property name="sb.debian.deployment.dir" value="${sb.linux.deployment.dir}/debian" />
 	<!-- mac specific build parameters -->
 	<property name="sb.mac.deployment.dir" value="${sb.deployment.dir}/macintosh" />
 	<property name="sb.mac.installer.mount.dir" value="/Volumes/tmpStorybook-${TODAY}" />
@@ -172,6 +175,30 @@
 			<javaproperty name="apple.awt.textantialiasing" value="${jarbundler.apple.awt.textantialiasing}" />
 		</jarbundler>
 	</target>
+        <target name="distrib-debian" depends="jar">
+            <echo level="info">Make DEBIAN/</echo>
+            <mkdir dir="${sb.debian.distdir}"/>
+            <copy todir="${sb.debian.distdir}/DEBIAN" flatten="false">
+                <fileset dir="${sb.debian.deployment.dir}/DEBIAN" />
+            </copy>
+            <replace file="${sb.debian.distdir}/DEBIAN/control" token="@version@" value="${sb.version}" />
+            <echo level="info">Make opt/oStorybook</echo>
+            <mkdir dir="${sb.debian.distdir}/opt/oStorybook"/>
+            <echo level="info">Copy from ${basedir}/dist to ${sb.debian.distdir}/opt/oStorybook</echo>
+            <copy todir="${sb.debian.distdir}/opt/oStorybook">
+                <fileset dir="${basedir}/dist" />
+            </copy>
+            <echo level="info">Make usr/share/</echo>
+            <mkdir dir="${sb.debian.distdir}/usr/share"/>
+            <copy todir="${sb.debian.distdir}/usr">
+                <fileset dir="${sb.debian.deployment.dir}/usr" />
+            </copy>
+            <exec executable="dpkg-deb">
+                <arg value="--build" />
+                <arg value="${sb.debian.distdir}" />
+                <arg value="${sb.distdir}/oStorybook-${sb.version}.deb" />
+            </exec>
+        </target>
 	<target name="distrib-linux" depends="jar" >
 		<mkdir dir="${sb.distdir}" />
 		<exec executable="sh">
@@ -183,14 +210,13 @@
 		</exec>
 	</target>
 	<target name="distrib-all-lang">
-		<property name="langue" value="es" />
 		<zip destfile="${sb.distdir}/language_all.zip">
 			<zipfileset dir="dicts.all" includes="dicts/**" />
 			<zipfileset dir="languagetool.all/" includes="languagetool/**" />
 			<zipfileset dir="." includes="INSTALL_LANG.txt" />
 		</zip>
 	</target>
-        <target name="distrib-create" depends="distrib-linux, distrib-zip">
+        <target name="distrib-create" depends="distrib-linux, distrib-zip, distrib-mac, distrib-debian">
 		<copy file="Versions.txt" todir="${sb.distdir}" />
         </target>
 </project>

@@ -25,6 +25,7 @@ public class AttributeEntityHandler extends AbstractEntityHandler {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T> Class<T> getEntityClass() {
 		return (Class<T>) Attribute.class;
 	}
@@ -36,6 +37,7 @@ public class AttributeEntityHandler extends AbstractEntityHandler {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T> Class<T> getDAOClass() {
 		return (Class<T>) AttributeDAOImpl.class;
 	}

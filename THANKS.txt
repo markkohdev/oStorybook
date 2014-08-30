@@ -1,4 +1,8 @@
-Storybook est devloppé grâce à plusieurs logiciels "externes"
+Storybook est developpé grâce à plusieurs logiciels "externes"
+
+NetBeans : version 7.4
+http://www.netbeans.org
+Interface de développement
 
 SHEF : auteur Bob Tantlinger, LGPL v2.1
 http://shef.sourceforge.net/
