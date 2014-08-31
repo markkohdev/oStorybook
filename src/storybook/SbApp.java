@@ -301,7 +301,7 @@ public class SbApp extends Component {
 			oldPersMngr.closeConnection();
 			setWaitCursor();
 			String text = I18N.getMsg("msg.common.loading", dbFile.getName());
-			final HourglassSplash dlg = new HourglassSplash(text);
+			//final HourglassSplash dlg = new HourglassSplash(text);
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -314,7 +314,7 @@ public class SbApp extends Component {
 						updateFilePref(dbFile);
 						reloadMenuBars();
 						setDefaultCursor();
-						dlg.dispose();
+						//dlg.dispose();
 
 						if (oldPersMngr.hasAlteredDbModel()) {
 							PostModelUpdateDialog dlg2 = new PostModelUpdateDialog(newMainFrame);

@@ -144,7 +144,7 @@
 		<mkdir dir="${sb.distdir}" />
 		<zip destfile="${sb.distdir}/oStorybook-${sb.version}.zip" basedir="${basedir}/dist" />
 	</target>
-	<target name="distrib-mac" depends="jar" >
+	<target name="jarbundler" depends="jar" >
 		<jarbundler dir="${sb.distdir}"
                             name="${jarbundler.name}"
                             shortname="${jarbundler.shortname}"
@@ -175,12 +175,25 @@
 			<javaproperty name="apple.awt.textantialiasing" value="${jarbundler.apple.awt.textantialiasing}" />
 		</jarbundler>
 	</target>
+	<target name="distrib-mac" depends="init,jar,jarbundler">
+            <property name="sb.macfile" value="${sb.distdir}/oStorybook" />
+            <tar basedir="${sb.distdir}/${jarbundler.name}.app" destfile="${sb.macfile}.tar" />
+            <gzip src="${sb.macfile}.tar" destfile="${sb.macfile}-${sb.version}-macOSx.tgz"/>
+            <delete file="${sb.macfile}.tar"/>
+        </target> 
+        <target name="distrib-win" depends="jar">
+        </target>
         <target name="distrib-debian" depends="jar">
             <echo level="info">Make DEBIAN/</echo>
+            <delete dir="${sb.debian.distdir}"/>
             <mkdir dir="${sb.debian.distdir}"/>
             <copy todir="${sb.debian.distdir}/DEBIAN" flatten="false">
                 <fileset dir="${sb.debian.deployment.dir}/DEBIAN" />
             </copy>
+            <chmod file="${sb.debian.distdir}/DEBIAN/preinst" perm="755" />
+            <chmod file="${sb.debian.distdir}/DEBIAN/postinst" perm="755" />
+            <chmod file="${sb.debian.distdir}/DEBIAN/prerm" perm="755" />
+            <chmod file="${sb.debian.distdir}/DEBIAN/postrm" perm="755" />
             <replace file="${sb.debian.distdir}/DEBIAN/control" token="@version@" value="${sb.version}" />
             <echo level="info">Make opt/oStorybook</echo>
             <mkdir dir="${sb.debian.distdir}/opt/oStorybook"/>
@@ -216,7 +229,7 @@
 			<zipfileset dir="." includes="INSTALL_LANG.txt" />
 		</zip>
 	</target>
-        <target name="distrib-create" depends="distrib-linux, distrib-zip, distrib-mac, distrib-debian">
+        <target name="distrib-all" depends="distrib-linux, distrib-zip, distrib-mac, distrib-debian, distrib-win">
 		<copy file="Versions.txt" todir="${sb.distdir}" />
         </target>
 </project>

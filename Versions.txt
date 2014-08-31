@@ -2,15 +2,16 @@ oStorybook
 --------------------------------------------------------------------------------
 
 Versions :
-4.9.15 : favdb 01/08/2014
+4.9.15 : favdb 01/09/2014
 - résolution du bug de l'éditeur par utilisation en mode dialogue
 - transformation du menu et de la barre d'outils au format Netbeans en
   vue de la suppression du action.xml
 - ajout du téléchargement des outils orthographiques disponibles
-- ajout de la fonction d'appel à LibreOffice
-- ajout de la possibilité de créer de nouvaux Fils, Personnages ou Lieux depuis
-  l'éditeur de scène sans quitter la scène en question
-- ajout du panneau de visualisation des attributs
+- ajout de la fonction d'appel à LibreOffice/OpenOffice.org
+- ajout de la possibilité de créer de nouveaux Fils, Personnages
+  ou Lieux depuis l'éditeur de scène sans quitter la scène elle-même
+- ajout du panneau de visualisation des Attributs
+- mise en place des distributions Linux, Debian, MacOSX (à tester)
 4.9.14 : favdb 21/04/2014
 - mise à jour des sources du site Web (source séparé)
 - suppression de toutes les références à JasperReport
@@ -56,4 +57,6 @@ Versions :
 2.0.10  : Martin Mustun, 11/01/2008
 
 Next version:
-5.0.1
+4.9.16 : mise à jour de l'internationalisation prévue le 15/09/2014 (selon
+la contribution des traducteurs)
+4.9.17 : évolutions selon le roadmap
