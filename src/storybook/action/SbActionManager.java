@@ -96,9 +96,11 @@ public class SbActionManager implements PropertyChangeListener {
 
 	private void initActions() {
 		SbApp.trace("SbActionManager.initActions()");
-		try {
+		/*
+		try {*/
 			actionManager = new ActionManager();
 			ActionManager.setInstance(actionManager);
+			/*
 			File file = new File("actions.xml");
 			String str = IOUtil.readFileAsString(file.getAbsolutePath());
 			// i18n replacements
@@ -125,7 +127,7 @@ public class SbActionManager implements PropertyChangeListener {
 			// actionManager.loadActions(xmlFile);
 		} catch (IOException e) {
 			SbApp.error("SbActionManager.initActions()", e);
-		}
+		}*/
 		registerActions();
 	}
 
@@ -134,10 +136,13 @@ public class SbActionManager implements PropertyChangeListener {
 		actionHandler = new ActionHandler(mainFrame);
 
 		// file
+		/*
 		actionManager.registerCallback("new-command", actionHandler, "handleNewFile");
 		actionManager.registerCallback("open-command", actionHandler, "handleOpenFile");
 		actionManager.registerCallback("recent-clear-command", actionHandler, "handleRecentClear");
+		*/
 		actionManager.registerCallback("save-command", actionHandler, "handleSave");
+		/*
 		actionManager.registerCallback("save-as-command", actionHandler, "handleSaveAs");
 		actionManager.registerCallback("rename-command", actionHandler, "handleRenameFile");
 		actionManager.registerCallback("close-command", actionHandler, "handleClose");
@@ -250,6 +255,7 @@ public class SbActionManager implements PropertyChangeListener {
 		actionManager.registerCallback("run-gc-command", actionHandler, "handleRunGC");
 		actionManager.registerCallback("dump-attached-views-command", actionHandler, "handleDumpAttachedViews");
 		actionManager.registerCallback("dummy-command", actionHandler, "handleDummy");
+		*/
 	}
 
 	private void initUiFactory() {

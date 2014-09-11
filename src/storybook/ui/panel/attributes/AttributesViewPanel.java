@@ -181,7 +181,7 @@ public class AttributesViewPanel extends AbstractScrollPanel implements Printabl
 
 	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-		//TODO
+		//TODO print
 		return Printable.NO_SUCH_PAGE;
 	}
 }

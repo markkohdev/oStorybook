@@ -2,6 +2,11 @@ oStorybook
 --------------------------------------------------------------------------------
 
 Versions :
+4.9.16 : favdb 01/12/2014
+- modification de l'icone, splash, image
+- ajustement de l'I18N pour les menus (mnémoniques) -> à terminer
+- redéveloppement du packaging Debian
+- ajout du packaging RPM
 4.9.15 : favdb 01/09/2014
 - résolution du bug de l'éditeur par utilisation en mode dialogue
 - transformation du menu et de la barre d'outils au format Netbeans en

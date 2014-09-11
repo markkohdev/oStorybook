@@ -112,11 +112,8 @@ public class ExportBook {
 				break;
 			case "csv": break; // no csv export for book
 			case "txt": txt.writeText(bookExporter.getPartAsTxt(part)); break;
-			case "pdf": // TODO ExportBook PDF
-				html.writeText(bookExporter.getPartAsHtml(part), false); break;
-			case "odf": // TODO ExportBook ODF
-				//odf.writeText(str);
-				break;
+			case "pdf": html.writeText(bookExporter.getPartAsHtml(part), false); break;
+			case "odf": odf.writePart(bookExporter.getPartAsTxt(part)); break;
 		}
 	}
 	private String getChapterId(Chapter chapter) {
@@ -141,12 +138,8 @@ public class ExportBook {
 				break;
 			case "csv": break; // no export csv Book
 			case "txt": txt.writeText(bookExporter.getChapterAsTxt(chapter, ChapterDAO)); break;
-			case "pdf":
-				html.writeText(bookExporter.getChapterAsHtml(chapter, ChapterDAO), false);
-				break;
-			case "odf":
-				//odf.writeText(str);
-				break;
+			case "pdf": html.writeText(bookExporter.getChapterAsHtml(chapter, ChapterDAO), false); break;
+			case "odf": odf.writeChapter(bookExporter.getChapterAsTxt(chapter, ChapterDAO)); break;
 		}
 	}
 
@@ -156,9 +149,7 @@ public class ExportBook {
 			case "csv": break; // no export csv Book
 			case "txt": txt.writeText(bookExporter.getSceneAsTxt(scene)); break;
 			case "pdf": html.writeText(bookExporter.getSceneAsHtml(scene), false); break;
-			case "odf":
-				//odf.writeText(str);
-				break;
+			case "odf": odf.writeScene(bookExporter.getSceneAsHtml(scene)); break;
 		}
 	}
 
@@ -174,6 +165,7 @@ public class ExportBook {
 				break;
 			case "csv": csv.close(); break;
 			case "txt": txt.close(); break;
+			case "odf": odf.close(); break;
 		}
 	}
 

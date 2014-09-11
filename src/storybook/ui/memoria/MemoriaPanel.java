@@ -1651,10 +1651,10 @@ public class MemoriaPanel extends AbstractPanel
 			int i = this.dateCombo.getSelectedIndex();
 			if (SbConstants.ComponentName.BT_PREVIOUS.check((String) localObject2)) {
 				i--;
-				if (i >= 0);
+				if (i < 0) return;
 			} else if (SbConstants.ComponentName.BT_NEXT.check((String) localObject2)) {
 				i++;
-				if (i <= this.dateCombo.getItemCount() - 1);
+				if (i > this.dateCombo.getItemCount() - 1) return;
 			} else if (SbConstants.ComponentName.BT_FIRST.check((String) localObject2)) {
 				i = 0;
 			} else if (SbConstants.ComponentName.BT_LAST.check((String) localObject2)) {

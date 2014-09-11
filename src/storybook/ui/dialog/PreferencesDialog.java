@@ -22,6 +22,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -33,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
@@ -235,6 +238,16 @@ public class PreferencesDialog extends AbstractDialog implements
 		for (SbConstants.LookAndFeel laf : SbConstants.LookAndFeel.values()) {
 			lafModel.addElement(laf.getI18N());
 		}
+		/*
+		UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
+		Map map = new TreeMap();
+		for (UIManager.LookAndFeelInfo info1 : info) {
+			String nomLF = info1.getName();
+			String nomClasse = info1.getClassName();
+			//map.put(nomLF,nomClasse); 
+			lafModel.addElement(nomLF);
+		}
+		*/
 		lafCombo = new JComboBox(lafModel);
 		Preference pref = PrefUtil.get(PreferenceKey.LAF, LookAndFeel.cross.name());
 		LookAndFeel laf = LookAndFeel.valueOf(pref.getStringValue());

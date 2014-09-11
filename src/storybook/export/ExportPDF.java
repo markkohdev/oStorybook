@@ -23,7 +23,7 @@ import storybook.SbApp;
  */
 public class ExportPDF {
 
-	private Export parent;
+	private final Export parent;
 	private Document outDoc;
 	String report;
 	String fileName = "";
@@ -32,6 +32,7 @@ public class ExportPDF {
 	FileOutputStream fop;
 	PdfPTable table;
 	String author;
+	private PdfWriter writer;
 
 	public ExportPDF(Export parent, String report, String fileName, List<ExportHeader> headers, String author) {
 		this.parent = parent;
@@ -66,7 +67,7 @@ public class ExportPDF {
 		}
 		outDoc.setPageSize(rectangle);
 		try {
-			PdfWriter.getInstance(outDoc, new FileOutputStream(fileName));
+			writer=PdfWriter.getInstance(outDoc, new FileOutputStream(fileName));
 		} catch (FileNotFoundException | DocumentException ex) {
 			SbApp.error(ExportPDF.class.getName(), ex);
 		}
@@ -125,7 +126,7 @@ public class ExportPDF {
 			}
 			File wx=new File(source);
 			wx.delete();
-		} catch (IOException|DocumentException ex) {
+		} catch (IOException | DocumentException ex) {
 			SbApp.error("ExportPDF.HtmlToPdf("+source+")", ex);
 		}
 	}

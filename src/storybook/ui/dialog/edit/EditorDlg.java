@@ -26,6 +26,8 @@ import storybook.ui.MainFrame;
  *
  * @author favdb
  */
+
+// usage seulement si version 5 de l'UI
 public class EditorDlg extends javax.swing.JDialog {
 	private MainFrame mainFrame;
 	public boolean isModified;
@@ -45,8 +47,8 @@ public class EditorDlg extends javax.swing.JDialog {
 		super(m, true);
 		this.mainFrame=m;
 		initComponents();
-		Editor edt=new Editor(this,mainFrame,e);
-		setPanel(edt);
+//		Editor edt=new Editor(this,mainFrame,e);
+//		setPanel(edt);
 	}
 
 	/**

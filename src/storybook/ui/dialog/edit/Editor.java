@@ -40,7 +40,7 @@ import storybook.ui.MainFrame;
  */
 public class Editor extends javax.swing.JPanel {
 
-	EditorDlg editorDlg;
+	//EditorDlg editorDlg;
 	MainFrame mainFrame;
 	String currentView = "NONE";
 	String[] typeEdit = {
@@ -87,7 +87,7 @@ public class Editor extends javax.swing.JPanel {
 		card.show(editorPane, currentView);
 	}
 
-	public Editor(EditorDlg dlg, MainFrame m, AbstractEntity obj) {
+	/*public Editor(EditorDlg dlg, MainFrame m, AbstractEntity obj) {
 		SbApp.trace("Editor(EditorDlg, MainFrame, Object)");
 		initComponents();
 		editorDlg=dlg;
@@ -96,7 +96,7 @@ public class Editor extends javax.swing.JPanel {
 		currentView = "NONE";
 		setEdit(obj);
 		card.show(editorPane, currentView);
-	}
+	}*/
 
 	public final void setEdit(AbstractEntity obj) {
 		String v=obj.getClass().getName();
@@ -266,7 +266,7 @@ public class Editor extends javax.swing.JPanel {
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
 		//mainFrame.hideEditor();
-		editorDlg.dispose();
+//		editorDlg.dispose();
     }//GEN-LAST:event_btCancelActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

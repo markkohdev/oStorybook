@@ -81,6 +81,7 @@ import storybook.ui.dialog.rename.RenameItemCategoryDialog;
 import storybook.ui.dialog.rename.RenameTagCategoryDialog;
 
 import com.sun.jaf.ui.ActionManager;
+import storybook.controller.BookController;
 import storybook.export.BookExporter;
 import storybook.ui.SbView;
 import storybook.ui.dialog.edit.EditorDlg;
@@ -198,7 +199,7 @@ public class ActionHandler {
 		SwingUtil.showModalDialog(dlg, mainFrame);
 		act.putValue(SbConstants.ActionKey.CATEGORY.toString(), null);
 	}
-
+/*
 	public void handleNewScene()		{handleNewEntity(new Scene());}//new OK
 	public void handleNewChapter()	{handleNewEntity(new Chapter());}//new OK
 	public void handleNewPart()		{handleNewEntity(new Part());}//new OK
@@ -214,13 +215,15 @@ public class ActionHandler {
 	public void handleNewIdea()		{handleNewEntity(new Idea());}//new OK
 
 	private void handleNewEntity(AbstractEntity entity) {//new OK
-		/*BookController ctrl = mainFrame.getBookController();
+		BookController ctrl = mainFrame.getBookController();
 		ctrl.setEntityToEdit(entity);
-		mainFrame.showView(ViewName.EDITOR);*/
-		EditorDlg dlg=new EditorDlg(mainFrame,entity);
-		dlg.setVisible(true);
+		mainFrame.showView(ViewName.EDITOR);
+		//SbApp.trace("ActionHandler.handleEntity(...)");
+		//EditorDlg dlg=new EditorDlg(mainFrame,entity);
+		//dlg.setVisible(true);
 	}
-
+*/
+	/*
 	public void handleFlashOfInspiration() {
 		FoiDialog dlg = new FoiDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
@@ -263,7 +266,7 @@ public class ActionHandler {
 	public void handleChartPersonsByScene() {
 		showAndFocus(ViewName.CHART_PERSONS_BY_SCENE);
 	}
-
+*/
 	public void handlePreviousPart() {
 		Part currentPart = mainFrame.getCurrentPart();
 		BookModel model = mainFrame.getBookModel();

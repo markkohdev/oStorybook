@@ -50,6 +50,19 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	private Integer relativeDateDifference;
 	private Long relativeSceneId;
 	private String notes;
+	/* new notes
+	debut d'en-tete par $£€ø
+		première partie calendrier spécifique sous la forme YYYYYY/MMM/JJJ HHH:MMM:SSS
+			année 6 chiffre
+			mois 3 chiffres
+			jour 3 chiffres
+			heure 3 chiffres
+			minutes 3 chiffres
+			seconde 3 chiffres
+		séparateur **
+		deuxième partie nom du fichier ODF y compris chemin et extension
+	fin d'en-tete ø€£$
+	*/
 	private Boolean informative;
 
 	private List<Person> persons;
@@ -125,6 +138,12 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 	public Timestamp getSceneTs() {
 		return this.sceneTs;
 	}
+	
+	public String getSceneTime() {
+		//TODO getSceneTime for new calendar
+		String r="";
+		return(r);
+	}
 
 	public boolean hasSceneTs() {
 		return sceneTs != null;
@@ -192,6 +211,10 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 
 	public void setSceneTs(Timestamp ts) {
 		sceneTs = ts;
+	}
+	
+	public void setSceneTime(String t) {
+		//TODO setSceneTime
 	}
 
 	public void setNoSceneTs() {
@@ -390,14 +413,16 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		if (notes == null) {
 			return "";
 		}
+		String x=notes;
+		if (notes.startsWith("$£€")) x=getNewNotes();
 		if (truncate) {
-			return TextUtil.truncateString(HtmlUtil.htmlToText(notes), 200);
+			return TextUtil.truncateString(HtmlUtil.htmlToText(x), 200);
 		}
-		return notes;
+		return x;
 	}
 
 	public void setNotes(String notes) {
-		this.notes = notes;
+		this.notes = setNewNotes(notes);
 	}
 
 	public List<Person> getPersons() {
@@ -508,5 +533,32 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 			return sceneno.compareTo(o.sceneno);
 		}
 		return cmp;
+	}
+
+	private String getNewNotes() {
+		//TODO getNewNotes for registering ODF link
+		String r=notes;
+		return(r);
+	}
+
+	private String setNewNotes(String n) {
+		//TODO setNewNotes for registering ODF link
+		String r=n;
+		return(r);
+	}
+
+	public static String tsToTime(Timestamp ts) {
+		String r="";
+		//TODO tsToTime for new calendar
+		return(r);
+	}
+
+	public String sceneNotesConversion (Scene scene) {
+		String n=scene.getNotes();
+		if (!n.startsWith("$£€ø")) {
+			// sceneNotesConversion for registering ODF link and new calendar
+			n= "$£€ø"+"**"+"ø€£$"+getNotes();
+		}
+		return(n);
 	}
 }

@@ -72,7 +72,7 @@ public class SbConstants {
 
 	public enum Storybook {
 		PRODUCT_NAME("oStorybook"),
-		PRODUCT_VERSION("4.9.15"),
+		PRODUCT_VERSION("4.9.15a"),
 		PRODUCT_FULL_NAME(PRODUCT_NAME + " " + PRODUCT_VERSION),
 		PRODUCT_RELEASE_DATE("2014-08-01"),
 		COPYRIGHT_YEAR("2012-2013-2014"),
@@ -95,9 +95,9 @@ public class SbConstants {
 	}
 
 	public enum URL {
-		HOMEPAGE("http://sourceforge.net/projects/ostorybook/"),
+		HOMEPAGE("http://sourceforge.net/p/ostorybook/"),
 		CONTACT(HOMEPAGE + "discussion"),
-		DOC(HOMEPAGE + "wiki/home"),
+		DOC(HOMEPAGE + "wiki/Home"),
 		FAQ(HOMEPAGE + "wiki/faq"),
 		REPORTBUG(HOMEPAGE + "tickets"),
 		WEB("http://ostorybook.sourceforge.net/"),
@@ -232,7 +232,7 @@ public class SbConstants {
 	}
 
 	public static enum LookAndFeel {
-		cross, /*system*/;
+		cross/*, system*/;
 		public String getI18N() {
 			return I18N.getMsg("msg.pref.laf." + name());
 		}
@@ -459,7 +459,8 @@ public class SbConstants {
 		HTML_CSS_FILE("HTLMCssFile"),
 		HTML_BOOK_MULTI("HTMLBookMultifile"),
 		PDF_PAGE_SIZE("PDFPageSize"),
-		PDF_LANDSCAPE("PDFLandscape");
+		PDF_LANDSCAPE("PDFLandscape"),
+		CALENDAR("Calendar");
 		final private String text;
 		private BookKey(String text) {
 			this.text = text;

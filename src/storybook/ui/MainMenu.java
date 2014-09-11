@@ -543,7 +543,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.setName("file-menu-command"); // NOI18N
 
-        menuFile.setMnemonic('F');
+        menuFile.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.menu.file.mnemonic").charAt(0));
         menuFile.setText(bundle.getString("msg.menu.file")); // NOI18N
 
         fileNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
@@ -1370,6 +1370,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuWindow);
 
+        menuHelp.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.menu.help.mnemonic").charAt(0));
         menuHelp.setText(bundle.getString("msg.menu.help")); // NOI18N
         menuHelp.setName("help-menu"); // NOI18N
 
@@ -1504,7 +1505,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_fileExportActionPerformed
 
     private void filePrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintActionPerformed
-        // TODO add your handling code here:
+        // TODO filePrint
     }//GEN-LAST:event_filePrintActionPerformed
 
     private void fileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExitActionPerformed
@@ -1770,11 +1771,11 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_toolsTaskListActionPerformed
 
     private void toolsConvertTextToHtmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsConvertTextToHtmlActionPerformed
-        // TODO add your handling code here:
+        // TODO toolsConvertTextToHtml
     }//GEN-LAST:event_toolsConvertTextToHtmlActionPerformed
 
     private void toolsConvertHtmlToTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolsConvertHtmlToTextActionPerformed
-        // TODO add your handling code here:
+        // TODO toolsConvertHtmlToText
     }//GEN-LAST:event_toolsConvertHtmlToTextActionPerformed
 
     private void windowSaveLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowSaveLayoutActionPerformed

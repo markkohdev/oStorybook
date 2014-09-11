@@ -48,4 +48,16 @@ class ExportOdf {
 	void writeRow(String[] body) {
 	}
 
+	void writePart(String part) {
+		
+	}
+
+	void writeChapter(String chapter) {
+		
+	}
+
+	void writeScene(String scene) {
+		
+	}
+
 }
