@@ -36,9 +36,15 @@ import storybook.SbApp;
 import storybook.SbConstants.PreferenceKey;
 import storybook.action.LoadDockingLayoutAction;
 import storybook.controller.BookController;
+import storybook.model.BookModel;
 import storybook.model.PreferenceModel;
+import storybook.model.hbn.dao.ChapterDAOImpl;
+import storybook.model.hbn.dao.PartDAOImpl;
 import storybook.model.hbn.dao.PreferenceDAOImpl;
+import storybook.model.hbn.dao.SceneDAOImpl;
+import storybook.model.hbn.entity.Chapter;
 import storybook.model.hbn.entity.Preference;
+import storybook.model.hbn.entity.Scene;
 import storybook.toolkit.I18N;
 import storybook.toolkit.swing.panel.MemoryMonitorPanel;
 
@@ -50,8 +56,13 @@ import storybook.toolkit.swing.panel.MemoryMonitorPanel;
 public class StatusBarPanel extends AbstractPanel implements ActionListener {
 
 	private JLabel lbParts;
+	private JLabel lbStat;
+	private int nbWords;
+	private int nbCharacters;
+	private int nbChapters;
+	private int nbScenes;
 
-	JComboBox layoutCombo = new JComboBox();
+	//JComboBox layoutCombo = new JComboBox();
 
 	public StatusBarPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -60,24 +71,40 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 
 	@Override
 	public void modelPropertyChange(PropertyChangeEvent evt) {
+		SbApp.trace("StatusBarPanel.modelPropertyChange("+evt.toString()+")");
 		String propName = evt.getPropertyName();
 		// Object newValue = evt.getNewValue();
 		// Object oldValue = evt.getOldValue();
 
-		if (BookController.PartProps.CHANGE.check(propName)
-				|| BookController.PartProps.UPDATE.check(propName)) {
+		if (BookController.PartProps.CHANGE.check(propName) || BookController.PartProps.UPDATE.check(propName)) {
 			refresh();
 			return;
 		}
 
 		if (BookController.CommonProps.REFRESH.check(propName)) {
 			refresh();
+			return;
+		}
+		
+		if (BookController.ChapterProps.INIT.check(propName)
+				|| BookController.ChapterProps.DELETE.check(propName)
+				|| BookController.ChapterProps.DELETE_MULTI.check(propName)
+				|| BookController.ChapterProps.NEW.check(propName)
+				|| BookController.ChapterProps.UPDATE.check(propName)
+				|| BookController.SceneProps.INIT.check(propName)
+				|| BookController.SceneProps.DELETE.check(propName)
+				|| BookController.SceneProps.DELETE_MULTI.check(propName)
+				|| BookController.SceneProps.NEW.check(propName)
+				|| BookController.SceneProps.UPDATE.check(propName)) {
+			refreshStat();
 //			return;
 		}
+
 	}
 
 	@Override
 	public void init() {
+		computeStatistics();
 	}
 
 	@Override
@@ -89,7 +116,7 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 		lbParts = new JLabel(" " + I18N.getMsgColon("msg.common.current.part")
 				+ " " + mainFrame.getCurrentPart().toString());
 		add(lbParts);
-
+/*
 		layoutCombo = new JComboBox();
 		layoutCombo.setPreferredSize(new Dimension(200, 20));
 		// layoutCombo.setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -97,7 +124,14 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 		refreshLayoutCombo();
 		layoutCombo.addActionListener(this);
 		add(layoutCombo, "al right");
-
+*/
+		String strStat="Statistics:";
+		strStat+=" "+I18N.getMsg("msg.common.chapters")+"="+nbChapters;
+		strStat+=" "+I18N.getMsg("msg.common.scenes")+"="+nbScenes;
+		strStat+=" "+I18N.getMsg("msg.common.characters")+"="+nbCharacters;
+		strStat+=" "+I18N.getMsg("msg.common.words")+"="+nbWords;
+		lbStat=new JLabel(strStat);
+		add(lbStat, "al center");
 		MemoryMonitorPanel memPanel = new MemoryMonitorPanel();
 		add(memPanel, "al right");
 
@@ -107,6 +141,7 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 
 	@SuppressWarnings("unchecked")
 	private void refreshLayoutCombo() {
+		/*
 		layoutCombo.removeAllItems();
 		layoutCombo.addItem("");
 		PreferenceModel model = SbApp.getInstance().getPreferenceModel();
@@ -114,27 +149,66 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 		PreferenceDAOImpl dao = new PreferenceDAOImpl(session);
 		List<Preference> pref = dao.findAll();
 		for (Preference preference : pref) {
-			if (preference.getKey().startsWith(
-					PreferenceKey.DOCKING_LAYOUT.toString())) {
+			if (preference.getKey().startsWith(PreferenceKey.DOCKING_LAYOUT.toString())) {
 				String name = preference.getStringValue();
-				if (SbConstants.BookKey.LAST_USED_LAYOUT.toString().equals(
-						name)) {
+				if (SbConstants.BookKey.LAST_USED_LAYOUT.toString().equals(name)) {
 					continue;
 				}
-				LoadDockingLayoutAction act = new LoadDockingLayoutAction(
-						mainFrame, name);
+				LoadDockingLayoutAction act = new LoadDockingLayoutAction(mainFrame, name);
 				layoutCombo.addItem(act);
 			}
 		}
 		model.commit();
+				*/
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		SbApp.trace("StatusBarPanel.actionPerformed("+e.paramString()+")");
+/*
 		Object o = layoutCombo.getSelectedItem();
 		if (o instanceof LoadDockingLayoutAction) {
 			LoadDockingLayoutAction act = (LoadDockingLayoutAction) o;
 			act.actionPerformed(null);
 		}
+		*/
+		String strStat="Statistics:";
+		strStat+=" "+I18N.getMsg("msg.common.chapters")+"="+nbChapters;
+		strStat+=" "+I18N.getMsg("msg.common.scenes")+"="+nbScenes;
+		strStat+=" "+I18N.getMsg("msg.common.characters")+"="+nbCharacters;
+		strStat+=" "+I18N.getMsg("msg.common.words")+"="+nbWords;
+		lbStat.setText(strStat);
+	}
+	
+	private void computeStatistics() {
+		nbWords=0;
+		nbCharacters=0;
+		nbChapters=0;
+		nbScenes=0;
+		BookModel model = mainFrame.getBookModel();
+		Session session = model.beginTransaction();
+		ChapterDAOImpl ChapterDAO = new ChapterDAOImpl(session);
+		List<Chapter> chapters = ChapterDAO.findAll();
+		nbChapters=chapters.size();
+		SceneDAOImpl SceneDAO = new SceneDAOImpl(session);
+		List<Scene> scenes = SceneDAO.findAll();
+		nbScenes=scenes.size();
+		for (Scene scene : scenes) {
+			nbCharacters+=scene.numberOfCharacters();
+			nbWords+=scene.numberOfWords();
+		}
+	}
+
+	private void refreshStat() {
+		computeStatistics();
+		String strStat="Statistics:";
+		strStat+=" "+I18N.getMsg("msg.common.chapters")+"="+nbChapters;
+		strStat+=" "+I18N.getMsg("msg.common.scenes")+"="+nbScenes;
+		strStat+=" "+I18N.getMsg("msg.common.characters")+"="+nbCharacters;
+		strStat+=" "+I18N.getMsg("msg.common.words")+"="+nbWords;
+		lbStat.setText(strStat);
+		revalidate();
+		repaint();
+		SbApp.trace(strStat);
 	}
 }

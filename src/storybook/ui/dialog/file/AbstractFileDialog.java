@@ -71,8 +71,7 @@ public abstract class AbstractFileDialog
 		MigLayout layout = new MigLayout("wrap 2", "[]", "[]");
 		setLayout(layout);
 
-		JLabel lbName = new JLabel(
-				I18N.getMsgColon("msg.dlg.mng.prjs.project.name"));
+		JLabel lbName = new JLabel(I18N.getMsgColon("msg.dlg.mng.prjs.project.name"));
 		tfName = new JTextField(30);
 		tfName.setName("name");
 		tfName.addCaretListener(this);

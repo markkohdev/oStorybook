@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -49,6 +50,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -58,6 +60,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.JTextComponent;
 
@@ -138,6 +141,8 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 	public static Dimension MINIMUM_SIZE = new Dimension(440, 500);
 	private static final String ERROR_LABEL = "error_label";
 	private JCheckBox cbLeaveOpen;
+	private JTextField tfFile;
+	private JButton btChooseFile;
 
 	private enum MsgState {ERRORS, WARNINGS, UPDATED, ADDED}
 	private boolean leaveOpen;
@@ -472,6 +477,11 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 				tabbedPane.addTab(title, container2);
 			}
 			++i;
+		}
+		if (entity instanceof Scene) {
+			if (BookUtil.isUseLibreOffice(mainFrame)) {
+				tabbedPane.add(panelLibreOffice());
+			}
 		}
 		SwingUtil.setMaxPreferredSize(tabbedPane);
 		add(tabbedPane);
@@ -1229,11 +1239,58 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 		try {
 			String source="storybook/resources/Empty.odt";
 			InputStream is = this.getClass().getClassLoader().getResourceAsStream(source);
-			System.out.println(""+is);
 			Files.copy(is,file.toPath());
 		} catch (IOException ex) {
 			SbApp.error("CallLibreOffice.createFile(...)", ex);
 		}
+	}
+
+	private JPanel panelLibreOffice() {
+		JPanel p=new JPanel();
+		p.setLayout(new MigLayout("wrap 2", "[][grow]", ""));
+		p.setName(I18N.getMsg("msg.libreoffice.parameters"));
+		JLabel l=new JLabel(I18N.getMsg("msg.libreoffice.file"));
+		p.add(l);
+		JLabel lEmpty=new JLabel(" ");
+		p.add(lEmpty);
+		tfFile = new JTextField(30);
+		tfFile.setName("file");
+		p.add(tfFile);
+
+		btChooseFile = new JButton();
+		btChooseFile.setAction(getChooseFileAction());
+		btChooseFile.setText(I18N.getMsg("msg.libreoffice.open"));
+		p.add(btChooseFile);
+		JButton btResetFile = new JButton();
+		btResetFile.setAction(resetFileAction());
+		btResetFile.setText(I18N.getMsg("msg.libreoffice.reset"));
+		p.add(btResetFile);
+		return(p);
+	}
+
+	private AbstractAction resetFileAction() {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				tfFile.setText(getFilePath(mainFrame,(Scene)entity));
+			}
+		};
+	}
+	
+	private AbstractAction getChooseFileAction() {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				final JFileChooser fc = new JFileChooser(tfFile.getText());
+				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				int ret = fc.showOpenDialog(mainFrame);
+				if (ret != JFileChooser.APPROVE_OPTION) {
+					return;
+				}
+				File dir = fc.getSelectedFile();
+				tfFile.setText(dir.getAbsolutePath());
+			}
+		};
 	}
 
 }

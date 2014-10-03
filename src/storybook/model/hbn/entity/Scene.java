@@ -561,4 +561,14 @@ public class Scene extends AbstractEntity implements Comparable<Scene> {
 		}
 		return(n);
 	}
+	
+	public int numberOfCharacters() {
+		int nb=HtmlUtil.htmlToText(summary).length();
+		return(nb);
+	}
+	
+	public int numberOfWords() {
+		int nb=TextUtil.countWords(summary);
+		return(nb);
+	}
 }

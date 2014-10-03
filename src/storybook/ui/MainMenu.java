@@ -671,6 +671,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuFile);
 
+        menuEdit.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.common.edit.mnemonic").charAt(0));
         menuEdit.setText(bundle.getString("msg.common.edit")); // NOI18N
         menuEdit.setName("edit-menu-command"); // NOI18N
 
@@ -705,6 +706,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuEdit);
 
+        menuNewEntity.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.common.new.mnemonic").charAt(0));
         menuNewEntity.setText(bundle.getString("msg.common.new.object")); // NOI18N
         menuNewEntity.setName("new-entity-menu-command"); // NOI18N
 
@@ -863,6 +865,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuNewEntity);
 
+        menuPrimaryObjects.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.common.primary.objects.mnemonic").charAt(0));
         menuPrimaryObjects.setText(bundle.getString("msg.common.primary.objects")); // NOI18N
         menuPrimaryObjects.setName("main-entities-menu-command"); // NOI18N
 
@@ -969,6 +972,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuPrimaryObjects);
 
+        menuSecondaryObjects.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.common.secondary.objects.mnemonic").charAt(0));
         menuSecondaryObjects.setText(bundle.getString("msg.common.secondary.objects")); // NOI18N
         menuSecondaryObjects.setName("secondary-entities-menu-command"); // NOI18N
 
@@ -1041,6 +1045,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuSecondaryObjects);
 
+        menuView.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.menu.view.mnemonic").charAt(0));
         menuView.setText(bundle.getString("msg.menu.view")); // NOI18N
         menuView.setName("view-menu-command"); // NOI18N
 
@@ -1152,6 +1157,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuParts);
 
+        menuCharts.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.menu.charts.mnemonic").charAt(0));
         menuCharts.setText(bundle.getString("msg.menu.charts")); // NOI18N
         menuCharts.setName("charts-menu-command"); // NOI18N
 
@@ -1230,6 +1236,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuCharts);
 
+        menuTools.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.menu.tools").charAt(0));
         menuTools.setText(bundle.getString("msg.menu.tools")); // NOI18N
         menuTools.setName("tools-menu-command"); // NOI18N
 
@@ -1271,6 +1278,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         menuBar.add(menuTools);
 
+        menuWindow.setMnemonic(java.util.ResourceBundle.getBundle("storybook/msg/messages").getString("msg.common.window").charAt(0));
         menuWindow.setText(bundle.getString("msg.common.window")); // NOI18N
         menuWindow.setName("window-menu-command"); // NOI18N
 
@@ -1684,8 +1692,8 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_renameItemCategoryActionPerformed
 
     private void tabIdeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabIdeaActionPerformed
-        mainFrame.showAndFocus(SbConstants.ViewName.SCENES);
-		mainFrame.getBookController().showTaskList();
+        mainFrame.showAndFocus(SbConstants.ViewName.IDEAS);
+		//mainFrame.getBookController().showTaskList();
     }//GEN-LAST:event_tabIdeaActionPerformed
 
     private void vueChronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vueChronoActionPerformed

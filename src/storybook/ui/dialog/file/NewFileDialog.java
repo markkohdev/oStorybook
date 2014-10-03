@@ -42,13 +42,11 @@ public class NewFileDialog extends AbstractFileDialog {
 		optionsPanel.setLayout(new MigLayout("wrap"));
 
 		cbUseHtmlScenes = new JCheckBox();
-		cbUseHtmlScenes.setText(I18N
-				.getMsg("msg.document.preference.use.html.scenes"));
+		cbUseHtmlScenes.setText(I18N.getMsg("msg.document.preference.use.html.scenes"));
 		cbUseHtmlScenes.setSelected(true);
 
 		cbUseHtmlDescr = new JCheckBox();
-		cbUseHtmlDescr.setText(I18N
-				.getMsg("msg.document.preference.use.html.descr"));
+		cbUseHtmlDescr.setText(I18N.getMsg("msg.document.preference.use.html.descr"));
 		cbUseHtmlDescr.setSelected(true);
 
 		optionsPanel.add(cbUseHtmlScenes);
