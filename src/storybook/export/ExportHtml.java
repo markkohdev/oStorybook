@@ -6,6 +6,7 @@
 package storybook.export;
 
 import com.itextpdf.text.Font;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -14,8 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+
 import storybook.SbApp;
-import storybook.toolkit.I18N;
 import storybook.toolkit.TextUtil;
 
 /**
@@ -31,7 +32,7 @@ public class ExportHtml {
 	BufferedWriter outStream;
 	String author;
 	private final Export parent;
-	private ParamExport param;
+	private final ParamExport param;
 	public boolean isOpened=false;
 
 	ExportHtml(Export parent, String report, String fileName, List<ExportHeader> headers, String author) {
@@ -109,7 +110,8 @@ public class ExportHtml {
 			try {
 				InputStream ips = new FileInputStream(param.htmlCssFile);
 				InputStreamReader ipsr = new InputStreamReader(ips);
-				BufferedReader br = new BufferedReader(ipsr);
+				BufferedReader br;
+				br = new BufferedReader(ipsr);
 				String ligne;
 				while ((ligne = br.readLine()) != null) {
 					buf += ligne + "\n";

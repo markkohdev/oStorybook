@@ -68,13 +68,14 @@ public class SbConstants {
 	public final static int DEFAULT_POS_X = 100;
 	public final static int DEFAULT_POS_Y = 100;
 	public final static boolean DEFAULT_EDITOR_FULL_TOOLBAR = false;
+	public final static boolean DEFAULT_EDITOR_MODLESS = false;
 	public final static String DEFAULT_GOOGLE_MAPS_URL = "http://maps.google.com";
 
 	public enum Storybook {
 		PRODUCT_NAME("oStorybook"),
-		PRODUCT_VERSION("4.9.15a"),
+		PRODUCT_VERSION("4.9.16"),
 		PRODUCT_FULL_NAME(PRODUCT_NAME + " " + PRODUCT_VERSION),
-		PRODUCT_RELEASE_DATE("2014-08-01"),
+		PRODUCT_RELEASE_DATE("2014-12-01"),
 		COPYRIGHT_YEAR("2012-2013-2014"),
 		COPYRIGHT_COMPANY("The Storybook Team"),
 		PREFERENCE_DB_NAME("preference"),
@@ -442,6 +443,7 @@ public class SbConstants {
 		EXPORT_SCENE_TITLES("ExportSceneTitles"),
 		EXPORT_SCENE_SEPARATOR("ExportSceneSeparator"),
 		EXPORT_PART_TITLES("ExportPartTitles"),
+		EDITOR_MODLESS("EditorModless"),
 		EDITOR_FULL_TOOLBAR("EditorFullToolbar"),
 		EXPORT_DIRECTORY("ExportDirectory"),
 		TITLE("Title"),

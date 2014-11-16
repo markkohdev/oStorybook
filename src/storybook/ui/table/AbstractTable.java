@@ -373,12 +373,17 @@ public abstract class AbstractTable extends AbstractPanel implements ActionListe
 					Timestamp ts = (Timestamp) ret;
 					Date date = new Date(ts.getTime());
 					cols.add(date);
-				} else if (ret instanceof Date || ret instanceof Color
+				} else if (ret instanceof Date
+						|| ret instanceof Color
 						|| ret instanceof SceneState
-						|| ret instanceof IdeaState || ret instanceof Strand
-						|| ret instanceof Chapter || ret instanceof Part
-						|| ret instanceof Gender || ret instanceof Category
-						|| ret instanceof Person || ret instanceof Icon) {
+						|| ret instanceof IdeaState
+						|| ret instanceof Strand
+						|| ret instanceof Chapter
+						|| ret instanceof Part
+						|| ret instanceof Gender
+						|| ret instanceof Category
+						|| ret instanceof Person
+						|| ret instanceof Icon) {
 					cols.add(ret);
 				} else if (ret instanceof List) {
 					@SuppressWarnings("unchecked")
@@ -554,14 +559,17 @@ public abstract class AbstractTable extends AbstractPanel implements ActionListe
 	private class MyMouseAdapter extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) table.getSelectionModel();
 			if (e.getClickCount() == 2) {
-				DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) table.getSelectionModel();
 				int count = selectionModel.getMaxSelectionIndex() - selectionModel.getMinSelectionIndex() + 1;
 				if (count > 1) {
 					return;
 				}
 				int row = selectionModel.getMinSelectionIndex();
 				sendSetEntityToEdit(row);
+			} else {
+				BookController ctrl = mainFrame.getBookController();
+				ctrl.showInfo(getEntityFromRow(selectionModel.getMinSelectionIndex()));
 			}
 		}
 

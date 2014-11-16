@@ -176,7 +176,7 @@ public class SceneTable extends AbstractTable {
 
 	@Override
 	protected synchronized void sendDeleteEntities(int[] rows) {
-		ArrayList<Long> ids = new ArrayList<Long>();
+		ArrayList<Long> ids = new ArrayList<>();
 		for (int row : rows) {
 			Scene scene = (Scene) getEntityFromRow(row);
 			ids.add(scene.getId());

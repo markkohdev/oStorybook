@@ -1,16 +1,21 @@
 package storybook.toolkit.html;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.text.BadLocationException;
 
+import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLWriter;
 
 import org.jsoup.Jsoup;
+
+import storybook.SbApp;
 import storybook.toolkit.TextUtil;
 import storybook.toolkit.swing.ColorUtil;
 
@@ -219,18 +224,8 @@ public class HtmlUtil {
 		return getHeadWithCSS(10);
 	}
 
-	public static String getHeadWithExternalCSS(int fontSize) {
-		// TODO add external CSS possibility
-		String buf = "<head>"
-			+ "<style type='text/css'><!--\n";
-		buf+="--></style>"
-			+ "</head>\n";
-		return(buf);
-	}
-
 	public static String getHeadWithCSS(int fontSize) {
-		String buf = "<head>"
-			+ "<style type='text/css'><!--\n";
+		String buf = "<head>" + "<style type='text/css'><!--\n";
 		// body
 		buf+="body {"
 			+ "font-family:Arial,sans-serif;"

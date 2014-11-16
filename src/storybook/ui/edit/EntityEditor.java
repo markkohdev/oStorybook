@@ -66,6 +66,7 @@ import javax.swing.text.JTextComponent;
 
 import net.miginfocom.swing.MigLayout;
 import org.jopendocument.dom.OOUtils;
+
 import storybook.SbApp;
 import storybook.SbConstants;
 import storybook.SbConstants.ClientPropertyName;
@@ -186,14 +187,14 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 		containers = new ArrayList<>();
 		inputComponents = new ArrayList<>();
 		rbgPanels = new HashMap<>();
-		try {
+		/*try {
 			Internal internal = BookUtil.get(mainFrame, BookKey.LEAVE_EDITOR_OPEN, SbConstants.DEFAULT_LEAVE_EDITOR_OPEN);
 			if (internal != null) {
 				leaveOpen = internal.getBooleanValue();
 			}
 		} catch (Exception e) {
 			leaveOpen = SbConstants.DEFAULT_LEAVE_EDITOR_OPEN;
-		}
+		}*/
 	}
 	
 	private void initHandler() {
@@ -590,8 +591,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 		SbApp.trace("EntityEditor.modelPropertyChange(evt)");
 		String propName = evt.getPropertyName();
 		if (propName.startsWith("Delete")) {
-			if (entity != null
-					&& entity.equals((AbstractEntity) evt.getOldValue())) {
+			if (entity != null && entity.equals((AbstractEntity) evt.getOldValue())) {
 				entityHandler = null;
 				initUi();
 			}
@@ -714,9 +714,9 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 							}
 							((JCheckBox) comp).setSelected((Boolean)ret);
 						} else if (comp instanceof AutoCompleteComboBox) {
-							AbstractEntityHandler entityHandler = EntityUtil.getEntityHandler(mainFrame, ret, method, entity);
+							AbstractEntityHandler eHandler = EntityUtil.getEntityHandler(mainFrame, ret, method, entity);
 							AutoCompleteComboBox autoCombo = (AutoCompleteComboBox) comp;
-							EntityUtil.fillAutoCombo(mainFrame, autoCombo, entityHandler, (String) ret, col.getAutoCompleteDaoMethod());
+							EntityUtil.fillAutoCombo(mainFrame, autoCombo, eHandler, (String) ret, col.getAutoCompleteDaoMethod());
 						} else if (comp instanceof JComboBox) {
 							boolean isNew = (ret == null);
 							final JComboBox combo = (JComboBox) comp;
@@ -1081,6 +1081,7 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 
 	private void addOrUpdateEntity() {
 		SbApp.trace("EntityEditor.addOrUpdateEntity()");
+		//TODO don't save if this new entity is calling frome Scene entity
 		try {
 			updateEntityFromInputComponents();
 			if (entity.isTransient()) {
@@ -1182,12 +1183,12 @@ public class EntityEditor extends AbstractPanel implements ActionListener, ItemL
 			reloadUi("Locations");
 		}
 	}
-
+	
 	private void reloadUi(String focus) {
 		AbstractEntity saveEntity = entityHandler.createNewEntity();
 		EntityUtil.copyEntityProperties(mainFrame, entity, saveEntity);
 		int c=tabbedPane.getSelectedIndex();
-		addOrUpdateEntity();
+		//addOrUpdateEntity();
 		init();
 		initHandler();
 		cbLeaveOpen.setVisible(false);

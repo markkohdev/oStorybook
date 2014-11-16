@@ -221,9 +221,10 @@ public class ChronoPanel extends AbstractScrollPanel implements Printable, Mouse
 		}
 
 // edit scene
-		if (BookController.SceneProps.EDIT.check(propName))
+		if (BookController.SceneProps.EDIT.check(propName)) {
 			// TODO handle text fields if same scene is edited in editor
 			return;
+		}
 
 // scene update
 		if (BookController.SceneProps.UPDATE.check(propName)) {

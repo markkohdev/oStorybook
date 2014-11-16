@@ -1,3 +1,4 @@
+
 /*
 Storybook: Open Source software for novelists and authors.
 Copyright (C) 2008 - 2012 Martin Mustun
@@ -71,15 +72,17 @@ import storybook.ui.table.TagTable;
 public class ViewFactory {
 
 	//private boolean trace=false;
-	private MainFrame mainFrame;
-	private StringViewMap viewMap;
+	private final MainFrame mainFrame;
+	private final StringViewMap viewMap;
 
 	public ViewFactory(MainFrame mainFrame) {
+		SbApp.trace("ViewFactory(mainFrame)");
 		this.mainFrame = mainFrame;
 		viewMap = new StringViewMap();
 	}
 
 	public SbView getView(ViewName viewName) {
+		SbApp.trace("ViewFactory.getView("+viewName.name()+")");
 		SbView view = (SbView) viewMap.getView(viewName.toString());
 		if (view != null) {
 			return view;
@@ -120,10 +123,12 @@ public class ViewFactory {
 	}
 
 	public SbView getView(String viewName) {
+		SbApp.trace("ViewFactory.getView("+viewName+")");
 		return (SbView) viewMap.getView(viewName);
 	}
 
 	public void loadView(SbView view) {
+		SbApp.trace("ViewFactory.loadView("+view.getName()+")");
 		if (view == null)  return;
 		AbstractPanel comp = new BlankPanel(mainFrame);
 		if (ViewName.CHRONO.compare(view))  comp = new ChronoPanel(mainFrame);
@@ -161,14 +166,17 @@ public class ViewFactory {
 	}
 
 	public void unloadView(SbView view) {
+		SbApp.trace("ViewFactory.unloadView("+view.getName()+")");
 		view.unload();
 	}
 
 	private String getChartName(String i18nKey) {
+		SbApp.trace("ViewFactory.getChartName("+i18nKey+")");
 		return I18N.getMsg("msg.common.chart") + ": " + I18N.getMsg(i18nKey);
 	}
 
 	public SbView getChartPersonsByDate() {
+		SbApp.trace("ViewFactory.getChartPersonsByDate()");
 		if (isViewInitialized(ViewName.CHART_PERSONS_BY_DATE)) {
 			SbView view = new SbView(getChartName("msg.menu.tools.charts.overall.character.date"));
 			view.setName(ViewName.CHART_PERSONS_BY_DATE.toString());
@@ -182,6 +190,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChartPersonsByScene() {
+		SbApp.trace("ViewFactory.getChartPersonsByScene()");
 		if (isViewInitialized(ViewName.CHART_PERSONS_BY_SCENE)) {
 			SbView view = new SbView(getChartName("msg.menu.tools.charts.part.character.scene"));
 			view.setName(ViewName.CHART_PERSONS_BY_SCENE.toString());
@@ -195,6 +204,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChartWiWW() {
+		SbApp.trace("ViewFactory.getChartWiWW()");
 		if (isViewInitialized(ViewName.CHART_WiWW)) {
 			SbView view = new SbView(getChartName("msg.menu.tools.charts.overall.whoIsWhereWhen"));
 			view.setName(ViewName.CHART_WiWW.toString());
@@ -208,6 +218,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChartStrandsByDate() {
+		SbApp.trace("ViewFactory.getChartStrandsByDate()");
 		if (isViewInitialized(ViewName.CHART_STRANDS_BY_DATE)) {
 			SbView view = new SbView(getChartName("msg.menu.tools.charts.overall.strand.date"));
 			view.setName(ViewName.CHART_STRANDS_BY_DATE.toString());
@@ -221,6 +232,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChartOccurrenceOfPersons() {
+		SbApp.trace("ViewFactory.getChartOccurrenceOfPersons()");
 		if (isViewInitialized(ViewName.CHART_OCCURRENCE_OF_PERSONS)) {
 			SbView view = new SbView(getChartName("msg.menu.tools.charts.overall.character.occurrence"));
 			view.setName(ViewName.CHART_OCCURRENCE_OF_PERSONS.toString());
@@ -234,6 +246,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChartOccurrenceOfLocations() {
+		SbApp.trace("ViewFactory.getChartOccurrenceOfLocations()");
 		if (isViewInitialized(ViewName.CHART_OCCURRENCE_OF_LOCATIONS)) {
 			SbView view = new SbView(getChartName("msg.menu.tools.charts.overall.location.occurrence"));
 			view.setName(ViewName.CHART_OCCURRENCE_OF_LOCATIONS.toString());
@@ -247,6 +260,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChartGantt() {
+		SbApp.trace("ViewFactory.getChartGantt()");
 		if (isViewInitialized(ViewName.CHART_GANTT)) {
 			SbView view = new SbView(getChartName("msg.chart.gantt.characters.title"));
 			view.setName(ViewName.CHART_GANTT.toString());
@@ -272,6 +286,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChaptersView() {
+		SbApp.trace("ViewFactory.getChaptersView()");
 		if (isViewInitialized(ViewName.CHAPTERS)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.chapters"));
 			view.setName(ViewName.CHAPTERS.toString());
@@ -283,6 +298,7 @@ public class ViewFactory {
 	}
 
 	public SbView getPartsView() {
+		SbApp.trace("ViewFactory.getPartsView()");
 		if (isViewInitialized(ViewName.PARTS)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.parts"));
 			view.setName(ViewName.PARTS.toString());
@@ -294,6 +310,7 @@ public class ViewFactory {
 	}
 
 	public SbView getLocationsView() {
+		SbApp.trace("ViewFactory.getLocationsView()");
 		if (isViewInitialized(ViewName.LOCATIONS)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.locations"));
 			view.setName(ViewName.LOCATIONS.toString());
@@ -305,6 +322,7 @@ public class ViewFactory {
 	}
 
 	public SbView getPersonsView() {
+		SbApp.trace("ViewFactory.getPersonsView()");
 		if (isViewInitialized(ViewName.PERSONS)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.persons"));
 			view.setName(ViewName.PERSONS.toString());
@@ -316,6 +334,7 @@ public class ViewFactory {
 	}
 
 	public SbView getGendersView() {
+		SbApp.trace("ViewFactory.getGendersView()");
 		if (isViewInitialized(ViewName.GENDERS)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.genders"));
 			view.setName(ViewName.GENDERS.toString());
@@ -327,6 +346,7 @@ public class ViewFactory {
 	}
 
 	public SbView getCategoriesView() {
+		SbApp.trace("ViewFactory.getCategoriesView()");
 		if (isViewInitialized(ViewName.CATEGORIES)) {
 			SbView view = new SbView(I18N.getMsg("msg.persons.categories"));
 			view.setName(ViewName.CATEGORIES.toString());
@@ -338,6 +358,7 @@ public class ViewFactory {
 	}
 
 	public SbView getStrandsView() {
+		SbApp.trace("ViewFactory.getStrandsView()");
 		if (isViewInitialized(ViewName.STRANDS)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.strands"));
 			view.setName(ViewName.STRANDS.toString());
@@ -349,6 +370,7 @@ public class ViewFactory {
 	}
 
 	public SbView getIdeasView() {
+		SbApp.trace("ViewFactory.getIdeasView()");
 		if (isViewInitialized(ViewName.IDEAS)) {
 			SbView view = new SbView(I18N.getMsg("msg.ideas.title"));
 			view.setName(ViewName.IDEAS.toString());
@@ -360,6 +382,7 @@ public class ViewFactory {
 	}
 
 	public SbView getTagsView() {
+		SbApp.trace("ViewFactory.getTagsView()");
 		if (isViewInitialized(ViewName.TAGS)) {
 			SbView view = new SbView(I18N.getMsg("msg.tags"));
 			view.setName(ViewName.TAGS.toString());
@@ -371,6 +394,7 @@ public class ViewFactory {
 	}
 
 	public SbView getItemView() {
+		SbApp.trace("ViewFactory.getItemView()");
 		if (isViewInitialized(ViewName.ITEMS)) {
 			SbView view = new SbView(I18N.getMsg("msg.items"));
 			view.setName(ViewName.ITEMS.toString());
@@ -382,6 +406,7 @@ public class ViewFactory {
 	}
 
 	public SbView getTagLinksView() {
+		SbApp.trace("ViewFactory.getTagLinksView()");
 		if (isViewInitialized(ViewName.TAGLINKS)) {
 			SbView view = new SbView(I18N.getMsg("msg.tags.links"));
 			view.setName(ViewName.TAGLINKS.toString());
@@ -393,6 +418,7 @@ public class ViewFactory {
 	}
 
 	public SbView getItemLinksView() {
+		SbApp.trace("ViewFactory.getItemLinksView()");
 		if (isViewInitialized(ViewName.ITEMLINKS)) {
 			SbView view = new SbView(I18N.getMsg("msg.items.links"));
 			view.setName(ViewName.ITEMLINKS.toString());
@@ -404,6 +430,7 @@ public class ViewFactory {
 	}
 
 	public SbView getEditorView() {
+		SbApp.trace("ViewFactory.getEditorView()");
 		if (isViewInitialized(ViewName.EDITOR)) {
 			EntityEditor editor = new EntityEditor(mainFrame);
 			/* supression editor.initAll();*/
@@ -421,6 +448,7 @@ public class ViewFactory {
 	}
 
 	public SbView getChronoView() {
+		SbApp.trace("ViewFactory.getChronoView()");
 		if (isViewInitialized(ViewName.CHRONO)) {
 			SbView view = new SbView(I18N.getMsg("msg.menu.view.chrono"));
 			view.setName(ViewName.CHRONO.toString());
@@ -434,6 +462,7 @@ public class ViewFactory {
 	}
 
 	public SbView getBookView() {
+		SbApp.trace("ViewFactory.getBookView()");
 		if (isViewInitialized(ViewName.BOOK)) {
 			SbView view = new SbView(I18N.getMsg("msg.menu.view.book"));
 			view.setName(ViewName.BOOK.toString());
@@ -446,6 +475,7 @@ public class ViewFactory {
 	}
 
 	public SbView getManageView() {
+		SbApp.trace("ViewFactory.getManageView()");
 		if (isViewInitialized(ViewName.MANAGE)) {
 			SbView view = new SbView(I18N.getMsg("msg.menu.view.manage"));
 			view.setName(ViewName.MANAGE.toString());
@@ -458,6 +488,7 @@ public class ViewFactory {
 	}
 
 	public SbView getReadingView() {
+		SbApp.trace("ViewFactory.getReadingView()");
 		if (isViewInitialized(ViewName.READING)) {
 			SbView view = new SbView(I18N.getMsg("msg.menu.view.reading"));
 			view.setName(ViewName.READING.toString());
@@ -470,6 +501,7 @@ public class ViewFactory {
 	}
 
 	public SbView getMemoriaView() {
+		SbApp.trace("ViewFactory.getMemoriaView()");
 		if (isViewInitialized(ViewName.MEMORIA)) {
 			SbView view = new SbView(I18N.getMsg("msg.menu.view.pov"));
 			view.setName(ViewName.MEMORIA.toString());
@@ -482,6 +514,7 @@ public class ViewFactory {
 	}
 
 	public SbView getTreeView() {
+		SbApp.trace("ViewFactory.getTreeView()");
 		if (isViewInitialized(ViewName.TREE)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.tree"));
 			view.setName(ViewName.TREE.toString());
@@ -493,6 +526,7 @@ public class ViewFactory {
 	}
 
 	public SbView getQuickInfoView() {
+		SbApp.trace("ViewFactory.getQuickInfoView()");
 		if (isViewInitialized(ViewName.INFO)) {
 			SbView view = new SbView(I18N.getMsg("msg.info.title"));
 			view.setName(ViewName.INFO.toString());
@@ -504,6 +538,7 @@ public class ViewFactory {
 	}
 
 	public SbView getAttributesView() {
+		SbApp.trace("ViewFactory.getAttributesView()");
 		if (isViewInitialized(ViewName.ATTRIBUTES)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.attributes"));
 			view.setName(ViewName.ATTRIBUTES.toString());
@@ -515,6 +550,7 @@ public class ViewFactory {
 	}
 
 	public SbView getNavigationView() {
+		SbApp.trace("ViewFactory.getNavigationView()");
 		if (isViewInitialized(ViewName.NAVIGATION)) {
 			SbView view = new SbView(I18N.getMsg("msg.common.navigation"));
 			view.setName(ViewName.NAVIGATION.toString());
@@ -526,6 +562,7 @@ public class ViewFactory {
 	}
 
 	public SbView getInternalsView() {
+		SbApp.trace("ViewFactory.getInternalsView()");
 		if (isViewInitialized(ViewName.INTERNALS)) {
 			SbView view = new SbView("Internals");
 			view.setName(ViewName.INTERNALS.toString());
@@ -538,6 +575,7 @@ public class ViewFactory {
 
 	@SuppressWarnings("unchecked")
 	private void addRefreshButton(final SbView view) {
+		//SbApp.trace("ViewFactory.addRefreshButton("+view.getName()+")");
 		JButton bt = createMiniButton("icon.mini.refresh", "msg.common.refresh");
 		bt.addActionListener(new ActionListener() {
 			@Override
@@ -552,6 +590,7 @@ public class ViewFactory {
 
 	@SuppressWarnings("unchecked")
 	private void addOptionsButton(final SbView view) {
+		//SbApp.trace("ViewFactory.addOptionsButton("+view.getName()+")");
 		JButton bt = createMiniButton("icon.mini.options", "msg.common.options");
 		bt.addActionListener(new ActionListener() {
 			@Override
@@ -564,6 +603,7 @@ public class ViewFactory {
 
 	@SuppressWarnings("unchecked")
 	private void addExportButton(final SbView view) {
+		//SbApp.trace("ViewFactory.addExportButton("+view.getName()+")");
 		JButton bt = createMiniButton("icon.mini.export", "msg.common.export");
 		bt.addActionListener(new ActionListener() {
 			@Override
@@ -576,6 +616,7 @@ public class ViewFactory {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	private void addPrintButton(final SbView view) {
+		//SbApp.trace("ViewFactory.addPrintButton("+view.getName()+")");
 		JButton bt = createMiniButton("icon.mini.print", "msg.common.print");
 		bt.addActionListener(new ActionListener() {
 			@Override
@@ -587,6 +628,7 @@ public class ViewFactory {
 	}
 
 	private JButton createMiniButton(String iconKey, String toolTipKey) {
+		//SbApp.trace("ViewFactory.createMiniButton("+iconKey+","+toolTipKey+")");
 		final JButton bt = new JButton(I18N.getIcon(iconKey));
 		bt.setOpaque(false);
 		bt.setBorder(null);
@@ -598,6 +640,7 @@ public class ViewFactory {
 
 	@SuppressWarnings("unchecked")
 	private void addSeparator(View view) {
+		//SbApp.trace("ViewFactory.addRefreshButton("+view.getName()+")");
 		view.getCustomTabComponents().add(new JLabel("  "));
 	}
 

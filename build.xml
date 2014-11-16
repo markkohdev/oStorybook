@@ -10,7 +10,7 @@
 <project name="oStorybook" default="default" basedir=".">
     <description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
-	<property name="sb.version" value="4.9.15" />
+	<property name="sb.version" value="4.9.16" />
 	<property name="sb.distdir" value="${basedir}/distrib" />
         <property name="sb.distzip" value="${sb.distdir}/oStorybook-${sb.version}.zip" />
 	<property name="sb.file.name" value="oStorybook" />

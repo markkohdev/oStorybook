@@ -1,27 +1,27 @@
 /*
-Storybook: Open Source software for novelists and authors.
-Copyright (C) 2008 - 2012 Martin Mustun
+ Storybook: Open Source software for novelists and authors.
+ Copyright (C) 2008 - 2012 Martin Mustun
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package storybook.ui;
 
 import storybook.ui.panel.BlankPanel;
 import storybook.ui.panel.AbstractPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -110,6 +110,7 @@ public class MainFrame extends JFrame implements IPaintable {
 	private HashMap<Integer, JComponent> dynamicViews = new HashMap<Integer, JComponent>();
 	private DbFile dbFile;
 	private Part currentPart;
+	private boolean EditorModless;
 
 	public MainFrame() {
 		FontUtil.setDefaultFont(new Font("Arial", Font.PLAIN, 12));
@@ -130,7 +131,7 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	public void init(DbFile dbF) {
-		SbApp.trace("MainFrame.init("+dbF.getDbName()+")");
+		SbApp.trace("MainFrame.init(" + dbF.getDbName() + ")");
 		try {
 			this.dbFile = dbF;
 			viewFactory = new ViewFactory(this);
@@ -144,20 +145,20 @@ public class MainFrame extends JFrame implements IPaintable {
 			}
 			bookController.attachModel(bookModel);
 			// Google maps
-			Preference pref = PrefUtil.get(PreferenceKey.GOOGLE_MAPS_URL, SbConstants.DEFAULT_GOOGLE_MAPS_URL);
-			NetUtil.setGoogleMapUrl(pref.getStringValue());
+			//Preference pref = PrefUtil.get(PreferenceKey.GOOGLE_MAPS_URL, SbConstants.DEFAULT_GOOGLE_MAPS_URL);
+			//NetUtil.setGoogleMapUrl(pref.getStringValue());
 			// spell checker
 			SpellCheckerUtil.registerDictionaries();
 			// listener
 			addWindowListener(new MainFrameWindowAdaptor());
 		} catch (Exception e) {
-			SbApp.error("MainFrame.init("+dbF.getName()+")", e);
+			SbApp.error("MainFrame.init(" + dbF.getName() + ")", e);
 		}
 	}
 
 	@Override
 	public void initUi() {
-		SbApp.trace("MainFrame.initUi()");
+		SbApp.trace(">>> MainFrame.initUi()");
 		setLayout(new MigLayout("flowy,fill,ins 0,gap 0", "", "[grow]"));
 		setIconImage(I18N.getIconImage("icon.sb"));
 		setTitle();
@@ -167,10 +168,15 @@ public class MainFrame extends JFrame implements IPaintable {
 		sbActionManager.reloadMenuToolbar();
 		initRootWindow();
 		setDefaultLayout();
+		SbApp.trace("add(rootWindow, \"grow\");");
 		add(rootWindow, "grow");
+		SbApp.trace("statusBar = new StatusBarPanel(this);");
 		statusBar = new StatusBarPanel(this);
+		SbApp.trace("add(statusBar, \"growx\");");
 		add(statusBar, "growx");
+		SbApp.trace("bookController.attachView(statusBar);");
 		bookController.attachView(statusBar);
+		SbApp.trace("pack();");
 		pack();
 		setVisible(true);
 		initAfterPack();
@@ -198,8 +204,10 @@ public class MainFrame extends JFrame implements IPaintable {
 			}
 			sbActionManager.getActionHandler().handleChangePart(part);
 		} catch (Exception e) {
+			SbApp.trace("exiting try in MainFrame.initUi()");
 		}
 		//		bookController.attachView(this);
+		SbApp.trace("<<< MainFrame.initUi()");
 	}
 
 //	public void modelPropertyChange(PropertyChangeEvent evt) {
@@ -207,7 +215,6 @@ public class MainFrame extends JFrame implements IPaintable {
 //		Object newValue = evt.getNewValue();
 //		String propName = evt.getPropertyName();
 //	}
-
 	public void setTitle() {
 		SbApp.trace("MainFrame.setTitle()");
 		String prodFullTitle = Storybook.PRODUCT_FULL_NAME.toString();
@@ -232,16 +239,16 @@ public class MainFrame extends JFrame implements IPaintable {
 		SbApp.trace("MainFrame.initRootWindow()");
 		StringViewMap viewMap = viewFactory.getViewMap();
 		MixedViewHandler handler = new MixedViewHandler(viewMap, new ViewSerializer() {
-					@Override
-					public void writeView(View view, ObjectOutputStream out) throws IOException {
-						out.writeInt(((DynamicView) view).getId());
-					}
+			@Override
+			public void writeView(View view, ObjectOutputStream out) throws IOException {
+				out.writeInt(((DynamicView) view).getId());
+			}
 
-					@Override
-					public View readView(ObjectInputStream in) throws IOException {
-						return getDynamicView(in.readInt());
-					}
-				});
+			@Override
+			public View readView(ObjectInputStream in) throws IOException {
+				return getDynamicView(in.readInt());
+			}
+		});
 		rootWindow = DockingUtil.createRootWindow(viewMap, handler, true);
 		rootWindow.setName("rootWindow");
 		rootWindow.setPreferredSize(new Dimension(4096, 2048));
@@ -260,6 +267,7 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	public void setDefaultLayout() {
+		SbApp.trace("MainFrame.setDefaultLayout()");
 		SbView scenesView = getView(ViewName.SCENES);
 		SbView chaptersView = getView(ViewName.CHAPTERS);
 		SbView partsView = getView(ViewName.PARTS);
@@ -291,22 +299,23 @@ public class MainFrame extends JFrame implements IPaintable {
 		SbView treeView = getView(ViewName.TREE);
 		SbView infoView = getView(ViewName.INFO);
 		SbView navigationView = getView(ViewName.NAVIGATION);
-		TabWindow tabInfoNavi = new TabWindow(new SbView[] { infoView, navigationView });
+		TabWindow tabInfoNavi = new TabWindow(new SbView[]{infoView, navigationView});
 		tabInfoNavi.setName("tabInfoNaviWindow");
 		SplitWindow swTreeInfo = new SplitWindow(false, 0.6f, treeView, tabInfoNavi);
 		swTreeInfo.setName("swTreeInfo");
-		TabWindow tabWindow = new TabWindow(new SbView[] { chronoView,
-				bookView, manageView, readingView, memoriaView, scenesView,
-				personsView, locationsView, chaptersView, gendersView,
-				categoriesView, partsView, strandsView, ideasView, tagsView,
-				itemsView, tagLinksView, itemLinksView, internalsView, listAttributes,
-				chartPersonsByDate, chartPersonsByScene, chartWiWW,
-				chartStrandsByDate, chartOccurrenceOfPersons,
-				chartOccurrenceOfLocations, chartGantt });
+		TabWindow tabWindow = new TabWindow(new SbView[]{chronoView,
+			bookView, manageView, readingView, memoriaView, scenesView,
+			personsView, locationsView, chaptersView, gendersView,
+			categoriesView, partsView, strandsView, ideasView, tagsView,
+			itemsView, tagLinksView, itemLinksView, internalsView, listAttributes,
+			chartPersonsByDate, chartPersonsByScene, chartWiWW,
+			chartStrandsByDate, chartOccurrenceOfPersons,
+			chartOccurrenceOfLocations, chartGantt});
 		tabWindow.setName("tabWindow");
-		SplitWindow swTabWinEditor = new SplitWindow(true, 0.60f, tabWindow, editorView);
-		swTabWinEditor.setName("swTabWinEditor");
-		SplitWindow swMain = new SplitWindow(true, 0.20f, swTreeInfo, swTabWinEditor);
+		//SplitWindow swTabWinEditor = new SplitWindow(true, 0.60f, tabWindow, editorView);
+		//swTabWinEditor.setName("swTabWinEditor");
+		//SplitWindow swMain = new SplitWindow(true, 0.20f, swTreeInfo, swTabWinEditor);
+		SplitWindow swMain = new SplitWindow(true, 0.20f, swTreeInfo, tabWindow);
 		swMain.setName("swMain");
 		rootWindow.setWindow(swMain);
 		bookView.close();
@@ -340,6 +349,7 @@ public class MainFrame extends JFrame implements IPaintable {
 		chronoView.restoreFocus();
 		rootWindow.getWindowBar(Direction.RIGHT).setEnabled(true);
 		DockingWindowUtil.setRespectMinimumSize(this);
+		SbApp.trace("end of MainFrame.setDefaultLayout()");
 	}
 
 	private void initAfterPack() {
@@ -355,8 +365,8 @@ public class MainFrame extends JFrame implements IPaintable {
 		for (int i = 0; i < viewFactory.getViewMap().getViewCount(); ++i) {
 			View view = viewFactory.getViewMap().getViewAtIndex(i);
 			/*if (view.getName().equals(ViewName.EDITOR.toString())) {
-				continue;
-			}*/
+			 continue;
+			 }*/
 			view.addListener(dockingAdapter);
 		}
 		// load initially shown views here
@@ -379,8 +389,10 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	public void showView(ViewName viewName) {
-		SbApp.trace("MainFrame.showView("+viewName.name()+")");
-		if (viewName.equals(SbConstants.ViewName.EDITOR)) return;
+		SbApp.trace("MainFrame.showView(" + viewName.name() + ")");
+		if (viewName.equals(SbConstants.ViewName.EDITOR)) {
+			return;
+		}
 		setWaitingCursor();
 		SbView view = getView(viewName);
 		if (view.getRootWindow() != null) {
@@ -393,19 +405,19 @@ public class MainFrame extends JFrame implements IPaintable {
 		DockingWindowUtil.setRespectMinimumSize(this);
 		setDefaultCursor();
 		/*if (viewName.equals(SbConstants.ViewName.EDITOR)) {
-			showEditor();
-		}*/
+		 showEditor();
+		 }*/
 	}
 
 	public void showAndFocus(ViewName viewName) {
-		SbApp.trace("MainFrame.showAndFocus("+viewName.name()+")");
+		SbApp.trace("MainFrame.showAndFocus(" + viewName.name() + ")");
 		View view = getView(viewName);
 		view.restore();
 		view.restoreFocus();
 	}
 
 	public void closeView(ViewName viewName) {
-		SbApp.trace("MainFrame.closeView("+viewName.name()+")");
+		SbApp.trace("MainFrame.closeView(" + viewName.name() + ")");
 		SbView view = getView(viewName);
 		view.close();
 	}
@@ -426,34 +438,34 @@ public class MainFrame extends JFrame implements IPaintable {
 	public void showEditor() {
 		SbApp.trace("MainFrame.showEditor()");
 		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				SbApp.trace("MainFrame.showEditor()-->run");
-				SbView editorView = getView(ViewName.EDITOR);
-				editorView.cleverRestoreFocus();
-			}
-		});*/
+		 @Override
+		 public void run() {
+		 SbApp.trace("MainFrame.showEditor()-->run");
+		 SbView editorView = getView(ViewName.EDITOR);
+		 editorView.cleverRestoreFocus();
+		 }
+		 });*/
 		System.out.println("no MainFrame.showEditor()");
 	}
 
 	public void hideEditor() {
 		/*Timer timer = new Timer(200, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {*/
-				/*View editorView = getView(ViewName.EDITOR);
-				if (!editorView.isShowing()) {
-					return;
-				}
-				if (editorView.isMinimized()) {
-					WindowBar bar = rootWindow.getWindowBar(Direction.RIGHT);
-					bar.setSelectedTab(-1);
-				} else {
-					editorView.close();
-				}*/
-			/*}
-		});
-		timer.setRepeats(false);
-		timer.start();*/
+		 @Override
+		 public void actionPerformed(ActionEvent e) {*/
+		View editorView = getView(ViewName.EDITOR);
+		 if (!editorView.isShowing()) {
+		 return;
+		 }/*
+		 if (editorView.isMinimized()) {
+		 WindowBar bar = rootWindow.getWindowBar(Direction.RIGHT);
+		 bar.setSelectedTab(-1);
+		 } else {*/
+		 editorView.close();
+		 /*}*/
+		/*}
+		 });
+		 timer.setRepeats(false);
+		 timer.start();*/
 	}
 
 	public void initBlankUi() {
@@ -480,7 +492,7 @@ public class MainFrame extends JFrame implements IPaintable {
 		SwingUtil.setWaitingCursor(this);
 	}
 
-	public DbFile getDbFile(){
+	public DbFile getDbFile() {
 		return dbFile;
 	}
 
@@ -569,7 +581,7 @@ public class MainFrame extends JFrame implements IPaintable {
 
 	private static JComponent createDummyViewComponent(String text) {
 		StringBuilder sb = new StringBuilder();
-		for (int j = 0; j < 100; j++){
+		for (int j = 0; j < 100; j++) {
 			sb.append(text).append(". This is line ").append(j).append("\n");
 		}
 		return new JScrollPane(new JTextArea(sb.toString()));
@@ -593,6 +605,7 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	private static class DynamicView extends View {
+
 		private final int id;
 
 		DynamicView(String title, Icon icon, Component component, int id) {
@@ -606,6 +619,7 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	private class MainFrameWindowAdaptor extends WindowAdapter {
+
 		@Override
 		public void windowClosing(WindowEvent evt) {
 			close();
@@ -613,9 +627,10 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	private class MainDockingWindowAdapter extends DockingWindowAdapter {
+
 		@Override
 		public void windowAdded(DockingWindow addedToWindow, DockingWindow addedWindow) {
-			SbApp.trace("MainDockingWindowAdapter.windowAdded("+addedToWindow.getName()+", "+addedWindow.getName()+")");
+			SbApp.trace("MainDockingWindowAdapter.windowAdded(" + addedToWindow.getName() + ", " + addedWindow.getName() + ")");
 			if (addedWindow != null && addedWindow instanceof SbView) {
 				SbView view = (SbView) addedWindow;
 				if (!view.isLoaded()) {
@@ -628,23 +643,23 @@ public class MainFrame extends JFrame implements IPaintable {
 
 		@Override
 		public void windowClosed(DockingWindow window) {
-			SbApp.trace("MainDockingWindowAdapter.windowClosed("+window.getName()+")");
+			SbApp.trace("MainDockingWindowAdapter.windowClosed(" + window.getName() + ")");
 			if (window != null && window instanceof SbView) {
 				SbView view = (SbView) window;
 				/* suppression editorView
-				if (ViewName.EDITOR.toString().equals(view.getName())) {
-					// don't detach / unload the editor
-					return;
-				}
-				*/
+				 if (ViewName.EDITOR.toString().equals(view.getName())) {
+				 // don't detach / unload the editor
+				 return;
+				 }
+				 */
 				if (!view.isLoaded()) {
 					return;
 				}
 				bookController.detachView((AbstractPanel) view.getComponent());
 				viewFactory.unloadView(view);
 				/* suppression du garbage collector
-				SbApp.getInstance().runGC();
-				*/
+				 SbApp.getInstance().runGC();
+				 */
 			}
 		}
 	}
@@ -689,10 +704,11 @@ public class MainFrame extends JFrame implements IPaintable {
 	}
 
 	public void showEditorAsDialog(AbstractEntity entity) {
-		JDialog dlg=new JDialog((Frame)this,true);
-		EntityEditor editor=new EntityEditor(this, entity, dlg);
+		JDialog dlg = new JDialog((Frame) this, true);
+		if (EditorModless) dlg.setModalityType(Dialog.ModalityType.MODELESS);
+		EntityEditor editor = new EntityEditor(this, entity, dlg);
 		dlg.setTitle(I18N.getMsg("msg.common.editor"));
-		dlg.setSize(this.getWidth()/2, 680);
+		dlg.setSize(this.getWidth() / 2, 680);
 		dlg.add(editor);
 		dlg.setLocationRelativeTo(this);
 		dlg.setVisible(true);

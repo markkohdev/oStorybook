@@ -3,6 +3,11 @@ oStorybook
 
 Versions :
 4.9.16 : favdb 01/12/2014
+- mise à jour du panneau d'information sur simple clique de sélection dans l'un
+des tableaux
+- réintégration de la vue des Attributs au même rang que les autres
+- correction du bug concernant la réplication de scène en cas d'ajout dynamique
+personnage, lieu ou fil
 - modification de l'icone, splash, image
 - ajustement de l'I18N pour les menus (mnémoniques)
 - redéveloppement du packaging Debian

@@ -277,7 +277,7 @@ public class EntityUtil {
 			if (usePlainTextScenes)
 				scene.setSummary(HtmlUtil.htmlToText(scene.getSummary(), true));
 			if (usePlainTextDescr)
-				scene.setNotes(HtmlUtil.htmlToText(scene.getNotes(), true));
+				scene.setNotes(HtmlUtil.htmlToText(scene.getNotes()));
 			session.update(scene);
 		}
 

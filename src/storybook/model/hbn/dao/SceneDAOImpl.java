@@ -211,8 +211,7 @@ public class SceneDAOImpl extends SbGenericDAOImpl<Scene, Long> implements
 					}
 				}
 			}
-			Scene relativeScene = (Scene) session.get(Scene.class,
-					scene.getRelativeSceneId());
+			Scene relativeScene = (Scene) session.get(Scene.class, scene.getRelativeSceneId());
 			dates.add(scene.getRelativeDate(relativeScene));
 		}
 		dates = LangUtil.removeNullAndDuplicates(dates);

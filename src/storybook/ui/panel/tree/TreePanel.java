@@ -166,15 +166,13 @@ public class TreePanel extends AbstractPanel implements TreeSelectionListener, M
 	private boolean refreshNode(AbstractEntity updEntity,AbstractEntity oldEntity) {
 		TreePath[] paths = getPaths(tree, false);
 		for (TreePath path : paths) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
-					.getLastPathComponent();
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 			if (node.isLeaf()) {
 				Object o = node.getUserObject();
 				if (o instanceof AbstractEntity) {
 					AbstractEntity entity = (AbstractEntity) o;
 					if (entity.getId().equals(updEntity.getId())) {
-						if (EntityUtil
-								.hasHierarchyChanged(oldEntity, updEntity)) {
+						if (EntityUtil.hasHierarchyChanged(oldEntity, updEntity)) {
 							return false;
 						}
 						changeTreeNode(node);

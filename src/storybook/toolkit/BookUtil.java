@@ -124,6 +124,13 @@ public class BookUtil {
 		return internal.getBooleanValue();
 	}
 
+	public static boolean isEditorModless(MainFrame mainFrame) {
+		Internal internal = get(mainFrame,
+				BookKey.EDITOR_MODLESS,
+				SbConstants.DEFAULT_EDITOR_MODLESS);
+		return internal.getBooleanValue();
+	}
+
 	public static void store(MainFrame mainFrame, BookKey key, Object val) {
 		store(mainFrame,key.toString(),val);
 	}

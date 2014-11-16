@@ -65,6 +65,7 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 	//JComboBox layoutCombo = new JComboBox();
 
 	public StatusBarPanel(MainFrame mainFrame) {
+		SbApp.trace("StatusBarPanel(mainFrame)");
 		this.mainFrame = mainFrame;
 		initAll();
 	}
@@ -104,11 +105,13 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 
 	@Override
 	public void init() {
+		SbApp.trace("StatusBarPanel.init()");
 		computeStatistics();
 	}
 
 	@Override
 	public void initUi() {
+		SbApp.trace("StatusBarPanel.initUi()");
 		setLayout(new MigLayout("flowx,fill,ins 1", "[][grow][][]"));
 
 		// add(new DebugInfoPanel(mainFrame));
@@ -181,6 +184,7 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 	}
 	
 	private void computeStatistics() {
+		SbApp.trace("StatusBarPanel.computeStatistics()");
 		nbWords=0;
 		nbCharacters=0;
 		nbChapters=0;
@@ -200,6 +204,7 @@ public class StatusBarPanel extends AbstractPanel implements ActionListener {
 	}
 
 	private void refreshStat() {
+		SbApp.trace("StatusBarPanel.refreshStat()");
 		computeStatistics();
 		String strStat="Statistics:";
 		strStat+=" "+I18N.getMsg("msg.common.chapters")+"="+nbChapters;
