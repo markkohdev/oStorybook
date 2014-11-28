@@ -31,6 +31,18 @@ public abstract class AbstractTag extends AbstractEntity {
 
 	public static final int TYPE_TAG = 0;
 	public static final int TYPE_ITEM = 1;
+	//TODO utiliser les objets Tag pour identifier des liens d'objet à objet de même nature
+	// exemples:
+	// objet lié à un autre objet
+	// lieu lié à un autre lieu
+	// etiquette liée à une autre étiquette
+	public static final int TYPE_LINK = 10;
+	// dans ce cas :
+	// - category recevra le nom du type d'objet à lier (Person, Item, Location, Tag)
+	// - name recevra l'Id du premier objet suivi de l'Id du second objet, séparateur |
+	//TODO faire l'écran de saisie correspondant
+	//TODO faire le pannel Associations
+	//TODO faire le print correspondant
 
 	protected Integer type;
 	private String category;
@@ -41,8 +53,7 @@ public abstract class AbstractTag extends AbstractEntity {
 	public AbstractTag() {
 	}
 
-	public AbstractTag(Integer type, String category, String name, String description,
-			String notes) {
+	public AbstractTag(Integer type, String category, String name, String description, String notes) {
 		this.type = type;
 		this.category = category;
 		this.name = name;
@@ -50,12 +61,7 @@ public abstract class AbstractTag extends AbstractEntity {
 		this.notes = notes;
 	}
 
-	/**
-	 * @hibernate.id
-	 *   column="ID"
-	 *   generator-class="increment"
-	 *   unsaved-value="null"
-	 */
+	@Override
 	public Long getId() {
 		return this.id;
 	}
@@ -78,11 +84,6 @@ public abstract class AbstractTag extends AbstractEntity {
 		return (Item) this;
 	}
 
-	/**
-	 * @hibernate.property
-	 *   insert="false"
-	 *   update="false"
-	 */
 	public Integer getType() {
 		return this.type;
 	}
@@ -91,9 +92,6 @@ public abstract class AbstractTag extends AbstractEntity {
 		this.type = type;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getCategory() {
 		return this.category;
 	}
@@ -102,9 +100,6 @@ public abstract class AbstractTag extends AbstractEntity {
 		this.category = (category == null ? "" : category);
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getName() {
 		return this.name;
 	}
@@ -113,9 +108,6 @@ public abstract class AbstractTag extends AbstractEntity {
 		this.name = name;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getDescription() {
 		return this.description;
 	}
@@ -124,9 +116,6 @@ public abstract class AbstractTag extends AbstractEntity {
 		this.description = description;
 	}
 
-	/**
-	 * @hibernate.property
-	 */
 	public String getNotes() {
 		return this.notes;
 	}

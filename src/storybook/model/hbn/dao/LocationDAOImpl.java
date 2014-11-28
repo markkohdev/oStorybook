@@ -46,19 +46,20 @@ public class LocationDAOImpl extends SbGenericDAOImpl<Location, Long> implements
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Location> findAll() {
-		Query query = session
-				.createQuery("from Location order by country,city,name");
+		Query query = session.createQuery("from Location order by country,city,name");
 		return (List<Location>) query.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<String> findCountries(){
-		Query query = session.createQuery("select distinct(l.country) from Location as l");
+		//TODO order by l.country
+		Query query = session.createQuery("select distinct(l.country) from Location as l order by l.country");
 		return (List<String>)query.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<String> findCities(){
+		//TODO order by l.city
 		Query query = session.createQuery("select distinct(l.city) from Location as l");
 		return (List<String>)query.list();
 	}
@@ -66,12 +67,10 @@ public class LocationDAOImpl extends SbGenericDAOImpl<Location, Long> implements
 	@SuppressWarnings("unchecked")
 	public List<String> findCitiesByCountry(String country) {
 		if (country == null) {
-			Query query = session
-					.createQuery("select distinct(l.city) from Location as l where l.country is null order by l.city");
+			Query query = session.createQuery("select distinct(l.city) from Location as l where l.country is null order by l.city");
 			return (List<String>) query.list();
 		}
-		Query query = session
-				.createQuery("select distinct(l.city) from Location as l where l.country=:country order by l.city");
+		Query query = session.createQuery("select distinct(l.city) from Location as l where l.country=:country order by l.city");
 		query.setParameter("country", country);
 		return (List<String>) query.list();
 	}
@@ -81,8 +80,7 @@ public class LocationDAOImpl extends SbGenericDAOImpl<Location, Long> implements
 		if (countries.isEmpty()) {
 			return new ArrayList<Location>();
 		}
-		Query query = session
-				.createQuery("from Location as l where l.country in (:countries)");
+		Query query = session.createQuery("from Location as l where l.country in (:countries)");
 		query.setParameterList("countries", countries);
 		return (List<Location>) query.list();
 	}
