@@ -16,6 +16,7 @@ personnage, lieu ou fil
 - ajout des statistiques sur la barre d'état
 - bug : la vue des idées était inactive
 - modification du log4j pour remonter au niveau ERROR
+- lieux triés par pays puis ville puis nom (dans l'arbre, Memoria, etc...)
 4.9.15 : favdb 01/09/2014
 - résolution du bug de l'éditeur par utilisation en mode dialogue
 - transformation du menu et de la barre d'outils au format Netbeans en

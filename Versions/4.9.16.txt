@@ -41,3 +41,7 @@ Avec mes amitiés, en espérant que ces quelques corrections vous soient utiles.
 Diffusion :
 - mailing-list News
 - forum : Discussion générale
+
+Annonce de publication
+Ajout évolution:
+- lieux triés par pays puis ville puis nom (dans l'arbre, Memoria, etc...)

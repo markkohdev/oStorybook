@@ -108,7 +108,7 @@
 		<copy file="actions.xml" todir="${build.classes.dir}" />
 	</target>
 	<!-- Récupération des autres fichiers l'application -->
-	<target name="dist-prepare">
+	<target name="build-prepare">
             <echo message="Preparing distributions..." level="info"/>
             <mkdir dir="${sb.distdir}"/>
             <mkdir dir="${dist.dir}/dicts" />
@@ -128,13 +128,15 @@
             <copy file="oStorybook-icon.ico" todir="${dist.dir}" />
             <copy file="oStorybook-icon.png" todir="${dist.dir}" />
 	</target>
-	<target name="dist-zip" depends="jar, dist-prepare" >
+	<target name="build-app-zip" depends="jar, build-prepare" >
 		<mkdir dir="${sb.distdir}" />
 		<zip destfile="${sb.distzip}" basedir="${basedir}/dist" />
 	</target>
 <!-- ========================================================================================= -->
-	<target name="dist-jarbundler" depends="jar" >
-            <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />
+	<target name="build-jarbundler" depends="jar" >
+            <taskdef name="jarbundler"
+                     classname="net.sourceforge.jarbundler.JarBundler"
+                     classpath="lib/jarbundler-2.2.0.jar" />
             <jarbundler dir="${sb.distdir}"
                         name="${jarbundler.name}"
                         shortname="${jarbundler.shortname}"
@@ -159,14 +161,18 @@
                             <include name="oStorybook-icon.ico" />
                             <include name="oStorybook-icon.png" />
                     </jarfileset>
-                    <javaproperty name="apple.laf.useScreenMenuBar" value="${jarbundler.apple.laf.useScreenMenuBar}" />
-                    <javaproperty name="apple.awt.brushMetal" value="${jarbundler.apple.awt.brushMetal}" />
-                    <javaproperty name="apple.awt.showGrowBox" value="${jarbundler.apple.awt.showGrowBox}" />
-                    <javaproperty name="apple.awt.textantialiasing" value="${jarbundler.apple.awt.textantialiasing}" />
+                    <javaproperty name="apple.laf.useScreenMenuBar"
+                                  value="${jarbundler.apple.laf.useScreenMenuBar}" />
+                    <javaproperty name="apple.awt.brushMetal"
+                                  value="${jarbundler.apple.awt.brushMetal}" />
+                    <javaproperty name="apple.awt.showGrowBox"
+                                  value="${jarbundler.apple.awt.showGrowBox}" />
+                    <javaproperty name="apple.awt.textantialiasing"
+                                  value="${jarbundler.apple.awt.textantialiasing}" />
             </jarbundler>
 	</target>
 <!-- ========================================================================================= -->
-	<target name="dist-mac" depends="init,jar,dist-prepare,dist-jarbundler">
+	<target name="build-app-mac" depends="init,jar,build-prepare,build-jarbundler">
             <property name="sb.macfile" value="${sb.distdir}/oStorybook" />
             <tar basedir="${sb.distdir}/${jarbundler.name}.app" destfile="${sb.macfile}.tar" />
             <gzip src="${sb.macfile}.tar" destfile="${sb.macfile}-${sb.version}-macOSx.tar.gz"/>
@@ -174,7 +180,7 @@
             <delete dir="${sb.distdir}/${jarbundler.name}.app"/>
         </target> 
 <!-- ========================================================================================= -->
-        <target name="dist-win" depends="jar, dist-prepare">
+        <target name="build-app-win" depends="jar, build-prepare">
             <echo message="BUILDING INSTALLER FOR WINDOWS..." level="info"/>
             <property name="inst.version" value="${sb.version}"/>
             <property name="nbdist.dir" value="${sb.distdir}/IzPack"/>
@@ -230,7 +236,7 @@
             <delete dir="${nbdist.dir}"/>
         </target>
 <!-- ========================================================================================= -->
-        <target name="dist-debian" depends="jar,dist-prepare">
+        <target name="build-app-debian" depends="jar,build-prepare">
             <echo level="info">Prepare DEBIAN package build</echo>
             <echo file="${sb.linux.deployment.dir}/build-debian.sh" append="false" force="true">#!/bin/sh
 echo Création de la préparation pour la version ${sb.version}
@@ -281,7 +287,7 @@ echo Construction du paquet RPM
 alien -r ${sb.distdir}/oStorybook-${sb.version}.deb</echo>
             <echo level="info" message="Lancez le script avec la commande: sudo sh ${sb.linux.deployment.dir}/build-debian.sh"/>
         </target>
-	<target name="dist-linux" depends="jar,dist-prepare" >
+	<target name="build-app-linux" depends="jar,build-prepare" >
 		<mkdir dir="${sb.distdir}" />
 		<exec executable="sh">
 			<arg value="deployment/linux/other/makeself.sh" />
@@ -291,14 +297,14 @@ alien -r ${sb.distdir}/oStorybook-${sb.version}.deb</echo>
 			<arg value="./setup.sh" />
 		</exec>
 	</target>
-	<target name="dist-all-lang">
+	<target name="build-lang-all">
 		<zip destfile="${sb.distdir}/language_all.zip">
 			<zipfileset dir="dicts.all" includes="dicts/**" />
 			<zipfileset dir="languagetool.all/" includes="languagetool/**" />
 			<zipfileset dir="." includes="INSTALL_LANG.txt" />
 		</zip>
 	</target>
-        <target name="dist-all" depends="dist-linux, dist-zip, dist-mac, dist-debian, dist-win">
+        <target name="build-app-all" depends="build-app-linux, build-app-zip, build-app-mac, build-app-debian, build-app-win">
 		<copy file="Versions.txt" todir="${sb.distdir}" />
         </target>
 </project>
