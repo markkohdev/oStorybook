@@ -636,17 +636,17 @@ public class MainMenu extends javax.swing.JFrame {
         menuFile.add(separatorFile2);
 
         // MBK42 - Add the Import Character from File menu option
-        fileOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        fileOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
-        fileOpen.setText(bundle.getString("msg.import")); // NOI18N
-        fileOpen.setActionCommand("import-command");
-        fileOpen.setName("import-command"); // NOI18N
-        fileOpen.addActionListener(new java.awt.event.ActionListener() {
+        importCharacter.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        importCharacter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
+        importCharacter.setText(bundle.getString("msg.import")); // NOI18N
+        importCharacter.setActionCommand("import-command");
+        importCharacter.setName("import-command"); // NOI18N
+        importCharacter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importCharacterActionPerformed(evt);
             }
         });
-        menuFile.add(fileOpen);
+        menuFile.add(importCharacter);
         
         
         fileExport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
@@ -2215,7 +2215,7 @@ public class MainMenu extends javax.swing.JFrame {
 		javax.swing.JMenuItem[] submenus={
 			editCopyBlurb, editCopyBook,
 			fileClose, fileExport, filePrint,
-			fileProperties, fileRename, fileSave, fileSaveAs
+			fileProperties, fileRename, fileSave, fileSaveAs, importCharacter
 		};
 		for (javax.swing.JMenuItem m : submenus) {
 			m.setVisible(false);
