@@ -20,6 +20,7 @@ import storybook.SbConstants.ViewName;
 import storybook.action.LangToolAction;
 import storybook.export.BookExporter;
 import storybook.export.DlgExport;
+import storybook.importer.DlgImport;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Category;
 import storybook.model.hbn.entity.Chapter;
@@ -124,6 +125,7 @@ public class MainMenu extends javax.swing.JFrame {
         fileProperties = new javax.swing.JMenuItem();
         separatorFile2 = new javax.swing.JPopupMenu.Separator();
         fileExport = new javax.swing.JMenuItem();
+        importCharacter = new javax.swing.JMenuItem();
         filePrint = new javax.swing.JMenuItem();
         separatorFile3 = new javax.swing.JPopupMenu.Separator();
         fileExit = new javax.swing.JMenuItem();
@@ -633,6 +635,20 @@ public class MainMenu extends javax.swing.JFrame {
         menuFile.add(fileProperties);
         menuFile.add(separatorFile2);
 
+        // MBK42 - Add the Import Character from File menu option
+        fileOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        fileOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
+        fileOpen.setText(bundle.getString("msg.import")); // NOI18N
+        fileOpen.setActionCommand("import-command");
+        fileOpen.setName("import-command"); // NOI18N
+        fileOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importCharacterActionPerformed(evt);
+            }
+        });
+        menuFile.add(fileOpen);
+        
+        
         fileExport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         fileExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/export.png"))); // NOI18N
         fileExport.setText(bundle.getString("msg.export")); // NOI18N
@@ -1505,6 +1521,12 @@ public class MainMenu extends javax.swing.JFrame {
         BookPropertiesDialog dlg = new BookPropertiesDialog(mainFrame);
 		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_filePropertiesActionPerformed
+    
+    private void importCharacterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportActionPerformed
+		DlgImport importer= new DlgImport(mainFrame,true);
+		importer.setVisible(true);
+
+    }//GEN-LAST:event_fileExportActionPerformed
 
     private void fileExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportActionPerformed
 		DlgExport export=new DlgExport(mainFrame);
@@ -2060,6 +2082,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem fileExport;
     private javax.swing.JMenuItem fileNew;
     private javax.swing.JMenuItem fileOpen;
+    private javax.swing.JMenuItem importCharacter;
     public javax.swing.JMenu fileOpenRecent;
     private javax.swing.JMenuItem filePrint;
     private javax.swing.JMenuItem fileProperties;
