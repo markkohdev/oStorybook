@@ -20,7 +20,7 @@ import storybook.SbConstants.ViewName;
 import storybook.action.LangToolAction;
 import storybook.export.BookExporter;
 import storybook.export.DlgExport;
-import storybook.importer.DlgImport;
+import storybook.importer.CharacterImporter;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Category;
 import storybook.model.hbn.entity.Chapter;
@@ -636,7 +636,6 @@ public class MainMenu extends javax.swing.JFrame {
         menuFile.add(separatorFile2);
 
         // MBK42 - Add the Import Character from File menu option
-        importCharacter.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         importCharacter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/file-open.png"))); // NOI18N
         importCharacter.setText(bundle.getString("msg.import")); // NOI18N
         importCharacter.setActionCommand("import-command");
@@ -1522,10 +1521,12 @@ public class MainMenu extends javax.swing.JFrame {
 		SwingUtil.showModalDialog(dlg, mainFrame);
     }//GEN-LAST:event_filePropertiesActionPerformed
     
+    // MBK42 - ActionCall for ImportCharacter menu item click
     private void importCharacterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportActionPerformed
+    	/*mainFrame.setWaitingCursor();
 		DlgImport importer= new DlgImport(mainFrame,true);
-		importer.setVisible(true);
-
+		*/
+    	mainFrame.getSbActionManager().getActionHandler().handleImportCharacter();
     }//GEN-LAST:event_fileExportActionPerformed
 
     private void fileExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportActionPerformed

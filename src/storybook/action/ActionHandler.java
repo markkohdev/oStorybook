@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -39,11 +40,17 @@ import org.hibernate.Session;
 import storybook.SbApp;
 import storybook.SbConstants;
 import storybook.SbConstants.BookKey;
+import storybook.SbConstants.PreferenceKey;
 import storybook.SbConstants.ViewName;
+import storybook.importer.CharacterImporter;
 import storybook.model.DbFile;
 import storybook.model.BookModel;
 import storybook.model.EntityUtil;
+import storybook.model.hbn.dao.GenderDAO;
+import storybook.model.hbn.dao.GenderDAOImpl;
 import storybook.model.hbn.dao.PartDAOImpl;
+import storybook.model.hbn.dao.PersonDAO;
+import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Category;
 import storybook.model.hbn.entity.Chapter;
@@ -55,6 +62,7 @@ import storybook.model.hbn.entity.ItemLink;
 import storybook.model.hbn.entity.Location;
 import storybook.model.hbn.entity.Part;
 import storybook.model.hbn.entity.Person;
+import storybook.model.hbn.entity.Preference;
 import storybook.model.hbn.entity.Scene;
 import storybook.model.hbn.entity.Strand;
 import storybook.model.hbn.entity.Tag;
@@ -63,6 +71,9 @@ import storybook.toolkit.DockingWindowUtil;
 import storybook.toolkit.BookUtil;
 import storybook.toolkit.EnvUtil;
 import storybook.toolkit.I18N;
+import storybook.toolkit.PrefUtil;
+import storybook.toolkit.filefilter.H2FileFilter;
+import storybook.toolkit.filefilter.TextFileFilter;
 import storybook.toolkit.net.NetUtil;
 import storybook.toolkit.swing.SwingUtil;
 import storybook.ui.MainFrame;
@@ -81,6 +92,7 @@ import storybook.ui.dialog.rename.RenameItemCategoryDialog;
 import storybook.ui.dialog.rename.RenameTagCategoryDialog;
 
 import com.sun.jaf.ui.ActionManager;
+
 import storybook.controller.BookController;
 import storybook.export.BookExporter;
 import storybook.ui.SbView;
@@ -472,6 +484,35 @@ public class ActionHandler {
 		DbFile dbFile = new DbFile(file);
 		OpenFileAction act = new OpenFileAction("", dbFile);
 		act.actionPerformed(null);
+	}
+	
+	// MBK42 - Handler for ImportCharacter
+	public void handleImportCharacter() {
+		//We're gonna get the file here, then pass the file to the importer
+		final JFileChooser fc = new JFileChooser();
+		Preference pref = PrefUtil.get(PreferenceKey.LAST_OPEN_DIR, storybook.toolkit.BookUtil.getHomeDir());
+		fc.setCurrentDirectory(new File(pref.getStringValue()));
+		TextFileFilter filter = new TextFileFilter();
+		fc.addChoosableFileFilter(filter);
+		fc.setFileFilter(filter);
+		int ret = fc.showOpenDialog(null);
+		if (ret == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			if (!file.exists()) {
+				JOptionPane.showMessageDialog(null,
+						I18N.getMsg("msg.dlg.project.not.exits.text", file),
+						I18N.getMsg("msg.dlg.project.not.exits.title"),
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			System.out.println(file.getAbsolutePath());
+			BookModel model = mainFrame.getBookModel();
+			Session session = model.beginTransaction();
+			PersonDAOImpl persondao = new PersonDAOImpl(session);
+			GenderDAOImpl genderdao = new GenderDAOImpl(session);
+			CharacterImporter importer = new CharacterImporter(file,persondao,genderdao);
+		}
+		
 	}
 
 	public void handleFileRename() {

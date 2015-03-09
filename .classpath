@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="deployment/windows/izpack/uninstaller.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/attesoro.1.8.01.jar"/>
@@ -117,6 +116,10 @@
 	<classpathentry kind="lib" path="lib/XMLworker/xmlworker-5.5.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/XMLworker/xmlworker-5.5.0-sources.jar"/>
 	<classpathentry kind="lib" path="lib/XMLworker/xmlworker-5.5.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/stanford-ner-3.5.1.jar" sourcepath="lib/stanford-ner-3.5.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/stanford-ner-3.5.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/stanford-ner-3.5.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jgenderize-master_fat.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_40"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
