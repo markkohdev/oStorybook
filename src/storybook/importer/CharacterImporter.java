@@ -50,7 +50,7 @@ public class CharacterImporter {
 		
 		ArrayList<Person> characters = extractPerson(file);
 		for(Person p : characters){
-			System.out.println(p.toString());
+			System.out.println(p.getFirstname());
 		}
 	}
 	
