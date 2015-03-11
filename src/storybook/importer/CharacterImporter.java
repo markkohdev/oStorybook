@@ -78,13 +78,17 @@ public class CharacterImporter {
 
 						String[] names = namestr.split(" ");
 						Person p = new Person();
-
 						p.setFirstname(names[0]);
-						p.setAbbreviation(p.getFirstname());
-
 						if (names.length > 1) {
 							p.setLastname(names[names.length - 1]);
 						}
+						
+						//Set the character abbreviation
+						StringBuffer abbreviation = new StringBuffer(p.getFirstname().substring(0, 2));
+						if (names.length > 1) {
+							abbreviation.append(p.getLastname().substring(0,2));
+						}
+						p.setAbbreviation(abbreviation.toString());
 
 						NameGender gender = null;
 						try {
