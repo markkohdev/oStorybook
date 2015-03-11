@@ -96,7 +96,7 @@ public class CharacterImporter {
 						}
 						catch (ClientErrorException e){
 							//We've reached the API request limit.  Just guess a random gender.
-							System.err.println("Reached API Request limit.  Choosing random gender for " + p.getFullName());
+							System.err.println("Reached API Request limit.  No gender determined for " + p.getFullName());
 						}
 						if (gender != null && gender.getGender() != null) {
 							if (gender.isMale()) {
@@ -105,9 +105,6 @@ public class CharacterImporter {
 							else {
 								p.setGender(female);
 							}
-						}
-						else {
-							p.setGender(randomGenderGuess(male, female));
 						}
 
 						people.put(namestr, p);
