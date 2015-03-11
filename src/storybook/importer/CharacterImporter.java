@@ -3,6 +3,7 @@ package storybook.importer;
 import com.github.irobson.jgenderize.GenderizeIoAPI;
 import com.github.irobson.jgenderize.client.Genderize;
 import com.github.irobson.jgenderize.model.NameGender;
+
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.io.IOUtils;
@@ -12,9 +13,14 @@ import storybook.model.hbn.dao.GenderDAOImpl;
 import storybook.model.hbn.dao.PersonDAOImpl;
 import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Person;
+import storybook.toolkit.I18N;
+import storybook.toolkit.swing.splash.HourglassSplash;
 
 import java.io.File;
 import java.util.*;
+
+import javax.swing.JOptionPane;
+import javax.ws.rs.ClientErrorException;
 
 
 /**
@@ -27,7 +33,6 @@ import java.util.*;
 public class CharacterImporter {
 	final static private String SERIALIZED_CLASSIFIER = "classifiers/english.all.3class.distsim.crf.ser.gz";
 
-	protected PersonDAOImpl personDAO;
 	protected GenderDAOImpl genderDAO;
 
 	/**
@@ -35,15 +40,13 @@ public class CharacterImporter {
 	 * using the provided {@link java.io.File} and DAOs
 	 *
 	 * @param file is the {@link java.io.File} that the characters will be extracted from.
-	 * @param personDAO
 	 * @param genderDAO
 	 */
-	public CharacterImporter(PersonDAOImpl personDAO, GenderDAOImpl genderDAO) {
-		this.personDAO = personDAO;
+	public CharacterImporter(GenderDAOImpl genderDAO) {
 		this.genderDAO = genderDAO;
 	}
 
-	public Collection<Person> extractPerson(File file) {
+	public Collection<Person> extractPerson(File file) throws ClientErrorException {
 
 		//location of the classifier model
 
@@ -83,9 +86,16 @@ public class CharacterImporter {
 							p.setLastname(names[names.length - 1]);
 						}
 
-						NameGender gender = api.getGender(p.getFirstname());
-						if (gender.getGender() != null) {
-							if (gender.getGender().equals("male")) {
+						NameGender gender = null;
+						try {
+							gender = api.getGender(p.getFirstname());
+						}
+						catch (ClientErrorException e){
+							//We've reached the API request limit.  Just guess a random gender.
+							System.err.println("Reached API Request limit.  Choosing random gender for " + p.getFullName());
+						}
+						if (gender != null && gender.getGender() != null) {
+							if (gender.isMale()) {
 								p.setGender(male);
 							}
 							else {

@@ -1527,6 +1527,7 @@ public class MainMenu extends javax.swing.JFrame {
 		DlgImport importer= new DlgImport(mainFrame,true);
 		*/
     	mainFrame.getSbActionManager().getActionHandler().handleImportCharacter();
+    	mainFrame.showAndFocus(SbConstants.ViewName.PERSONS);
     }//GEN-LAST:event_fileExportActionPerformed
 
     private void fileExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileExportActionPerformed

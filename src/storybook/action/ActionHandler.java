@@ -32,6 +32,7 @@ import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.ws.rs.ClientErrorException;
 
 import net.infonode.docking.View;
 
@@ -77,6 +78,7 @@ import storybook.toolkit.filefilter.H2FileFilter;
 import storybook.toolkit.filefilter.TextFileFilter;
 import storybook.toolkit.net.NetUtil;
 import storybook.toolkit.swing.SwingUtil;
+import storybook.toolkit.swing.splash.HourglassSplash;
 import storybook.ui.MainFrame;
 import storybook.ui.dialog.AboutDialog;
 import storybook.ui.dialog.CreateChaptersDialog;
@@ -489,7 +491,7 @@ public class ActionHandler {
 	
 	// MBK42 - Handler for ImportCharacter
 	public void handleImportCharacter() {
-		//We're gonna get the file here, then pass the file to the importer
+		//We're going to get the file here, then pass the file to the importer
 		final JFileChooser fc = new JFileChooser();
 		final BookModel model = mainFrame.getBookModel();
 
@@ -499,7 +501,7 @@ public class ActionHandler {
 		fc.setCurrentDirectory(new File(pref.getStringValue()));
 		fc.addChoosableFileFilter(filter);
 		fc.setFileFilter(filter);
-
+		
 		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 
@@ -511,16 +513,16 @@ public class ActionHandler {
 				return;
 			}
 
+			//Get our session and our current gender DAO
 			Session session = model.beginTransaction();
-			PersonDAOImpl persondao = new PersonDAOImpl(session);
 			GenderDAOImpl genderdao = new GenderDAOImpl(session);
-			CharacterImporter importer = new CharacterImporter(persondao, genderdao);
+			CharacterImporter importer = new CharacterImporter(genderdao);
 
+			//Attempt to extract people and genders
 			Collection<Person> people = importer.extractPerson(file);
-
+			
 			// Add each person to model
 			people.forEach(model::setNewPerson);
-
 		}
 		
 	}
