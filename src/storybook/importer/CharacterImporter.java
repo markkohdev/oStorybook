@@ -14,10 +14,7 @@ import storybook.model.hbn.entity.Gender;
 import storybook.model.hbn.entity.Person;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -28,32 +25,30 @@ import java.util.Random;
  * @author Mark Koh
  */
 public class CharacterImporter {
+	final static private String SERIALIZED_CLASSIFIER = "classifiers/english.all.3class.distsim.crf.ser.gz";
 
 	protected PersonDAOImpl personDAO;
 	protected GenderDAOImpl genderDAO;
 
 	/**
-	 * Creates new form dlgImport
+	 * Creates a new instance of {@link storybook.importer.CharacterImporter}
+	 * using the provided {@link java.io.File} and DAOs
 	 *
-	 * @param parent : parent frame
-	 * @param modal  : true or false
+	 * @param file is the {@link java.io.File} that the characters will be extracted from.
+	 * @param personDAO
+	 * @param genderDAO
 	 */
-	public CharacterImporter(File file, PersonDAOImpl personDAO, GenderDAOImpl genderDAO) {
+	public CharacterImporter(PersonDAOImpl personDAO, GenderDAOImpl genderDAO) {
 		this.personDAO = personDAO;
 		this.genderDAO = genderDAO;
-
-		List<Person> characters = extractPerson(file);
-		for (Person p : characters) {
-			System.out.println(p.getFirstname());
-		}
 	}
 
-	public List<Person> extractPerson(File file) {
+	public Collection<Person> extractPerson(File file) {
 
 		//location of the classifier model
-		String serializedClassifier = "classifiers/english.all.3class.distsim.crf.ser.gz";
 
-		ArrayList<Person> result = new ArrayList<Person>();
+
+		Map<String, Person> people = new HashMap<>();
 
 		Genderize api = GenderizeIoAPI.create();
 
@@ -61,16 +56,13 @@ public class CharacterImporter {
 		Gender female = genderDAO.findFemale();
 
 		try {
-			AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier
-					.getClassifier(serializedClassifier);
+			AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(SERIALIZED_CLASSIFIER);
 
 			String fileContents = IOUtils.slurpFile(file);
 
-			List<Triple<String, Integer, Integer>> list = classifier
-					.classifyToCharacterOffsets(fileContents);
+			List<Triple<String, Integer, Integer>> list = classifier.classifyToCharacterOffsets(fileContents);
 
-			//used for preventing duplicated names.
-			HashSet<String> existingNames = new HashSet<String>();
+			// Used for preventing duplicated names.
 
 			for (Triple<String, Integer, Integer> item : list) {
 				if (item.first().equals("PERSON")) {
@@ -78,10 +70,12 @@ public class CharacterImporter {
 
 					//remove line breaks and extra spaces between fn and ln
 					namestr = namestr.replace("\n", " ").replace("\r", " ").replaceAll("\\s+", " ").trim();
-					if (!existingNames.contains(namestr)) {
-						existingNames.add(namestr);
+
+					if (!people.containsKey(namestr)) {
+
 						String[] names = namestr.split(" ");
 						Person p = new Person();
+
 						p.setFirstname(names[0]);
 
 						if (names.length > 1) {
@@ -90,7 +84,7 @@ public class CharacterImporter {
 
 						NameGender gender = api.getGender(p.getFirstname());
 						if (gender.getGender() != null) {
-							if (gender.getGender() == "male") {
+							if (gender.getGender().equals("male")) {
 								p.setGender(male);
 							}
 							else {
@@ -101,7 +95,7 @@ public class CharacterImporter {
 							p.setGender(randomGenderGuess(male, female));
 						}
 
-						result.add(p);
+						people.put(namestr, p);
 					}
 				}
 			}
@@ -110,7 +104,7 @@ public class CharacterImporter {
 			e.printStackTrace();
 		}
 
-		return result;
+		return people.values();
 	}
 
 	/**

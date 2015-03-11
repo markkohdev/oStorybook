@@ -25,6 +25,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Action;
@@ -490,27 +491,36 @@ public class ActionHandler {
 	public void handleImportCharacter() {
 		//We're gonna get the file here, then pass the file to the importer
 		final JFileChooser fc = new JFileChooser();
-		Preference pref = PrefUtil.get(PreferenceKey.LAST_OPEN_DIR, storybook.toolkit.BookUtil.getHomeDir());
-		fc.setCurrentDirectory(new File(pref.getStringValue()));
+		final BookModel model = mainFrame.getBookModel();
+
 		TextFileFilter filter = new TextFileFilter();
+		Preference pref = PrefUtil.get(PreferenceKey.LAST_OPEN_DIR, storybook.toolkit.BookUtil.getHomeDir());
+
+		fc.setCurrentDirectory(new File(pref.getStringValue()));
 		fc.addChoosableFileFilter(filter);
 		fc.setFileFilter(filter);
-		int ret = fc.showOpenDialog(null);
-		if (ret == JFileChooser.APPROVE_OPTION) {
+
+		if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
+
 			if (!file.exists()) {
-				JOptionPane.showMessageDialog(null,
+				JOptionPane.showMessageDialog(mainFrame,
 						I18N.getMsg("msg.dlg.project.not.exits.text", file),
 						I18N.getMsg("msg.dlg.project.not.exits.title"),
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			System.out.println(file.getAbsolutePath());
-			BookModel model = mainFrame.getBookModel();
+
 			Session session = model.beginTransaction();
 			PersonDAOImpl persondao = new PersonDAOImpl(session);
 			GenderDAOImpl genderdao = new GenderDAOImpl(session);
-			CharacterImporter importer = new CharacterImporter(file,persondao,genderdao);
+			CharacterImporter importer = new CharacterImporter(persondao, genderdao);
+
+			Collection<Person> people = importer.extractPerson(file);
+
+			// Add each person to model
+			people.forEach(model::setNewPerson);
+
 		}
 		
 	}
