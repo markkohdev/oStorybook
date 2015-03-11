@@ -82,7 +82,11 @@ public class CharacterImporter {
 						if (names.length > 1) {
 							p.setLastname(names[names.length - 1]);
 						}
-
+						StringBuffer abbreviation = new StringBuffer(p.getFirstname().substring(0, 2));
+						if (names.length > 1) {
+							abbreviation.append(p.getLastname().substring(0,2));
+						}
+						p.setAbbreviation(abbreviation.toString());
 						NameGender gender = api.getGender(p.getFirstname());
 						if (gender.getGender() != null) {
 							if (gender.getGender().equals("male")) {
