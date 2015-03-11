@@ -75,10 +75,7 @@ public class CharacterImporter {
 
 						String[] names = namestr.split(" ");
 						Person p = new Person();
-
 						p.setFirstname(names[0]);
-						p.setAbbreviation(p.getFirstname());
-
 						if (names.length > 1) {
 							p.setLastname(names[names.length - 1]);
 						}
