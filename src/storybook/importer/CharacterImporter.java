@@ -33,6 +33,8 @@ import javax.ws.rs.ClientErrorException;
 public class CharacterImporter {
 	final static private String SERIALIZED_CLASSIFIER = "classifiers/english.all.3class.distsim.crf.ser.gz";
 
+	final static private int MAX_BATCH = 10;
+	
 	protected GenderDAOImpl genderDAO;
 
 	/**
@@ -57,6 +59,8 @@ public class CharacterImporter {
 
 		Gender male = genderDAO.findMale();
 		Gender female = genderDAO.findFemale();
+		
+		List<Person> batch = new ArrayList<Person>();
 
 		try {
 			AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(SERIALIZED_CLASSIFIER);
@@ -67,7 +71,8 @@ public class CharacterImporter {
 
 			// Used for preventing duplicated names.
 
-			for (Triple<String, Integer, Integer> item : list) {
+			for (int i=0; i< list.size(); i++) {
+				Triple<String, Integer, Integer> item = list.get(i);
 				if (item.first().equals("PERSON")) {
 					String namestr = fileContents.substring(item.second(), item.third());
 
@@ -89,25 +94,54 @@ public class CharacterImporter {
 							abbreviation.append(p.getLastname().substring(0,2));
 						}
 						p.setAbbreviation(abbreviation.toString());
+						
+						batch.add(p);
 
-						NameGender gender = null;
-						try {
-							gender = api.getGender(p.getFirstname());
-						}
-						catch (ClientErrorException e){
-							//We've reached the API request limit.  Just guess a random gender.
-							System.err.println("Reached API Request limit.  No gender determined for " + p.getFullName());
-						}
-						if (gender != null && gender.getGender() != null) {
-							if (gender.isMale()) {
-								p.setGender(male);
+						//If we're at the batch size limit or we're at the last item in the list
+						//flush the batch and add the people to the DB
+						if (batch.size() == MAX_BATCH || i == list.size()-1) {
+							
+							//Build the name batch to send to the jGenderize API
+							String[] namebatch = new String[batch.size()];
+							for (int j = 0; j < batch.size();j++){
+								namebatch[j] = batch.get(j).getFirstname();
 							}
-							else {
-								p.setGender(female);
+							
+							//Hit the API to get the genders
+							List<NameGender> genders = null;
+							try {
+								genders = api.getGenders(namebatch);
 							}
+							catch (ClientErrorException e){
+								//We've reached the API request limit.  Just guess a random gender.
+								System.err.println("Reached API Request limit.  No genders determined for batch.");
+							}
+							
+							
+							//For each person in the batch, set the gender and add them to the list
+							for(int j=0; j < batch.size(); j++){
+								Person current = batch.get(j);
+								
+								//Make sure we actually got genders
+								if (genders != null) {
+									NameGender gender = genders.get(j);
+									if (gender.getGender() != null) {
+										if (gender.isMale()) {
+											current.setGender(male);
+										}
+										else {
+											current.setGender(female);
+										}
+									}
+								}
+								
+								//Put the person in the list
+								people.put(namestr, current);
+							}
+							
+							//Clear the batch
+							batch.clear();
 						}
-
-						people.put(namestr, p);
 					}
 				}
 			}
